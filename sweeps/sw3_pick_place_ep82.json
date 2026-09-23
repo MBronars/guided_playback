@@ -1,0 +1,75 @@
+{
+ "base": {
+  "domain": "pickup",
+  "episodes": "82,82,82,82",
+  "fix_fps": true,
+  "seed": 0,
+  "optimizer": "unitgrad",
+  "shell": false,
+  "steps": 10,
+  "churn": false,
+  "t_freeze": 0.8,
+  "lr": 0.2,
+  "lr_final": 0.02,
+  "iterations": 10,
+  "sampler": "stream",
+  "transitions": 60
+ },
+ "arms": [
+  {
+   "name": "sw3_lift15_st60_det_seed1",
+   "task": "lift",
+   "offset": "0,0,0.15",
+   "seed": 1,
+   "desc": "winner recipe (streaming 60, no churn, unitgrad lr .2, 10 it), other draws (seed 1)"
+  },
+  {
+   "name": "sw3_lift20_st60_det",
+   "task": "lift",
+   "offset": "0,0,0.20",
+   "desc": "winner recipe, lift 20 cm"
+  },
+  {
+   "name": "sw3_place20_st100_det",
+   "task": "move",
+   "offset": "0.20,0,0",
+   "transitions": 100,
+   "desc": "pick and place on the table, goal +20 cm x, streaming 100, no churn, lr .2"
+  },
+  {
+   "task": "wall",
+   "wall_height": 0.1,
+   "wall_thickness": 0.02,
+   "wall_width": 0.3,
+   "clearance_mm": 5,
+   "box_weight": 5,
+   "offset": "0.35,0,0",
+   "name": "sw3_wall35_st60_det",
+   "desc": "pick and place over a 10 cm wall, goal +35 cm x, streaming 60, no churn, lr .2, 10 it"
+  },
+  {
+   "task": "wall",
+   "wall_height": 0.1,
+   "wall_thickness": 0.02,
+   "wall_width": 0.3,
+   "clearance_mm": 5,
+   "box_weight": 5,
+   "offset": "0.35,0,0",
+   "name": "sw3_wall35_st60_det_it25",
+   "iterations": 25,
+   "desc": "wall +35 cm, streaming 60, no churn, lr .2, 25 it"
+  },
+  {
+   "task": "wall",
+   "wall_height": 0.1,
+   "wall_thickness": 0.02,
+   "wall_width": 0.3,
+   "clearance_mm": 5,
+   "box_weight": 5,
+   "offset": "0.35,0,0",
+   "name": "sw3_wall35_st100_det",
+   "transitions": 100,
+   "desc": "wall +35 cm, streaming 100, no churn, lr .2, 10 it"
+  }
+ ]
+}

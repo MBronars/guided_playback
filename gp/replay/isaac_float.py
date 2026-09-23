@@ -1,0 +1,77 @@
+"""Isaac Lab floating Franka hand replay of a pickup / rl_push rollout (packages/pickup_replay_isaac, isaaclab env).
+
+rollout.npz -> specs.npz (pool link-local points Kabsch-fit to the generated gripper rows per frame: hand pose, finger
+q, closed flag; object = frame-0 generated particles, density/friction from a matching pool row else pool medians)
+-> replay_isaac.py (subprocess, ABSOLUTE paths) -> replay.npz contract (gripper = link-local points under the simulated
+link poses, object = frame-0 particles under the simulated object pose)."""
+import json, os, subprocess, sys
+import numpy as np
+from . import common as C
+
+SCRIPTS = "/data/user_data/mbronars/packages/pickup_replay_isaac/scripts"
+PY = "/data/user_data/mbronars/.miniconda3/envs/isaaclab/bin/python"
+POOL = "/data/user_data/mbronars/packages/pickup_replay_isaac/out/pool_pick_val/specs.npz"
+SHIFTS = [np.array([0.45, 0.0, 0.10]), np.array([0.45, 0.0, 0.11])]
+
+
+def run(run_dir, out, variants=("guided", "unguided"), rate=20, close_threshold=0.035, gpu="0"):
+    sys.path.insert(0, SCRIPTS)
+    from build_specs import gripper_track
+    z, rj = C.load_run(run_dir); os.makedirs(out, exist_ok=True)
+    pool = np.load(POOL); counts = [int(c) for c in pool["link_counts"][0]]
+    local = [pool["link_local"][0, li, :n].astype(np.float64) for li, n in enumerate(counts)]; n_grip = sum(counts)
+    B, V = z["predicted"].shape[0], len(variants); T = z["predicted"].shape[1]
+    roles = z["roles"]; obj_mask = z["object_mask"]
+    arrays = None; checks = []
+    for m in range(B):
+        pb = z["particle_body"][m]
+        assert [int((pb[:n_grip] == b).sum()) for b in (1, 2, 3)] == counts, "gripper row layout differs from the pool"
+        obj_rows = obj_mask[m]; obj0 = z["predicted"][m, 0, obj_rows].astype(np.float64)
+        best = (None, np.inf, None)
+        if obj0.shape[0] == pool["obj_pts0"].shape[1]:
+            for sh in SHIFTS:
+                d = np.abs(pool["obj_pts0"] - (obj0 + sh)[None]).max(axis=(1, 2)); j = int(np.argmin(d))
+                if d[j] < best[1]: best = (j, float(d[j]), sh.tolist())
+        matched = best[0] is not None and best[1] < 0.002
+        rho = float(pool["rho"][best[0]]) if matched else float(np.median(pool["rho"])); mu = float(pool["mu"][best[0]]) if matched else float(np.median(pool["mu"]))
+        if arrays is None:
+            arrays = dict(hand_pos=np.zeros((B, V, T, 3)), hand_quat=np.zeros((B, V, T, 4)), finger_q=np.zeros((B, V, T, 2)), fit_rms=np.zeros((B, V, T)),
+                          obj_centroid=np.zeros((B, V, T, 3)), target=np.full((B, V, 3), np.nan), obj_pts0=np.zeros((B, obj0.shape[0], 3)), rho=np.zeros(B), mu=np.zeros(B),
+                          asset_id=np.full(B, -1), link_local=np.repeat(pool["link_local"][:1], B, 0), link_counts=np.repeat(pool["link_counts"][:1], B, 0))
+        for v, var in enumerate(variants):
+            P = z[C.VARIANT_KEY[var]][m].astype(np.float64)
+            hp, hq, fq, rms = gripper_track(P[:, :n_grip], local, counts)
+            arrays["hand_pos"][m, v], arrays["hand_quat"][m, v], arrays["finger_q"][m, v], arrays["fit_rms"][m, v] = hp, hq, fq, rms
+            arrays["obj_centroid"][m, v] = P[:, obj_rows].mean(1); arrays["target"][m, v] = z["target"][m]
+        arrays["obj_pts0"][m] = obj0; arrays["rho"][m] = rho; arrays["mu"][m] = mu
+        checks.append(dict(member=m, episode=int(z["episodes"][m]), pool_match=matched, pool_match_mm=round(best[1] * 1e3, 2) if best[0] is not None else None, rho=rho, mu=mu,
+                           fit_rms_mm_max={var: round(float(arrays["fit_rms"][m, v].max()) * 1e3, 2) for v, var in enumerate(variants)}))
+    closed = arrays["finger_q"].mean(-1) < close_threshold
+    specs = os.path.abspath(os.path.join(out, "specs.npz"))
+    np.savez(specs, **arrays, closed=closed, close_threshold=close_threshold)
+    json.dump(dict(variants=list(variants), episodes=[[os.path.basename(run_dir.rstrip("/")), c["member"]] for c in checks], checks=checks, shift=[0, 0, 0], close_threshold=close_threshold),
+              open(specs[:-4] + ".json", "w"), indent=1)
+    sim_dir = os.path.abspath(os.path.join(out, "isaac"))
+    log = open(os.path.join(out, "replay.log"), "w")
+    print(f"[isaac] replaying {B} members x {V} variants at {rate} fps (log {log.name})", flush=True)
+    env = dict(os.environ, CUDA_VISIBLE_DEVICES=str(gpu), OMNI_KIT_ACCEPT_EULA="YES")
+    if os.path.exists(os.path.join(sim_dir, "replay.npz")) and os.environ.get("GP_REUSE_SIM"):
+        print("[isaac] reusing existing replay.npz", flush=True)
+    else:
+        subprocess.run([PY, "-u", os.path.join(SCRIPTS, "replay_isaac.py"), "--specs", specs, "--out", sim_dir, "--rates", str(rate)], check=True, stdout=log, stderr=subprocess.STDOUT, env=env)
+    R = np.load(os.path.join(sim_dir, "replay.npz"))
+    N = z["predicted"].shape[2]; sim = np.zeros((V, B, T, N, 3), np.float32); sim_roles = np.zeros((B, N), np.int8); rows = []
+    for k in range(len(R["env_episode"])):
+        m, v = int(R["env_episode"][k]), int(R["env_variant"][k]); var = variants[v]
+        loc = [arrays["link_local"][m, i, :counts[i]] for i in range(3)]
+        grip = np.concatenate([np.einsum("tij,pj->tpi", C.qmat(R["body_quat"][k, :, i]), loc[i]) + R["body_pos"][k, :, i][:, None] for i in range(3)], 1)
+        o0 = arrays["obj_pts0"][m]; c0 = o0.mean(0)
+        objp = np.einsum("tij,pj->tpi", C.qmat(R["obj_quat"][k]), o0 - c0) + R["obj_pos"][k][:, None]
+        obj_rows = obj_mask[m]; Tk = min(T, grip.shape[0])
+        dst = sim[v, m]; dst[:Tk, :n_grip] = grip[:Tk]; dst[:Tk, obj_rows] = objp[:Tk]
+        if Tk < T: sim[v, m, Tk:] = sim[v, m, Tk - 1]
+        sim_roles[m] = roles[m]
+        row = C.analysis_row(z[C.VARIANT_KEY[var]][m], sim[v, m], roles[m], obj_rows, z["target"][m], m, var)
+        row.update(fit_rms_mm_max=checks[m]["fit_rms_mm_max"][var], closed_frames=int(R["cmd_closed"][k].sum()), rho=checks[m]["rho"], mu=checks[m]["mu"], pool_match=checks[m]["pool_match"])
+        rows.append(row)
+    C.write(out, sim, sim_roles, list(variants), rows, extra=dict(sim="isaac floating hand", rate=rate, close_threshold=close_threshold))

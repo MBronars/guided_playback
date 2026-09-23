@@ -1,0 +1,151 @@
+{
+ "base": {
+  "domain": "pickup",
+  "task": "lift",
+  "episodes": "82,82,82,82",
+  "offset": "0,0,0.15",
+  "fix_fps": true,
+  "seed": 0,
+  "optimizer": "unitgrad",
+  "shell": false,
+  "steps": 10
+ },
+ "arms": [
+  {
+   "sampler": "stream",
+   "transitions": 60,
+   "churn": false,
+   "lr": 0.2,
+   "lr_final": 0.02,
+   "iterations": 10,
+   "name": "sw2_st60_det_lr02_it10",
+   "desc": "streaming 60, no churn (initial-noise opt), lr .2->.02",
+   "t_freeze": 0.8
+  },
+  {
+   "sampler": "stream",
+   "transitions": 60,
+   "churn": false,
+   "lr": 0.2,
+   "lr_final": 0.02,
+   "iterations": 25,
+   "name": "sw2_st60_det_lr02_it25",
+   "desc": "streaming 60, no churn, lr .2->.02, 25 it",
+   "t_freeze": 0.8
+  },
+  {
+   "sampler": "stream",
+   "transitions": 60,
+   "churn": true,
+   "t_freeze": 0.8,
+   "lr": 0.5,
+   "lr_final": 0.05,
+   "iterations": 10,
+   "name": "sw2_st60_lr05_it10",
+   "desc": "streaming 60, churn tf .8, lr .5->.05"
+  },
+  {
+   "sampler": "stream",
+   "transitions": 60,
+   "churn": true,
+   "t_freeze": 0.8,
+   "lr": 0.2,
+   "lr_final": 0.02,
+   "iterations": 25,
+   "name": "sw2_st60_lr02_it25",
+   "desc": "streaming 60, churn tf .8, lr .2->.02, 25 it"
+  },
+  {
+   "sampler": "stream",
+   "transitions": 60,
+   "churn": true,
+   "t_freeze": 0.5,
+   "lr": 0.2,
+   "lr_final": 0.02,
+   "iterations": 10,
+   "name": "sw2_st60_tf05_lr02_it10",
+   "desc": "streaming 60, churn tf .5, lr .2->.02"
+  },
+  {
+   "sampler": "stream",
+   "transitions": 60,
+   "churn": true,
+   "t_freeze": 0.8,
+   "lr": 0.2,
+   "lr_final": 0.02,
+   "iterations": 10,
+   "episodes": "82,82,82,82,82,82,82,82",
+   "name": "sw2_st60_lr02_it10_pop8",
+   "desc": "streaming 60, churn tf .8, lr .2, population 8"
+  },
+  {
+   "sampler": "chunked",
+   "transitions": 100,
+   "churn": false,
+   "lr": 0.1,
+   "lr_final": 0.01,
+   "iterations": 10,
+   "name": "sw2_ch_det_lr01_it10",
+   "desc": "chunked 100, no churn, lr .1->.01",
+   "t_freeze": 0.8
+  },
+  {
+   "sampler": "chunked",
+   "transitions": 100,
+   "churn": false,
+   "lr": 0.5,
+   "lr_final": 0.05,
+   "iterations": 10,
+   "name": "sw2_ch_det_lr05_it10",
+   "desc": "chunked 100, no churn, lr .5->.05",
+   "t_freeze": 0.8
+  },
+  {
+   "sampler": "chunked",
+   "transitions": 100,
+   "churn": false,
+   "lr": 0.2,
+   "lr_final": 0.02,
+   "iterations": 25,
+   "name": "sw2_ch_det_lr02_it25",
+   "desc": "chunked 100, no churn, lr .2->.02, 25 it",
+   "t_freeze": 0.8
+  },
+  {
+   "sampler": "chunked",
+   "transitions": 100,
+   "churn": false,
+   "shell": true,
+   "lr": 0.2,
+   "lr_final": 0.02,
+   "iterations": 10,
+   "name": "sw2_ch_det_shell_lr02_it10",
+   "desc": "chunked 100, no churn, shell ON, lr .2->.02",
+   "t_freeze": 0.8
+  },
+  {
+   "sampler": "chunked",
+   "transitions": 100,
+   "churn": false,
+   "lr": 0.2,
+   "lr_final": 0.02,
+   "iterations": 10,
+   "seed": 1,
+   "name": "sw2_ch_det_lr02_it10_seed1",
+   "desc": "chunked 100, no churn, lr .2->.02, seed 1 (repeat of sw1_ch_det with other draws)",
+   "t_freeze": 0.8
+  },
+  {
+   "sampler": "chunked",
+   "transitions": 100,
+   "churn": false,
+   "lr": 0.2,
+   "lr_final": 0.02,
+   "iterations": 10,
+   "episodes": "82,82,82,82,82,82,82,82",
+   "name": "sw2_ch_det_lr02_it10_pop8",
+   "desc": "chunked 100, no churn, lr .2, population 8",
+   "t_freeze": 0.8
+  }
+ ]
+}

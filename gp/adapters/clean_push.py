@@ -1,0 +1,99 @@
+"""pwm_final_clean push0418 checkpoints (block pushing, 04_18 data: 128-point cube + 128-point rod, rigid pose-native).
+
+Wraps clean_core (= pwm_final_clean/reports/push0418_guidance_scripts/churn_stream_lib.py, verbatim copy):
+inference.streaming_chain staircase with per-row churn. The global RNG is reseeded before every rollout (that
+codebase's FPS start comes from it), so members with the same seed see the same FPS draws. State = (X0 particle draws
+[fixed, inert], P0 initial pose draws, E churn bank [n_calls, N, B, Kr, 6])."""
+import dataclasses
+import numpy as np
+import torch
+from . import clean_core as lib
+from .base import Adapter, State
+from omegaconf import OmegaConf
+
+
+class CleanPushAdapter(Adapter):
+    name = "clean_push"
+    frame_dt = 1 / 20
+    sim = "sapien"
+
+    def load(self, ckpt, device, compile=True):
+        self.dev = device
+        self.model, self.diffusion, self.cfg = lib.load(device, ckpt)
+        self.step = int(torch.load(ckpt, map_location="cpu", weights_only=False).get("step", -1))
+        self.model.eval()
+        if compile:
+            import sys
+            sys.path.insert(0, "/data/user_data/mbronars/packages/pwm_final_clean")
+            from utils.compilation import prepare_compilation
+            import torch._dynamo as dynamo
+            prepare_compilation(self.model, dict(compile=True, compile_regional=True, compile_l0=True, compile_dynamic=False))
+            for name, v in (("cache_size_limit", 4096), ("recompile_limit", 4096), ("accumulated_recompile_limit", 16384)):
+                if hasattr(dynamo.config, name):
+                    setattr(dynamo.config, name, v)
+        self.mode = "compiled regional + L0, bf16" if compile else "eager bf16"
+        return self
+
+    def episodes(self, indices, transitions, domain=None):
+        """Test windows of the 04_18 set in loader order (batch_size 1, no shuffle); repeated indices = population."""
+        from data.dataset import create_dataloader
+        cfg, C = self.cfg, int(self.cfg.data.context_len)
+        self.domain = domain or "pushing"
+        ld = create_dataloader(
+            wds_location=cfg.data.wds_location, format=cfg.data.format, normalization=cfg.normalization,
+            prediction_target=cfg.prediction_target, context_len=C, future_len=transitions + 1 - C,
+            batch_size=1, num_workers=0, emit_sidecar=cfg.data.emit_sidecar, bucket_max_items=cfg.data.bucket_max_items,
+            articulated=bool(cfg.model.get("articulated_bodies", False)), domains=cfg.data.domains, seed=0,
+            roots=OmegaConf.to_container(cfg.data.roots, resolve=True), training=False, shuffle=False,
+            no_shard_split=True, first_window=False, rigid_poses=bool(cfg.data.get("rigid_poses", True)), yaw_aug=False)
+        want, got = sorted(set(indices)), {}
+        for i, b in enumerate(ld):
+            if i in want:
+                got[i] = b
+            if i >= want[-1]:
+                break
+        first = got[indices[0]]
+        kw = {f.name: torch.cat([getattr(got[i], f.name) for i in indices], 0) for f in dataclasses.fields(first)
+              if torch.is_tensor(getattr(first, f.name)) and getattr(first, f.name).dim() > 0 and getattr(first, f.name).shape[0] == 1}
+        b = dataclasses.replace(first, **kw).to(self.dev)
+        T = b.positions.shape[1]
+        self.recorded = b                                                            # the recorded clip (gt)
+        batch = dataclasses.replace(b, positions=b.positions[:, :1].expand(-1, T, -1, -1).clone(),
+                                    body_poses=b.body_poses[:, :1].expand(-1, T, -1, -1, -1).clone(),
+                                    pose_deltas_gt=torch.zeros_like(b.pose_deltas_gt))
+        batch.gt_frames = [T] * len(indices); batch.episodes = list(indices)
+        return batch
+
+    def prepare(self, batch, transitions, steps, keep, seed, churn, t_freeze, fix_fps):
+        if not churn:
+            raise SystemExit("clean_push: only the churn sampler is implemented (pass --churn)")
+        sc = lib.Staircase(self.model, self.diffusion, self.cfg, batch, steps, horizon=transitions, seed=seed, amp_dtype=torch.bfloat16)
+        X0, P0, E = sc.draws(torch.Generator(device=self.dev).manual_seed(seed))
+        opt_E = sc.opt_mask(t_freeze).expand_as(E).clone()
+        D = P0.shape[2] * 6
+        shellP = P0.flatten(2).norm(dim=-1)[..., None, None]; shellE = E.flatten(3).norm(dim=-1)[..., None, None]
+        info = dict(model_calls=int(sc.n_calls), bank_draws=int(E.shape[0] * E.shape[1]), free_bank=int(opt_E[..., 0, 0].sum()),
+                    sampler="full churn (eta=1) staircase, joint draw optimization", D=D)
+        return State(vars=[P0.requires_grad_(True), E.requires_grad_(True)], free=[None, opt_E], shell=[shellP, shellE],
+                     fixed=dict(X0=X0, sc=sc), info=info)
+
+    def rollout(self, batch, state, grad):
+        sc = state.fixed["sc"]
+        with torch.set_grad_enabled(grad):
+            return sc.rollout(state.fixed["X0"], state.vars[0], state.vars[1], "churn")
+
+    def object_mask(self, batch):
+        return ((batch.body_type == 1) & ~batch.pose_action_mask).gather(1, batch.particle_body) & batch.get_valid_mask()
+
+    def roles(self, batch):
+        act = batch.pose_action_mask.gather(1, batch.particle_body).cpu().numpy()
+        out = np.where(act, 0, 2).astype(np.int8); out[~batch.get_valid_mask().cpu().numpy()] = -1
+        return out
+
+    def export(self, batch):
+        cpu = lambda v: v.detach().cpu().numpy()
+        object_ids = torch.where(batch.pose_action_mask.gather(1, batch.particle_body), 1, 0)
+        return dict(particle_body=cpu(batch.particle_body), pose_action_mask=cpu(batch.pose_action_mask),
+                    joint_type=cpu(batch.joint_type) if getattr(batch, "joint_type", None) is not None else np.zeros(batch.body_type.shape, np.int64),
+                    body_type=cpu(batch.body_type), object_ids=cpu(object_ids), body_poses0=cpu(batch.body_poses[:, 0]),
+                    gt=cpu(self.recorded.positions), gt_frames=np.array(batch.gt_frames))

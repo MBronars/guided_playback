@@ -1,0 +1,75 @@
+{
+ "base": {
+  "domain": "pickup",
+  "episodes": "82,82,82,82",
+  "fix_fps": true,
+  "seed": 0,
+  "optimizer": "unitgrad",
+  "shell": false,
+  "steps": 10,
+  "churn": false,
+  "t_freeze": 0.8,
+  "lr": 0.2,
+  "lr_final": 0.02,
+  "iterations": 10,
+  "sampler": "stream",
+  "transitions": 60,
+  "task": "wall",
+  "wall_height": 0.1,
+  "wall_thickness": 0.02,
+  "wall_width": 0.3,
+  "clearance_mm": 5,
+  "box_weight": 5,
+  "offset": "0.35,0,0"
+ },
+ "arms": [
+  {
+   "name": "sw4_wall35_bw20",
+   "box_weight": 20,
+   "desc": "wall +35 cm, wall weight 20 (was 5), streaming 60, no churn, lr .2, 10 it"
+  },
+  {
+   "name": "sw4_wall35_bw50",
+   "box_weight": 50,
+   "desc": "wall +35 cm, wall weight 50"
+  },
+  {
+   "name": "sw4_wall35_bw20_clr20",
+   "box_weight": 20,
+   "clearance_mm": 20,
+   "desc": "wall +35 cm, wall weight 20, clearance 20 mm"
+  },
+  {
+   "name": "sw4_wall35_bw20_pop8",
+   "box_weight": 20,
+   "episodes": "82,82,82,82,82,82,82,82",
+   "desc": "wall +35 cm, wall weight 20, population 8"
+  },
+  {
+   "name": "sw4_wall35_bw20_it25",
+   "box_weight": 20,
+   "iterations": 25,
+   "desc": "wall +35 cm, wall weight 20, 25 it"
+  },
+  {
+   "name": "sw4_wall35_h6_bw20",
+   "box_weight": 20,
+   "wall_height": 0.06,
+   "desc": "6 cm wall, goal +35 cm, wall weight 20"
+  },
+  {
+   "name": "sw4_place20_st60",
+   "task": "move",
+   "offset": "0.20,0,0",
+   "desc": "pick and place on the table, goal +20 cm x, streaming 60, no churn, lr .2"
+  },
+  {
+   "name": "sw4_place20_st100_pop8",
+   "task": "move",
+   "offset": "0.20,0,0",
+   "transitions": 100,
+   "episodes": "82,82,82,82,82,82,82,82",
+   "desc": "place +20 cm, streaming 100, population 8"
+  }
+ ]
+}
