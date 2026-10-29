@@ -1,0 +1,76 @@
+{
+ "points": {
+  "panda_hand": 241,
+  "panda_leftfinger": 212,
+  "panda_rightfinger": 218
+ },
+ "frames": "link frames, metres",
+ "finger_convention": "finger link = hand pose with translation (0, +q_left, 0.0584) or (0, -q_right, 0.0584) m and no rotation of its own",
+ "identical_across_roots": true,
+ "roots": [
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_pickup_data_place_success/gpu0/00000.tar",
+   "key": "batch_00000000",
+   "particle_reconstruction_err_m_max": 9.800822280414678e-07,
+   "fingers": {
+    "panda_leftfinger": {
+     "rotation_deg_max": 1.2663509647306462e-05,
+     "translation_err_m_max": 2.6979861805359606e-06
+    },
+    "panda_rightfinger": {
+     "rotation_deg_max": 1.8430439999894915e-05,
+     "translation_err_m_max": 2.2385390044329934e-06
+    }
+   }
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_pickup_data_convex_success/gpu0/00000.tar",
+   "key": "batch_00000000",
+   "particle_reconstruction_err_m_max": 9.780621342270202e-07,
+   "fingers": {
+    "panda_leftfinger": {
+     "rotation_deg_max": 1.1197136397927998e-05,
+     "translation_err_m_max": 2.343178114448674e-06
+    },
+    "panda_rightfinger": {
+     "rotation_deg_max": 1.972937709214414e-05,
+     "translation_err_m_max": 2.606522463186045e-06
+    }
+   }
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_pickup_data_pick_success/gpu0/00000.tar",
+   "key": "batch_00000000",
+   "particle_reconstruction_err_m_max": 9.790667570008793e-07,
+   "fingers": {
+    "panda_leftfinger": {
+     "rotation_deg_max": 1.878302021753515e-05,
+     "translation_err_m_max": 2.0482993982368254e-06
+    },
+    "panda_rightfinger": {
+     "rotation_deg_max": 2.063237243740307e-05,
+     "translation_err_m_max": 2.4142450564396123e-06
+    }
+   }
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_pickup_data_upright_success/gpu0/00000.tar",
+   "key": "batch_00000000",
+   "particle_reconstruction_err_m_max": 9.891352790447616e-07,
+   "fingers": {
+    "panda_leftfinger": {
+     "rotation_deg_max": 1.6466989746779883e-05,
+     "translation_err_m_max": 2.3888199394764276e-06
+    },
+    "panda_rightfinger": {
+     "rotation_deg_max": 2.0808269673042192e-05,
+     "translation_err_m_max": 2.460176808063985e-06
+    }
+   }
+  }
+ ],
+ "script": "scripts/dev/pickup_gripper_points.py",
+ "made": "2026-09-14 23:25",
+ "git_commit": "1bb812ea48876b532b190de6b5a25aef1b3b709a",
+ "git_dirty": true
+}

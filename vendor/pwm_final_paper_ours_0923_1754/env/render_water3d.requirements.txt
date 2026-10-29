@@ -1,0 +1,13 @@
+# Water-3D renderer (scripts/render_water3d/): its own environment, separate from the training one.
+# Tested 2026-09-11 on RTX PRO 6000 (Mitsuba variant cuda_ad_rgb; scalar_rgb works without a GPU; llvm_ad_rgb needs libLLVM):
+#   conda create -p <env> -c conda-forge python=3.11 numpy=2.4.6 scipy=1.17.1 scikit-image=0.26.0 \
+#       imageio=2.37.4 imageio-ffmpeg=0.6.0 pillow=12.3.0
+#   <env>/bin/pip install mitsuba==3.9.1
+mitsuba==3.9.1
+drjit==1.5.0
+numpy==2.4.6
+scipy==1.17.1
+scikit-image==0.26.0
+imageio==2.37.4
+imageio-ffmpeg==0.6.0
+pillow==12.3.0

@@ -1,0 +1,48 @@
+# Generated files only. Source, docs, manifests and small normalization assets
+# belong in version control; do not blanket-ignore their extensions.
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+build/
+dist/
+.venv/
+venv/
+.idea/
+.vscode/
+.DS_Store
+.nfs*
+
+# Machine-local settings and worktrees.
+.claude/
+.codex/
+.agents/
+.worktrees/
+CLAUDE.md
+
+# The paper's working folder is not part of this repository.
+/paper/
+
+# Outputs. Keep input assets in stats/ and data/manifests/, never here.
+/runs/
+/checkpoints/
+/results/
+/reports/
+/logs/
+/wandb/
+/validation/
+/inference_results/
+/debug_vis/
+/slurm/
+/paper_figures/
+*.tar
+*.tar.gz
+
+# Checkpoints outside the standard output directories are still too large for Git.
+*.pt
+*.pth
+*.ckpt

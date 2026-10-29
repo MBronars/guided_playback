@@ -1,0 +1,9049 @@
+{
+ "kind": "yikai_extent_tags",
+ "created_utc": "2026-09-18T07:35:50+00:00",
+ "release": "/data/group_data/katefgroup-ssd/world_model/particle_world_model/releases/pwm-data-v1/yikai",
+ "index_sha256": {
+  "train": "1acb96758b6479ac0ec1ae8cd93b9faacc0fefd8d5ad1572c787433d91e51f48",
+  "test": "0e5a1581ea29ebb97b2d85d46ea86aea341d9e1a25bbc3aa3061bb8dd5a43b42"
+ },
+ "rule": "after the adapter's shift (-0.45, 0, -table_top_z_env) with the table dropped, source frames >= 10: a frame is beyond when any point has |x| or |y| > 0.8 m; far = the episode's maximum exceeds 0.9 m; frames_beyond are inclusive source-frame ranges; a window is flagged when it overlaps one",
+ "thresholds_m": {
+  "beyond": 0.8,
+  "far": 0.9
+ },
+ "decision": "2026-09-18: keep every episode in train and test; tags are for separate reporting, no loader applies them",
+ "counts": {
+  "train": {
+   "episodes": 11015,
+   "tagged": 442,
+   "far": 83
+  },
+  "test": {
+   "episodes": 548,
+   "tagged": 20,
+   "far": 3
+  }
+ },
+ "kinds": {
+  "gripper+manipulated+other object": 3,
+  "other object": 217,
+  "gripper": 174,
+  "gripper+manipulated": 48,
+  "manipulated": 15,
+  "manipulated+other object": 2,
+  "gripper+other object": 3
+ },
+ "episodes": [
+  {
+   "episode_id": "100bbfc5c975b8fa8505f608b1d0d8f288ea863b716ca66a5e7f5fc9696c4ec8",
+   "split": "test",
+   "max_abs_xy_m": 0.8312,
+   "far": false,
+   "kinds": [
+    "gripper",
+    "manipulated",
+    "other object"
+   ],
+   "frames": 324,
+   "frames_beyond": [
+    [
+     91,
+     99
+    ],
+    [
+     174,
+     323
+    ]
+   ]
+  },
+  {
+   "episode_id": "1956d77b7678f123d3a73e63c3c89ff5205b6f169ed832f3321458c523de8ede",
+   "split": "test",
+   "max_abs_xy_m": 0.8324,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 247,
+   "frames_beyond": [
+    [
+     10,
+     246
+    ]
+   ]
+  },
+  {
+   "episode_id": "339a4fdc994094c5ec06c36f59a52de67bb31f0f17c98af612f5223082ca585b",
+   "split": "test",
+   "max_abs_xy_m": 0.8325,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 507,
+   "frames_beyond": [
+    [
+     10,
+     506
+    ]
+   ]
+  },
+  {
+   "episode_id": "3d02c625ad90b31927b0ea8a320d824104911cee29b91280ab302e1d38d1d76f",
+   "split": "test",
+   "max_abs_xy_m": 0.9304,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 293,
+   "frames_beyond": [
+    [
+     142,
+     147
+    ],
+    [
+     236,
+     247
+    ]
+   ]
+  },
+  {
+   "episode_id": "3fcb1a901545a35142598d037fce7b86ae9145f3c8bb7eb569f618b0b9df095f",
+   "split": "test",
+   "max_abs_xy_m": 0.8051,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 324,
+   "frames_beyond": [
+    [
+     77,
+     85
+    ]
+   ]
+  },
+  {
+   "episode_id": "5910b0ba35d06f00040dad7765fdd576b55e2ba344306d7359aac85d73601fbc",
+   "split": "test",
+   "max_abs_xy_m": 0.8025,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 704,
+   "frames_beyond": [
+    [
+     10,
+     703
+    ]
+   ]
+  },
+  {
+   "episode_id": "597c2475ab542976b0bbba5d008bd666c6a6afae1b64e29640ddc1381d16759b",
+   "split": "test",
+   "max_abs_xy_m": 0.8074,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 704,
+   "frames_beyond": [
+    [
+     10,
+     703
+    ]
+   ]
+  },
+  {
+   "episode_id": "5e0df2c122eabb6cd3f1182a3093ee8933ab6eced2913d483da13b2496ea7957",
+   "split": "test",
+   "max_abs_xy_m": 0.8243,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 331,
+   "frames_beyond": [
+    [
+     10,
+     330
+    ]
+   ]
+  },
+  {
+   "episode_id": "7125487156ada6ec62b256ba088eea503942a36202b0566218fb20b2eb8b2fbd",
+   "split": "test",
+   "max_abs_xy_m": 0.8592,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 652,
+   "frames_beyond": [
+    [
+     73,
+     651
+    ]
+   ]
+  },
+  {
+   "episode_id": "7de59b297be8c61fb071790e8be027dceac794b2b58bac8f2e90806c4865fc26",
+   "split": "test",
+   "max_abs_xy_m": 0.8457,
+   "far": false,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 324,
+   "frames_beyond": [
+    [
+     159,
+     310
+    ],
+    [
+     312,
+     312
+    ],
+    [
+     316,
+     323
+    ]
+   ]
+  },
+  {
+   "episode_id": "833796423f41c2ae41eb7a36f6a4669d7fb2ec12a2d194d60db4bec93c9db7a3",
+   "split": "test",
+   "max_abs_xy_m": 1.3718,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 383,
+   "frames_beyond": [
+    [
+     66,
+     191
+    ],
+    [
+     293,
+     382
+    ]
+   ]
+  },
+  {
+   "episode_id": "890d9b11d03f9533a9426dc9ade4968c804d722861d4711502b34a5ecf844a4c",
+   "split": "test",
+   "max_abs_xy_m": 0.8332,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 446,
+   "frames_beyond": [
+    [
+     342,
+     359
+    ]
+   ]
+  },
+  {
+   "episode_id": "9ad213ded4207b2d64972b790b0cabc7181270472f1af1c792f0b53b3cd6381b",
+   "split": "test",
+   "max_abs_xy_m": 1.3223,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 658,
+   "frames_beyond": [
+    [
+     488,
+     506
+    ],
+    [
+     530,
+     598
+    ]
+   ]
+  },
+  {
+   "episode_id": "a73f4d17f0808aef250a389a1a743361882e26916a22217c958885b4d86e35ba",
+   "split": "test",
+   "max_abs_xy_m": 0.8014,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 798,
+   "frames_beyond": [
+    [
+     10,
+     797
+    ]
+   ]
+  },
+  {
+   "episode_id": "c0ceaecab17e4f12dd9fbeed61cac959a4ecab289359b5269af1554f5de893bf",
+   "split": "test",
+   "max_abs_xy_m": 0.8127,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 685,
+   "frames_beyond": [
+    [
+     444,
+     451
+    ],
+    [
+     459,
+     684
+    ]
+   ]
+  },
+  {
+   "episode_id": "c5355a8149e73fa3d6f79fa0cce241a0beb9e8837ff17673ec92d338a21f78ff",
+   "split": "test",
+   "max_abs_xy_m": 0.808,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 798,
+   "frames_beyond": [
+    [
+     10,
+     797
+    ]
+   ]
+  },
+  {
+   "episode_id": "c8f42224597614ec249f141ffcdb1569eafb3b35051df9e5b39c10c232233a39",
+   "split": "test",
+   "max_abs_xy_m": 0.8291,
+   "far": false,
+   "kinds": [
+    "manipulated"
+   ],
+   "frames": 562,
+   "frames_beyond": [
+    [
+     320,
+     561
+    ]
+   ]
+  },
+  {
+   "episode_id": "d6db129ada18ae81ba5219694d9f0313c6945ca3ce4b176870a4be12a797b243",
+   "split": "test",
+   "max_abs_xy_m": 0.8306,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 446,
+   "frames_beyond": [
+    [
+     101,
+     115
+    ],
+    [
+     130,
+     145
+    ],
+    [
+     160,
+     177
+    ],
+    [
+     190,
+     208
+    ],
+    [
+     219,
+     242
+    ],
+    [
+     350,
+     350
+    ],
+    [
+     352,
+     366
+    ],
+    [
+     368,
+     368
+    ]
+   ]
+  },
+  {
+   "episode_id": "deebf2e7b9239c049f2ef23c3dd584264c7d40a977d028639e6248afbe1b55f7",
+   "split": "test",
+   "max_abs_xy_m": 0.8266,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 383,
+   "frames_beyond": [
+    [
+     94,
+     193
+    ]
+   ]
+  },
+  {
+   "episode_id": "fc748fc02a7bbc443f26b3d7be23334edb315a4227d5bbfbd8c5837a143cd122",
+   "split": "test",
+   "max_abs_xy_m": 0.8286,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 704,
+   "frames_beyond": [
+    [
+     492,
+     703
+    ]
+   ]
+  },
+  {
+   "episode_id": "004ae2606da31e2b0a640d01991836753df7ddbfd4d637a39b84eadeebde0b8a",
+   "split": "train",
+   "max_abs_xy_m": 1.4044,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 318,
+   "frames_beyond": [
+    [
+     275,
+     317
+    ]
+   ]
+  },
+  {
+   "episode_id": "01cac768d6631a38e98bd825517ca8876665dc5bde8cc87d36fb4a83d51e9ac0",
+   "split": "train",
+   "max_abs_xy_m": 0.8057,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 586,
+   "frames_beyond": [
+    [
+     432,
+     434
+    ]
+   ]
+  },
+  {
+   "episode_id": "04118738dfc7071b5315fa535512cb23f053991116b7f319241b0bbbc3a6e5ff",
+   "split": "train",
+   "max_abs_xy_m": 0.8319,
+   "far": false,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 569,
+   "frames_beyond": [
+    [
+     136,
+     178
+    ],
+    [
+     203,
+     227
+    ]
+   ]
+  },
+  {
+   "episode_id": "0469418d0d21c7cc7469bc785c458a8544a0b138f8a5881d0a61e223c71af5ba",
+   "split": "train",
+   "max_abs_xy_m": 0.8021,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 459,
+   "frames_beyond": [
+    [
+     102,
+     108
+    ],
+    [
+     409,
+     409
+    ],
+    [
+     411,
+     415
+    ]
+   ]
+  },
+  {
+   "episode_id": "048603e44532541cab65a1d99466e1a99379c8a3a362b7594dd69c05ff6d9279",
+   "split": "train",
+   "max_abs_xy_m": 0.8737,
+   "far": false,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 428,
+   "frames_beyond": [
+    [
+     267,
+     427
+    ]
+   ]
+  },
+  {
+   "episode_id": "04eea98eee908bd3b98d94a4cb2e24d5cbcb9f9221b24d494de30ecffc3d1d06",
+   "split": "train",
+   "max_abs_xy_m": 1.1973,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 514,
+   "frames_beyond": [
+    [
+     285,
+     346
+    ],
+    [
+     366,
+     373
+    ]
+   ]
+  },
+  {
+   "episode_id": "050a13555975119dbc3334823b4888cf8122c28532e6a8059913670403f55360",
+   "split": "train",
+   "max_abs_xy_m": 0.8034,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 712,
+   "frames_beyond": [
+    [
+     10,
+     711
+    ]
+   ]
+  },
+  {
+   "episode_id": "06537d768afe6aa7507abcbf355eb6b9f3ffd07a122d922cf6a340ed6ac5f984",
+   "split": "train",
+   "max_abs_xy_m": 0.8249,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 299,
+   "frames_beyond": [
+    [
+     69,
+     97
+    ]
+   ]
+  },
+  {
+   "episode_id": "06d6d0c6f61810ca751588b9f41bdb4d9ed229d70ef2b2174c97e6016d799152",
+   "split": "train",
+   "max_abs_xy_m": 0.8292,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 616,
+   "frames_beyond": [
+    [
+     355,
+     615
+    ]
+   ]
+  },
+  {
+   "episode_id": "071240a3c76bc21936dbf9bd0c5b05bf23ea63966c6fa4f607dbb76ee27667ca",
+   "split": "train",
+   "max_abs_xy_m": 0.8056,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 369,
+   "frames_beyond": [
+    [
+     109,
+     127
+    ],
+    [
+     134,
+     165
+    ]
+   ]
+  },
+  {
+   "episode_id": "076361a1c565c4b293481ba125b1479621d02ecce00f26f1bf6622f1ecf2c39b",
+   "split": "train",
+   "max_abs_xy_m": 0.8104,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 465,
+   "frames_beyond": [
+    [
+     10,
+     464
+    ]
+   ]
+  },
+  {
+   "episode_id": "08ac2e075454075f1d25c5b9dee7eede2e185e335095271f3dc634b5913a27ad",
+   "split": "train",
+   "max_abs_xy_m": 0.803,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 701,
+   "frames_beyond": [
+    [
+     89,
+     96
+    ]
+   ]
+  },
+  {
+   "episode_id": "0918c5734bf175f86d5da14cf9bf266ef27f76d093aad029a270e2f128c3cb25",
+   "split": "train",
+   "max_abs_xy_m": 0.8749,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 320,
+   "frames_beyond": [
+    [
+     125,
+     128
+    ],
+    [
+     171,
+     171
+    ],
+    [
+     173,
+     173
+    ],
+    [
+     175,
+     175
+    ],
+    [
+     177,
+     183
+    ],
+    [
+     311,
+     319
+    ]
+   ]
+  },
+  {
+   "episode_id": "09bc8bbd96fc6fd208c71c275eb91f2065204f48cc01f773c6ea80bb6eede43b",
+   "split": "train",
+   "max_abs_xy_m": 0.8033,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 457,
+   "frames_beyond": [
+    [
+     10,
+     456
+    ]
+   ]
+  },
+  {
+   "episode_id": "09f0547d5c430536e947b3d542a467943c167357119a66a9fda8a8fb8183243d",
+   "split": "train",
+   "max_abs_xy_m": 0.8163,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 524,
+   "frames_beyond": [
+    [
+     10,
+     523
+    ]
+   ]
+  },
+  {
+   "episode_id": "0b04b74add33182157c6fe62326c761ae9bc76e15e2ebfc29fa516db79170bdb",
+   "split": "train",
+   "max_abs_xy_m": 0.8031,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 577,
+   "frames_beyond": [
+    [
+     10,
+     576
+    ]
+   ]
+  },
+  {
+   "episode_id": "0b60004b0975f3598abe6cbe309b723dea1293c75923e732a48425035bcc262e",
+   "split": "train",
+   "max_abs_xy_m": 0.8065,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 525,
+   "frames_beyond": [
+    [
+     10,
+     524
+    ]
+   ]
+  },
+  {
+   "episode_id": "0b6aaae42c855a75ee397ffa910d616d2f87de3eaf0c70b24408999278c3ad2b",
+   "split": "train",
+   "max_abs_xy_m": 0.8354,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 339,
+   "frames_beyond": [
+    [
+     74,
+     149
+    ]
+   ]
+  },
+  {
+   "episode_id": "0c1838ee37176907097366e30d2a24a9a141d46b04fd24f46c35baac3f275491",
+   "split": "train",
+   "max_abs_xy_m": 1.0527,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 503,
+   "frames_beyond": [
+    [
+     373,
+     375
+    ],
+    [
+     397,
+     424
+    ]
+   ]
+  },
+  {
+   "episode_id": "0c58f7df8dd94e50b117edc75b61f87afe0eeed4c051d96ea517a3d642131a2c",
+   "split": "train",
+   "max_abs_xy_m": 0.8021,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 401,
+   "frames_beyond": [
+    [
+     10,
+     400
+    ]
+   ]
+  },
+  {
+   "episode_id": "0c5dcc97471123f2e5d3f69576d76fc4bb0e82d88fb1f56284cab73f19827f9a",
+   "split": "train",
+   "max_abs_xy_m": 0.8242,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 472,
+   "frames_beyond": [
+    [
+     10,
+     471
+    ]
+   ]
+  },
+  {
+   "episode_id": "0cc54ee786d45fea0a24e0f2d497e9f91abd698050fe3d81908de71be40cebc9",
+   "split": "train",
+   "max_abs_xy_m": 0.8447,
+   "far": false,
+   "kinds": [
+    "manipulated"
+   ],
+   "frames": 409,
+   "frames_beyond": [
+    [
+     347,
+     408
+    ]
+   ]
+  },
+  {
+   "episode_id": "0e18bf7e8f4c40145c719c22f9d7e9547f4125efd55a35cd0a59799d0c4399a0",
+   "split": "train",
+   "max_abs_xy_m": 0.8142,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 454,
+   "frames_beyond": [
+    [
+     340,
+     340
+    ],
+    [
+     342,
+     360
+    ],
+    [
+     362,
+     362
+    ],
+    [
+     408,
+     420
+    ]
+   ]
+  },
+  {
+   "episode_id": "0f3d443448e61167f213a26a1674dcea3146162fbacfbe71dadc389861c7c309",
+   "split": "train",
+   "max_abs_xy_m": 0.8239,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 559,
+   "frames_beyond": [
+    [
+     10,
+     558
+    ]
+   ]
+  },
+  {
+   "episode_id": "0f800a15bbbefd4a1130f3539af9fb850903c036e5b9dabc7dddf3caa611854a",
+   "split": "train",
+   "max_abs_xy_m": 0.8355,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 668,
+   "frames_beyond": [
+    [
+     10,
+     667
+    ]
+   ]
+  },
+  {
+   "episode_id": "0fec3ad11aa81c1f92dc5c4d3f4160250ee47a29e7e59963a3cf78fd4b6ac1d1",
+   "split": "train",
+   "max_abs_xy_m": 0.8022,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 325,
+   "frames_beyond": [
+    [
+     88,
+     92
+    ],
+    [
+     121,
+     124
+    ]
+   ]
+  },
+  {
+   "episode_id": "10625009261bb48f1eba9fd7faa9825223556b4f9b45b588b6e6cb87922fa12d",
+   "split": "train",
+   "max_abs_xy_m": 0.8009,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 478,
+   "frames_beyond": [
+    [
+     10,
+     477
+    ]
+   ]
+  },
+  {
+   "episode_id": "107984ecf4ea9a125509e562ad3410cf2d8c0e1f211150273632b5fa8f4869e8",
+   "split": "train",
+   "max_abs_xy_m": 0.8118,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 481,
+   "frames_beyond": [
+    [
+     10,
+     480
+    ]
+   ]
+  },
+  {
+   "episode_id": "111e23473aa5047225c198ca9e4ef47e7521c68cf4bf30c9900362f91d678984",
+   "split": "train",
+   "max_abs_xy_m": 0.8003,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 527,
+   "frames_beyond": [
+    [
+     102,
+     104
+    ]
+   ]
+  },
+  {
+   "episode_id": "114b4a1bed6ffee290c01bfe65b4daf8e10c9338cf884b3c800e4120ef5ef99d",
+   "split": "train",
+   "max_abs_xy_m": 0.81,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 874,
+   "frames_beyond": [
+    [
+     10,
+     873
+    ]
+   ]
+  },
+  {
+   "episode_id": "117df98e2bdd86597996092015d1d645e32fbc93584a1109ae2e0c4f60b2e63f",
+   "split": "train",
+   "max_abs_xy_m": 0.8287,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 461,
+   "frames_beyond": [
+    [
+     10,
+     460
+    ]
+   ]
+  },
+  {
+   "episode_id": "11d4bba31636b64820e5a66f7eaca4a2fb468190d2206ddc72d50542c023117a",
+   "split": "train",
+   "max_abs_xy_m": 1.3541,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 453,
+   "frames_beyond": [
+    [
+     347,
+     439
+    ],
+    [
+     443,
+     452
+    ]
+   ]
+  },
+  {
+   "episode_id": "124f2eaedcb132bab88e509a14eb1bf03a90c8146bb52cf5897272596659ed43",
+   "split": "train",
+   "max_abs_xy_m": 0.8084,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 451,
+   "frames_beyond": [
+    [
+     394,
+     396
+    ]
+   ]
+  },
+  {
+   "episode_id": "12a62dc4100f645873e340aaa8e1c885a1dfa5d07162f3abc1bf9948a8cc03c2",
+   "split": "train",
+   "max_abs_xy_m": 0.8038,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 654,
+   "frames_beyond": [
+    [
+     75,
+     82
+    ]
+   ]
+  },
+  {
+   "episode_id": "12fba5c2e8b37dddd5085553b99cb9567e6cfe1223085e12c7b2528a946ee4a6",
+   "split": "train",
+   "max_abs_xy_m": 0.8298,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 493,
+   "frames_beyond": [
+    [
+     10,
+     492
+    ]
+   ]
+  },
+  {
+   "episode_id": "13313f368ed9e515a3ae9368bb2527fe5d73ef8e8fa0210ed6cbdd9e22fd9edf",
+   "split": "train",
+   "max_abs_xy_m": 0.8264,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 1287,
+   "frames_beyond": [
+    [
+     218,
+     273
+    ],
+    [
+     286,
+     289
+    ],
+    [
+     314,
+     319
+    ]
+   ]
+  },
+  {
+   "episode_id": "13e054c2a6bbd1fd7226a3be933d52a7138b99bac1229818b7a004945f820c6b",
+   "split": "train",
+   "max_abs_xy_m": 0.8475,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 565,
+   "frames_beyond": [
+    [
+     301,
+     564
+    ]
+   ]
+  },
+  {
+   "episode_id": "154375366b23fb2abf37acb5d57c5a618b82dc2fe49ed85eebb498ff5a4565e7",
+   "split": "train",
+   "max_abs_xy_m": 0.8859,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 332,
+   "frames_beyond": [
+    [
+     76,
+     137
+    ],
+    [
+     198,
+     198
+    ],
+    [
+     255,
+     255
+    ],
+    [
+     257,
+     306
+    ],
+    [
+     308,
+     318
+    ],
+    [
+     320,
+     320
+    ]
+   ]
+  },
+  {
+   "episode_id": "15ac3b9a1ace365aee4a67341860e1efcbd77d0cc68cbb2fd17bf294128700ba",
+   "split": "train",
+   "max_abs_xy_m": 0.8353,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 417,
+   "frames_beyond": [
+    [
+     10,
+     416
+    ]
+   ]
+  },
+  {
+   "episode_id": "15cc8fc74254f510e6e1b064225255dda697e0549c9325ac969a32b7a4f941d0",
+   "split": "train",
+   "max_abs_xy_m": 0.8196,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 352,
+   "frames_beyond": [
+    [
+     10,
+     351
+    ]
+   ]
+  },
+  {
+   "episode_id": "15e129ceabb9e8fe495d2170c53187171bf0658185388be13946082aeb7e5715",
+   "split": "train",
+   "max_abs_xy_m": 0.9231,
+   "far": true,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 278,
+   "frames_beyond": [
+    [
+     10,
+     277
+    ]
+   ]
+  },
+  {
+   "episode_id": "15f2999f57b2390ee4c980bbd84b099b70a4e64286907218cd8e654269a83deb",
+   "split": "train",
+   "max_abs_xy_m": 0.8009,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 299,
+   "frames_beyond": [
+    [
+     10,
+     298
+    ]
+   ]
+  },
+  {
+   "episode_id": "1751208118a611b620749ffc77a85d7770cfb9716bac7bcd9d924382dd0f0613",
+   "split": "train",
+   "max_abs_xy_m": 0.8075,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 604,
+   "frames_beyond": [
+    [
+     75,
+     88
+    ],
+    [
+     103,
+     119
+    ]
+   ]
+  },
+  {
+   "episode_id": "175b0496444fb0276cb221cf38963e019407d5f9f12114fb1a1669de76453df8",
+   "split": "train",
+   "max_abs_xy_m": 0.8046,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 517,
+   "frames_beyond": [
+    [
+     10,
+     516
+    ]
+   ]
+  },
+  {
+   "episode_id": "185732b27c2467e5b699e8c66996c89ba03023974c9ffea14282c67ded6672b1",
+   "split": "train",
+   "max_abs_xy_m": 0.8222,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 774,
+   "frames_beyond": [
+    [
+     80,
+     232
+    ],
+    [
+     264,
+     275
+    ]
+   ]
+  },
+  {
+   "episode_id": "1891ed9294af6126f512e5b307fb4bf0f34aba64fdce8a2e323e5238ce71d39a",
+   "split": "train",
+   "max_abs_xy_m": 1.083,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 317,
+   "frames_beyond": [
+    [
+     300,
+     316
+    ]
+   ]
+  },
+  {
+   "episode_id": "1948e9de50e1f62609d0075078f260caf22343f746e2d1003cdb65eff6fedff8",
+   "split": "train",
+   "max_abs_xy_m": 0.8073,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 412,
+   "frames_beyond": [
+    [
+     10,
+     411
+    ]
+   ]
+  },
+  {
+   "episode_id": "195893c105d9ce5af83bbc5b043bf25ef83e9635011dfd4342442e53ed0c086f",
+   "split": "train",
+   "max_abs_xy_m": 0.8098,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 599,
+   "frames_beyond": [
+    [
+     10,
+     598
+    ]
+   ]
+  },
+  {
+   "episode_id": "1981944bb5c2c2dd099dc9ae0031608c6616c51abc76542b09665bb70b471c6e",
+   "split": "train",
+   "max_abs_xy_m": 0.8146,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 451,
+   "frames_beyond": [
+    [
+     10,
+     450
+    ]
+   ]
+  },
+  {
+   "episode_id": "1988c378539137be101879f4da9e869b9176904cab5d64359f4f3fb664455033",
+   "split": "train",
+   "max_abs_xy_m": 1.3756,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 584,
+   "frames_beyond": [
+    [
+     463,
+     583
+    ]
+   ]
+  },
+  {
+   "episode_id": "19b0dae8b98b7ce64f9a119feccaeb85789380886d611fc78a2f86c0b6d71b43",
+   "split": "train",
+   "max_abs_xy_m": 0.8219,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 369,
+   "frames_beyond": [
+    [
+     70,
+     169
+    ],
+    [
+     171,
+     171
+    ],
+    [
+     245,
+     245
+    ]
+   ]
+  },
+  {
+   "episode_id": "1a804c417332204c28d870a893ccdbfc5e9d1bec884f44f7465edfa099435a79",
+   "split": "train",
+   "max_abs_xy_m": 0.8004,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 638,
+   "frames_beyond": [
+    [
+     10,
+     637
+    ]
+   ]
+  },
+  {
+   "episode_id": "1aa8e6fa8a6f05ab5054d5a3321723dd6fe918ec63afc8d7f3aef1f5c097903b",
+   "split": "train",
+   "max_abs_xy_m": 1.3259,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 273,
+   "frames_beyond": [
+    [
+     181,
+     202
+    ],
+    [
+     233,
+     272
+    ]
+   ]
+  },
+  {
+   "episode_id": "1aef97fa4a8039ce0f6f7879def005c5171f94838ffae87250ce569c3448ec03",
+   "split": "train",
+   "max_abs_xy_m": 1.4018,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 373,
+   "frames_beyond": [
+    [
+     253,
+     372
+    ]
+   ]
+  },
+  {
+   "episode_id": "1b2eb27d99ec11a90e4797e1bd6a574a19488539f6aa1bbc5b456bcf0c3f9744",
+   "split": "train",
+   "max_abs_xy_m": 0.9334,
+   "far": true,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 539,
+   "frames_beyond": [
+    [
+     276,
+     279
+    ],
+    [
+     296,
+     321
+    ],
+    [
+     376,
+     384
+    ]
+   ]
+  },
+  {
+   "episode_id": "1b3fae0048952df179f4105be765e39e8d2150f083728df3f29d59f0879725d8",
+   "split": "train",
+   "max_abs_xy_m": 1.32,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 316,
+   "frames_beyond": [
+    [
+     159,
+     171
+    ],
+    [
+     220,
+     315
+    ]
+   ]
+  },
+  {
+   "episode_id": "1bfb585e98d762d8d4b5c701778e0ec070c040706c3a6f567e6910965141bb8f",
+   "split": "train",
+   "max_abs_xy_m": 0.8045,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 396,
+   "frames_beyond": [
+    [
+     10,
+     395
+    ]
+   ]
+  },
+  {
+   "episode_id": "1c31b14c6cae19ba3d4a409e6d76db6c6857d2d9e0cc7ed0d69309e45eb3e60b",
+   "split": "train",
+   "max_abs_xy_m": 0.8022,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 465,
+   "frames_beyond": [
+    [
+     351,
+     353
+    ],
+    [
+     357,
+     357
+    ]
+   ]
+  },
+  {
+   "episode_id": "1cfe319ee1df95f99345e50d0e379f79952ee35e8f9276d8c7b91b333a5e9b55",
+   "split": "train",
+   "max_abs_xy_m": 0.9022,
+   "far": true,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 309,
+   "frames_beyond": [
+    [
+     223,
+     308
+    ]
+   ]
+  },
+  {
+   "episode_id": "1d25d18b958f49701a90a509ece921f1663eca96df20eff04fbe222f9f840519",
+   "split": "train",
+   "max_abs_xy_m": 0.8089,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 455,
+   "frames_beyond": [
+    [
+     371,
+     373
+    ],
+    [
+     375,
+     375
+    ],
+    [
+     377,
+     377
+    ]
+   ]
+  },
+  {
+   "episode_id": "1de19cc37fb11c450ed43bfa840f35e74ad82291dbe0ac886a2f9b9fd806dd1b",
+   "split": "train",
+   "max_abs_xy_m": 1.1741,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 320,
+   "frames_beyond": [
+    [
+     158,
+     158
+    ],
+    [
+     160,
+     160
+    ],
+    [
+     162,
+     162
+    ],
+    [
+     164,
+     164
+    ],
+    [
+     204,
+     262
+    ]
+   ]
+  },
+  {
+   "episode_id": "1e5ef3242c3d79c7dd8fff10c3b18145c06c22354fd170bc85be7688b3d298a4",
+   "split": "train",
+   "max_abs_xy_m": 0.8332,
+   "far": false,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 442,
+   "frames_beyond": [
+    [
+     379,
+     397
+    ],
+    [
+     399,
+     399
+    ],
+    [
+     427,
+     429
+    ],
+    [
+     432,
+     441
+    ]
+   ]
+  },
+  {
+   "episode_id": "1ebddca66567a6bbe793d55d17343ca2848d0797d21b2fc8025d044d1a092806",
+   "split": "train",
+   "max_abs_xy_m": 0.8937,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 570,
+   "frames_beyond": [
+    [
+     10,
+     569
+    ]
+   ]
+  },
+  {
+   "episode_id": "1f28199c05422d8b85985c76b56d0b4f4c59c5874bd5bb86d23e95a1737a8d57",
+   "split": "train",
+   "max_abs_xy_m": 0.8085,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 489,
+   "frames_beyond": [
+    [
+     404,
+     488
+    ]
+   ]
+  },
+  {
+   "episode_id": "1f3f95d872f94af57fef898b006914a24e396d2ce71781cddb0aa02930a79656",
+   "split": "train",
+   "max_abs_xy_m": 0.8873,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 468,
+   "frames_beyond": [
+    [
+     451,
+     467
+    ]
+   ]
+  },
+  {
+   "episode_id": "210738b4eb57bcac6f4eb4da3c90ea8a1a16eb98593fc707b73ad7ff2715d457",
+   "split": "train",
+   "max_abs_xy_m": 0.8321,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 714,
+   "frames_beyond": [
+    [
+     585,
+     713
+    ]
+   ]
+  },
+  {
+   "episode_id": "21b326636a9ebc89745cba902c64b7fb3c65c281cf843e579518f33725e8dc2b",
+   "split": "train",
+   "max_abs_xy_m": 0.8035,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 529,
+   "frames_beyond": [
+    [
+     10,
+     528
+    ]
+   ]
+  },
+  {
+   "episode_id": "21e913ec3115e00db622356277a8803353336445f8b500c9024c75120fc51872",
+   "split": "train",
+   "max_abs_xy_m": 0.8476,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 342,
+   "frames_beyond": [
+    [
+     10,
+     341
+    ]
+   ]
+  },
+  {
+   "episode_id": "21f80401b0f185de98765797f6df4a7a51a672d9a3715fbd45463fa05b66c434",
+   "split": "train",
+   "max_abs_xy_m": 0.8262,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 285,
+   "frames_beyond": [
+    [
+     10,
+     284
+    ]
+   ]
+  },
+  {
+   "episode_id": "21f93e3199135e714fe4b81d1302a03e940e1491fc1f6402b1662ba65b6ef044",
+   "split": "train",
+   "max_abs_xy_m": 0.8106,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 451,
+   "frames_beyond": [
+    [
+     99,
+     103
+    ],
+    [
+     425,
+     432
+    ]
+   ]
+  },
+  {
+   "episode_id": "222b61b34d576a6ed6b4e374ba085a249908e0a930682f4db2e9a958bf3ade7b",
+   "split": "train",
+   "max_abs_xy_m": 0.8815,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 392,
+   "frames_beyond": [
+    [
+     284,
+     391
+    ]
+   ]
+  },
+  {
+   "episode_id": "223deaa7493d21bbb7f83d66e84093db7acd5a39c151d7662d90f9003cb3dc81",
+   "split": "train",
+   "max_abs_xy_m": 0.8095,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 342,
+   "frames_beyond": [
+    [
+     10,
+     341
+    ]
+   ]
+  },
+  {
+   "episode_id": "22e6cca02d638c240255ee95eace349887c3da11ef9ae43695f2829c0d18239b",
+   "split": "train",
+   "max_abs_xy_m": 0.8089,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 288,
+   "frames_beyond": [
+    [
+     10,
+     287
+    ]
+   ]
+  },
+  {
+   "episode_id": "238eb2582df1b575ee22f154b450c441849ad4cf39bedc564ae2ae955c1edd22",
+   "split": "train",
+   "max_abs_xy_m": 0.8681,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 394,
+   "frames_beyond": [
+    [
+     280,
+     292
+    ],
+    [
+     354,
+     363
+    ]
+   ]
+  },
+  {
+   "episode_id": "240bea8df2e66b7ff6c8c6a396f47ed4a8b870a29daff4d8177617dfa9a47651",
+   "split": "train",
+   "max_abs_xy_m": 0.8338,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 540,
+   "frames_beyond": [
+    [
+     344,
+     539
+    ]
+   ]
+  },
+  {
+   "episode_id": "24bdb03a508464605096023f8a0e3a12e73256d76350d8e19999147f0b66d390",
+   "split": "train",
+   "max_abs_xy_m": 0.8887,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 318,
+   "frames_beyond": [
+    [
+     235,
+     254
+    ],
+    [
+     256,
+     256
+    ],
+    [
+     258,
+     258
+    ],
+    [
+     260,
+     260
+    ]
+   ]
+  },
+  {
+   "episode_id": "268356145e0e78305d0156c69909e033965f61f829a8c50228580402b8b44817",
+   "split": "train",
+   "max_abs_xy_m": 0.8427,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 361,
+   "frames_beyond": [
+    [
+     293,
+     360
+    ]
+   ]
+  },
+  {
+   "episode_id": "273b40f7ccd7c39c031459c3d1b870e6682b9caeffff540aa5aa4b29a944e58b",
+   "split": "train",
+   "max_abs_xy_m": 0.809,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 664,
+   "frames_beyond": [
+    [
+     10,
+     663
+    ]
+   ]
+  },
+  {
+   "episode_id": "278026dd7a93c1ddf9706e3e7e923b6a08f7beb37339a473902601fd2e80b561",
+   "split": "train",
+   "max_abs_xy_m": 0.8002,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 711,
+   "frames_beyond": [
+    [
+     10,
+     710
+    ]
+   ]
+  },
+  {
+   "episode_id": "28cc864e6d5d4dbbf015d8593da336b72841c6d425a85ce896f53a4fa50e80a7",
+   "split": "train",
+   "max_abs_xy_m": 0.8351,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 619,
+   "frames_beyond": [
+    [
+     531,
+     539
+    ]
+   ]
+  },
+  {
+   "episode_id": "2941431dcafe749d0c957dc47f298e932b3919d37eb7696a86874465068faa15",
+   "split": "train",
+   "max_abs_xy_m": 1.2393,
+   "far": true,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 627,
+   "frames_beyond": [
+    [
+     436,
+     626
+    ]
+   ]
+  },
+  {
+   "episode_id": "294593351d8dac7612f769a3065527256e8625e681b351bb223d4084af617b32",
+   "split": "train",
+   "max_abs_xy_m": 0.8077,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 554,
+   "frames_beyond": [
+    [
+     10,
+     553
+    ]
+   ]
+  },
+  {
+   "episode_id": "2a1596218726ee24d4b05c5f9977e35b00041316d62a75071c0328b1c6999d75",
+   "split": "train",
+   "max_abs_xy_m": 0.9472,
+   "far": true,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 752,
+   "frames_beyond": [
+    [
+     356,
+     751
+    ]
+   ]
+  },
+  {
+   "episode_id": "2a722e7de792307993da7380f4fafd2a994a79c40334b556c494c75a0a44dc15",
+   "split": "train",
+   "max_abs_xy_m": 0.8136,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 395,
+   "frames_beyond": [
+    [
+     10,
+     394
+    ]
+   ]
+  },
+  {
+   "episode_id": "2b1d6bce8c01960d91198f24d59a9ec22a34f30b2f67174b464627e4a05d66e0",
+   "split": "train",
+   "max_abs_xy_m": 0.9154,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 316,
+   "frames_beyond": [
+    [
+     139,
+     140
+    ],
+    [
+     220,
+     236
+    ],
+    [
+     272,
+     285
+    ],
+    [
+     307,
+     315
+    ]
+   ]
+  },
+  {
+   "episode_id": "2b87012d67732ba805cebe5ef192688c2a1005478ba73f91bc8c4cd082f946d2",
+   "split": "train",
+   "max_abs_xy_m": 0.8196,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 472,
+   "frames_beyond": [
+    [
+     10,
+     471
+    ]
+   ]
+  },
+  {
+   "episode_id": "2d008ed2f34fe28b40d72efe25e183257a61ed6e01c1ac8eb107944ef3381dca",
+   "split": "train",
+   "max_abs_xy_m": 0.834,
+   "far": false,
+   "kinds": [
+    "manipulated"
+   ],
+   "frames": 513,
+   "frames_beyond": [
+    [
+     319,
+     337
+    ]
+   ]
+  },
+  {
+   "episode_id": "2d47966d5a659c4ca2e30f55b862bb097a412ae3a47319a742578db90e09d5ef",
+   "split": "train",
+   "max_abs_xy_m": 0.8264,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 469,
+   "frames_beyond": [
+    [
+     301,
+     341
+    ],
+    [
+     346,
+     353
+    ],
+    [
+     456,
+     462
+    ],
+    [
+     464,
+     468
+    ]
+   ]
+  },
+  {
+   "episode_id": "2d9dc26c1f331de9d2cce656ffa719ec4327cd888aefd9edd52da38362851208",
+   "split": "train",
+   "max_abs_xy_m": 0.8087,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 599,
+   "frames_beyond": [
+    [
+     10,
+     598
+    ]
+   ]
+  },
+  {
+   "episode_id": "2efa8c22bfa3c438bf5d41f09aa828c22714853aa5c47e38450df13ff3403bd5",
+   "split": "train",
+   "max_abs_xy_m": 0.8006,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 692,
+   "frames_beyond": [
+    [
+     10,
+     691
+    ]
+   ]
+  },
+  {
+   "episode_id": "2fa5f9fa7ac02ced069852348e15f3ec979393558902c2c970985a9c10584923",
+   "split": "train",
+   "max_abs_xy_m": 0.806,
+   "far": false,
+   "kinds": [
+    "manipulated"
+   ],
+   "frames": 818,
+   "frames_beyond": [
+    [
+     536,
+     817
+    ]
+   ]
+  },
+  {
+   "episode_id": "30202deca02521e11073c4a4e00b1bcdb460c99bd583e73c63fa10677c4af0c9",
+   "split": "train",
+   "max_abs_xy_m": 1.2974,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 329,
+   "frames_beyond": [
+    [
+     245,
+     259
+    ],
+    [
+     304,
+     328
+    ]
+   ]
+  },
+  {
+   "episode_id": "30cde443a1b0e17f9cf7f5fd911f9de40caa803158be94f25d4465f76a521680",
+   "split": "train",
+   "max_abs_xy_m": 1.4124,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 455,
+   "frames_beyond": [
+    [
+     283,
+     399
+    ]
+   ]
+  },
+  {
+   "episode_id": "30dce3fc3dd5922e456d6da9bff6d07aed68cb97a02e00384f0ef53dba31f11a",
+   "split": "train",
+   "max_abs_xy_m": 1.338,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 454,
+   "frames_beyond": [
+    [
+     182,
+     194
+    ],
+    [
+     259,
+     265
+    ],
+    [
+     272,
+     295
+    ],
+    [
+     322,
+     390
+    ]
+   ]
+  },
+  {
+   "episode_id": "3151a74ae9c196be6d5b880c3f3039457df2ee78dcd07085a46d06e5d9762c1b",
+   "split": "train",
+   "max_abs_xy_m": 0.812,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 668,
+   "frames_beyond": [
+    [
+     10,
+     667
+    ]
+   ]
+  },
+  {
+   "episode_id": "3273f06cd1115c36ef7fb830b9010dcc3f309f4909a11a2efd6238170dfa0bfa",
+   "split": "train",
+   "max_abs_xy_m": 0.891,
+   "far": false,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 631,
+   "frames_beyond": [
+    [
+     231,
+     262
+    ]
+   ]
+  },
+  {
+   "episode_id": "331b6937e9dfd95989e51e3666b104804162358384691ae5c5ad694e6d7b02a6",
+   "split": "train",
+   "max_abs_xy_m": 0.844,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 633,
+   "frames_beyond": [
+    [
+     130,
+     632
+    ]
+   ]
+  },
+  {
+   "episode_id": "332a4cddbe4f6abbf0bc4dc215706fc1e76135d821abe609f3125a1115ba3a6b",
+   "split": "train",
+   "max_abs_xy_m": 1.4036,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 337,
+   "frames_beyond": [
+    [
+     105,
+     138
+    ],
+    [
+     157,
+     212
+    ],
+    [
+     220,
+     291
+    ],
+    [
+     296,
+     336
+    ]
+   ]
+  },
+  {
+   "episode_id": "3345a35527f68bd0e984b16b2c6a6571c044085c7f44fb8b6c697f90d953a049",
+   "split": "train",
+   "max_abs_xy_m": 0.881,
+   "far": false,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 324,
+   "frames_beyond": [
+    [
+     10,
+     323
+    ]
+   ]
+  },
+  {
+   "episode_id": "344570f3804894bfb6d9538ea52af5134386b13165fb3acadde95b75cbf82486",
+   "split": "train",
+   "max_abs_xy_m": 0.8185,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 566,
+   "frames_beyond": [
+    [
+     10,
+     565
+    ]
+   ]
+  },
+  {
+   "episode_id": "347b9ef2eb6f6899640615f6b46bcc1d6852197aa9e4359e4ff16702edea866d",
+   "split": "train",
+   "max_abs_xy_m": 0.8699,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 316,
+   "frames_beyond": [
+    [
+     293,
+     315
+    ]
+   ]
+  },
+  {
+   "episode_id": "348408917067c3fe470e5cc5a00e76ec26623d094ad1fe66492456c58d739ed3",
+   "split": "train",
+   "max_abs_xy_m": 0.8904,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 320,
+   "frames_beyond": [
+    [
+     174,
+     210
+    ],
+    [
+     240,
+     240
+    ],
+    [
+     242,
+     242
+    ]
+   ]
+  },
+  {
+   "episode_id": "34a46332bf6ad2d7f9a1fd28c35682c22dcdaaa8be432ca298e08adca728b1d2",
+   "split": "train",
+   "max_abs_xy_m": 0.8885,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 433,
+   "frames_beyond": [
+    [
+     388,
+     432
+    ]
+   ]
+  },
+  {
+   "episode_id": "35c63a35656ffe353465b2a8d681b8543b1dd9edc83a3c33b76490989c5720cf",
+   "split": "train",
+   "max_abs_xy_m": 0.8488,
+   "far": false,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 343,
+   "frames_beyond": [
+    [
+     312,
+     342
+    ]
+   ]
+  },
+  {
+   "episode_id": "35cca47df7829e4e362232e410626a2e45baaaffc602e8b23ae90b2cbd46812b",
+   "split": "train",
+   "max_abs_xy_m": 0.8643,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 479,
+   "frames_beyond": [
+    [
+     79,
+     277
+    ],
+    [
+     289,
+     289
+    ],
+    [
+     293,
+     293
+    ],
+    [
+     295,
+     295
+    ],
+    [
+     321,
+     321
+    ],
+    [
+     323,
+     323
+    ],
+    [
+     359,
+     359
+    ],
+    [
+     361,
+     361
+    ],
+    [
+     363,
+     363
+    ],
+    [
+     365,
+     365
+    ],
+    [
+     367,
+     367
+    ],
+    [
+     369,
+     369
+    ],
+    [
+     371,
+     371
+    ],
+    [
+     439,
+     439
+    ],
+    [
+     457,
+     457
+    ],
+    [
+     459,
+     459
+    ],
+    [
+     461,
+     461
+    ],
+    [
+     463,
+     478
+    ]
+   ]
+  },
+  {
+   "episode_id": "361a2d2aca34cec0c60a5eff8f0d1165c3756fb066c6459eb5d5aa636c2b84a8",
+   "split": "train",
+   "max_abs_xy_m": 0.8218,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 394,
+   "frames_beyond": [
+    [
+     244,
+     250
+    ],
+    [
+     252,
+     254
+    ]
+   ]
+  },
+  {
+   "episode_id": "36d7b261a8eb36425477412bf4e107484087e6b5dc155403b53e38e90f026870",
+   "split": "train",
+   "max_abs_xy_m": 1.2389,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 282,
+   "frames_beyond": [
+    [
+     153,
+     194
+    ]
+   ]
+  },
+  {
+   "episode_id": "3744138eb6e631bacc3fe35aaffacc395a898c8ff5e1bf962a0d39d6dea30b91",
+   "split": "train",
+   "max_abs_xy_m": 0.8229,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 318,
+   "frames_beyond": [
+    [
+     82,
+     111
+    ],
+    [
+     304,
+     312
+    ]
+   ]
+  },
+  {
+   "episode_id": "37effd4acdf891f5cce2df4e47ed694fda4983f7927714a0b45124186f78dedf",
+   "split": "train",
+   "max_abs_xy_m": 0.8266,
+   "far": false,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 317,
+   "frames_beyond": [
+    [
+     212,
+     316
+    ]
+   ]
+  },
+  {
+   "episode_id": "38516d90d6529604a02141d62758a60ce4c97ea622a95b9787a5354add36f50e",
+   "split": "train",
+   "max_abs_xy_m": 0.8007,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 444,
+   "frames_beyond": [
+    [
+     10,
+     443
+    ]
+   ]
+  },
+  {
+   "episode_id": "391c1651f70b8acc5fbef60cbe4150d62f2bb17399230bca1cc11323ed5c824a",
+   "split": "train",
+   "max_abs_xy_m": 0.8125,
+   "far": false,
+   "kinds": [
+    "manipulated",
+    "other object"
+   ],
+   "frames": 455,
+   "frames_beyond": [
+    [
+     10,
+     454
+    ]
+   ]
+  },
+  {
+   "episode_id": "39be77a90e16c8bf19b1003624052cc098b477bba71607ee1dadb79f50080ddc",
+   "split": "train",
+   "max_abs_xy_m": 0.8922,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 318,
+   "frames_beyond": [
+    [
+     234,
+     253
+    ],
+    [
+     267,
+     269
+    ]
+   ]
+  },
+  {
+   "episode_id": "39f125c4a47798b1cb2476e43e01cad311095d42a008297a40a0f77cc2e8393c",
+   "split": "train",
+   "max_abs_xy_m": 0.8194,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 595,
+   "frames_beyond": [
+    [
+     80,
+     121
+    ]
+   ]
+  },
+  {
+   "episode_id": "3d5e4c6ef994194bc22cacc1b271d3e0a9d604627b947c43f31b031fddf634f2",
+   "split": "train",
+   "max_abs_xy_m": 0.8465,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 542,
+   "frames_beyond": [
+    [
+     160,
+     192
+    ]
+   ]
+  },
+  {
+   "episode_id": "3e69fd1156be6848d605af74364d250be2c48063605c2dc758cab56171e02b05",
+   "split": "train",
+   "max_abs_xy_m": 0.8012,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 575,
+   "frames_beyond": [
+    [
+     10,
+     574
+    ]
+   ]
+  },
+  {
+   "episode_id": "3e6ec126d23bc5b5187ec083343ae286a2634ae11a29dfda095a10eb1f7acd13",
+   "split": "train",
+   "max_abs_xy_m": 0.8071,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 628,
+   "frames_beyond": [
+    [
+     10,
+     627
+    ]
+   ]
+  },
+  {
+   "episode_id": "4025034dae8d7823090418132783cc0f86293929fd19f95c6871580a591d9ec0",
+   "split": "train",
+   "max_abs_xy_m": 1.1333,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 920,
+   "frames_beyond": [
+    [
+     545,
+     611
+    ],
+    [
+     617,
+     919
+    ]
+   ]
+  },
+  {
+   "episode_id": "403010370b0ad1799999521fccce6ad04708d9cf49ef952f7350935f2ac0965c",
+   "split": "train",
+   "max_abs_xy_m": 0.8008,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 373,
+   "frames_beyond": [
+    [
+     10,
+     372
+    ]
+   ]
+  },
+  {
+   "episode_id": "40e828c67b0879e18ad42cbabedc42fe55f4abbd646c1bf54ec3b87c8a9ad11a",
+   "split": "train",
+   "max_abs_xy_m": 1.3494,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 678,
+   "frames_beyond": [
+    [
+     445,
+     469
+    ],
+    [
+     509,
+     677
+    ]
+   ]
+  },
+  {
+   "episode_id": "414d87361c53aafb18571c3edaee65ea8763a78d583803b0d0638dc9e685367b",
+   "split": "train",
+   "max_abs_xy_m": 0.8015,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 628,
+   "frames_beyond": [
+    [
+     285,
+     286
+    ]
+   ]
+  },
+  {
+   "episode_id": "41870e3d27ea12639c4a72dc9ec6c15a91d1b38496719fb2e2977cd3a99a84e2",
+   "split": "train",
+   "max_abs_xy_m": 1.0889,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 727,
+   "frames_beyond": [
+    [
+     381,
+     392
+    ],
+    [
+     399,
+     416
+    ],
+    [
+     420,
+     430
+    ],
+    [
+     432,
+     726
+    ]
+   ]
+  },
+  {
+   "episode_id": "41acd0ac3583c4954abda9a60702a69042cbdabda04df13d6444cb2c4e2e34c0",
+   "split": "train",
+   "max_abs_xy_m": 0.9156,
+   "far": true,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 473,
+   "frames_beyond": [
+    [
+     168,
+     184
+    ],
+    [
+     277,
+     472
+    ]
+   ]
+  },
+  {
+   "episode_id": "422601344c47824f8f28aa1e67d71b0957db634fc9b2ad0aafac693d98bd6a70",
+   "split": "train",
+   "max_abs_xy_m": 0.8009,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 339,
+   "frames_beyond": [
+    [
+     10,
+     338
+    ]
+   ]
+  },
+  {
+   "episode_id": "42827fdce7eccfe32a169d3d361c79f7b818fd02a9cdfa2e42866df04cde99bb",
+   "split": "train",
+   "max_abs_xy_m": 0.8276,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 722,
+   "frames_beyond": [
+    [
+     10,
+     721
+    ]
+   ]
+  },
+  {
+   "episode_id": "44784fd4aa666aae8c6eefcdc1b5117613bff00dad5d69b59b3df4c3f2944fce",
+   "split": "train",
+   "max_abs_xy_m": 0.8057,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 566,
+   "frames_beyond": [
+    [
+     10,
+     565
+    ]
+   ]
+  },
+  {
+   "episode_id": "45965c87ede675a64fd860933b762b762721da68b778f7b8c1d3e40cfdd64751",
+   "split": "train",
+   "max_abs_xy_m": 0.838,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 674,
+   "frames_beyond": [
+    [
+     10,
+     673
+    ]
+   ]
+  },
+  {
+   "episode_id": "45b3b1a53e8f31600c3759645d71e71a0cbbdd4a321ff24a47d07615f803a5c4",
+   "split": "train",
+   "max_abs_xy_m": 0.8024,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 288,
+   "frames_beyond": [
+    [
+     10,
+     287
+    ]
+   ]
+  },
+  {
+   "episode_id": "45c0b66bfe263817c3cf2120396e70e068a0b414cc1b36e33be7f23ea4ecf05b",
+   "split": "train",
+   "max_abs_xy_m": 0.864,
+   "far": false,
+   "kinds": [
+    "gripper",
+    "manipulated",
+    "other object"
+   ],
+   "frames": 307,
+   "frames_beyond": [
+    [
+     10,
+     306
+    ]
+   ]
+  },
+  {
+   "episode_id": "4649332b9af0b8ef147d3d0e8a684cafa8c1ecd0ed1b919faa8d13cff198d4fd",
+   "split": "train",
+   "max_abs_xy_m": 0.9236,
+   "far": true,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 623,
+   "frames_beyond": [
+    [
+     414,
+     415
+    ],
+    [
+     463,
+     464
+    ],
+    [
+     468,
+     468
+    ],
+    [
+     479,
+     486
+    ],
+    [
+     491,
+     622
+    ]
+   ]
+  },
+  {
+   "episode_id": "484e2ac8ff2330dadbd606de87e0e09982277ab2a3cd61dbc4cf95952633b114",
+   "split": "train",
+   "max_abs_xy_m": 0.8107,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 343,
+   "frames_beyond": [
+    [
+     256,
+     342
+    ]
+   ]
+  },
+  {
+   "episode_id": "49d961eeab5c9bd838d0f47bd9ac84f2198486f56d2fe11f570a1ad113a19147",
+   "split": "train",
+   "max_abs_xy_m": 0.8324,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 527,
+   "frames_beyond": [
+    [
+     90,
+     169
+    ]
+   ]
+  },
+  {
+   "episode_id": "4a24d7ec7fda559ce1c528c9db8e90b0419b0a9fd7646097dafe73c40d09e1a9",
+   "split": "train",
+   "max_abs_xy_m": 0.8432,
+   "far": false,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 602,
+   "frames_beyond": [
+    [
+     365,
+     372
+    ],
+    [
+     503,
+     515
+    ]
+   ]
+  },
+  {
+   "episode_id": "4a38127d18b80bb1f974c6c04231b3e9047ca65a74838f02688ce8df30c415b9",
+   "split": "train",
+   "max_abs_xy_m": 0.8184,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 456,
+   "frames_beyond": [
+    [
+     372,
+     372
+    ],
+    [
+     374,
+     386
+    ],
+    [
+     388,
+     388
+    ],
+    [
+     392,
+     398
+    ],
+    [
+     400,
+     400
+    ],
+    [
+     426,
+     426
+    ],
+    [
+     452,
+     455
+    ]
+   ]
+  },
+  {
+   "episode_id": "4ae81609d5abc6c62e783e1c356424001ee93af0346d182c33c3c2960253f2b6",
+   "split": "train",
+   "max_abs_xy_m": 0.8236,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 431,
+   "frames_beyond": [
+    [
+     356,
+     430
+    ]
+   ]
+  },
+  {
+   "episode_id": "4b253ac2fd18d1d3a3ecd378fb817a967214eb6577f8c96987617ad70bebe49e",
+   "split": "train",
+   "max_abs_xy_m": 0.8082,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 480,
+   "frames_beyond": [
+    [
+     10,
+     479
+    ]
+   ]
+  },
+  {
+   "episode_id": "4b5d4be29da1f198f39aa87c959395514c08e5af31e6092c3f505bb35a413e49",
+   "split": "train",
+   "max_abs_xy_m": 0.8351,
+   "far": false,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 606,
+   "frames_beyond": [
+    [
+     358,
+     377
+    ],
+    [
+     407,
+     421
+    ],
+    [
+     427,
+     428
+    ],
+    [
+     432,
+     432
+    ],
+    [
+     480,
+     493
+    ]
+   ]
+  },
+  {
+   "episode_id": "4cdd403b4b82ff62e6ae804bbaabd651b5f8cffb38fa82a928c3eecb324c0562",
+   "split": "train",
+   "max_abs_xy_m": 0.8697,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 523,
+   "frames_beyond": [
+    [
+     262,
+     522
+    ]
+   ]
+  },
+  {
+   "episode_id": "4db17e671e795c492a8dc866c590899c74fcfffc8c8bf4b9f35d0c375eec4b3e",
+   "split": "train",
+   "max_abs_xy_m": 0.8045,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 578,
+   "frames_beyond": [
+    [
+     10,
+     577
+    ]
+   ]
+  },
+  {
+   "episode_id": "4df0f7e17ec76079aaf8c9cac1142f4b91785d844e95985258866c3c490308d3",
+   "split": "train",
+   "max_abs_xy_m": 0.8731,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 582,
+   "frames_beyond": [
+    [
+     10,
+     581
+    ]
+   ]
+  },
+  {
+   "episode_id": "4f50cebbceeaaf218863a525a3d1dd27bae5b1ca1d91eb64031dae2ce1c3ea90",
+   "split": "train",
+   "max_abs_xy_m": 0.8154,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 325,
+   "frames_beyond": [
+    [
+     272,
+     272
+    ],
+    [
+     274,
+     274
+    ],
+    [
+     279,
+     285
+    ]
+   ]
+  },
+  {
+   "episode_id": "4fb9d7b27de14188a5ac88b05b25bc852d73e324f9513d79d662e8dc4c94308a",
+   "split": "train",
+   "max_abs_xy_m": 0.9952,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 633,
+   "frames_beyond": [
+    [
+     513,
+     552
+    ]
+   ]
+  },
+  {
+   "episode_id": "5200f8fbfda1ccf7b41ad8b79b2de52c415f942ad46140261373d05f63e86b27",
+   "split": "train",
+   "max_abs_xy_m": 0.8383,
+   "far": false,
+   "kinds": [
+    "manipulated"
+   ],
+   "frames": 617,
+   "frames_beyond": [
+    [
+     447,
+     456
+    ]
+   ]
+  },
+  {
+   "episode_id": "526c88ba7a7a070a7aad281a974556cce757e34099cbce67291498db9dcc5e2f",
+   "split": "train",
+   "max_abs_xy_m": 0.8778,
+   "far": false,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 324,
+   "frames_beyond": [
+    [
+     10,
+     201
+    ],
+    [
+     240,
+     266
+    ],
+    [
+     268,
+     268
+    ],
+    [
+     270,
+     270
+    ],
+    [
+     272,
+     272
+    ],
+    [
+     276,
+     276
+    ],
+    [
+     284,
+     290
+    ],
+    [
+     292,
+     292
+    ],
+    [
+     294,
+     294
+    ],
+    [
+     296,
+     296
+    ]
+   ]
+  },
+  {
+   "episode_id": "5295f9f8a3fbbc1aa841bb06f92e992765bf53bd85b5f8a88293036b6a252468",
+   "split": "train",
+   "max_abs_xy_m": 0.8387,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 532,
+   "frames_beyond": [
+    [
+     10,
+     531
+    ]
+   ]
+  },
+  {
+   "episode_id": "52dbae11d4d575013cbee2317596c5e1e0f3704eac57831ebbf9b92bcc9c42d3",
+   "split": "train",
+   "max_abs_xy_m": 1.1793,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 682,
+   "frames_beyond": [
+    [
+     350,
+     391
+    ],
+    [
+     481,
+     681
+    ]
+   ]
+  },
+  {
+   "episode_id": "538d9d66d62d8c8e7fbe8a6a7b4b31aaa8941818631dd4dc2dfaaa5b0248228c",
+   "split": "train",
+   "max_abs_xy_m": 0.8085,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 317,
+   "frames_beyond": [
+    [
+     78,
+     89
+    ],
+    [
+     106,
+     114
+    ]
+   ]
+  },
+  {
+   "episode_id": "541070ca7af21862168ac544803680c166d14827c6031eb5b5901b6f6426fce4",
+   "split": "train",
+   "max_abs_xy_m": 0.8002,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 615,
+   "frames_beyond": [
+    [
+     10,
+     614
+    ]
+   ]
+  },
+  {
+   "episode_id": "558964e04881fdcd62358759e74850cf62a543424cdea1ad30be480ab81fae2e",
+   "split": "train",
+   "max_abs_xy_m": 0.9122,
+   "far": true,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 310,
+   "frames_beyond": [
+    [
+     237,
+     263
+    ],
+    [
+     299,
+     309
+    ]
+   ]
+  },
+  {
+   "episode_id": "57015e6d1fa14bb883773b104ef5461f875b1a52ad20bac6b3a6aea5dcd4d947",
+   "split": "train",
+   "max_abs_xy_m": 0.8245,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 581,
+   "frames_beyond": [
+    [
+     10,
+     580
+    ]
+   ]
+  },
+  {
+   "episode_id": "5735bf3a87e8665b97f98c1790b6e98dc8e5ff2970bebe7f9d46a8906f00909c",
+   "split": "train",
+   "max_abs_xy_m": 0.8006,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 359,
+   "frames_beyond": [
+    [
+     160,
+     162
+    ]
+   ]
+  },
+  {
+   "episode_id": "57c400aa04a5187bd3f69934a8b862911572fc18ade7f8850e63c7dfd68596f2",
+   "split": "train",
+   "max_abs_xy_m": 0.8146,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 734,
+   "frames_beyond": [
+    [
+     10,
+     733
+    ]
+   ]
+  },
+  {
+   "episode_id": "58b3a5af0ba3da083b75810a8a143ffee50859eca5e620fcf91f7a2aa07e1dd2",
+   "split": "train",
+   "max_abs_xy_m": 0.8177,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 455,
+   "frames_beyond": [
+    [
+     81,
+     249
+    ]
+   ]
+  },
+  {
+   "episode_id": "58bb38b90bb982a8af115ce4091412535cc70a103aa37e01a99af0be78610787",
+   "split": "train",
+   "max_abs_xy_m": 0.8331,
+   "far": false,
+   "kinds": [
+    "manipulated"
+   ],
+   "frames": 312,
+   "frames_beyond": [
+    [
+     155,
+     311
+    ]
+   ]
+  },
+  {
+   "episode_id": "59236e9ae10c1fdce7f14bfa37fdae41fa4762140a58b4952b313dd2f08be14b",
+   "split": "train",
+   "max_abs_xy_m": 0.8639,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 330,
+   "frames_beyond": [
+    [
+     322,
+     329
+    ]
+   ]
+  },
+  {
+   "episode_id": "5b4c96021783cb0ba9f2d6d2d6b3afac05deb237724f6202d532c79daaab1473",
+   "split": "train",
+   "max_abs_xy_m": 1.2872,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 302,
+   "frames_beyond": [
+    [
+     198,
+     270
+    ]
+   ]
+  },
+  {
+   "episode_id": "5b6766c167d923382727651b2ecf8725d9fecfe969e28b69a19b57ba9f9f4edb",
+   "split": "train",
+   "max_abs_xy_m": 1.3191,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 596,
+   "frames_beyond": [
+    [
+     421,
+     452
+    ],
+    [
+     494,
+     595
+    ]
+   ]
+  },
+  {
+   "episode_id": "5c2085c4ff07766ebcbe3082e1be1c5be5d5e9c6ab2e0a0ca6acd69ad9ea5484",
+   "split": "train",
+   "max_abs_xy_m": 0.8738,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 313,
+   "frames_beyond": [
+    [
+     285,
+     295
+    ],
+    [
+     301,
+     312
+    ]
+   ]
+  },
+  {
+   "episode_id": "5eb9d6428b8065885d4c71fe88086976c8ec042954790c00f9133fbe7f1db24d",
+   "split": "train",
+   "max_abs_xy_m": 0.8308,
+   "far": false,
+   "kinds": [
+    "gripper",
+    "other object"
+   ],
+   "frames": 311,
+   "frames_beyond": [
+    [
+     10,
+     310
+    ]
+   ]
+  },
+  {
+   "episode_id": "5ecf6e20fa4429453f16c3ea15b6db889b0278c30a9c32e44d9f8918a2010a31",
+   "split": "train",
+   "max_abs_xy_m": 0.8481,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 323,
+   "frames_beyond": [
+    [
+     77,
+     128
+    ],
+    [
+     181,
+     204
+    ],
+    [
+     213,
+     218
+    ],
+    [
+     226,
+     233
+    ],
+    [
+     243,
+     249
+    ],
+    [
+     256,
+     263
+    ],
+    [
+     275,
+     280
+    ],
+    [
+     287,
+     293
+    ],
+    [
+     306,
+     309
+    ],
+    [
+     321,
+     322
+    ]
+   ]
+  },
+  {
+   "episode_id": "5edbee6df9937dc223c9b139bf177520b83fed2fa3a6912f5541097c62fea0d2",
+   "split": "train",
+   "max_abs_xy_m": 0.8115,
+   "far": false,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 331,
+   "frames_beyond": [
+    [
+     87,
+     100
+    ],
+    [
+     117,
+     133
+    ],
+    [
+     172,
+     172
+    ],
+    [
+     175,
+     182
+    ],
+    [
+     231,
+     237
+    ],
+    [
+     239,
+     239
+    ]
+   ]
+  },
+  {
+   "episode_id": "5efffe105987f64fa8e3dc2c6c06d25361b9efc099b8df6cdb13524bc04e24c9",
+   "split": "train",
+   "max_abs_xy_m": 0.8216,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 824,
+   "frames_beyond": [
+    [
+     10,
+     823
+    ]
+   ]
+  },
+  {
+   "episode_id": "5f29d654fa96bda038e618a2371c5d47e7282271cd6183972354e1f82b772f60",
+   "split": "train",
+   "max_abs_xy_m": 0.8158,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 595,
+   "frames_beyond": [
+    [
+     81,
+     120
+    ],
+    [
+     156,
+     168
+    ]
+   ]
+  },
+  {
+   "episode_id": "601803cc7c55ac52176355069da05739c742333aa3c9bf66042f2c849f994d8c",
+   "split": "train",
+   "max_abs_xy_m": 1.286,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 323,
+   "frames_beyond": [
+    [
+     209,
+     286
+    ],
+    [
+     294,
+     316
+    ]
+   ]
+  },
+  {
+   "episode_id": "6138faf09e6863efbc61fba3fb75b5e963e5caa77b57c8b8aed634ea26ad609e",
+   "split": "train",
+   "max_abs_xy_m": 0.8435,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 431,
+   "frames_beyond": [
+    [
+     73,
+     228
+    ],
+    [
+     288,
+     319
+    ],
+    [
+     325,
+     332
+    ],
+    [
+     356,
+     359
+    ]
+   ]
+  },
+  {
+   "episode_id": "62dc596842c9a2b81bb0e9ed48e6841a5e4e242447f82143cc84a934f3199b40",
+   "split": "train",
+   "max_abs_xy_m": 0.826,
+   "far": false,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 669,
+   "frames_beyond": [
+    [
+     71,
+     258
+    ],
+    [
+     279,
+     289
+    ]
+   ]
+  },
+  {
+   "episode_id": "6329ab4df48f4040c1555c2be00976345a928c9653328ce4fa98fd0f3e6d807c",
+   "split": "train",
+   "max_abs_xy_m": 1.0507,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 698,
+   "frames_beyond": [
+    [
+     361,
+     396
+    ],
+    [
+     404,
+     422
+    ],
+    [
+     437,
+     454
+    ]
+   ]
+  },
+  {
+   "episode_id": "633c075d223dd2eca1d53ffb14e3d3360bc4ffa088ec6fede9a63e5ec523ff42",
+   "split": "train",
+   "max_abs_xy_m": 0.9439,
+   "far": true,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 538,
+   "frames_beyond": [
+    [
+     311,
+     537
+    ]
+   ]
+  },
+  {
+   "episode_id": "6345c775dbc79636ae9086ee7bd26da2420ddb129458b74ecc3ec7a9255c7eb8",
+   "split": "train",
+   "max_abs_xy_m": 0.8195,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 809,
+   "frames_beyond": [
+    [
+     498,
+     502
+    ]
+   ]
+  },
+  {
+   "episode_id": "636206529a8f4714db7c2e081453fb8a9aea8c9deb68ded9693cae17f0212dcb",
+   "split": "train",
+   "max_abs_xy_m": 0.9074,
+   "far": true,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 333,
+   "frames_beyond": [
+    [
+     209,
+     209
+    ],
+    [
+     211,
+     211
+    ],
+    [
+     213,
+     213
+    ],
+    [
+     215,
+     215
+    ],
+    [
+     217,
+     217
+    ],
+    [
+     219,
+     259
+    ],
+    [
+     278,
+     326
+    ]
+   ]
+  },
+  {
+   "episode_id": "645096a61df1d3a3cbcbfb276c4a9ea48c6b272f4af4469feeb7e4cdcea5da6c",
+   "split": "train",
+   "max_abs_xy_m": 0.9147,
+   "far": true,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 520,
+   "frames_beyond": [
+    [
+     360,
+     519
+    ]
+   ]
+  },
+  {
+   "episode_id": "64df3f125e62c3d5b3f549524698a0367951e169be874f3de7afa6791dc829ba",
+   "split": "train",
+   "max_abs_xy_m": 0.8341,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 626,
+   "frames_beyond": [
+    [
+     10,
+     625
+    ]
+   ]
+  },
+  {
+   "episode_id": "654714c626cc936fa7591726a45893fdbe6c2fb4fa9af5865e6a31f004b33807",
+   "split": "train",
+   "max_abs_xy_m": 0.8799,
+   "far": false,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 446,
+   "frames_beyond": [
+    [
+     263,
+     445
+    ]
+   ]
+  },
+  {
+   "episode_id": "654ee1803d44a1d662bc4e178e76bff0495be8c355c455bf72ba1a6da8042337",
+   "split": "train",
+   "max_abs_xy_m": 1.0057,
+   "far": true,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 824,
+   "frames_beyond": [
+    [
+     582,
+     823
+    ]
+   ]
+  },
+  {
+   "episode_id": "658a502794da628ff47d050c1ac7f6ec81ea385a24bdce3ef37fd8a0212b1db9",
+   "split": "train",
+   "max_abs_xy_m": 0.876,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 302,
+   "frames_beyond": [
+    [
+     250,
+     272
+    ],
+    [
+     291,
+     291
+    ],
+    [
+     293,
+     301
+    ]
+   ]
+  },
+  {
+   "episode_id": "66f77fa03e969a7845dccdf097b8f3b1d8bc7a350bb8717243cb63f53f9c69d3",
+   "split": "train",
+   "max_abs_xy_m": 0.8188,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 364,
+   "frames_beyond": [
+    [
+     10,
+     363
+    ]
+   ]
+  },
+  {
+   "episode_id": "67953bda25e4268ab0b9cc250d232c863c6b17d46c5f594d8753a2a927cdd71a",
+   "split": "train",
+   "max_abs_xy_m": 0.8467,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 452,
+   "frames_beyond": [
+    [
+     290,
+     451
+    ]
+   ]
+  },
+  {
+   "episode_id": "679df2d20241b86df29bf0ffda0476a326db4cbd199504a4160070e553075bc2",
+   "split": "train",
+   "max_abs_xy_m": 0.9081,
+   "far": true,
+   "kinds": [
+    "gripper",
+    "other object"
+   ],
+   "frames": 936,
+   "frames_beyond": [
+    [
+     578,
+     600
+    ],
+    [
+     603,
+     935
+    ]
+   ]
+  },
+  {
+   "episode_id": "68afab0a1777551f89b27af883399a4aab2f785d78af02f969c73fe41f280946",
+   "split": "train",
+   "max_abs_xy_m": 1.3279,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 312,
+   "frames_beyond": [
+    [
+     281,
+     311
+    ]
+   ]
+  },
+  {
+   "episode_id": "68c02fda5e3eb429a6b20153a2627b6ab445cdcb80615db7742980d14ce19f85",
+   "split": "train",
+   "max_abs_xy_m": 0.8013,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 311,
+   "frames_beyond": [
+    [
+     302,
+     304
+    ]
+   ]
+  },
+  {
+   "episode_id": "698f21a6372e2bb78a68996d41a1e16f3d1df1bf653e51111db1cf387cd9e756",
+   "split": "train",
+   "max_abs_xy_m": 0.9147,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 461,
+   "frames_beyond": [
+    [
+     346,
+     440
+    ],
+    [
+     459,
+     460
+    ]
+   ]
+  },
+  {
+   "episode_id": "6991eee148a7abe5f2e8b9633861a5436e60655f1e9a59cc49fa4447d684764d",
+   "split": "train",
+   "max_abs_xy_m": 0.805,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 774,
+   "frames_beyond": [
+    [
+     271,
+     284
+    ]
+   ]
+  },
+  {
+   "episode_id": "69ebed695e3297d62a3bea0a2a9262fa3ce08913b9bc0a7ff24eccbe0382f98d",
+   "split": "train",
+   "max_abs_xy_m": 0.8148,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 352,
+   "frames_beyond": [
+    [
+     174,
+     351
+    ]
+   ]
+  },
+  {
+   "episode_id": "69edbe098ff22e3310006dfe401fa9b1a1f4d2f7a08b851d9bd4762f4d80de10",
+   "split": "train",
+   "max_abs_xy_m": 0.8074,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 305,
+   "frames_beyond": [
+    [
+     202,
+     209
+    ]
+   ]
+  },
+  {
+   "episode_id": "6aa4635053b4eb12005a14fd14d12ce917d3a9e3e7daf1641ac7a1a33574b5a4",
+   "split": "train",
+   "max_abs_xy_m": 0.8611,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 572,
+   "frames_beyond": [
+    [
+     307,
+     571
+    ]
+   ]
+  },
+  {
+   "episode_id": "6b40135d242e2c43e2a6c6aa72e1f5daef60fc04935e7d8fa211881e827b2047",
+   "split": "train",
+   "max_abs_xy_m": 0.808,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 583,
+   "frames_beyond": [
+    [
+     10,
+     582
+    ]
+   ]
+  },
+  {
+   "episode_id": "6d3407f9c1326abdd237b00ed82e4b82956b67020303d988fbc96fefaeab8a51",
+   "split": "train",
+   "max_abs_xy_m": 0.81,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 641,
+   "frames_beyond": [
+    [
+     10,
+     640
+    ]
+   ]
+  },
+  {
+   "episode_id": "6dd78bb31a24cb73d18fd2490f998ca0e8071b2f38612c1e417fda14a93a02e0",
+   "split": "train",
+   "max_abs_xy_m": 0.808,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 375,
+   "frames_beyond": [
+    [
+     10,
+     374
+    ]
+   ]
+  },
+  {
+   "episode_id": "6e38da0f3f1467e87e5c74dee98cab2317a86742308446090dc4eba26d23dbac",
+   "split": "train",
+   "max_abs_xy_m": 0.8469,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 475,
+   "frames_beyond": [
+    [
+     382,
+     474
+    ]
+   ]
+  },
+  {
+   "episode_id": "6e687f209776562914a0e9b706092aee46aa73599e57d339176376d255650299",
+   "split": "train",
+   "max_abs_xy_m": 0.8106,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 299,
+   "frames_beyond": [
+    [
+     83,
+     96
+    ]
+   ]
+  },
+  {
+   "episode_id": "6f16add375c194b4f5d76de046704a4a6feb6cc3aac8b75771454a052f2f7664",
+   "split": "train",
+   "max_abs_xy_m": 0.8257,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 668,
+   "frames_beyond": [
+    [
+     10,
+     667
+    ]
+   ]
+  },
+  {
+   "episode_id": "6ff8559432aeac3529ec4f26fff55400e360abce553e84949bb57e0956108a1d",
+   "split": "train",
+   "max_abs_xy_m": 0.8438,
+   "far": false,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 669,
+   "frames_beyond": [
+    [
+     88,
+     261
+    ],
+    [
+     282,
+     335
+    ]
+   ]
+  },
+  {
+   "episode_id": "702b7ae3f77b86f0ea9df97d12f597b6d8b59340ea82f42718ed1faa549d2925",
+   "split": "train",
+   "max_abs_xy_m": 0.8141,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 303,
+   "frames_beyond": [
+    [
+     281,
+     281
+    ],
+    [
+     287,
+     292
+    ],
+    [
+     295,
+     295
+    ]
+   ]
+  },
+  {
+   "episode_id": "70b806b40a29658715956842ad9714619cd838861e065d2597d9f96d9de65c24",
+   "split": "train",
+   "max_abs_xy_m": 1.2701,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 716,
+   "frames_beyond": [
+    [
+     532,
+     554
+    ]
+   ]
+  },
+  {
+   "episode_id": "71ab13586e945854fad16dffb22a6df034f35b9786ec73ae023a986f3e411f9c",
+   "split": "train",
+   "max_abs_xy_m": 0.886,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 544,
+   "frames_beyond": [
+    [
+     243,
+     543
+    ]
+   ]
+  },
+  {
+   "episode_id": "72319d6552a5a33bb0ee45b15f38d3f7b7ca3051eac89dce1e122d29e4e7f0ff",
+   "split": "train",
+   "max_abs_xy_m": 0.8064,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 455,
+   "frames_beyond": [
+    [
+     285,
+     285
+    ],
+    [
+     288,
+     454
+    ]
+   ]
+  },
+  {
+   "episode_id": "72bf59b4a57df648c44fb89f5c52b0b6eeccbb7762ad6910e4a93ae3f8c3409b",
+   "split": "train",
+   "max_abs_xy_m": 0.8273,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 442,
+   "frames_beyond": [
+    [
+     339,
+     441
+    ]
+   ]
+  },
+  {
+   "episode_id": "72c7d4ab062cba296bc78678ed85ba3e73cddcf49e565bb638a988b4a3f9e42f",
+   "split": "train",
+   "max_abs_xy_m": 0.814,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 299,
+   "frames_beyond": [
+    [
+     66,
+     80
+    ],
+    [
+     95,
+     96
+    ]
+   ]
+  },
+  {
+   "episode_id": "72f889e6115781f6906b02a3bb54e0e02d025fdf698508b48e1666e755b42ee0",
+   "split": "train",
+   "max_abs_xy_m": 0.8129,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 455,
+   "frames_beyond": [
+    [
+     212,
+     249
+    ]
+   ]
+  },
+  {
+   "episode_id": "730528d6668c0f5ef899233b602db567e5f1b70cc7d1ad4ff0b13af284bac22e",
+   "split": "train",
+   "max_abs_xy_m": 0.8194,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 452,
+   "frames_beyond": [
+    [
+     10,
+     451
+    ]
+   ]
+  },
+  {
+   "episode_id": "7305667d95b87bc86cc9cefedb8d94e634a262edb8e769ae23bda98fc2206e8a",
+   "split": "train",
+   "max_abs_xy_m": 0.804,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 491,
+   "frames_beyond": [
+    [
+     10,
+     490
+    ]
+   ]
+  },
+  {
+   "episode_id": "73abd3075941d8c324700971cc379f538efdd6c28242f013ebe61debc207f373",
+   "split": "train",
+   "max_abs_xy_m": 0.8221,
+   "far": false,
+   "kinds": [
+    "manipulated"
+   ],
+   "frames": 776,
+   "frames_beyond": [
+    [
+     252,
+     775
+    ]
+   ]
+  },
+  {
+   "episode_id": "73e536baf35c1998b0785955ef8bb860e4f50c774aaca4912557f225c4413d3d",
+   "split": "train",
+   "max_abs_xy_m": 0.8152,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 323,
+   "frames_beyond": [
+    [
+     80,
+     127
+    ],
+    [
+     302,
+     304
+    ]
+   ]
+  },
+  {
+   "episode_id": "747c3a56b0af4fd83e0696140b68c0dcc1eb4f5c7f33a205574ccf8a8059eb5e",
+   "split": "train",
+   "max_abs_xy_m": 0.9342,
+   "far": true,
+   "kinds": [
+    "manipulated",
+    "other object"
+   ],
+   "frames": 425,
+   "frames_beyond": [
+    [
+     333,
+     424
+    ]
+   ]
+  },
+  {
+   "episode_id": "7485328d206eed5fb7a67960c7a94f3d9fa8d1b568d62622bc3af34a366ef736",
+   "split": "train",
+   "max_abs_xy_m": 0.8243,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 401,
+   "frames_beyond": [
+    [
+     10,
+     400
+    ]
+   ]
+  },
+  {
+   "episode_id": "748bd27b4520a7218b8f3a6ec822207db5033e49c4b9e057b0b12d01e2f88871",
+   "split": "train",
+   "max_abs_xy_m": 0.8661,
+   "far": false,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 442,
+   "frames_beyond": [
+    [
+     362,
+     441
+    ]
+   ]
+  },
+  {
+   "episode_id": "75f8669589c1cfff71e6666e20bed97317e75960b66163438953977ef14bb653",
+   "split": "train",
+   "max_abs_xy_m": 0.9459,
+   "far": true,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 461,
+   "frames_beyond": [
+    [
+     388,
+     411
+    ],
+    [
+     413,
+     428
+    ],
+    [
+     436,
+     460
+    ]
+   ]
+  },
+  {
+   "episode_id": "7699e068b31baa2ab13c5f992df2aadaee71f9d464515f8ba596493e207336bc",
+   "split": "train",
+   "max_abs_xy_m": 0.9241,
+   "far": true,
+   "kinds": [
+    "manipulated"
+   ],
+   "frames": 371,
+   "frames_beyond": [
+    [
+     297,
+     370
+    ]
+   ]
+  },
+  {
+   "episode_id": "771a1e999519f98496331017b9a90b8f6b4b279aa3afd89d99eb6adca7984058",
+   "split": "train",
+   "max_abs_xy_m": 0.9303,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 468,
+   "frames_beyond": [
+    [
+     295,
+     338
+    ]
+   ]
+  },
+  {
+   "episode_id": "778c7b680d5838b8ec2838d758e9b4b62917494ccde5533c9cf4a1478df4e5d3",
+   "split": "train",
+   "max_abs_xy_m": 0.8321,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 662,
+   "frames_beyond": [
+    [
+     383,
+     661
+    ]
+   ]
+  },
+  {
+   "episode_id": "784980a8433bc5ea3bce7ff7c2298b0b6adf13746d7895cf6d077c3f8ec73607",
+   "split": "train",
+   "max_abs_xy_m": 0.8216,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 592,
+   "frames_beyond": [
+    [
+     10,
+     591
+    ]
+   ]
+  },
+  {
+   "episode_id": "7a5272c9bb80a2dbcb741b979c5bfb26057499bae57fd1af2bae1c39a2ba4059",
+   "split": "train",
+   "max_abs_xy_m": 0.8184,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 577,
+   "frames_beyond": [
+    [
+     486,
+     487
+    ],
+    [
+     498,
+     576
+    ]
+   ]
+  },
+  {
+   "episode_id": "7b3de0cfe84e94f120230c5145d2ffee7a33326ed5d31520f715d060a48b3be0",
+   "split": "train",
+   "max_abs_xy_m": 0.8081,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 664,
+   "frames_beyond": [
+    [
+     10,
+     663
+    ]
+   ]
+  },
+  {
+   "episode_id": "7b9184c48927c78d72d1c539581c15bb157b906f61d951ec0ecd53413418c59f",
+   "split": "train",
+   "max_abs_xy_m": 0.9493,
+   "far": true,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 367,
+   "frames_beyond": [
+    [
+     293,
+     366
+    ]
+   ]
+  },
+  {
+   "episode_id": "7b9ba0d52f32f04b3316ec1e01a943518571e19d8b5465c82c5882e21870927e",
+   "split": "train",
+   "max_abs_xy_m": 0.8301,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 979,
+   "frames_beyond": [
+    [
+     10,
+     978
+    ]
+   ]
+  },
+  {
+   "episode_id": "7d844c471f22d26e6f4e3fd4976885462ae8e7b674770f66bbac91c5d6447916",
+   "split": "train",
+   "max_abs_xy_m": 0.9223,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 651,
+   "frames_beyond": [
+    [
+     550,
+     650
+    ]
+   ]
+  },
+  {
+   "episode_id": "7e7773db10f38c90e63f792264f0ee4bfb27b79795ad71abb03a9349eb35ba56",
+   "split": "train",
+   "max_abs_xy_m": 0.8185,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 316,
+   "frames_beyond": [
+    [
+     164,
+     177
+    ]
+   ]
+  },
+  {
+   "episode_id": "7fe60f1b494014ce39a69780c07d810fee4616693518ab9c7d5c21a6085a0990",
+   "split": "train",
+   "max_abs_xy_m": 0.8284,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 1018,
+   "frames_beyond": [
+    [
+     535,
+     1017
+    ]
+   ]
+  },
+  {
+   "episode_id": "8095c79a539ca365fcbda2c1bff3ab22b04c402eed8d3bf803f665d58218165f",
+   "split": "train",
+   "max_abs_xy_m": 0.842,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 455,
+   "frames_beyond": [
+    [
+     10,
+     454
+    ]
+   ]
+  },
+  {
+   "episode_id": "80f0a5b54cac5ddf33870dbab5c0fac152dec2de8165e2e437b3a94c88e2bb8e",
+   "split": "train",
+   "max_abs_xy_m": 0.8268,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 342,
+   "frames_beyond": [
+    [
+     10,
+     341
+    ]
+   ]
+  },
+  {
+   "episode_id": "82f5a2c4c173c7d23ef8922ad0edfc769ab232acdab6f6a4fabaa85911237400",
+   "split": "train",
+   "max_abs_xy_m": 0.8092,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 431,
+   "frames_beyond": [
+    [
+     10,
+     430
+    ]
+   ]
+  },
+  {
+   "episode_id": "8306144a97c8cba41ae338e310ce3691a54ce8ca7d1b2a29368ea81585871c64",
+   "split": "train",
+   "max_abs_xy_m": 0.8092,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 668,
+   "frames_beyond": [
+    [
+     10,
+     667
+    ]
+   ]
+  },
+  {
+   "episode_id": "838c04cadacde3518e5e52269fd484c30dd3de10494e53bba20c5498ab748116",
+   "split": "train",
+   "max_abs_xy_m": 0.8092,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 571,
+   "frames_beyond": [
+    [
+     10,
+     570
+    ]
+   ]
+  },
+  {
+   "episode_id": "838f25236a8f7ae3e25540eb03240d5c8bdd9bbd35ff3cbc9ade81af9cae5e40",
+   "split": "train",
+   "max_abs_xy_m": 1.2152,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 680,
+   "frames_beyond": [
+    [
+     410,
+     444
+    ],
+    [
+     516,
+     569
+    ]
+   ]
+  },
+  {
+   "episode_id": "84fca7fdc24ef69f3dddc927f5488d658ea1b5f1722050b9974268777b3d2f63",
+   "split": "train",
+   "max_abs_xy_m": 0.9007,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 609,
+   "frames_beyond": [
+    [
+     463,
+     482
+    ],
+    [
+     500,
+     608
+    ]
+   ]
+  },
+  {
+   "episode_id": "8585422d62d13fbae33d2f99f120ef334d8b2a7ebbdff5a3390de7e33ad2ecdc",
+   "split": "train",
+   "max_abs_xy_m": 0.9566,
+   "far": true,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 573,
+   "frames_beyond": [
+    [
+     198,
+     229
+    ],
+    [
+     231,
+     233
+    ],
+    [
+     235,
+     235
+    ],
+    [
+     240,
+     368
+    ]
+   ]
+  },
+  {
+   "episode_id": "867de959c6a1cb4d5e7844b0a9790e4082399ae5035620b6c7c0020e71bcf347",
+   "split": "train",
+   "max_abs_xy_m": 0.8046,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 489,
+   "frames_beyond": [
+    [
+     10,
+     488
+    ]
+   ]
+  },
+  {
+   "episode_id": "86bac818a591866c1554f41344bf8b0c346fe398c8182321e09c9a2a1de0c06c",
+   "split": "train",
+   "max_abs_xy_m": 0.8365,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 333,
+   "frames_beyond": [
+    [
+     72,
+     134
+    ],
+    [
+     145,
+     332
+    ]
+   ]
+  },
+  {
+   "episode_id": "87339159bfad6d6710d3b2c38f08323d8a9fc283f6682e17501b272633de8698",
+   "split": "train",
+   "max_abs_xy_m": 0.8145,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 417,
+   "frames_beyond": [
+    [
+     10,
+     416
+    ]
+   ]
+  },
+  {
+   "episode_id": "879c3e4cebe97bae0f37c5873829e834898767267cb629a214bd8f3853bf92db",
+   "split": "train",
+   "max_abs_xy_m": 0.8138,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 458,
+   "frames_beyond": [
+    [
+     10,
+     457
+    ]
+   ]
+  },
+  {
+   "episode_id": "8806f3d1a9d0d300eed4922037cf7614a15a8916e0dce364ab05bbf309002278",
+   "split": "train",
+   "max_abs_xy_m": 0.8973,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 325,
+   "frames_beyond": [
+    [
+     81,
+     136
+    ],
+    [
+     158,
+     162
+    ],
+    [
+     190,
+     198
+    ],
+    [
+     284,
+     303
+    ],
+    [
+     311,
+     323
+    ]
+   ]
+  },
+  {
+   "episode_id": "8808b22b512270d1fdc766d601ec9b7fb0a671d621b326f85a533e4c364b3de9",
+   "split": "train",
+   "max_abs_xy_m": 0.858,
+   "far": false,
+   "kinds": [
+    "gripper",
+    "manipulated",
+    "other object"
+   ],
+   "frames": 431,
+   "frames_beyond": [
+    [
+     72,
+     228
+    ],
+    [
+     286,
+     324
+    ],
+    [
+     345,
+     430
+    ]
+   ]
+  },
+  {
+   "episode_id": "88cd9ed202c025bccffa7e00b2b9e94c9aaf4d0af6ceae40169c0bc37ff2838d",
+   "split": "train",
+   "max_abs_xy_m": 0.8011,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 446,
+   "frames_beyond": [
+    [
+     441,
+     442
+    ]
+   ]
+  },
+  {
+   "episode_id": "88fc76e1abf1cf7d5e5e082a6551062c45993605db148089ea024356acfae48f",
+   "split": "train",
+   "max_abs_xy_m": 0.8383,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 333,
+   "frames_beyond": [
+    [
+     77,
+     132
+    ],
+    [
+     332,
+     332
+    ]
+   ]
+  },
+  {
+   "episode_id": "890b27b5a791bf4fab12895c8037941a08184ac6f0bff0422098c5ef337e94b6",
+   "split": "train",
+   "max_abs_xy_m": 0.8092,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 854,
+   "frames_beyond": [
+    [
+     10,
+     853
+    ]
+   ]
+  },
+  {
+   "episode_id": "8a28b85709681f4170ecac2b3cdb4fafef6356f97456325578ef2c3bb07240ce",
+   "split": "train",
+   "max_abs_xy_m": 0.9322,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 442,
+   "frames_beyond": [
+    [
+     318,
+     393
+    ],
+    [
+     441,
+     441
+    ]
+   ]
+  },
+  {
+   "episode_id": "8a581df83a52efe1ef43c1bc4afafdd78c537d536bd29c70b8b3d0d8ab2e32c7",
+   "split": "train",
+   "max_abs_xy_m": 0.8018,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 573,
+   "frames_beyond": [
+    [
+     139,
+     140
+    ]
+   ]
+  },
+  {
+   "episode_id": "8af6dba5bfb618e4b685689f163c30950d51df2f2ace910e0c087cbe032d1267",
+   "split": "train",
+   "max_abs_xy_m": 1.3692,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 336,
+   "frames_beyond": [
+    [
+     295,
+     335
+    ]
+   ]
+  },
+  {
+   "episode_id": "8b1e390dce361aeccc0090541888e617f9a400090234ce26439f232c6d32c11f",
+   "split": "train",
+   "max_abs_xy_m": 0.8478,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 479,
+   "frames_beyond": [
+    [
+     76,
+     88
+    ],
+    [
+     107,
+     117
+    ],
+    [
+     140,
+     146
+    ],
+    [
+     288,
+     319
+    ],
+    [
+     321,
+     331
+    ],
+    [
+     333,
+     333
+    ],
+    [
+     335,
+     335
+    ],
+    [
+     337,
+     337
+    ],
+    [
+     339,
+     339
+    ],
+    [
+     341,
+     403
+    ],
+    [
+     405,
+     405
+    ],
+    [
+     439,
+     447
+    ],
+    [
+     449,
+     449
+    ]
+   ]
+  },
+  {
+   "episode_id": "8b572f3ab509cc48de47dc3c5c501d89d3858aaa326aee972422088766dbe9ba",
+   "split": "train",
+   "max_abs_xy_m": 0.8176,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 375,
+   "frames_beyond": [
+    [
+     10,
+     374
+    ]
+   ]
+  },
+  {
+   "episode_id": "8b5dc3be32b84fac22263cae609a5b037e61da441f5cc63e2b06276b24491d74",
+   "split": "train",
+   "max_abs_xy_m": 0.8364,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 673,
+   "frames_beyond": [
+    [
+     75,
+     259
+    ],
+    [
+     280,
+     314
+    ]
+   ]
+  },
+  {
+   "episode_id": "8c9d3253e9a4f7ceefad05b6c00aa02f6c40a6ab53ad8c547d1036d2cc6e445a",
+   "split": "train",
+   "max_abs_xy_m": 1.1976,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 337,
+   "frames_beyond": [
+    [
+     85,
+     140
+    ],
+    [
+     217,
+     219
+    ],
+    [
+     286,
+     288
+    ],
+    [
+     292,
+     336
+    ]
+   ]
+  },
+  {
+   "episode_id": "8dc774082bf4e5a2f8616143caa426a3218aacd751855cbb06282e05308db7ec",
+   "split": "train",
+   "max_abs_xy_m": 0.8335,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 323,
+   "frames_beyond": [
+    [
+     67,
+     131
+    ]
+   ]
+  },
+  {
+   "episode_id": "8dd130bbb7e367b8181ce28f66e1e1cc4bee6fe93a9da8fe82705e9a470b1b06",
+   "split": "train",
+   "max_abs_xy_m": 0.8487,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 669,
+   "frames_beyond": [
+    [
+     79,
+     263
+    ]
+   ]
+  },
+  {
+   "episode_id": "8ee82e0eb94268b82cd6763d5f0ac599d316de4c0cfa846f942b7f85c4385e4c",
+   "split": "train",
+   "max_abs_xy_m": 0.8132,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 444,
+   "frames_beyond": [
+    [
+     10,
+     443
+    ]
+   ]
+  },
+  {
+   "episode_id": "900d7537de761148dae30084ef5c8b754e841224cfb864e08dd083139c74581b",
+   "split": "train",
+   "max_abs_xy_m": 0.9213,
+   "far": true,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 554,
+   "frames_beyond": [
+    [
+     354,
+     553
+    ]
+   ]
+  },
+  {
+   "episode_id": "90e3cce4f9c78773163e9920be14126960b73e4c0763c6bc25e699e9bd08ff81",
+   "split": "train",
+   "max_abs_xy_m": 0.8434,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 431,
+   "frames_beyond": [
+    [
+     78,
+     229
+    ]
+   ]
+  },
+  {
+   "episode_id": "9122a594ccfaa00c19e59131b8b1573bd234d6167bdbb8134fc41a35a52bb344",
+   "split": "train",
+   "max_abs_xy_m": 0.8022,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 342,
+   "frames_beyond": [
+    [
+     138,
+     341
+    ]
+   ]
+  },
+  {
+   "episode_id": "91916d152601718ecd30942efc6fd36d32aa2ecff85302e228dacb738c7730d4",
+   "split": "train",
+   "max_abs_xy_m": 1.2506,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 367,
+   "frames_beyond": [
+    [
+     313,
+     328
+    ],
+    [
+     345,
+     366
+    ]
+   ]
+  },
+  {
+   "episode_id": "92ce6991a71a5c95cbc246b4d52cafed2ff4684383e610a2ae66b8974ec728fa",
+   "split": "train",
+   "max_abs_xy_m": 0.8066,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 478,
+   "frames_beyond": [
+    [
+     10,
+     477
+    ]
+   ]
+  },
+  {
+   "episode_id": "94d221643a46973f513fcbc9ab3ccaa7ecd19122be6d96e6bb2fabd87325536e",
+   "split": "train",
+   "max_abs_xy_m": 0.8077,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 619,
+   "frames_beyond": [
+    [
+     490,
+     494
+    ]
+   ]
+  },
+  {
+   "episode_id": "9540a9ac4da5d95593ae8b6995260ab59dcb3f7b198b78757ff9afe4317fe6e4",
+   "split": "train",
+   "max_abs_xy_m": 0.8057,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 342,
+   "frames_beyond": [
+    [
+     10,
+     341
+    ]
+   ]
+  },
+  {
+   "episode_id": "95c505d3ccedfddbfe79a991bfd3b52c22518205b5d9973a5644004fa2bcd265",
+   "split": "train",
+   "max_abs_xy_m": 0.8562,
+   "far": false,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 314,
+   "frames_beyond": [
+    [
+     161,
+     313
+    ]
+   ]
+  },
+  {
+   "episode_id": "95e9a6839b0abede733ce43667525417aabaa4be608b36e942f6937d9aedc8e0",
+   "split": "train",
+   "max_abs_xy_m": 0.8499,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 561,
+   "frames_beyond": [
+    [
+     10,
+     560
+    ]
+   ]
+  },
+  {
+   "episode_id": "97305a9b3e15be410b3247276b334d57070ff7918d35e91126d1a7ddc5ae558c",
+   "split": "train",
+   "max_abs_xy_m": 0.8332,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 556,
+   "frames_beyond": [
+    [
+     10,
+     555
+    ]
+   ]
+  },
+  {
+   "episode_id": "97548060cfa2ed496ec3e8faa7ceaf6c36961a949cc61a721390c45864502741",
+   "split": "train",
+   "max_abs_xy_m": 0.8127,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 299,
+   "frames_beyond": [
+    [
+     189,
+     189
+    ],
+    [
+     243,
+     249
+    ]
+   ]
+  },
+  {
+   "episode_id": "976a8876f8cb09845a6e0759cec864bc8420726ff66b39d8059d666d05bdd3b1",
+   "split": "train",
+   "max_abs_xy_m": 0.8116,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 468,
+   "frames_beyond": [
+    [
+     294,
+     298
+    ]
+   ]
+  },
+  {
+   "episode_id": "97ccee2b14b22a359f5e268768516b037416f3ee562c371e5dee4115b8336c58",
+   "split": "train",
+   "max_abs_xy_m": 0.8253,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 306,
+   "frames_beyond": [
+    [
+     206,
+     226
+    ],
+    [
+     228,
+     235
+    ]
+   ]
+  },
+  {
+   "episode_id": "982598c625c814c0d3223cf1a6487ebdeab2147de3c3312a58c94ca2740c2e21",
+   "split": "train",
+   "max_abs_xy_m": 0.8838,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 320,
+   "frames_beyond": [
+    [
+     155,
+     157
+    ],
+    [
+     307,
+     319
+    ]
+   ]
+  },
+  {
+   "episode_id": "9835647ab05497a21f5864b08524a961966e8ec41e848a95a017164eb63b049f",
+   "split": "train",
+   "max_abs_xy_m": 0.8455,
+   "far": false,
+   "kinds": [
+    "manipulated"
+   ],
+   "frames": 489,
+   "frames_beyond": [
+    [
+     394,
+     488
+    ]
+   ]
+  },
+  {
+   "episode_id": "9892b9877e0a1b1da1445c5efaa423ee72efc43842c95456acfbd88050cbdbce",
+   "split": "train",
+   "max_abs_xy_m": 0.8084,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 520,
+   "frames_beyond": [
+    [
+     10,
+     519
+    ]
+   ]
+  },
+  {
+   "episode_id": "98aef55d013b1eb591b8700184f356813bd3853bf399c8fc821933b2a8f3f62f",
+   "split": "train",
+   "max_abs_xy_m": 0.8002,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 595,
+   "frames_beyond": [
+    [
+     98,
+     100
+    ]
+   ]
+  },
+  {
+   "episode_id": "98c93088b219860ad6283382dc979465515d8e8798bbe484ecc50a1e82e99d1d",
+   "split": "train",
+   "max_abs_xy_m": 0.8129,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 559,
+   "frames_beyond": [
+    [
+     10,
+     558
+    ]
+   ]
+  },
+  {
+   "episode_id": "98df515b4b5f883ee774fdb40166af7270144b176a7129ccd53db75f1276f436",
+   "split": "train",
+   "max_abs_xy_m": 0.815,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 571,
+   "frames_beyond": [
+    [
+     10,
+     570
+    ]
+   ]
+  },
+  {
+   "episode_id": "995ac4a19741f6c39fabcdf20de64ca0a4f0d85ca0607821c0277f153f6adc63",
+   "split": "train",
+   "max_abs_xy_m": 0.8778,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 494,
+   "frames_beyond": [
+    [
+     10,
+     493
+    ]
+   ]
+  },
+  {
+   "episode_id": "9a0e723ce185b6ca9a805be5479c7d4897c700d7614f5aa810aff9f66bae2399",
+   "split": "train",
+   "max_abs_xy_m": 0.8171,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 595,
+   "frames_beyond": [
+    [
+     91,
+     120
+    ],
+    [
+     157,
+     173
+    ]
+   ]
+  },
+  {
+   "episode_id": "9aba7bf8c44b044bab2a9e3d7b4ac2f82d23ded23c23c6b36a775fccc7fb0ba4",
+   "split": "train",
+   "max_abs_xy_m": 0.8421,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 871,
+   "frames_beyond": [
+    [
+     10,
+     870
+    ]
+   ]
+  },
+  {
+   "episode_id": "9adffdf71ccbd7cdceab9f0464c16c2fbb467804c39ea10e28ec4c2534f17925",
+   "split": "train",
+   "max_abs_xy_m": 0.8073,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 510,
+   "frames_beyond": [
+    [
+     297,
+     509
+    ]
+   ]
+  },
+  {
+   "episode_id": "9bb81f51df10d415ef8725b9bed341533d0dc0191b88a594016f9292599a2062",
+   "split": "train",
+   "max_abs_xy_m": 0.8214,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 471,
+   "frames_beyond": [
+    [
+     10,
+     470
+    ]
+   ]
+  },
+  {
+   "episode_id": "9c0434ad6ea6d82187061ae574cd209a8ccc283c3affddc4afc8d16b07c777b4",
+   "split": "train",
+   "max_abs_xy_m": 0.8528,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 506,
+   "frames_beyond": [
+    [
+     10,
+     505
+    ]
+   ]
+  },
+  {
+   "episode_id": "9c5aeea7b03ce6ad623170c2d2ab75626f0caf51bd41634ef396397f2f7ce5dc",
+   "split": "train",
+   "max_abs_xy_m": 0.8011,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 448,
+   "frames_beyond": [
+    [
+     360,
+     360
+    ]
+   ]
+  },
+  {
+   "episode_id": "9c66f8404d87c9c6653af200d1d02be91b9b1a3cd7323561b26168e8273a5330",
+   "split": "train",
+   "max_abs_xy_m": 0.8335,
+   "far": false,
+   "kinds": [
+    "manipulated"
+   ],
+   "frames": 369,
+   "frames_beyond": [
+    [
+     326,
+     368
+    ]
+   ]
+  },
+  {
+   "episode_id": "9cde8dd2c09b4e3d34db49dcf154aaa057a4adef4fbfaa9a72a846311032a8f5",
+   "split": "train",
+   "max_abs_xy_m": 0.8072,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 421,
+   "frames_beyond": [
+    [
+     10,
+     420
+    ]
+   ]
+  },
+  {
+   "episode_id": "9d07f2c8887827e323f9fe573a89fcc4621a7822fd9e15e59bf1f225070745d5",
+   "split": "train",
+   "max_abs_xy_m": 0.8004,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 738,
+   "frames_beyond": [
+    [
+     10,
+     737
+    ]
+   ]
+  },
+  {
+   "episode_id": "9d8dc1c0af4c80a6e075dcd067bc4df12cbc3cba916e8be6c03e8d710b017a4a",
+   "split": "train",
+   "max_abs_xy_m": 0.8398,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 468,
+   "frames_beyond": [
+    [
+     285,
+     295
+    ],
+    [
+     413,
+     424
+    ]
+   ]
+  },
+  {
+   "episode_id": "9db889ef58b04a643489be835644e4b4b7dab80629ce6851edc2b305dd605794",
+   "split": "train",
+   "max_abs_xy_m": 0.8258,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 532,
+   "frames_beyond": [
+    [
+     10,
+     531
+    ]
+   ]
+  },
+  {
+   "episode_id": "9e65c315b5c65c0df35d5e7373ed44cab787da7631e0885559fae391656be75e",
+   "split": "train",
+   "max_abs_xy_m": 0.89,
+   "far": false,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 467,
+   "frames_beyond": [
+    [
+     144,
+     207
+    ]
+   ]
+  },
+  {
+   "episode_id": "9f61dd159bd7e64c5f9647c17734f9af46ee651def7b3c7116eb9ca880e737db",
+   "split": "train",
+   "max_abs_xy_m": 0.801,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 632,
+   "frames_beyond": [
+    [
+     10,
+     377
+    ],
+    [
+     379,
+     425
+    ],
+    [
+     427,
+     436
+    ],
+    [
+     438,
+     438
+    ],
+    [
+     440,
+     443
+    ],
+    [
+     445,
+     445
+    ],
+    [
+     447,
+     454
+    ],
+    [
+     456,
+     456
+    ],
+    [
+     458,
+     466
+    ],
+    [
+     468,
+     471
+    ],
+    [
+     473,
+     473
+    ],
+    [
+     475,
+     478
+    ],
+    [
+     480,
+     481
+    ],
+    [
+     483,
+     483
+    ],
+    [
+     485,
+     486
+    ],
+    [
+     488,
+     488
+    ],
+    [
+     490,
+     490
+    ],
+    [
+     492,
+     492
+    ],
+    [
+     494,
+     501
+    ],
+    [
+     503,
+     504
+    ],
+    [
+     506,
+     506
+    ],
+    [
+     508,
+     509
+    ],
+    [
+     511,
+     511
+    ],
+    [
+     513,
+     513
+    ],
+    [
+     515,
+     522
+    ],
+    [
+     524,
+     524
+    ],
+    [
+     526,
+     526
+    ],
+    [
+     528,
+     529
+    ],
+    [
+     531,
+     531
+    ],
+    [
+     533,
+     533
+    ],
+    [
+     535,
+     535
+    ],
+    [
+     537,
+     537
+    ],
+    [
+     539,
+     539
+    ],
+    [
+     541,
+     542
+    ],
+    [
+     544,
+     544
+    ],
+    [
+     546,
+     546
+    ],
+    [
+     548,
+     548
+    ],
+    [
+     550,
+     550
+    ],
+    [
+     552,
+     552
+    ],
+    [
+     554,
+     554
+    ],
+    [
+     556,
+     557
+    ],
+    [
+     559,
+     559
+    ],
+    [
+     561,
+     561
+    ],
+    [
+     563,
+     563
+    ],
+    [
+     565,
+     565
+    ],
+    [
+     567,
+     569
+    ],
+    [
+     572,
+     572
+    ],
+    [
+     574,
+     574
+    ],
+    [
+     576,
+     577
+    ],
+    [
+     579,
+     580
+    ],
+    [
+     582,
+     582
+    ],
+    [
+     584,
+     584
+    ],
+    [
+     586,
+     586
+    ],
+    [
+     588,
+     588
+    ],
+    [
+     590,
+     590
+    ],
+    [
+     592,
+     593
+    ],
+    [
+     595,
+     596
+    ],
+    [
+     598,
+     599
+    ],
+    [
+     601,
+     601
+    ],
+    [
+     603,
+     603
+    ],
+    [
+     605,
+     606
+    ],
+    [
+     608,
+     608
+    ],
+    [
+     610,
+     611
+    ],
+    [
+     616,
+     616
+    ],
+    [
+     618,
+     618
+    ],
+    [
+     620,
+     620
+    ],
+    [
+     622,
+     622
+    ],
+    [
+     624,
+     624
+    ],
+    [
+     626,
+     626
+    ],
+    [
+     628,
+     628
+    ],
+    [
+     630,
+     630
+    ]
+   ]
+  },
+  {
+   "episode_id": "a0c5d7aa05c7324c13a6900ecec9acd18051b12c68690a3726b69602394b6fb1",
+   "split": "train",
+   "max_abs_xy_m": 1.2473,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 337,
+   "frames_beyond": [
+    [
+     236,
+     336
+    ]
+   ]
+  },
+  {
+   "episode_id": "a0cbd1e8813849deb69cd96c1741d22eb84e1ce84856240284cb8c410a53eb9d",
+   "split": "train",
+   "max_abs_xy_m": 0.805,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 799,
+   "frames_beyond": [
+    [
+     10,
+     798
+    ]
+   ]
+  },
+  {
+   "episode_id": "a0f41270f9263eb754e5f09c3c54fa9cbcc56da0e397dc69fb84f3079b9c3cd1",
+   "split": "train",
+   "max_abs_xy_m": 0.8458,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 323,
+   "frames_beyond": [
+    [
+     78,
+     128
+    ]
+   ]
+  },
+  {
+   "episode_id": "a14078acf6b6f5025b4691a985a2fdc91b131297bbb18389af01e2e1abf991c4",
+   "split": "train",
+   "max_abs_xy_m": 0.8094,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 410,
+   "frames_beyond": [
+    [
+     10,
+     409
+    ]
+   ]
+  },
+  {
+   "episode_id": "a16d793f1da2a4e967a14370bb58a9b5b83314f23e8c345a4c8efc9ace06aa6e",
+   "split": "train",
+   "max_abs_xy_m": 0.807,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 942,
+   "frames_beyond": [
+    [
+     10,
+     941
+    ]
+   ]
+  },
+  {
+   "episode_id": "a270312022b475400b974923b5a30c87be0ea4066a3c2176fee21ad2c656ca57",
+   "split": "train",
+   "max_abs_xy_m": 0.8108,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 738,
+   "frames_beyond": [
+    [
+     10,
+     737
+    ]
+   ]
+  },
+  {
+   "episode_id": "a2d654fdfc48d5fa9b39ea8e24319af20af7fffb4fe60b26f4c3ac08a28fe391",
+   "split": "train",
+   "max_abs_xy_m": 0.8238,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 513,
+   "frames_beyond": [
+    [
+     316,
+     512
+    ]
+   ]
+  },
+  {
+   "episode_id": "a32f9a8e269ab8b6c3a8aa48a1318768cef129096b0de3263253ed9e67d15147",
+   "split": "train",
+   "max_abs_xy_m": 0.9422,
+   "far": true,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 1018,
+   "frames_beyond": [
+    [
+     10,
+     1017
+    ]
+   ]
+  },
+  {
+   "episode_id": "a334bdc9e6abb37b9f8ce24c43ef821941ed34f5678cc3dae316f5788a0a9fc0",
+   "split": "train",
+   "max_abs_xy_m": 0.841,
+   "far": false,
+   "kinds": [
+    "manipulated"
+   ],
+   "frames": 371,
+   "frames_beyond": [
+    [
+     325,
+     370
+    ]
+   ]
+  },
+  {
+   "episode_id": "a4e3cec98751c7f2d8061a50d74e4c918729f96a03df0e22212e125853f5e7e9",
+   "split": "train",
+   "max_abs_xy_m": 0.8262,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 405,
+   "frames_beyond": [
+    [
+     10,
+     404
+    ]
+   ]
+  },
+  {
+   "episode_id": "a4e9100240007f0e940e934f340c8bd9453f9f519f0a53fdedb463b67742012b",
+   "split": "train",
+   "max_abs_xy_m": 0.8135,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 295,
+   "frames_beyond": [
+    [
+     10,
+     294
+    ]
+   ]
+  },
+  {
+   "episode_id": "a50040933867cc1ecd3d25a5f050078b97b3ac23b0b7c339a249590c316f1ba9",
+   "split": "train",
+   "max_abs_xy_m": 1.3411,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 306,
+   "frames_beyond": [
+    [
+     217,
+     250
+    ],
+    [
+     253,
+     293
+    ]
+   ]
+  },
+  {
+   "episode_id": "a6a044324d65c42c1bda2a6cd85c31e1befc4107e59ca5d5052889a7f77aa810",
+   "split": "train",
+   "max_abs_xy_m": 0.8489,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 479,
+   "frames_beyond": [
+    [
+     78,
+     278
+    ],
+    [
+     290,
+     302
+    ],
+    [
+     304,
+     304
+    ],
+    [
+     306,
+     306
+    ],
+    [
+     308,
+     308
+    ],
+    [
+     320,
+     348
+    ],
+    [
+     350,
+     350
+    ],
+    [
+     374,
+     390
+    ],
+    [
+     458,
+     458
+    ],
+    [
+     460,
+     478
+    ]
+   ]
+  },
+  {
+   "episode_id": "a7123c2b2970455d95a3a2c9c71313cec566623b47c8cf58161d2654d3085af9",
+   "split": "train",
+   "max_abs_xy_m": 0.8624,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 574,
+   "frames_beyond": [
+    [
+     10,
+     573
+    ]
+   ]
+  },
+  {
+   "episode_id": "a750b41ffefbc31c3c2f38e2b190583f348568fce5afdc0d881dfc853b5317db",
+   "split": "train",
+   "max_abs_xy_m": 0.8039,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 323,
+   "frames_beyond": [
+    [
+     102,
+     114
+    ]
+   ]
+  },
+  {
+   "episode_id": "a89694adb4331d93c5db03683ddf84e44002e09e02b48c76693fa40d22661e27",
+   "split": "train",
+   "max_abs_xy_m": 0.8268,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 620,
+   "frames_beyond": [
+    [
+     277,
+     292
+    ],
+    [
+     306,
+     310
+    ]
+   ]
+  },
+  {
+   "episode_id": "a8e0a811fee05795afaf8047f76efd7ae86434f93e058e834b8780166b9b690c",
+   "split": "train",
+   "max_abs_xy_m": 0.8282,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 548,
+   "frames_beyond": [
+    [
+     10,
+     547
+    ]
+   ]
+  },
+  {
+   "episode_id": "a9568d101cb707599656eae0caf252ce5cb00be02a7b8627458f968469ab1268",
+   "split": "train",
+   "max_abs_xy_m": 0.8092,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 299,
+   "frames_beyond": [
+    [
+     214,
+     216
+    ]
+   ]
+  },
+  {
+   "episode_id": "a9a4fa252f085e2fc3e683eaa920cad69e60b2d115e811d218e44705b17ecdfb",
+   "split": "train",
+   "max_abs_xy_m": 0.8094,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 691,
+   "frames_beyond": [
+    [
+     603,
+     611
+    ]
+   ]
+  },
+  {
+   "episode_id": "aa34694bfea381d50ea4256170dee7e4042dbd239a7101d7057e8a4bfef67324",
+   "split": "train",
+   "max_abs_xy_m": 0.8622,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 316,
+   "frames_beyond": [
+    [
+     301,
+     315
+    ]
+   ]
+  },
+  {
+   "episode_id": "acf890e6afb07636f0d9f8ea2f6232df4f386a2eb5d97340c3c24b1307e5933a",
+   "split": "train",
+   "max_abs_xy_m": 0.8645,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 369,
+   "frames_beyond": [
+    [
+     10,
+     368
+    ]
+   ]
+  },
+  {
+   "episode_id": "ad74ec178f00ccf4930d93ae9181a20d21d85d838a86ab320edd1166440d054e",
+   "split": "train",
+   "max_abs_xy_m": 0.8343,
+   "far": false,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 331,
+   "frames_beyond": [
+    [
+     124,
+     134
+    ],
+    [
+     165,
+     172
+    ],
+    [
+     176,
+     263
+    ],
+    [
+     281,
+     318
+    ]
+   ]
+  },
+  {
+   "episode_id": "adb11fd6a16ddff666cfde2dd42640430ee72cc48ba9de341753f8c84b4c9e6d",
+   "split": "train",
+   "max_abs_xy_m": 0.8684,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 352,
+   "frames_beyond": [
+    [
+     10,
+     351
+    ]
+   ]
+  },
+  {
+   "episode_id": "aec6d9bb94618ddcdb84b500ed17c46702124ff89797b9796c6704f67ccdb3b7",
+   "split": "train",
+   "max_abs_xy_m": 0.9306,
+   "far": true,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 562,
+   "frames_beyond": [
+    [
+     305,
+     561
+    ]
+   ]
+  },
+  {
+   "episode_id": "afb9ede4a08bd795db98ec0faec65bcf1e3d40c6c6d42bb2258549485c79993f",
+   "split": "train",
+   "max_abs_xy_m": 0.8189,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 339,
+   "frames_beyond": [
+    [
+     10,
+     338
+    ]
+   ]
+  },
+  {
+   "episode_id": "b02ebf327fc7e832e6f8d90d2bae8e06e0d696d72a53cdf5adc98044fa79c439",
+   "split": "train",
+   "max_abs_xy_m": 0.8088,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 460,
+   "frames_beyond": [
+    [
+     77,
+     93
+    ],
+    [
+     103,
+     111
+    ]
+   ]
+  },
+  {
+   "episode_id": "b03094ff348d5b1e763fdf75e923de96744b7f17ee20e1ef96329167f5ecef78",
+   "split": "train",
+   "max_abs_xy_m": 0.8168,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 633,
+   "frames_beyond": [
+    [
+     80,
+     94
+    ],
+    [
+     109,
+     125
+    ],
+    [
+     138,
+     157
+    ],
+    [
+     167,
+     246
+    ],
+    [
+     274,
+     284
+    ]
+   ]
+  },
+  {
+   "episode_id": "b0703955f43c2faa6a38fed6f83586ea507d6fd118c8229390e476d0be37347a",
+   "split": "train",
+   "max_abs_xy_m": 0.8664,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 332,
+   "frames_beyond": [
+    [
+     78,
+     137
+    ],
+    [
+     261,
+     261
+    ],
+    [
+     263,
+     263
+    ],
+    [
+     265,
+     265
+    ],
+    [
+     267,
+     267
+    ],
+    [
+     269,
+     269
+    ]
+   ]
+  },
+  {
+   "episode_id": "b12d92d848d2969b4feab8009d6b90e274468aab3cc91af2956330913b28c943",
+   "split": "train",
+   "max_abs_xy_m": 0.8103,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 774,
+   "frames_beyond": [
+    [
+     267,
+     277
+    ]
+   ]
+  },
+  {
+   "episode_id": "b154b3a5833dc428ea9ac455a9b9c7edac32c320badec847ef73064f088bfc41",
+   "split": "train",
+   "max_abs_xy_m": 0.8068,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 326,
+   "frames_beyond": [
+    [
+     84,
+     94
+    ],
+    [
+     117,
+     118
+    ]
+   ]
+  },
+  {
+   "episode_id": "b2dd3ca7e1069d60f532d7838d8485017482aeb4a917db7a9e34dc47ff60cd33",
+   "split": "train",
+   "max_abs_xy_m": 0.8022,
+   "far": false,
+   "kinds": [
+    "manipulated"
+   ],
+   "frames": 701,
+   "frames_beyond": [
+    [
+     530,
+     535
+    ],
+    [
+     539,
+     700
+    ]
+   ]
+  },
+  {
+   "episode_id": "b34b3f9fc598b4927e47314495eeecdeab453a19581e0f0b8b7872195db34029",
+   "split": "train",
+   "max_abs_xy_m": 0.8262,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 320,
+   "frames_beyond": [
+    [
+     184,
+     192
+    ],
+    [
+     263,
+     269
+    ],
+    [
+     271,
+     271
+    ],
+    [
+     273,
+     273
+    ],
+    [
+     275,
+     275
+    ],
+    [
+     277,
+     280
+    ]
+   ]
+  },
+  {
+   "episode_id": "b3b288eef56fce4cf98060e121b80ce785e47e6c3293179cedb92900ca370ca0",
+   "split": "train",
+   "max_abs_xy_m": 0.8186,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 395,
+   "frames_beyond": [
+    [
+     10,
+     394
+    ]
+   ]
+  },
+  {
+   "episode_id": "b3c25c88f90e182ace6d9fd8209136768f75ae6d03c4135fc972584b98b053ed",
+   "split": "train",
+   "max_abs_xy_m": 0.8188,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 478,
+   "frames_beyond": [
+    [
+     379,
+     477
+    ]
+   ]
+  },
+  {
+   "episode_id": "b61f27ca9a037375ef1ecddb9015aedbe45bca62b1a28302a366a22cf431e28d",
+   "split": "train",
+   "max_abs_xy_m": 0.8022,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 651,
+   "frames_beyond": [
+    [
+     10,
+     650
+    ]
+   ]
+  },
+  {
+   "episode_id": "b6cbc23db4e7463390db5ff33160556e4b11bbe3d3255b5da0fe816280eac17e",
+   "split": "train",
+   "max_abs_xy_m": 0.805,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 573,
+   "frames_beyond": [
+    [
+     10,
+     572
+    ]
+   ]
+  },
+  {
+   "episode_id": "b76e4e776186b32a7cf48079899d10260c60e2106be40ffafe8d1ddb43933b4f",
+   "split": "train",
+   "max_abs_xy_m": 0.8,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 333,
+   "frames_beyond": [
+    [
+     78,
+     78
+    ]
+   ]
+  },
+  {
+   "episode_id": "b8d60029f2c4771eb46442b5e64a3ab649c352f1fb63b6c7f7075532b0271632",
+   "split": "train",
+   "max_abs_xy_m": 0.9191,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 294,
+   "frames_beyond": [
+    [
+     117,
+     129
+    ],
+    [
+     143,
+     147
+    ],
+    [
+     159,
+     187
+    ]
+   ]
+  },
+  {
+   "episode_id": "b98427407dbae51059998c89739b031e1a5b1fdcb7a17a8ec28761d0f9832af4",
+   "split": "train",
+   "max_abs_xy_m": 0.8039,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 318,
+   "frames_beyond": [
+    [
+     10,
+     317
+    ]
+   ]
+  },
+  {
+   "episode_id": "b9c7d85363a4161ceb4c6763f15302365ae4abfde4834a5d5b09ccde9f54d06d",
+   "split": "train",
+   "max_abs_xy_m": 1.2992,
+   "far": true,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 333,
+   "frames_beyond": [
+    [
+     153,
+     332
+    ]
+   ]
+  },
+  {
+   "episode_id": "b9da66f6aa0c6d998bb85e2791e0e405152cfaf866b94160451d0f649ab91a12",
+   "split": "train",
+   "max_abs_xy_m": 0.9239,
+   "far": true,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 659,
+   "frames_beyond": [
+    [
+     343,
+     658
+    ]
+   ]
+  },
+  {
+   "episode_id": "ba1dd301a82283b6ff11f6623b5ea2347ad40da464ea051521e4008e57d36f43",
+   "split": "train",
+   "max_abs_xy_m": 0.8193,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 412,
+   "frames_beyond": [
+    [
+     375,
+     411
+    ]
+   ]
+  },
+  {
+   "episode_id": "babee8f656451d41954ff910c985d7f44a7712da3459812522f365e71228de15",
+   "split": "train",
+   "max_abs_xy_m": 0.8009,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 722,
+   "frames_beyond": [
+    [
+     10,
+     721
+    ]
+   ]
+  },
+  {
+   "episode_id": "bac3c74a532a4625002295a8b6e78ee433ee76dec3fbcbe8de8fb4207e6f25bd",
+   "split": "train",
+   "max_abs_xy_m": 0.8413,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 966,
+   "frames_beyond": [
+    [
+     463,
+     965
+    ]
+   ]
+  },
+  {
+   "episode_id": "bb59d9ae7a1d0af23829d11412ada7f0c33e2f78e18bab014480635135f0c623",
+   "split": "train",
+   "max_abs_xy_m": 0.8056,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 712,
+   "frames_beyond": [
+    [
+     10,
+     711
+    ]
+   ]
+  },
+  {
+   "episode_id": "bb989aa79f3f75b86729c261998801f0f6c532be534997aebeb52043f5b5833d",
+   "split": "train",
+   "max_abs_xy_m": 0.895,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 340,
+   "frames_beyond": [
+    [
+     309,
+     339
+    ]
+   ]
+  },
+  {
+   "episode_id": "bba462751c31ce65cc3beb20f42ca3499ced598bc4450ba0c3d4798e660e8971",
+   "split": "train",
+   "max_abs_xy_m": 0.8262,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 615,
+   "frames_beyond": [
+    [
+     10,
+     614
+    ]
+   ]
+  },
+  {
+   "episode_id": "bd08d25ebc822e551a8a88b319ac6630ce6eb170566d898d47bcd68783cf55cd",
+   "split": "train",
+   "max_abs_xy_m": 0.8047,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 535,
+   "frames_beyond": [
+    [
+     391,
+     534
+    ]
+   ]
+  },
+  {
+   "episode_id": "bd81950915fdb62c508a058c346fea7e85cab753b012168d3b67a4344e429587",
+   "split": "train",
+   "max_abs_xy_m": 0.8092,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 682,
+   "frames_beyond": [
+    [
+     10,
+     681
+    ]
+   ]
+  },
+  {
+   "episode_id": "bdcfa95e8b1e291bfd1f371fc44b1d04e15c2835ef5592cd3d3eb1e1caf700de",
+   "split": "train",
+   "max_abs_xy_m": 0.8098,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 615,
+   "frames_beyond": [
+    [
+     10,
+     614
+    ]
+   ]
+  },
+  {
+   "episode_id": "bdd298d1452829d1cb42030e191a55e5339f7ff0c91000a7903be6229c4481ef",
+   "split": "train",
+   "max_abs_xy_m": 0.8132,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 393,
+   "frames_beyond": [
+    [
+     332,
+     392
+    ]
+   ]
+  },
+  {
+   "episode_id": "be010a4b26f2eda10cad306f3fec5ffc08d1621447e74f16c9fa7a173d84575c",
+   "split": "train",
+   "max_abs_xy_m": 0.8125,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 573,
+   "frames_beyond": [
+    [
+     10,
+     572
+    ]
+   ]
+  },
+  {
+   "episode_id": "be1654373dc7e9fb300d4853a1027f72db969d32800ec332ca6be063b97cf904",
+   "split": "train",
+   "max_abs_xy_m": 0.8065,
+   "far": false,
+   "kinds": [
+    "manipulated"
+   ],
+   "frames": 312,
+   "frames_beyond": [
+    [
+     304,
+     311
+    ]
+   ]
+  },
+  {
+   "episode_id": "be1aa29927196498a7e705040b803559ae49a78d580527ee3b0411fee526ce1b",
+   "split": "train",
+   "max_abs_xy_m": 0.8139,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 339,
+   "frames_beyond": [
+    [
+     140,
+     146
+    ],
+    [
+     189,
+     205
+    ],
+    [
+     321,
+     329
+    ]
+   ]
+  },
+  {
+   "episode_id": "be411dacefe41479f28fdbde5d1536ce8340df9667ea57c972a1983e808cb329",
+   "split": "train",
+   "max_abs_xy_m": 0.8209,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 701,
+   "frames_beyond": [
+    [
+     74,
+     253
+    ],
+    [
+     282,
+     283
+    ]
+   ]
+  },
+  {
+   "episode_id": "be8125b985a61c20cd3f5e8861957dab188f2b357075d89f9c5316732e398519",
+   "split": "train",
+   "max_abs_xy_m": 0.8169,
+   "far": false,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 859,
+   "frames_beyond": [
+    [
+     363,
+     369
+    ],
+    [
+     395,
+     398
+    ],
+    [
+     457,
+     468
+    ],
+    [
+     472,
+     480
+    ],
+    [
+     489,
+     858
+    ]
+   ]
+  },
+  {
+   "episode_id": "beecca900808c7c099762ee2d98312e178a0d0fbc693328e8f0dc374310fd4dc",
+   "split": "train",
+   "max_abs_xy_m": 0.8182,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 814,
+   "frames_beyond": [
+    [
+     10,
+     813
+    ]
+   ]
+  },
+  {
+   "episode_id": "c02b813855e5d1ffd1830d5007b5895b618966d2451e9e26ceae8b34957a240c",
+   "split": "train",
+   "max_abs_xy_m": 0.8052,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 729,
+   "frames_beyond": [
+    [
+     10,
+     728
+    ]
+   ]
+  },
+  {
+   "episode_id": "c049ae8a85a31ba398c088593425623c4ced7140f3dc0f8eaa68c383be0261fb",
+   "split": "train",
+   "max_abs_xy_m": 1.2907,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 316,
+   "frames_beyond": [
+    [
+     219,
+     256
+    ]
+   ]
+  },
+  {
+   "episode_id": "c097b49b437a402cb1c24207ce57fe08bf192fe0e014ade83e0c117b8f1d9f0e",
+   "split": "train",
+   "max_abs_xy_m": 1.2806,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 657,
+   "frames_beyond": [
+    [
+     283,
+     291
+    ],
+    [
+     311,
+     317
+    ],
+    [
+     351,
+     656
+    ]
+   ]
+  },
+  {
+   "episode_id": "c0bf31f11206bf53ff354035097307267d75f92afca3f42605c2d2306cc9406f",
+   "split": "train",
+   "max_abs_xy_m": 1.2062,
+   "far": true,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 466,
+   "frames_beyond": [
+    [
+     79,
+     278
+    ],
+    [
+     286,
+     286
+    ],
+    [
+     288,
+     294
+    ],
+    [
+     296,
+     296
+    ],
+    [
+     298,
+     304
+    ],
+    [
+     313,
+     313
+    ],
+    [
+     315,
+     327
+    ],
+    [
+     392,
+     441
+    ],
+    [
+     456,
+     456
+    ]
+   ]
+  },
+  {
+   "episode_id": "c0fc9c476b3dd421f9f4b1aadfc64624cc59fbe2d259d0cd34ae0b789438cc9f",
+   "split": "train",
+   "max_abs_xy_m": 0.8086,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 496,
+   "frames_beyond": [
+    [
+     10,
+     495
+    ]
+   ]
+  },
+  {
+   "episode_id": "c12bb17cd1a572dab78110627ea4bdcb82aee0e5642e98426964d9556c7bc1b5",
+   "split": "train",
+   "max_abs_xy_m": 0.8319,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 479,
+   "frames_beyond": [
+    [
+     214,
+     276
+    ]
+   ]
+  },
+  {
+   "episode_id": "c1cd95b2ebef62a9d1136fd482751c57ae20a7d2910a6921ff9703cc2f228884",
+   "split": "train",
+   "max_abs_xy_m": 0.9483,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 608,
+   "frames_beyond": [
+    [
+     431,
+     439
+    ],
+    [
+     443,
+     467
+    ],
+    [
+     517,
+     607
+    ]
+   ]
+  },
+  {
+   "episode_id": "c20d70d4ce585d48e97d729b9303119b521516a7ffdb0c08d62b8b03f9f73a7e",
+   "split": "train",
+   "max_abs_xy_m": 0.8202,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 526,
+   "frames_beyond": [
+    [
+     10,
+     525
+    ]
+   ]
+  },
+  {
+   "episode_id": "c317d1130a014a15193fe4ae16f8bfb55805dcc16f9d4aa3ab68be338d61bc67",
+   "split": "train",
+   "max_abs_xy_m": 0.8884,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 447,
+   "frames_beyond": [
+    [
+     413,
+     434
+    ]
+   ]
+  },
+  {
+   "episode_id": "c5c314b3f15d256256fb98640287ab1abac63cb7a6df728b767d2a2d3f318640",
+   "split": "train",
+   "max_abs_xy_m": 0.907,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 455,
+   "frames_beyond": [
+    [
+     301,
+     328
+    ],
+    [
+     368,
+     377
+    ],
+    [
+     387,
+     394
+    ],
+    [
+     396,
+     396
+    ],
+    [
+     398,
+     398
+    ]
+   ]
+  },
+  {
+   "episode_id": "c60718aef2507dd496a9daa8db3184716c938caaed299ddd3c6d84b754ebc272",
+   "split": "train",
+   "max_abs_xy_m": 0.8718,
+   "far": false,
+   "kinds": [
+    "gripper",
+    "other object"
+   ],
+   "frames": 814,
+   "frames_beyond": [
+    [
+     10,
+     813
+    ]
+   ]
+  },
+  {
+   "episode_id": "c7dbd6af2d7ccacbfe03a2a53dc5745b7231905bcfaa7cd54618d2fb6919c200",
+   "split": "train",
+   "max_abs_xy_m": 0.8085,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 465,
+   "frames_beyond": [
+    [
+     10,
+     464
+    ]
+   ]
+  },
+  {
+   "episode_id": "c837c7dad5cbbfb1daab08ea0c045ac050c6c31b88348656a4328c54545a0a7c",
+   "split": "train",
+   "max_abs_xy_m": 0.8221,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 581,
+   "frames_beyond": [
+    [
+     10,
+     580
+    ]
+   ]
+  },
+  {
+   "episode_id": "c876a68a7b9894ba09235780d3ca4f3fa9913fc6c1e3ab401bcc3605d9a925a7",
+   "split": "train",
+   "max_abs_xy_m": 1.3018,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 532,
+   "frames_beyond": [
+    [
+     379,
+     430
+    ],
+    [
+     449,
+     531
+    ]
+   ]
+  },
+  {
+   "episode_id": "c913a138454f6a8b5400ac362cfa06823b469904aca52576a5744bb2138b82ce",
+   "split": "train",
+   "max_abs_xy_m": 0.8495,
+   "far": false,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 446,
+   "frames_beyond": [
+    [
+     247,
+     249
+    ],
+    [
+     366,
+     445
+    ]
+   ]
+  },
+  {
+   "episode_id": "c9a60381b5a25e2a45abf599c6f99da4d0d3364243b0ba814f000fa1ee5a71f3",
+   "split": "train",
+   "max_abs_xy_m": 0.8224,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 326,
+   "frames_beyond": [
+    [
+     76,
+     121
+    ]
+   ]
+  },
+  {
+   "episode_id": "caa4529ed4343582b07b57081af1b2a680e7d4cb6bd445e1e424fad996c02905",
+   "split": "train",
+   "max_abs_xy_m": 0.9228,
+   "far": true,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 627,
+   "frames_beyond": [
+    [
+     476,
+     626
+    ]
+   ]
+  },
+  {
+   "episode_id": "cb18633c209347ce3d306d66eba35b6ed35f1b10842157d8847a434f4c4dc2a2",
+   "split": "train",
+   "max_abs_xy_m": 0.8009,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 455,
+   "frames_beyond": [
+    [
+     427,
+     427
+    ],
+    [
+     429,
+     429
+    ]
+   ]
+  },
+  {
+   "episode_id": "cb43e0beadbc29a55bcd71ce85a05ed53269aea33ab69bfb3584dbf5ab1ee3f7",
+   "split": "train",
+   "max_abs_xy_m": 0.8653,
+   "far": false,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 569,
+   "frames_beyond": [
+    [
+     10,
+     250
+    ]
+   ]
+  },
+  {
+   "episode_id": "cbee04e6156f6d7bf6d7fa64eca19691544b10aa0ccfe5649c031844a65ed71c",
+   "split": "train",
+   "max_abs_xy_m": 0.9121,
+   "far": true,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 384,
+   "frames_beyond": [
+    [
+     204,
+     206
+    ],
+    [
+     213,
+     214
+    ],
+    [
+     376,
+     383
+    ]
+   ]
+  },
+  {
+   "episode_id": "cbee8b28ea31cd8734ed5abdd5d6e3460d90acb60f77d8d04097a0a568fee6c5",
+   "split": "train",
+   "max_abs_xy_m": 1.1487,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 741,
+   "frames_beyond": [
+    [
+     305,
+     313
+    ],
+    [
+     326,
+     348
+    ],
+    [
+     439,
+     740
+    ]
+   ]
+  },
+  {
+   "episode_id": "cdd17a3b2bc10c40a39f50979a7c87d5bdf80dd8b062f9f5b65e09628dab1b32",
+   "split": "train",
+   "max_abs_xy_m": 0.9654,
+   "far": true,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 273,
+   "frames_beyond": [
+    [
+     10,
+     272
+    ]
+   ]
+  },
+  {
+   "episode_id": "cdeb576ef9292bd0565cf958c75d043113d791b19b44c841bd56b51cf01d3b7f",
+   "split": "train",
+   "max_abs_xy_m": 0.8684,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 401,
+   "frames_beyond": [
+    [
+     208,
+     400
+    ]
+   ]
+  },
+  {
+   "episode_id": "ce21d14092eebfe428ca20c8020c53f18f357dd2c144aaccabd8d6d9e9b27b66",
+   "split": "train",
+   "max_abs_xy_m": 0.8765,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 272,
+   "frames_beyond": [
+    [
+     192,
+     271
+    ]
+   ]
+  },
+  {
+   "episode_id": "ce5bd362c65e3ce04de7f502811dd10009b09f81df95bbdc67105e312fbe8146",
+   "split": "train",
+   "max_abs_xy_m": 0.82,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 668,
+   "frames_beyond": [
+    [
+     10,
+     667
+    ]
+   ]
+  },
+  {
+   "episode_id": "ce5c92e16361fd8df08e77efaad3b12e361c428f93de102f0829ecef8421242a",
+   "split": "train",
+   "max_abs_xy_m": 0.8159,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 600,
+   "frames_beyond": [
+    [
+     512,
+     552
+    ]
+   ]
+  },
+  {
+   "episode_id": "ce6570df5a368e3dd7f4f99688432866ebd81a4abcaf57cc14a05aeaa7b9f2fa",
+   "split": "train",
+   "max_abs_xy_m": 0.8232,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 691,
+   "frames_beyond": [
+    [
+     10,
+     690
+    ]
+   ]
+  },
+  {
+   "episode_id": "cf1d1c88fb2b937235865da0a8cdc16562fb627f6a4253b6f953e5438c23cf1b",
+   "split": "train",
+   "max_abs_xy_m": 0.8061,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 528,
+   "frames_beyond": [
+    [
+     459,
+     461
+    ]
+   ]
+  },
+  {
+   "episode_id": "d08dd15a7e9cd27a58d9a75533c3cec51e8f4b680d678be3cb9337210698945e",
+   "split": "train",
+   "max_abs_xy_m": 0.8689,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 466,
+   "frames_beyond": [
+    [
+     109,
+     278
+    ],
+    [
+     302,
+     315
+    ],
+    [
+     354,
+     364
+    ],
+    [
+     444,
+     453
+    ]
+   ]
+  },
+  {
+   "episode_id": "d23890c215e4f4d5cd69e9bff04006ff1c9a2423ba3838acd59ae4481f523c87",
+   "split": "train",
+   "max_abs_xy_m": 0.9929,
+   "far": true,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 450,
+   "frames_beyond": [
+    [
+     10,
+     449
+    ]
+   ]
+  },
+  {
+   "episode_id": "d37c107c983a668d6fcfeb83bea8b77f0f9efb66c84862c55371e0cde3fd8497",
+   "split": "train",
+   "max_abs_xy_m": 0.8663,
+   "far": false,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 329,
+   "frames_beyond": [
+    [
+     176,
+     182
+    ],
+    [
+     184,
+     184
+    ],
+    [
+     288,
+     328
+    ]
+   ]
+  },
+  {
+   "episode_id": "d3bcc2f79a9ade5e325be505c2bccacc09c2ebded4b16480fe95ead54a91d2bc",
+   "split": "train",
+   "max_abs_xy_m": 0.8271,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 480,
+   "frames_beyond": [
+    [
+     416,
+     436
+    ],
+    [
+     442,
+     479
+    ]
+   ]
+  },
+  {
+   "episode_id": "d3e971bbcde054f9e0aa49f8d6677569b4b1a529ae27062ee8d5447957619109",
+   "split": "train",
+   "max_abs_xy_m": 0.8341,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 451,
+   "frames_beyond": [
+    [
+     403,
+     403
+    ],
+    [
+     405,
+     433
+    ]
+   ]
+  },
+  {
+   "episode_id": "d465642cdade811977cb65b48b02ac3976af6ec256749896ddea678865054fac",
+   "split": "train",
+   "max_abs_xy_m": 0.806,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 459,
+   "frames_beyond": [
+    [
+     10,
+     458
+    ]
+   ]
+  },
+  {
+   "episode_id": "d53fbf7c1894d55f774e64449796e7a609918efa4cdee19ff322aaf52525560e",
+   "split": "train",
+   "max_abs_xy_m": 0.8455,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 549,
+   "frames_beyond": [
+    [
+     10,
+     548
+    ]
+   ]
+  },
+  {
+   "episode_id": "d5b48ea45ea2003a695b0783f310e8464ec1757cc62d4af54c7a90464b8df24f",
+   "split": "train",
+   "max_abs_xy_m": 0.8119,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 301,
+   "frames_beyond": [
+    [
+     10,
+     300
+    ]
+   ]
+  },
+  {
+   "episode_id": "d5c4d137332b5023d47c577f1a8ea6bd78d27c781219dd8034f41fb55fde77bd",
+   "split": "train",
+   "max_abs_xy_m": 0.8354,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 415,
+   "frames_beyond": [
+    [
+     10,
+     414
+    ]
+   ]
+  },
+  {
+   "episode_id": "d69605247f23d40b01c749c817a9cbad7bad572ede6e040ac7baf926b30789e3",
+   "split": "train",
+   "max_abs_xy_m": 0.8233,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 452,
+   "frames_beyond": [
+    [
+     10,
+     451
+    ]
+   ]
+  },
+  {
+   "episode_id": "d6d742db1182448341cc05b85543f857aa713d2eb789e796d86cb94205f7a92d",
+   "split": "train",
+   "max_abs_xy_m": 0.9229,
+   "far": true,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 415,
+   "frames_beyond": [
+    [
+     306,
+     414
+    ]
+   ]
+  },
+  {
+   "episode_id": "d721afa7eb2a9c80d2633c60dca4d34d07a883b972f13a9016d3269914790f0c",
+   "split": "train",
+   "max_abs_xy_m": 0.8377,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 615,
+   "frames_beyond": [
+    [
+     10,
+     614
+    ]
+   ]
+  },
+  {
+   "episode_id": "d93b22393687043ffcc5d435c5af3c28d2c9af3ffd7fc2842b5bc436d4e03607",
+   "split": "train",
+   "max_abs_xy_m": 0.9044,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 601,
+   "frames_beyond": [
+    [
+     456,
+     463
+    ]
+   ]
+  },
+  {
+   "episode_id": "db347c19fa5da68254fa904a9d3c571ee996d0bf772212f3ddadafb105b67c22",
+   "split": "train",
+   "max_abs_xy_m": 0.828,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 824,
+   "frames_beyond": [
+    [
+     10,
+     823
+    ]
+   ]
+  },
+  {
+   "episode_id": "dc3d23705e42587d03e1dffdd20ad91b3bae2e49edcb40379037f4a3831ebc42",
+   "split": "train",
+   "max_abs_xy_m": 0.8426,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 332,
+   "frames_beyond": [
+    [
+     239,
+     278
+    ],
+    [
+     285,
+     328
+    ]
+   ]
+  },
+  {
+   "episode_id": "dc6a2dd1891b217b03d4181e50998a3ceac8c4020c1f29ff5a5f73f46c787d28",
+   "split": "train",
+   "max_abs_xy_m": 0.9171,
+   "far": true,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 686,
+   "frames_beyond": [
+    [
+     10,
+     685
+    ]
+   ]
+  },
+  {
+   "episode_id": "dc9c43cf4278372b096d799d7ca9a79727a35e5b923b3ff28c067ed883777df4",
+   "split": "train",
+   "max_abs_xy_m": 0.822,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 314,
+   "frames_beyond": [
+    [
+     10,
+     313
+    ]
+   ]
+  },
+  {
+   "episode_id": "dd1acbf8376899fcf52dbb67528340c50f01a6107b928b79c4679c8de70d02d2",
+   "split": "train",
+   "max_abs_xy_m": 0.8112,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 633,
+   "frames_beyond": [
+    [
+     282,
+     291
+    ]
+   ]
+  },
+  {
+   "episode_id": "dd20e9bc4fc159418c4beb549245196df952bfb0bea91c51c9f501b5d939c7bc",
+   "split": "train",
+   "max_abs_xy_m": 0.8338,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 602,
+   "frames_beyond": [
+    [
+     326,
+     601
+    ]
+   ]
+  },
+  {
+   "episode_id": "dda34f0c3bec0ab496ab5850272a0e979b2076f471ebe8b467b7e9c5eba09e70",
+   "split": "train",
+   "max_abs_xy_m": 0.8395,
+   "far": false,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 464,
+   "frames_beyond": [
+    [
+     82,
+     262
+    ],
+    [
+     276,
+     463
+    ]
+   ]
+  },
+  {
+   "episode_id": "ddb10cfaeb43a092d79f7aac561b9c98e113c1974862b384a327dc08622ce5f1",
+   "split": "train",
+   "max_abs_xy_m": 0.8455,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 659,
+   "frames_beyond": [
+    [
+     10,
+     658
+    ]
+   ]
+  },
+  {
+   "episode_id": "de11b90b4a91c32ceae113656cc93cbc26fe13d7bb98971cf2c67646b1067271",
+   "split": "train",
+   "max_abs_xy_m": 0.8871,
+   "far": false,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 455,
+   "frames_beyond": [
+    [
+     344,
+     454
+    ]
+   ]
+  },
+  {
+   "episode_id": "df869ba3568a7729e7017654e3148a9bb84f34eb7a77656a94120681dddc35e5",
+   "split": "train",
+   "max_abs_xy_m": 0.8156,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 461,
+   "frames_beyond": [
+    [
+     322,
+     329
+    ]
+   ]
+  },
+  {
+   "episode_id": "e051d3d262d98b1db01ca0170641e87ed374cdbd518a7c46107734db0fc0b68f",
+   "split": "train",
+   "max_abs_xy_m": 0.8254,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 926,
+   "frames_beyond": [
+    [
+     10,
+     925
+    ]
+   ]
+  },
+  {
+   "episode_id": "e05ff178e1f73ff6465483ab1fb6bf4c1920fdf26bae700f817e1572872bf7e7",
+   "split": "train",
+   "max_abs_xy_m": 0.8012,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 638,
+   "frames_beyond": [
+    [
+     10,
+     637
+    ]
+   ]
+  },
+  {
+   "episode_id": "e0ca2eb1351ca9196e01e67110147ff0586bb11ed4ca8b5e0e781d04494ab418",
+   "split": "train",
+   "max_abs_xy_m": 0.823,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 525,
+   "frames_beyond": [
+    [
+     10,
+     524
+    ]
+   ]
+  },
+  {
+   "episode_id": "e0f29bfa7f45693df68cf2a53ada6e030eab875535548c64220fca5f528b375c",
+   "split": "train",
+   "max_abs_xy_m": 0.8415,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 590,
+   "frames_beyond": [
+    [
+     10,
+     589
+    ]
+   ]
+  },
+  {
+   "episode_id": "e1dfc478b51dfe2fd658b788569df6ebaf699852c9d337554b9514449acd387b",
+   "split": "train",
+   "max_abs_xy_m": 1.3577,
+   "far": true,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 292,
+   "frames_beyond": [
+    [
+     144,
+     291
+    ]
+   ]
+  },
+  {
+   "episode_id": "e1f17ec0bb935cf0228500e0c7d15a36067c9ff8a093e525c96433e31be7f018",
+   "split": "train",
+   "max_abs_xy_m": 0.8123,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 600,
+   "frames_beyond": [
+    [
+     10,
+     599
+    ]
+   ]
+  },
+  {
+   "episode_id": "e205b4d3a55548d2c545fb937b0ad05848f3d7424a79d3ad83208fd732297e7e",
+   "split": "train",
+   "max_abs_xy_m": 0.8111,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 570,
+   "frames_beyond": [
+    [
+     10,
+     569
+    ]
+   ]
+  },
+  {
+   "episode_id": "e2a1b018e80ed7c2449122b7b07eb1e2eb0db747d1defc54334d0594569cfec5",
+   "split": "train",
+   "max_abs_xy_m": 0.9389,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 316,
+   "frames_beyond": [
+    [
+     142,
+     160
+    ],
+    [
+     167,
+     169
+    ],
+    [
+     171,
+     171
+    ],
+    [
+     173,
+     173
+    ],
+    [
+     175,
+     175
+    ],
+    [
+     177,
+     177
+    ],
+    [
+     179,
+     179
+    ],
+    [
+     181,
+     181
+    ],
+    [
+     183,
+     183
+    ],
+    [
+     227,
+     270
+    ],
+    [
+     279,
+     307
+    ]
+   ]
+  },
+  {
+   "episode_id": "e2aec184a5558ffdf704700236d38d30398a0d58820744f1966034ff5452b63d",
+   "split": "train",
+   "max_abs_xy_m": 0.8903,
+   "far": false,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 332,
+   "frames_beyond": [
+    [
+     92,
+     147
+    ],
+    [
+     149,
+     171
+    ],
+    [
+     303,
+     331
+    ]
+   ]
+  },
+  {
+   "episode_id": "e2c6f48162bf29034940113f3cd7d0f267d71ff286da4d09542bf81b596e410f",
+   "split": "train",
+   "max_abs_xy_m": 0.821,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 673,
+   "frames_beyond": [
+    [
+     79,
+     258
+    ],
+    [
+     284,
+     301
+    ]
+   ]
+  },
+  {
+   "episode_id": "e3053950f47131abb2c880401e2d7be267d5eb0537cf2697dc52fa9357a6268a",
+   "split": "train",
+   "max_abs_xy_m": 0.8424,
+   "far": false,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 333,
+   "frames_beyond": [
+    [
+     154,
+     186
+    ]
+   ]
+  },
+  {
+   "episode_id": "e4f59db348434d8e5c2d82aadad7e52531d8da11b443300740783a9c456f670b",
+   "split": "train",
+   "max_abs_xy_m": 0.8787,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 323,
+   "frames_beyond": [
+    [
+     80,
+     149
+    ]
+   ]
+  },
+  {
+   "episode_id": "e5353437c37964bb2d6ba0b9c049fa558c8f1dcd4e2f238e7de6b9ef334b111e",
+   "split": "train",
+   "max_abs_xy_m": 0.8033,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 405,
+   "frames_beyond": [
+    [
+     10,
+     404
+    ]
+   ]
+  },
+  {
+   "episode_id": "e57c482f26dd3eb12547ea59cfa224c1f667c9e84a7bf7fb7626029de3239bc1",
+   "split": "train",
+   "max_abs_xy_m": 0.9342,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 468,
+   "frames_beyond": [
+    [
+     295,
+     340
+    ]
+   ]
+  },
+  {
+   "episode_id": "e59383febc3137275cb8c8624c97bccad672670ab84ccc0a1bfaca9a19ef109b",
+   "split": "train",
+   "max_abs_xy_m": 0.806,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 912,
+   "frames_beyond": [
+    [
+     10,
+     911
+    ]
+   ]
+  },
+  {
+   "episode_id": "e667e2b68e40cd2215203750b3b69d1a655225bd0b2c58f77f0e7e0369412dce",
+   "split": "train",
+   "max_abs_xy_m": 0.8458,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 290,
+   "frames_beyond": [
+    [
+     270,
+     280
+    ]
+   ]
+  },
+  {
+   "episode_id": "e7224548451fe8c9413d6179983c1eba5be8329e71a19fd48e2ac1346789c288",
+   "split": "train",
+   "max_abs_xy_m": 0.8142,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 515,
+   "frames_beyond": [
+    [
+     313,
+     314
+    ],
+    [
+     317,
+     514
+    ]
+   ]
+  },
+  {
+   "episode_id": "e746dff2741211d7fcbc7abba398ef296ffe81ddf5673446fed7f77b5903688f",
+   "split": "train",
+   "max_abs_xy_m": 0.8622,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 570,
+   "frames_beyond": [
+    [
+     10,
+     569
+    ]
+   ]
+  },
+  {
+   "episode_id": "e7b476377ab6aeb88f6c748146ba31fc16736e3d5e4191dc9f9855f5edf4bd4b",
+   "split": "train",
+   "max_abs_xy_m": 0.8638,
+   "far": false,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 324,
+   "frames_beyond": [
+    [
+     10,
+     323
+    ]
+   ]
+  },
+  {
+   "episode_id": "e80294ab5a9d159e21d80caef8f6af56ddd544fb7eec37e8b6c1940fbf72f3b5",
+   "split": "train",
+   "max_abs_xy_m": 0.9371,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 661,
+   "frames_beyond": [
+    [
+     324,
+     370
+    ]
+   ]
+  },
+  {
+   "episode_id": "e97fd0a3586f8aeec2ef2d44c3429146a958acf795a6348557afc5492b03cec9",
+   "split": "train",
+   "max_abs_xy_m": 0.8537,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 449,
+   "frames_beyond": [
+    [
+     10,
+     448
+    ]
+   ]
+  },
+  {
+   "episode_id": "eb0616199298d4123ae16493fa78c29e739df8f4d152c0dfbb971197a21bb369",
+   "split": "train",
+   "max_abs_xy_m": 0.8009,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 673,
+   "frames_beyond": [
+    [
+     10,
+     672
+    ]
+   ]
+  },
+  {
+   "episode_id": "eb33653027740084f908eec981fff42dbf9266fbb8c319fc4bced5411cfcc502",
+   "split": "train",
+   "max_abs_xy_m": 0.8442,
+   "far": false,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 294,
+   "frames_beyond": [
+    [
+     120,
+     143
+    ],
+    [
+     162,
+     169
+    ],
+    [
+     192,
+     194
+    ],
+    [
+     244,
+     293
+    ]
+   ]
+  },
+  {
+   "episode_id": "ebc3a900e906b43f91b9e66c6e753161a310f5c2d7204b5ce516685015cb0d19",
+   "split": "train",
+   "max_abs_xy_m": 0.816,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 392,
+   "frames_beyond": [
+    [
+     10,
+     391
+    ]
+   ]
+  },
+  {
+   "episode_id": "ecb19607b46f392af2dc50ec96487f058edd147accca252a3974f3acd3f98bff",
+   "split": "train",
+   "max_abs_xy_m": 0.8029,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 505,
+   "frames_beyond": [
+    [
+     10,
+     504
+    ]
+   ]
+  },
+  {
+   "episode_id": "eccf07e4fd28d302711a15c1c8aa12b17bf7a2227b4a2ee0dd5303e2911cbe88",
+   "split": "train",
+   "max_abs_xy_m": 0.811,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 393,
+   "frames_beyond": [
+    [
+     362,
+     371
+    ]
+   ]
+  },
+  {
+   "episode_id": "edecba9e3d964f0a53a648ac79fcca27a34e1b4ce54c30524f0525f82e4588c0",
+   "split": "train",
+   "max_abs_xy_m": 0.8197,
+   "far": false,
+   "kinds": [
+    "manipulated"
+   ],
+   "frames": 740,
+   "frames_beyond": [
+    [
+     546,
+     722
+    ]
+   ]
+  },
+  {
+   "episode_id": "edf909dd52533b52613dad32752f9e06c482560997399b564fbac9f5af3d99aa",
+   "split": "train",
+   "max_abs_xy_m": 0.8259,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 604,
+   "frames_beyond": [
+    [
+     155,
+     165
+    ],
+    [
+     167,
+     185
+    ]
+   ]
+  },
+  {
+   "episode_id": "ef3e04f14b5da115e4120c957a2669f3981ded83f07672f0a806b7e6e958d65a",
+   "split": "train",
+   "max_abs_xy_m": 0.8208,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 526,
+   "frames_beyond": [
+    [
+     10,
+     525
+    ]
+   ]
+  },
+  {
+   "episode_id": "f14af15d7d559302ccf9bd1b0d72c5f5e37828c7a61103c7aad720406cab73c2",
+   "split": "train",
+   "max_abs_xy_m": 0.8187,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 321,
+   "frames_beyond": [
+    [
+     83,
+     101
+    ],
+    [
+     112,
+     122
+    ]
+   ]
+  },
+  {
+   "episode_id": "f172dbcf297076c68cb7cbc77897084e1c56f00df3f995b91fab026a99317500",
+   "split": "train",
+   "max_abs_xy_m": 0.8611,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 382,
+   "frames_beyond": [
+    [
+     32,
+     381
+    ]
+   ]
+  },
+  {
+   "episode_id": "f223ad2c92550e50eacc6089e1b354763ee362eab9a91ddaa9fc54be04098411",
+   "split": "train",
+   "max_abs_xy_m": 0.8122,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 774,
+   "frames_beyond": [
+    [
+     80,
+     98
+    ],
+    [
+     107,
+     230
+    ]
+   ]
+  },
+  {
+   "episode_id": "f2a10a1d97aadca7c08ca817c126641c1eccc512f37df31753a10b5b6fbda15e",
+   "split": "train",
+   "max_abs_xy_m": 0.8042,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 294,
+   "frames_beyond": [
+    [
+     123,
+     128
+    ]
+   ]
+  },
+  {
+   "episode_id": "f3f0d13b62f9344f61bd8256f129b509011a7062e57ca4c18da68e1ffd703226",
+   "split": "train",
+   "max_abs_xy_m": 0.8136,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 494,
+   "frames_beyond": [
+    [
+     10,
+     493
+    ]
+   ]
+  },
+  {
+   "episode_id": "f42bfc02f2a56831125b6abacffa412f7b09b58edb621195cbf3c554213cce88",
+   "split": "train",
+   "max_abs_xy_m": 0.8577,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 434,
+   "frames_beyond": [
+    [
+     193,
+     433
+    ]
+   ]
+  },
+  {
+   "episode_id": "f4810ee7e11ee43eb88388b301c8a8cc823d25cc5768bc9248487cd942214ded",
+   "split": "train",
+   "max_abs_xy_m": 0.8222,
+   "far": false,
+   "kinds": [
+    "manipulated"
+   ],
+   "frames": 532,
+   "frames_beyond": [
+    [
+     462,
+     531
+    ]
+   ]
+  },
+  {
+   "episode_id": "f4930f336e63ccd8bc5df0ace5ddd77ad50be6413a1acd60c401787c6f0c3da3",
+   "split": "train",
+   "max_abs_xy_m": 0.8103,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 691,
+   "frames_beyond": [
+    [
+     421,
+     690
+    ]
+   ]
+  },
+  {
+   "episode_id": "f54d4f14833a650f9f7d2f9384a3b817db5cd4b04a88fe116fef210ab096abe0",
+   "split": "train",
+   "max_abs_xy_m": 0.8026,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 654,
+   "frames_beyond": [
+    [
+     294,
+     297
+    ]
+   ]
+  },
+  {
+   "episode_id": "f567773992da64ba4f6d0ce5e7837bb1703c244d2342200f9f713212d22c9317",
+   "split": "train",
+   "max_abs_xy_m": 0.8029,
+   "far": false,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 704,
+   "frames_beyond": [
+    [
+     74,
+     75
+    ],
+    [
+     212,
+     215
+    ],
+    [
+     222,
+     223
+    ]
+   ]
+  },
+  {
+   "episode_id": "f5a435c200ca76c310749b4b355f9d31995edda4b3c876d6d200c7b43de75d68",
+   "split": "train",
+   "max_abs_xy_m": 1.0786,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 456,
+   "frames_beyond": [
+    [
+     396,
+     455
+    ]
+   ]
+  },
+  {
+   "episode_id": "f7e50ad78aa085a969bca63b7221f26f9829450bd69a5b5bb928291f9eeaaffc",
+   "split": "train",
+   "max_abs_xy_m": 0.8344,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 318,
+   "frames_beyond": [
+    [
+     10,
+     317
+    ]
+   ]
+  },
+  {
+   "episode_id": "f85b7008c478b911c62abae5378f626ae0664ca5302fd7f78edf8773503a2067",
+   "split": "train",
+   "max_abs_xy_m": 0.8475,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 408,
+   "frames_beyond": [
+    [
+     10,
+     407
+    ]
+   ]
+  },
+  {
+   "episode_id": "f88cc2b41e22e2cfa55ee28c1ff5ccf05d6d5b36476b5dcb9318ac83a89cfb26",
+   "split": "train",
+   "max_abs_xy_m": 0.8244,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 408,
+   "frames_beyond": [
+    [
+     10,
+     407
+    ]
+   ]
+  },
+  {
+   "episode_id": "f950956ea42e847dc2197b03613445b4d583f284c11ca79685b62e1303724eb9",
+   "split": "train",
+   "max_abs_xy_m": 0.844,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 346,
+   "frames_beyond": [
+    [
+     162,
+     169
+    ],
+    [
+     188,
+     215
+    ],
+    [
+     217,
+     217
+    ]
+   ]
+  },
+  {
+   "episode_id": "f9c1bbd7ec4e9bc5436522cd4e98e63d2a11c463f97f3f8adabb7ed36cbb8cee",
+   "split": "train",
+   "max_abs_xy_m": 0.8651,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 314,
+   "frames_beyond": [
+    [
+     10,
+     313
+    ]
+   ]
+  },
+  {
+   "episode_id": "fa66f3ab99fa768dc52c2c62227dd60f7208366b89a9c7691967d67a21b372c3",
+   "split": "train",
+   "max_abs_xy_m": 0.8337,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 581,
+   "frames_beyond": [
+    [
+     392,
+     580
+    ]
+   ]
+  },
+  {
+   "episode_id": "faa906d127bb9d5496e34e2f280bc272c42ca1af516b714cfc0b06864ab32f38",
+   "split": "train",
+   "max_abs_xy_m": 0.8409,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 318,
+   "frames_beyond": [
+    [
+     10,
+     317
+    ]
+   ]
+  },
+  {
+   "episode_id": "faad30f654b03ac9d0d15b7d78749779e5b1b3cf7fbe0c699767debb9e39853a",
+   "split": "train",
+   "max_abs_xy_m": 0.8718,
+   "far": false,
+   "kinds": [
+    "gripper",
+    "manipulated"
+   ],
+   "frames": 379,
+   "frames_beyond": [
+    [
+     70,
+     177
+    ],
+    [
+     193,
+     260
+    ],
+    [
+     265,
+     378
+    ]
+   ]
+  },
+  {
+   "episode_id": "fad819cca953a75ab9b5ae70599c04cd84f2a7bdb50210865a4ef11e291dfb46",
+   "split": "train",
+   "max_abs_xy_m": 1.3059,
+   "far": true,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 329,
+   "frames_beyond": [
+    [
+     292,
+     328
+    ]
+   ]
+  },
+  {
+   "episode_id": "fb71bf76034af9fcc38d64966313b976b60438072e670c7e55f49381025ae52c",
+   "split": "train",
+   "max_abs_xy_m": 0.8013,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 392,
+   "frames_beyond": [
+    [
+     10,
+     391
+    ]
+   ]
+  },
+  {
+   "episode_id": "fd05a86302cbae1bf4a4c248dd458afa22eed35921914b02760c0ba2e6829c95",
+   "split": "train",
+   "max_abs_xy_m": 0.8251,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 861,
+   "frames_beyond": [
+    [
+     10,
+     860
+    ]
+   ]
+  },
+  {
+   "episode_id": "fd5b43c4a2031bb2132b02a1f5a6c333c97fd116fc820294b23e0b1eaa9e3ecd",
+   "split": "train",
+   "max_abs_xy_m": 0.973,
+   "far": true,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 365,
+   "frames_beyond": [
+    [
+     301,
+     364
+    ]
+   ]
+  },
+  {
+   "episode_id": "fea2f9b21b249f83a3be762ce9f000f2f3d331ebe2375fd786463d81d050a12d",
+   "split": "train",
+   "max_abs_xy_m": 0.865,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 323,
+   "frames_beyond": [
+    [
+     72,
+     125
+    ],
+    [
+     176,
+     282
+    ],
+    [
+     287,
+     294
+    ],
+    [
+     307,
+     308
+    ],
+    [
+     314,
+     322
+    ]
+   ]
+  },
+  {
+   "episode_id": "fed635e2c87b8cf2d77bf602ec8dd9e3443a7509afa25fecd33465e512587871",
+   "split": "train",
+   "max_abs_xy_m": 0.8151,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 711,
+   "frames_beyond": [
+    [
+     10,
+     710
+    ]
+   ]
+  },
+  {
+   "episode_id": "ff594273e4a7012599b5437ad0c892fca966b5153d84496f1e6960e6967a485b",
+   "split": "train",
+   "max_abs_xy_m": 0.8096,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 333,
+   "frames_beyond": [
+    [
+     86,
+     92
+    ],
+    [
+     127,
+     133
+    ],
+    [
+     259,
+     265
+    ],
+    [
+     284,
+     290
+    ]
+   ]
+  },
+  {
+   "episode_id": "ffe4fd4a9ee2d7fb6fa6b128bb352a03565bc55d515f87a46b2b52d184735c5b",
+   "split": "train",
+   "max_abs_xy_m": 0.8538,
+   "far": false,
+   "kinds": [
+    "gripper"
+   ],
+   "frames": 323,
+   "frames_beyond": [
+    [
+     72,
+     126
+    ],
+    [
+     200,
+     219
+    ],
+    [
+     230,
+     245
+    ],
+    [
+     254,
+     269
+    ],
+    [
+     281,
+     294
+    ],
+    [
+     305,
+     306
+    ],
+    [
+     312,
+     313
+    ]
+   ]
+  },
+  {
+   "episode_id": "ffe7954e44577c916690fcf5aff7ce58f0b933c8aa9ebf29ce4096acf03f23e3",
+   "split": "train",
+   "max_abs_xy_m": 0.8573,
+   "far": false,
+   "kinds": [
+    "other object"
+   ],
+   "frames": 641,
+   "frames_beyond": [
+    [
+     10,
+     640
+    ]
+   ]
+  }
+ ]
+}

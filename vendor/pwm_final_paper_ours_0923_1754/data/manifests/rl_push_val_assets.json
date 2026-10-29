@@ -1,0 +1,353 @@
+{
+ "kind": "rl_push_val_assets",
+ "release": "/data/group_data/katefgroup/VLA/3DPCWM/rl_push_data_09_14",
+ "objects_in_release": 1202,
+ "objects_without_episodes": [
+  "objects/libero/bbq_sauce_bottle/asset_0129.npz"
+ ],
+ "rule": {
+  "group": "asset root and category, objects with episodes",
+  "fraction": 0.1,
+  "min_objects": 5,
+  "seed": 0,
+  "selection": "numpy default_rng([seed, crc32(group)]).permutation"
+ },
+ "groups": {
+  "Bathroom_Counter/dental_floss_case": {
+   "objects": 3,
+   "held_out": 0
+  },
+  "Bathroom_Counter/drawer_organizer_insert": {
+   "objects": 10,
+   "held_out": 1
+  },
+  "Bathroom_Counter/hair_brush": {
+   "objects": 3,
+   "held_out": 0
+  },
+  "Bathroom_Counter/hair_dryer": {
+   "objects": 3,
+   "held_out": 0
+  },
+  "Bathroom_Counter/hair_straightener": {
+   "objects": 9,
+   "held_out": 1
+  },
+  "Bathroom_Counter/makeup_brush": {
+   "objects": 2,
+   "held_out": 0
+  },
+  "Bathroom_Counter/moisturizer_jar": {
+   "objects": 58,
+   "held_out": 6
+  },
+  "Bathroom_Counter/nail_polish_bottle": {
+   "objects": 1,
+   "held_out": 0
+  },
+  "Bathroom_Counter/perfume_bottle": {
+   "objects": 1,
+   "held_out": 0
+  },
+  "Bathroom_Counter/shaving_brush": {
+   "objects": 2,
+   "held_out": 0
+  },
+  "Bathroom_Counter/storage_canister": {
+   "objects": 3,
+   "held_out": 0
+  },
+  "Kitchen_Table/apple": {
+   "objects": 2,
+   "held_out": 0
+  },
+  "Kitchen_Table/avocado": {
+   "objects": 1,
+   "held_out": 0
+  },
+  "Kitchen_Table/bowl": {
+   "objects": 96,
+   "held_out": 10
+  },
+  "Kitchen_Table/butter_dish": {
+   "objects": 11,
+   "held_out": 1
+  },
+  "Kitchen_Table/colander": {
+   "objects": 15,
+   "held_out": 2
+  },
+  "Kitchen_Table/creamer": {
+   "objects": 8,
+   "held_out": 1
+  },
+  "Kitchen_Table/cup": {
+   "objects": 17,
+   "held_out": 2
+  },
+  "Kitchen_Table/digital_scale": {
+   "objects": 3,
+   "held_out": 0
+  },
+  "Kitchen_Table/food_storage_container": {
+   "objects": 12,
+   "held_out": 1
+  },
+  "Kitchen_Table/garlic_bulb": {
+   "objects": 1,
+   "held_out": 0
+  },
+  "Kitchen_Table/gravy_boat": {
+   "objects": 10,
+   "held_out": 1
+  },
+  "Kitchen_Table/handleless_basket": {
+   "objects": 47,
+   "held_out": 5
+  },
+  "Kitchen_Table/handleless_bucket": {
+   "objects": 42,
+   "held_out": 4
+  },
+  "Kitchen_Table/jam_jar": {
+   "objects": 2,
+   "held_out": 0
+  },
+  "Kitchen_Table/kitchen_timer": {
+   "objects": 2,
+   "held_out": 0
+  },
+  "Kitchen_Table/large_mixing_bowl": {
+   "objects": 15,
+   "held_out": 2
+  },
+  "Kitchen_Table/measuring_cup": {
+   "objects": 32,
+   "held_out": 3
+  },
+  "Kitchen_Table/mug": {
+   "objects": 4,
+   "held_out": 0
+  },
+  "Kitchen_Table/onion": {
+   "objects": 3,
+   "held_out": 0
+  },
+  "Kitchen_Table/orange": {
+   "objects": 3,
+   "held_out": 0
+  },
+  "Kitchen_Table/pear": {
+   "objects": 1,
+   "held_out": 0
+  },
+  "Kitchen_Table/plate": {
+   "objects": 1,
+   "held_out": 0
+  },
+  "Kitchen_Table/potato": {
+   "objects": 15,
+   "held_out": 2
+  },
+  "Kitchen_Table/serving_bowl": {
+   "objects": 50,
+   "held_out": 5
+  },
+  "Kitchen_Table/small_frying_pan": {
+   "objects": 1,
+   "held_out": 0
+  },
+  "Kitchen_Table/small_saucepan": {
+   "objects": 43,
+   "held_out": 4
+  },
+  "Kitchen_Table/small_teacup": {
+   "objects": 93,
+   "held_out": 9
+  },
+  "Kitchen_Table/sugar_bowl": {
+   "objects": 13,
+   "held_out": 1
+  },
+  "Kitchen_Table/teapot": {
+   "objects": 58,
+   "held_out": 6
+  },
+  "Kitchen_Table/tomato": {
+   "objects": 3,
+   "held_out": 0
+  },
+  "Kitchen_Table/tuna_can": {
+   "objects": 28,
+   "held_out": 3
+  },
+  "Kitchen_Table/vase": {
+   "objects": 1,
+   "held_out": 0
+  },
+  "Kitchen_Table/water_bottle": {
+   "objects": 1,
+   "held_out": 0
+  },
+  "libero/alphabet_soup_can": {
+   "objects": 2,
+   "held_out": 0
+  },
+  "libero/basket": {
+   "objects": 160,
+   "held_out": 16
+  },
+  "libero/black_bowl_1": {
+   "objects": 99,
+   "held_out": 10
+  },
+  "libero/black_bowl_2": {
+   "objects": 99,
+   "held_out": 10
+  },
+  "libero/ramekin": {
+   "objects": 48,
+   "held_out": 5
+  },
+  "libero/stove": {
+   "objects": 1,
+   "held_out": 0
+  },
+  "libero/tomato_sauce_can": {
+   "objects": 8,
+   "held_out": 1
+  },
+  "libero/white_mug": {
+   "objects": 10,
+   "held_out": 1
+  },
+  "libero/yellow_and_white_mug": {
+   "objects": 45,
+   "held_out": 4
+  }
+ },
+ "held_out_objects": 117,
+ "made": "2026-09-14 23:56",
+ "script": "scripts/dev/rl_push_manifests.py",
+ "git_commit": "1bb812ea48876b532b190de6b5a25aef1b3b709a",
+ "git_dirty": true,
+ "assets": [
+  "Bathroom_Counter/drawer_organizer_insert/asset_0044",
+  "Bathroom_Counter/hair_straightener/asset_0034",
+  "Bathroom_Counter/moisturizer_jar/asset_0003",
+  "Bathroom_Counter/moisturizer_jar/asset_0005",
+  "Bathroom_Counter/moisturizer_jar/asset_0013",
+  "Bathroom_Counter/moisturizer_jar/asset_0018",
+  "Bathroom_Counter/moisturizer_jar/asset_0043",
+  "Bathroom_Counter/moisturizer_jar/asset_0075",
+  "Kitchen_Table/bowl/asset_0005",
+  "Kitchen_Table/bowl/asset_0022",
+  "Kitchen_Table/bowl/asset_0025",
+  "Kitchen_Table/bowl/asset_0043",
+  "Kitchen_Table/bowl/asset_0051",
+  "Kitchen_Table/bowl/asset_0063",
+  "Kitchen_Table/bowl/asset_0067",
+  "Kitchen_Table/bowl/asset_0085",
+  "Kitchen_Table/bowl/asset_0094",
+  "Kitchen_Table/bowl/asset_0097",
+  "Kitchen_Table/butter_dish/asset_0011",
+  "Kitchen_Table/colander/asset_0005",
+  "Kitchen_Table/colander/asset_0010",
+  "Kitchen_Table/creamer/asset_0015",
+  "Kitchen_Table/cup/asset_0069",
+  "Kitchen_Table/cup/asset_0090",
+  "Kitchen_Table/food_storage_container/asset_0014",
+  "Kitchen_Table/gravy_boat/asset_0015",
+  "Kitchen_Table/handleless_basket/asset_0020",
+  "Kitchen_Table/handleless_basket/asset_0022",
+  "Kitchen_Table/handleless_basket/asset_0031",
+  "Kitchen_Table/handleless_basket/asset_0036",
+  "Kitchen_Table/handleless_basket/asset_0048",
+  "Kitchen_Table/handleless_bucket/asset_0008",
+  "Kitchen_Table/handleless_bucket/asset_0009",
+  "Kitchen_Table/handleless_bucket/asset_0033",
+  "Kitchen_Table/handleless_bucket/asset_0050",
+  "Kitchen_Table/large_mixing_bowl/asset_0001",
+  "Kitchen_Table/large_mixing_bowl/asset_0012",
+  "Kitchen_Table/measuring_cup/asset_0004",
+  "Kitchen_Table/measuring_cup/asset_0034",
+  "Kitchen_Table/measuring_cup/asset_0046",
+  "Kitchen_Table/potato/asset_0014",
+  "Kitchen_Table/potato/asset_0015",
+  "Kitchen_Table/serving_bowl/asset_0006",
+  "Kitchen_Table/serving_bowl/asset_0024",
+  "Kitchen_Table/serving_bowl/asset_0032",
+  "Kitchen_Table/serving_bowl/asset_0043",
+  "Kitchen_Table/serving_bowl/asset_0047",
+  "Kitchen_Table/small_saucepan/asset_0003",
+  "Kitchen_Table/small_saucepan/asset_0013",
+  "Kitchen_Table/small_saucepan/asset_0015",
+  "Kitchen_Table/small_saucepan/asset_0023",
+  "Kitchen_Table/small_teacup/asset_0008",
+  "Kitchen_Table/small_teacup/asset_0033",
+  "Kitchen_Table/small_teacup/asset_0049",
+  "Kitchen_Table/small_teacup/asset_0056",
+  "Kitchen_Table/small_teacup/asset_0067",
+  "Kitchen_Table/small_teacup/asset_0087",
+  "Kitchen_Table/small_teacup/asset_0093",
+  "Kitchen_Table/small_teacup/asset_0094",
+  "Kitchen_Table/small_teacup/asset_0099",
+  "Kitchen_Table/sugar_bowl/asset_0006",
+  "Kitchen_Table/teapot/asset_0011",
+  "Kitchen_Table/teapot/asset_0018",
+  "Kitchen_Table/teapot/asset_0027",
+  "Kitchen_Table/teapot/asset_0031",
+  "Kitchen_Table/teapot/asset_0097",
+  "Kitchen_Table/teapot/asset_0101",
+  "Kitchen_Table/tuna_can/asset_0001",
+  "Kitchen_Table/tuna_can/asset_0003",
+  "Kitchen_Table/tuna_can/asset_0019",
+  "libero/basket/asset_0002",
+  "libero/basket/asset_0003",
+  "libero/basket/asset_0004",
+  "libero/basket/asset_0009",
+  "libero/basket/asset_0026",
+  "libero/basket/asset_0030",
+  "libero/basket/asset_0050",
+  "libero/basket/asset_0064",
+  "libero/basket/asset_0074",
+  "libero/basket/asset_0089",
+  "libero/basket/asset_0093",
+  "libero/basket/asset_0095",
+  "libero/basket/asset_0109",
+  "libero/basket/asset_0115",
+  "libero/basket/asset_0119",
+  "libero/basket/asset_0147",
+  "libero/black_bowl_1/asset_0010",
+  "libero/black_bowl_1/asset_0019",
+  "libero/black_bowl_1/asset_0043",
+  "libero/black_bowl_1/asset_0054",
+  "libero/black_bowl_1/asset_0055",
+  "libero/black_bowl_1/asset_0060",
+  "libero/black_bowl_1/asset_0090",
+  "libero/black_bowl_1/asset_0093",
+  "libero/black_bowl_1/asset_0095",
+  "libero/black_bowl_1/asset_0098",
+  "libero/black_bowl_2/asset_0012",
+  "libero/black_bowl_2/asset_0014",
+  "libero/black_bowl_2/asset_0031",
+  "libero/black_bowl_2/asset_0047",
+  "libero/black_bowl_2/asset_0056",
+  "libero/black_bowl_2/asset_0058",
+  "libero/black_bowl_2/asset_0068",
+  "libero/black_bowl_2/asset_0077",
+  "libero/black_bowl_2/asset_0078",
+  "libero/black_bowl_2/asset_0097",
+  "libero/ramekin/asset_0013",
+  "libero/ramekin/asset_0023",
+  "libero/ramekin/asset_0028",
+  "libero/ramekin/asset_0031",
+  "libero/ramekin/asset_0048",
+  "libero/tomato_sauce_can/asset_0167",
+  "libero/white_mug/asset_0079",
+  "libero/yellow_and_white_mug/asset_0011",
+  "libero/yellow_and_white_mug/asset_0029",
+  "libero/yellow_and_white_mug/asset_0031",
+  "libero/yellow_and_white_mug/asset_0041"
+ ]
+}

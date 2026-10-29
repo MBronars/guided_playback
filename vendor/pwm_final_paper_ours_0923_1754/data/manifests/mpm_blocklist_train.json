@@ -1,0 +1,2064 @@
+{
+ "source": "reports/unified/data_audit_0903 (flag_mpm.py, 2026-09-03)",
+ "criterion": "an object's radius of gyration falls below 30% of its frame-0 value, or fewer than 20% of its particles have distinct positions",
+ "n": 64,
+ "blocklist": [
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/1obj/00000.tar",
+   "key": "batch_00000007",
+   "elem": 2,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.2585,
+     "E": 13407.1640625,
+     "nu": 0.06791520863771439
+    }
+   ]
+  },
+  {
+   "shard": "1obj/00000.tar",
+   "key": "batch_00000007",
+   "elem": 2,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.2585,
+     "E": 13407.1640625,
+     "nu": 0.06791520863771439
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/1obj/00002.tar",
+   "key": "batch_00000002",
+   "elem": 3,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.1711,
+     "E": 25362.818359375,
+     "nu": 0.05513712018728256
+    }
+   ]
+  },
+  {
+   "shard": "1obj/00002.tar",
+   "key": "batch_00000002",
+   "elem": 3,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.1711,
+     "E": 25362.818359375,
+     "nu": 0.05513712018728256
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/1obj/00019.tar",
+   "key": "batch_00000003",
+   "elem": 1,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.0533,
+     "E": 48198.82421875,
+     "nu": 0.08934800326824188
+    }
+   ]
+  },
+  {
+   "shard": "1obj/00019.tar",
+   "key": "batch_00000003",
+   "elem": 1,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.0533,
+     "E": 48198.82421875,
+     "nu": 0.08934800326824188
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/2obj/00003.tar",
+   "key": "batch_00000006",
+   "elem": 1,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.2432,
+     "E": 68462.8671875,
+     "nu": 0.0812692940235138
+    }
+   ]
+  },
+  {
+   "shard": "2obj/00003.tar",
+   "key": "batch_00000006",
+   "elem": 1,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.2432,
+     "E": 68462.8671875,
+     "nu": 0.0812692940235138
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/2obj/00008.tar",
+   "key": "batch_00000002",
+   "elem": 3,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.2943,
+     "E": 50312.00390625,
+     "nu": 0.09618408977985382
+    }
+   ]
+  },
+  {
+   "shard": "2obj/00008.tar",
+   "key": "batch_00000002",
+   "elem": 3,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.2943,
+     "E": 50312.00390625,
+     "nu": 0.09618408977985382
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/2obj/00007.tar",
+   "key": "batch_00000005",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.0641,
+     "E": 33238.375,
+     "nu": 0.05596897751092911
+    }
+   ]
+  },
+  {
+   "shard": "2obj/00007.tar",
+   "key": "batch_00000005",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.0641,
+     "E": 33238.375,
+     "nu": 0.05596897751092911
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/2obj/00012.tar",
+   "key": "batch_00000004",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.1297,
+     "E": 43385.6640625,
+     "nu": 0.17814935743808746
+    }
+   ]
+  },
+  {
+   "shard": "2obj/00012.tar",
+   "key": "batch_00000004",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.1297,
+     "E": 43385.6640625,
+     "nu": 0.17814935743808746
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/2obj/00015.tar",
+   "key": "batch_00000001",
+   "elem": 2,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.0134,
+     "E": 24447.34765625,
+     "nu": 0.07499411702156067
+    }
+   ]
+  },
+  {
+   "shard": "2obj/00015.tar",
+   "key": "batch_00000001",
+   "elem": 2,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.0134,
+     "E": 24447.34765625,
+     "nu": 0.07499411702156067
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/2obj/00014.tar",
+   "key": "batch_00000004",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.1761,
+     "E": 50613.6875,
+     "nu": 0.07097918540239334
+    }
+   ]
+  },
+  {
+   "shard": "2obj/00014.tar",
+   "key": "batch_00000004",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.1761,
+     "E": 50613.6875,
+     "nu": 0.07097918540239334
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/2obj/00026.tar",
+   "key": "batch_00000002",
+   "elem": 1,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.2419,
+     "E": 14352.2177734375,
+     "nu": 0.3518070876598358
+    }
+   ]
+  },
+  {
+   "shard": "2obj/00026.tar",
+   "key": "batch_00000002",
+   "elem": 1,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.2419,
+     "E": 14352.2177734375,
+     "nu": 0.3518070876598358
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/2obj/00033.tar",
+   "key": "batch_00000002",
+   "elem": 3,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.1073,
+     "E": 12702.0537109375,
+     "nu": 0.2059403955936432
+    }
+   ]
+  },
+  {
+   "shard": "2obj/00033.tar",
+   "key": "batch_00000002",
+   "elem": 3,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.1073,
+     "E": 12702.0537109375,
+     "nu": 0.2059403955936432
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/2obj/00039.tar",
+   "key": "batch_00000001",
+   "elem": 1,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.2941,
+     "E": 44154.23828125,
+     "nu": 0.17728036642074585
+    },
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.1784,
+     "E": 20782.658203125,
+     "nu": 0.060347214341163635
+    }
+   ]
+  },
+  {
+   "shard": "2obj/00039.tar",
+   "key": "batch_00000001",
+   "elem": 1,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.2941,
+     "E": 44154.23828125,
+     "nu": 0.17728036642074585
+    },
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.1784,
+     "E": 20782.658203125,
+     "nu": 0.060347214341163635
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/2obj/00048.tar",
+   "key": "batch_00000005",
+   "elem": 2,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.1237,
+     "E": 61381.078125,
+     "nu": 0.0991513729095459
+    },
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.2693,
+     "E": 61381.078125,
+     "nu": 0.0991513729095459
+    }
+   ]
+  },
+  {
+   "shard": "2obj/00048.tar",
+   "key": "batch_00000005",
+   "elem": 2,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.1237,
+     "E": 61381.078125,
+     "nu": 0.0991513729095459
+    },
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.2693,
+     "E": 61381.078125,
+     "nu": 0.0991513729095459
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/2obj/00050.tar",
+   "key": "batch_00000003",
+   "elem": 2,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.2243,
+     "E": 39469.3359375,
+     "nu": 0.1336294412612915
+    },
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.0002,
+     "E": 11730.46484375,
+     "nu": 0.11079128831624985
+    }
+   ]
+  },
+  {
+   "shard": "2obj/00050.tar",
+   "key": "batch_00000003",
+   "elem": 2,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.2243,
+     "E": 39469.3359375,
+     "nu": 0.1336294412612915
+    },
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.0002,
+     "E": 11730.46484375,
+     "nu": 0.11079128831624985
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/2obj/00051.tar",
+   "key": "batch_00000002",
+   "elem": 3,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.083,
+     "E": 18584.732421875,
+     "nu": 0.09378541260957718
+    }
+   ]
+  },
+  {
+   "shard": "2obj/00051.tar",
+   "key": "batch_00000002",
+   "elem": 3,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.083,
+     "E": 18584.732421875,
+     "nu": 0.09378541260957718
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/2obj/00051.tar",
+   "key": "batch_00000004",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.2291,
+     "E": 54913.11328125,
+     "nu": 0.050308022648096085
+    }
+   ]
+  },
+  {
+   "shard": "2obj/00051.tar",
+   "key": "batch_00000004",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.2291,
+     "E": 54913.11328125,
+     "nu": 0.050308022648096085
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/2obj/00056.tar",
+   "key": "batch_00000003",
+   "elem": 1,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.0826,
+     "E": 99491.1328125,
+     "nu": 0.05771515890955925
+    }
+   ]
+  },
+  {
+   "shard": "2obj/00056.tar",
+   "key": "batch_00000003",
+   "elem": 1,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.0826,
+     "E": 99491.1328125,
+     "nu": 0.05771515890955925
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/2obj/00058.tar",
+   "key": "batch_00000007",
+   "elem": 3,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.0576,
+     "E": 38695.35546875,
+     "nu": 0.09070516377687454
+    }
+   ]
+  },
+  {
+   "shard": "2obj/00058.tar",
+   "key": "batch_00000007",
+   "elem": 3,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.0576,
+     "E": 38695.35546875,
+     "nu": 0.09070516377687454
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/2obj/00069.tar",
+   "key": "batch_00000006",
+   "elem": 3,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.0937,
+     "E": 39723.62109375,
+     "nu": 0.07759236544370651
+    }
+   ]
+  },
+  {
+   "shard": "2obj/00069.tar",
+   "key": "batch_00000006",
+   "elem": 3,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.0937,
+     "E": 39723.62109375,
+     "nu": 0.07759236544370651
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/2obj/00068.tar",
+   "key": "batch_00000006",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.2806,
+     "E": 12898.1630859375,
+     "nu": 0.2902221083641052
+    }
+   ]
+  },
+  {
+   "shard": "2obj/00068.tar",
+   "key": "batch_00000006",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.2806,
+     "E": 12898.1630859375,
+     "nu": 0.2902221083641052
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/2obj/00068.tar",
+   "key": "batch_00000006",
+   "elem": 2,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.0001,
+     "E": 49471.55859375,
+     "nu": 0.08652810752391815
+    }
+   ]
+  },
+  {
+   "shard": "2obj/00068.tar",
+   "key": "batch_00000006",
+   "elem": 2,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.0001,
+     "E": 49471.55859375,
+     "nu": 0.08652810752391815
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/3obj/00009.tar",
+   "key": "batch_00000003",
+   "elem": 2,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.0606,
+     "E": 37619.08984375,
+     "nu": 0.05321536585688591
+    }
+   ]
+  },
+  {
+   "shard": "3obj/00009.tar",
+   "key": "batch_00000003",
+   "elem": 2,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.0606,
+     "E": 37619.08984375,
+     "nu": 0.05321536585688591
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/3obj/00012.tar",
+   "key": "batch_00000004",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.0055,
+     "E": 41827.30859375,
+     "nu": 0.0801389217376709
+    }
+   ]
+  },
+  {
+   "shard": "3obj/00012.tar",
+   "key": "batch_00000004",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.0055,
+     "E": 41827.30859375,
+     "nu": 0.0801389217376709
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/3obj/00017.tar",
+   "key": "batch_00000002",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.0002,
+     "E": 12944.693359375,
+     "nu": 0.2621573507785797
+    }
+   ]
+  },
+  {
+   "shard": "3obj/00017.tar",
+   "key": "batch_00000002",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.0002,
+     "E": 12944.693359375,
+     "nu": 0.2621573507785797
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/3obj/00017.tar",
+   "key": "batch_00000005",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.0126,
+     "E": 14458.765625,
+     "nu": 0.06776595860719681
+    }
+   ]
+  },
+  {
+   "shard": "3obj/00017.tar",
+   "key": "batch_00000005",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.0126,
+     "E": 14458.765625,
+     "nu": 0.06776595860719681
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/3obj/00017.tar",
+   "key": "batch_00000005",
+   "elem": 1,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.0014,
+     "E": 11918.9794921875,
+     "nu": 0.135178342461586
+    }
+   ]
+  },
+  {
+   "shard": "3obj/00017.tar",
+   "key": "batch_00000005",
+   "elem": 1,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.0014,
+     "E": 11918.9794921875,
+     "nu": 0.135178342461586
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/3obj/00017.tar",
+   "key": "batch_00000007",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.247,
+     "E": 29327.244140625,
+     "nu": 0.07974004000425339
+    }
+   ]
+  },
+  {
+   "shard": "3obj/00017.tar",
+   "key": "batch_00000007",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.247,
+     "E": 29327.244140625,
+     "nu": 0.07974004000425339
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/3obj/00018.tar",
+   "key": "batch_00000001",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.2905,
+     "E": 16758.595703125,
+     "nu": 0.1359085589647293
+    }
+   ]
+  },
+  {
+   "shard": "3obj/00018.tar",
+   "key": "batch_00000001",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.2905,
+     "E": 16758.595703125,
+     "nu": 0.1359085589647293
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/3obj/00025.tar",
+   "key": "batch_00000006",
+   "elem": 1,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.0872,
+     "E": 21789.759765625,
+     "nu": 0.16346290707588196
+    }
+   ]
+  },
+  {
+   "shard": "3obj/00025.tar",
+   "key": "batch_00000006",
+   "elem": 1,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.0872,
+     "E": 21789.759765625,
+     "nu": 0.16346290707588196
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/3obj/00027.tar",
+   "key": "batch_00000003",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 2,
+     "rg_ratio_min": 0.1192,
+     "E": 22895.26953125,
+     "nu": 0.052100080996751785
+    }
+   ]
+  },
+  {
+   "shard": "3obj/00027.tar",
+   "key": "batch_00000003",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 2,
+     "rg_ratio_min": 0.1192,
+     "E": 22895.26953125,
+     "nu": 0.052100080996751785
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/3obj/00033.tar",
+   "key": "batch_00000003",
+   "elem": 2,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 2,
+     "rg_ratio_min": 0.2406,
+     "E": 33412.94921875,
+     "nu": 0.12876400351524353
+    }
+   ]
+  },
+  {
+   "shard": "3obj/00033.tar",
+   "key": "batch_00000003",
+   "elem": 2,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 2,
+     "rg_ratio_min": 0.2406,
+     "E": 33412.94921875,
+     "nu": 0.12876400351524353
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/3obj/00033.tar",
+   "key": "batch_00000006",
+   "elem": 2,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.2966,
+     "E": 96425.96875,
+     "nu": 0.06445939838886261
+    }
+   ]
+  },
+  {
+   "shard": "3obj/00033.tar",
+   "key": "batch_00000006",
+   "elem": 2,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.2966,
+     "E": 96425.96875,
+     "nu": 0.06445939838886261
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/3obj/00037.tar",
+   "key": "batch_00000005",
+   "elem": 3,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.0002,
+     "E": 12867.701171875,
+     "nu": 0.2077586054801941
+    }
+   ]
+  },
+  {
+   "shard": "3obj/00037.tar",
+   "key": "batch_00000005",
+   "elem": 3,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.0002,
+     "E": 12867.701171875,
+     "nu": 0.2077586054801941
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/3obj/00040.tar",
+   "key": "batch_00000001",
+   "elem": 1,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.054,
+     "E": 16911.021484375,
+     "nu": 0.0808662474155426
+    }
+   ]
+  },
+  {
+   "shard": "3obj/00040.tar",
+   "key": "batch_00000001",
+   "elem": 1,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.054,
+     "E": 16911.021484375,
+     "nu": 0.0808662474155426
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/3obj/00045.tar",
+   "key": "batch_00000001",
+   "elem": 2,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.2911,
+     "E": 16013.0302734375,
+     "nu": 0.15427511930465698
+    }
+   ]
+  },
+  {
+   "shard": "3obj/00045.tar",
+   "key": "batch_00000001",
+   "elem": 2,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.2911,
+     "E": 16013.0302734375,
+     "nu": 0.15427511930465698
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/3obj/00044.tar",
+   "key": "batch_00000001",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 2,
+     "rg_ratio_min": 0.2865,
+     "E": 15872.783203125,
+     "nu": 0.16846652328968048
+    }
+   ]
+  },
+  {
+   "shard": "3obj/00044.tar",
+   "key": "batch_00000001",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 2,
+     "rg_ratio_min": 0.2865,
+     "E": 15872.783203125,
+     "nu": 0.16846652328968048
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/3obj/00049.tar",
+   "key": "batch_00000003",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.0625,
+     "E": 11591.3232421875,
+     "nu": 0.14139260351657867
+    }
+   ]
+  },
+  {
+   "shard": "3obj/00049.tar",
+   "key": "batch_00000003",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.0625,
+     "E": 11591.3232421875,
+     "nu": 0.14139260351657867
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/3obj/00051.tar",
+   "key": "batch_00000003",
+   "elem": 3,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.0001,
+     "E": 20427.90625,
+     "nu": 0.07918146997690201
+    }
+   ]
+  },
+  {
+   "shard": "3obj/00051.tar",
+   "key": "batch_00000003",
+   "elem": 3,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.0001,
+     "E": 20427.90625,
+     "nu": 0.07918146997690201
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/3obj/00052.tar",
+   "key": "batch_00000000",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 2,
+     "rg_ratio_min": 0.1079,
+     "E": 10786.66015625,
+     "nu": 0.1527036875486374
+    }
+   ]
+  },
+  {
+   "shard": "3obj/00052.tar",
+   "key": "batch_00000000",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 2,
+     "rg_ratio_min": 0.1079,
+     "E": 10786.66015625,
+     "nu": 0.1527036875486374
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/3obj/00059.tar",
+   "key": "batch_00000000",
+   "elem": 2,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.1464,
+     "E": 45901.375,
+     "nu": 0.08184336870908737
+    },
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.1651,
+     "E": 45901.375,
+     "nu": 0.08184336870908737
+    }
+   ]
+  },
+  {
+   "shard": "3obj/00059.tar",
+   "key": "batch_00000000",
+   "elem": 2,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.1464,
+     "E": 45901.375,
+     "nu": 0.08184336870908737
+    },
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.1651,
+     "E": 45901.375,
+     "nu": 0.08184336870908737
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/3obj/00059.tar",
+   "key": "batch_00000001",
+   "elem": 1,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.0408,
+     "E": 12839.787109375,
+     "nu": 0.10056674480438232
+    }
+   ]
+  },
+  {
+   "shard": "3obj/00059.tar",
+   "key": "batch_00000001",
+   "elem": 1,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.0408,
+     "E": 12839.787109375,
+     "nu": 0.10056674480438232
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/3obj/00059.tar",
+   "key": "batch_00000007",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 2,
+     "rg_ratio_min": 0.0001,
+     "E": 53207.6484375,
+     "nu": 0.12951435148715973
+    }
+   ]
+  },
+  {
+   "shard": "3obj/00059.tar",
+   "key": "batch_00000007",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 2,
+     "rg_ratio_min": 0.0001,
+     "E": 53207.6484375,
+     "nu": 0.12951435148715973
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/3obj/00055.tar",
+   "key": "batch_00000007",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.0738,
+     "E": 16753.740234375,
+     "nu": 0.1436052769422531
+    }
+   ]
+  },
+  {
+   "shard": "3obj/00055.tar",
+   "key": "batch_00000007",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.0738,
+     "E": 16753.740234375,
+     "nu": 0.1436052769422531
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/3obj/00058.tar",
+   "key": "batch_00000005",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.1039,
+     "E": 97832.625,
+     "nu": 0.07110486924648285
+    }
+   ]
+  },
+  {
+   "shard": "3obj/00058.tar",
+   "key": "batch_00000005",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.1039,
+     "E": 97832.625,
+     "nu": 0.07110486924648285
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/3obj/00063.tar",
+   "key": "batch_00000005",
+   "elem": 2,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.0087,
+     "E": 11699.9033203125,
+     "nu": 0.11810457706451416
+    }
+   ]
+  },
+  {
+   "shard": "3obj/00063.tar",
+   "key": "batch_00000005",
+   "elem": 2,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.0087,
+     "E": 11699.9033203125,
+     "nu": 0.11810457706451416
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/4obj/00001.tar",
+   "key": "batch_00000001",
+   "elem": 2,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 2,
+     "rg_ratio_min": 0.0004,
+     "E": 23777.876953125,
+     "nu": 0.052405647933483124
+    }
+   ]
+  },
+  {
+   "shard": "4obj/00001.tar",
+   "key": "batch_00000001",
+   "elem": 2,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 2,
+     "rg_ratio_min": 0.0004,
+     "E": 23777.876953125,
+     "nu": 0.052405647933483124
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/4obj/00009.tar",
+   "key": "batch_00000003",
+   "elem": 1,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 2,
+     "rg_ratio_min": 0.2453,
+     "E": 20939.04296875,
+     "nu": 0.21774685382843018
+    }
+   ]
+  },
+  {
+   "shard": "4obj/00009.tar",
+   "key": "batch_00000003",
+   "elem": 1,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 2,
+     "rg_ratio_min": 0.2453,
+     "E": 20939.04296875,
+     "nu": 0.21774685382843018
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/4obj/00011.tar",
+   "key": "batch_00000000",
+   "elem": 3,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 2,
+     "rg_ratio_min": 0.2652,
+     "E": 19638.0390625,
+     "nu": 0.1423167586326599
+    }
+   ]
+  },
+  {
+   "shard": "4obj/00011.tar",
+   "key": "batch_00000000",
+   "elem": 3,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 2,
+     "rg_ratio_min": 0.2652,
+     "E": 19638.0390625,
+     "nu": 0.1423167586326599
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/4obj/00017.tar",
+   "key": "batch_00000002",
+   "elem": 2,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 3,
+     "rg_ratio_min": 0.109,
+     "E": 23313.53515625,
+     "nu": 0.07617688179016113
+    }
+   ]
+  },
+  {
+   "shard": "4obj/00017.tar",
+   "key": "batch_00000002",
+   "elem": 2,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 3,
+     "rg_ratio_min": 0.109,
+     "E": 23313.53515625,
+     "nu": 0.07617688179016113
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/4obj/00017.tar",
+   "key": "batch_00000003",
+   "elem": 1,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.1012,
+     "E": 37292.69140625,
+     "nu": 0.07355750352144241
+    }
+   ]
+  },
+  {
+   "shard": "4obj/00017.tar",
+   "key": "batch_00000003",
+   "elem": 1,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.1012,
+     "E": 37292.69140625,
+     "nu": 0.07355750352144241
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/4obj/00017.tar",
+   "key": "batch_00000006",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.0001,
+     "E": 23047.044921875,
+     "nu": 0.051515836268663406
+    },
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.0,
+     "E": 10304.4482421875,
+     "nu": 0.09917598217725754
+    }
+   ]
+  },
+  {
+   "shard": "4obj/00017.tar",
+   "key": "batch_00000006",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.0001,
+     "E": 23047.044921875,
+     "nu": 0.051515836268663406
+    },
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.0,
+     "E": 10304.4482421875,
+     "nu": 0.09917598217725754
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/4obj/00015.tar",
+   "key": "batch_00000002",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.2982,
+     "E": 18485.8671875,
+     "nu": 0.07901756465435028
+    },
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.1339,
+     "E": 14052.6083984375,
+     "nu": 0.10149436444044113
+    }
+   ]
+  },
+  {
+   "shard": "4obj/00015.tar",
+   "key": "batch_00000002",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.2982,
+     "E": 18485.8671875,
+     "nu": 0.07901756465435028
+    },
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.1339,
+     "E": 14052.6083984375,
+     "nu": 0.10149436444044113
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/4obj/00015.tar",
+   "key": "batch_00000005",
+   "elem": 3,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.2706,
+     "E": 93061.25,
+     "nu": 0.059823960065841675
+    }
+   ]
+  },
+  {
+   "shard": "4obj/00015.tar",
+   "key": "batch_00000005",
+   "elem": 3,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.2706,
+     "E": 93061.25,
+     "nu": 0.059823960065841675
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/4obj/00020.tar",
+   "key": "batch_00000001",
+   "elem": 3,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.0012,
+     "E": 23682.298828125,
+     "nu": 0.21969330310821533
+    }
+   ]
+  },
+  {
+   "shard": "4obj/00020.tar",
+   "key": "batch_00000001",
+   "elem": 3,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.0012,
+     "E": 23682.298828125,
+     "nu": 0.21969330310821533
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/4obj/00026.tar",
+   "key": "batch_00000003",
+   "elem": 2,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.2727,
+     "E": 17976.69921875,
+     "nu": 0.10830441117286682
+    }
+   ]
+  },
+  {
+   "shard": "4obj/00026.tar",
+   "key": "batch_00000003",
+   "elem": 2,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.2727,
+     "E": 17976.69921875,
+     "nu": 0.10830441117286682
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/4obj/00027.tar",
+   "key": "batch_00000001",
+   "elem": 3,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.231,
+     "E": 17492.123046875,
+     "nu": 0.08071190863847733
+    }
+   ]
+  },
+  {
+   "shard": "4obj/00027.tar",
+   "key": "batch_00000001",
+   "elem": 3,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.231,
+     "E": 17492.123046875,
+     "nu": 0.08071190863847733
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/4obj/00027.tar",
+   "key": "batch_00000007",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.2894,
+     "E": 12746.6298828125,
+     "nu": 0.08094613999128342
+    }
+   ]
+  },
+  {
+   "shard": "4obj/00027.tar",
+   "key": "batch_00000007",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.2894,
+     "E": 12746.6298828125,
+     "nu": 0.08094613999128342
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/4obj/00028.tar",
+   "key": "batch_00000006",
+   "elem": 3,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.2309,
+     "E": 38694.26171875,
+     "nu": 0.10871300101280212
+    }
+   ]
+  },
+  {
+   "shard": "4obj/00028.tar",
+   "key": "batch_00000006",
+   "elem": 3,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.2309,
+     "E": 38694.26171875,
+     "nu": 0.10871300101280212
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/4obj/00033.tar",
+   "key": "batch_00000001",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.2723,
+     "E": 17119.4375,
+     "nu": 0.2762104272842407
+    }
+   ]
+  },
+  {
+   "shard": "4obj/00033.tar",
+   "key": "batch_00000001",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.2723,
+     "E": 17119.4375,
+     "nu": 0.2762104272842407
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/4obj/00034.tar",
+   "key": "batch_00000000",
+   "elem": 2,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.2195,
+     "E": 50503.47265625,
+     "nu": 0.058915749192237854
+    }
+   ]
+  },
+  {
+   "shard": "4obj/00034.tar",
+   "key": "batch_00000000",
+   "elem": 2,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.2195,
+     "E": 50503.47265625,
+     "nu": 0.058915749192237854
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/4obj/00035.tar",
+   "key": "batch_00000000",
+   "elem": 1,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 2,
+     "rg_ratio_min": 0.2757,
+     "E": 11101.109375,
+     "nu": 0.06370649486780167
+    }
+   ]
+  },
+  {
+   "shard": "4obj/00035.tar",
+   "key": "batch_00000000",
+   "elem": 1,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 2,
+     "rg_ratio_min": 0.2757,
+     "E": 11101.109375,
+     "nu": 0.06370649486780167
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/4obj/00037.tar",
+   "key": "batch_00000003",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.1415,
+     "E": 24309.19140625,
+     "nu": 0.10093355923891068
+    }
+   ]
+  },
+  {
+   "shard": "4obj/00037.tar",
+   "key": "batch_00000003",
+   "elem": 0,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.1415,
+     "E": 24309.19140625,
+     "nu": 0.10093355923891068
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/4obj/00040.tar",
+   "key": "batch_00000007",
+   "elem": 3,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.0651,
+     "E": 11186.26171875,
+     "nu": 0.13199850916862488
+    }
+   ]
+  },
+  {
+   "shard": "4obj/00040.tar",
+   "key": "batch_00000007",
+   "elem": 3,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.0651,
+     "E": 11186.26171875,
+     "nu": 0.13199850916862488
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2/webdataset_full49/4obj/00041.tar",
+   "key": "batch_00000002",
+   "elem": 3,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.1927,
+     "E": 50810.74609375,
+     "nu": 0.05676077678799629
+    }
+   ]
+  },
+  {
+   "shard": "4obj/00041.tar",
+   "key": "batch_00000002",
+   "elem": 3,
+   "root": "train",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.1927,
+     "E": 50810.74609375,
+     "nu": 0.05676077678799629
+    }
+   ],
+   "rel": true
+  }
+ ],
+ "note": "each episode appears twice: absolute shard path and root-relative path; the adapter matches either"
+}

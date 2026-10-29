@@ -1,0 +1,151 @@
+{
+ "schema_version": 1,
+ "artifact_version": "water3d-xy-p99-every-window-train-2026-09-11",
+ "units": {
+  "position": "m",
+  "translation_delta": "m/frame",
+  "rotation_delta": "rad/frame"
+ },
+ "position_half_range_m": 0.8,
+ "profiles": {
+  "xy_p99_per_domain": {
+   "particle": {
+    "mpm": [
+     0.02682609111070633,
+     0.0968426764011383
+    ],
+    "pickup": [
+     0.017173290252685547,
+     0.028820812702178955
+    ],
+    "cloth": [
+     0.0056610107421875,
+     0.0050855278968811035
+    ],
+    "pushing": [
+     0.003877609968185425,
+     0.00016488609253428876
+    ],
+    "water": [
+     0.06980974972248077,
+     0.08626770973205566
+    ]
+   },
+   "pose": {
+    "pickup": [
+     0.015384865924715996,
+     0.028212731704115868,
+     0.13007056713104248,
+     0.18876968324184418
+    ],
+    "cloth": [
+     0.0090862475335598,
+     0.0053994618356227875,
+     0.048915959894657135,
+     0.006584832910448313
+    ],
+    "pushing": [
+     0.00388200837187469,
+     0.0001652689097682014,
+     0.0026072999462485313,
+     0.05427192896604538
+    ]
+   }
+  },
+  "xy_p99_global": {
+   "translation": [
+    0.02682609111070633,
+    0.0968426764011383
+   ],
+   "rotation": [
+    0.13007056713104248,
+    0.18876968324184418
+   ]
+  }
+ },
+ "provenance": {
+  "kind": "water_entry_added",
+  "water": "Water-3D (Learning to Simulate, arXiv 2002.09405) particle scales for the opt-in water domain; every other entry and the global profile are copied from the base artifact.",
+  "base_artifact_version": "frozen-xy-p99-2026-08-28",
+  "base_file_sha256": "88fd50a7bc606dd7cb05cf9b1ac717d674f67eec01667105a5708234305dd098",
+  "fit": {
+   "script": "scripts/dev/water3d_stats.py",
+   "tfrecord": "/data/group_data/katefgroup/datasets/deepmind_lts/Water-3D/train.tfrecord",
+   "tfrecord_bytes": 75056128252,
+   "split": "train",
+   "trajectories": 1000,
+   "frame_stride": 8,
+   "fps": 25.0,
+   "context_len": 4,
+   "future_len": 16,
+   "frame": {
+    "axes": "(x, y, z)_file -> (x, -z, y)",
+    "shift_m": [
+     -0.5,
+     0.5,
+     -0.125
+    ],
+    "unit_box_m": 1.0
+   },
+   "particles": "all particles of every trajectory",
+   "estimator": "p99(abs) linear per component; xy = max(p99|x|, p99|y|); componentwise maximum over the policies used",
+   "policies_used": [
+    "uniform"
+   ],
+   "uniform_rows_per_trajectory": 4000,
+   "seed": 0,
+   "policies": {
+    "prefix": {
+     "rows": 124803984,
+     "p99_abs_xyz_m": [
+      0.11345053225755697,
+      0.11373591929674154,
+      0.11969795823097229
+     ],
+     "scale_xy_z_m": [
+      0.11373591929674154,
+      0.11969795823097229
+     ]
+    },
+    "uniform": {
+     "rows": 4000000,
+     "p99_abs_xyz_m": [
+      0.06961718559265129,
+      0.069809749126434,
+      0.08626771092414853
+     ],
+     "scale_xy_z_m": [
+      0.069809749126434,
+      0.08626771092414853
+     ]
+    }
+   }
+  },
+  "base_provenance": {
+   "kind": "exact_migration_not_refit",
+   "source_revision": "55c386c",
+   "source_generator_revision": "f1e25051d558fa1ff6092fe7dbd53c604fe94632",
+   "source_asset_pattern": "stats/unified_xy_p99{,_global}_{particle,pose_delta}_{domain}.npz",
+   "source_manifest": "stats/unified_norm_round2_manifest.json at source_revision",
+   "reference_domains": [
+    "mpm",
+    "pickup",
+    "cloth",
+    "pushing"
+   ],
+   "particle_scale_order": [
+    "translation_xy",
+    "translation_z"
+   ],
+   "pose_scale_order": [
+    "translation_xy",
+    "translation_z",
+    "rotation_xy",
+    "rotation_z"
+   ],
+   "global_aggregation": "componentwise maxima over all reference-domain particle and pose scales; particle and pose translation share the same two maxima",
+   "historical_fitting": "train episodes; particle per-axis absolute p99 with max(X,Y); pose bounds include training-policy and prefix windows",
+   "limitations": "Historical caches and sampling were not fully reproducible. This migration preserves behavior, not a new claim of calibration or holdout hygiene. Refit candidates require separate versions and audited source/window provenance."
+  }
+ }
+}

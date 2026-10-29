@@ -1,0 +1,24 @@
+# Unified 333M Transformer. Shared data/optimizer/FM defaults: utils/config.py.
+# Specialist example: data.domains=[mpm]
+# Alternative normalization: normalization.profile=xy_p99_global
+run_name: unified_transformer
+model:
+  architecture: transformer
+  dim: 768
+  depth: 15
+  heads: 12
+  num_latents: 512
+  k_neighbors: 32
+  use_rotary: true
+  use_knn_attention: true
+  gradient_checkpointing: full
+  use_stratified_encoding: true
+  use_stratified_decoding: true
+  no_action_cond: false
+  causal_temporal: true
+  bypass_compression: false
+  per_frame_knn: true
+  embed_actuatable: true
+  concat_anchor_z: true
+  rope_spatial_base: 0.04
+  rope_position_scale: 1.0

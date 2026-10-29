@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "artifact_version": "collections-xy-p99-2026-09-19-v7",
+  "units": {
+    "position": "m",
+    "translation_delta": "m/frame",
+    "rotation_delta": "rad/frame"
+  },
+  "position_half_range_m": 0.8,
+  "profiles": {
+    "xy_p99_per_domain": {
+      "particle": {
+        "mpm": [
+          0.02682609111070633,
+          0.0968426764011383
+        ],
+        "pickup": [
+          0.017173290252685547,
+          0.028820812702178955
+        ],
+        "cloth": [
+          0.0056610107421875,
+          0.0050855278968811035
+        ],
+        "pushing": [
+          0.003877609968185425,
+          0.003877609968185425
+        ],
+        "rl_push": [
+          0.04600978642702103,
+          0.020346354693174362
+        ],
+        "dex": [
+          0.012807724066078663,
+          0.01060271542519331
+        ],
+        "folding": [
+          0.0017978415125980973,
+          0.0017192107625305653
+        ],
+        "mpm_drag": [
+          0.007307460531592369,
+          0.006148903165012598
+        ],
+        "mpm_fresh": [
+          0.022365689277648926,
+          0.0766553282737732
+        ],
+        "yikai": [
+          0.012309333309531212,
+          0.01277852337807417
+        ]
+      },
+      "pose": {
+        "pickup": [
+          0.015384865924715996,
+          0.028212731704115868,
+          0.13007056713104248,
+          0.18876968324184418
+        ],
+        "cloth": [
+          0.0090862475335598,
+          0.0053994618356227875,
+          0.048915959894657135,
+          0.006584832910448313
+        ],
+        "pushing": [
+          0.00388200837187469,
+          0.00388200837187469,
+          0.05427192896604538,
+          0.05427192896604538
+        ],
+        "rl_push": [
+          0.04477221891283989,
+          0.020427057519555092,
+          0.16860361397266388,
+          0.21984519064426422
+        ],
+        "dex": [
+          0.013082708232104778,
+          0.01154370978474617,
+          0.3016091585159302,
+          0.17799130082130432
+        ],
+        "folding": [
+          0.0027446129824966192,
+          0.0028057098388671875,
+          0.01354545634239912,
+          0.00029281870229169726
+        ],
+        "yikai": [
+          0.013317001052200794,
+          0.013948393054306507,
+          0.07070989161729813,
+          0.09934215992689133
+        ]
+      }
+    },
+    "xy_p99_global": {
+      "translation": [
+        0.02682609111070633,
+        0.0968426764011383
+      ],
+      "rotation": [
+        0.13007056713104248,
+        0.18876968324184418
+      ]
+    }
+  },
+  "provenance": {
+    "base_artifact": "stats/normalization_collections_20260918_v6.json",
+    "base_sha256": "a5bea36d37400c26b6fc3d02da7f1b8b93c2ad7c6379dc0ca64d4c466fbae847",
+    "reference_values": "all other entries and the global profile unchanged",
+    "fit": {
+      "pushing": {
+        "domain": "pushing",
+        "policy": "planar task: one scale for all axes = the in-plane p99 of the v6 entry; no new fit",
+        "reason": "the v6 vertical translation and tilt scales were the p99 of motion that is almost always zero (0.165 mm, 0.0026 rad per frame), about 20 times finer than the in-plane scales, so ordinary block wobble became targets of 3 to 30 scales and a rare topple a target above 100 (clipping is off)",
+        "v6_particle": [
+          0.003877609968185425,
+          0.00016488609253428876
+        ],
+        "v6_pose": [
+          0.00388200837187469,
+          0.0001652689097682014,
+          0.0026072999462485313,
+          0.05427192896604538
+        ],
+        "particle_scales": [
+          0.003877609968185425,
+          0.003877609968185425
+        ],
+        "pose_scales": [
+          0.00388200837187469,
+          0.00388200837187469,
+          0.05427192896604538,
+          0.05427192896604538
+        ],
+        "decision": "user, 2026-09-19: one scale for all axes; train without the 533 episodes of manifests/pushing_exclusions_train_20260919.json",
+        "evidence": "two-GPU 5,001-step runs, x0 with the pose loss in sample space: v6 scales about 225 rejected steps (job 10498541), these scales with the exclusion list 0 rejected steps (job 10499806); largest normalized pushing target 111 -> 5.7"
+      }
+    },
+    "created_utc": "2026-09-19T08:15:38.238294+00:00"
+  }
+}

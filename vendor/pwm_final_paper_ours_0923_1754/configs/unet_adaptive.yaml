@@ -1,0 +1,36 @@
+# Experimental count-based allocation; see docs/UNET_ADAPTIVE_ALLOCATION.md.
+# Same architecture and optimizer recipe as unet.yaml; quality is not yet established.
+run_name: unified_unet_adaptive
+model:
+  architecture: unet
+  normalize_physics_features: true
+  unet_actions: false
+  unet_l1_rule: capped_quarter
+  unet_l1_rule_min: 128
+  unet_l1_rule_max: 512
+  unet_l1_rigid_max: 128
+  unet_l1_scene_budget: 1024
+  unet_strides: 4,4,2
+  unet_widths: 128,256,512,1024
+  unet_enc_depths: 1,2,4,8
+  unet_dec_depths: 1,2,4
+  unet_head_dim: 64
+  unet_fps_random_start: true
+  unet_dual_ffn: true
+  unet_ckpt_from_level: 0
+  unet_ckpt_seams: true
+  unet_ckpt_ingraph: true
+  unet_register_from_level: 2
+  unet_register_objs: 1
+  unet_pool_mode: pointnet
+  unet_unpool_mode: pointnet
+  unet_pool_k: 8
+  unet_interp_k: 3
+  unet_geo_r_m: 0.133155
+train:
+  compile: true
+  compile_regional: true
+  compile_dynamic: false
+  stop_after_step: 40000
+log:
+  save_every: 10000

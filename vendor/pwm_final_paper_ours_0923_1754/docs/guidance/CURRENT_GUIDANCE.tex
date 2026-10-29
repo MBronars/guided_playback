@@ -1,0 +1,419 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.85in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,booktabs,tabularx,array}
+\usepackage{algorithm,algorithmic}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+\newcommand{\relu}[1]{\left[#1\right]_+}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\rms}{\operatorname{RMS}}
+\newcommand{\mean}{\operatorname{mean}}
+\newcommand{\clip}{\operatorname{clip}_{[0,1]}}
+\newcommand{\pathcode}[1]{\nolinkurl{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\title{Current Guidance: Algorithm, Objective, and Generality}
+\author{Implementation note for ParticleDiffuser}
+\date{September 15, 2026}
+\begin{document}
+\begin{center}
+{\Large\bfseries Current Guidance: Algorithm, Objective, and Generality}\\[4pt]
+ParticleDiffuser implementation note \quad September 15, 2026
+\end{center}
+
+\textbf{Scope.} This describes the \pathcode{noise_opt} and
+\pathcode{select_refine} paths used in the September 15 guidance campaign,
+checked against code revision \pathcode{b484a309611f}.
+It is an implementation description, not a claim that the resulting plans are
+physically valid. The campaign uses a frozen, unconditional, bidirectional,
+pose-native UNet. The current unconditional entrypoint supports one entirely
+rigid scene at a time; it is not presently a general cloth/MPM planner.
+
+\textbf{Main distinction.} The optimizer is reusable: differentiate a trajectory
+cost through a frozen generator and update its initial noise. The current
+pick/place objective is specialized: it contains eight auxiliary picking
+penalties, or eleven for placing, in addition to task goals and noise
+regularization. Combining those penalties into one symbol does not make them
+a general physical law.
+
+\section{Core noise optimization}
+Let $c$ be clean observed history plus scene metadata, $g$ a requested goal,
+and $G_\theta$ the full windowed sampler. Its output $\tau$ includes both object
+and gripper motion. Model weights $\theta$ are fixed. For each rollout window
+$w$, save particle noise $z_w^p$, pose noise $z_w^q$, and model-routing RNG state
+$r_w$. Only the pose noise is changed:
+\begin{align}
+ \tau(\Delta)&=G_\theta\bigl(c,\{z_w^p,z_w^q+M_w\odot\Delta_w,r_w\}_{w=1}^W\bigr),\\
+ J(\Delta)&=L_{\rm task+aux}(\tau(\Delta);g)
+       +\lambda_z\frac{\sum_w\norm{M_w\odot\Delta_w}_F^2}{\sum_w n_w},
+ \qquad
+ \rms_{M_w}(\Delta_w)\leq\rho\quad\text{for each }w.
+\end{align}
+Here $M_w$ selects valid pose channels and $n_w$ counts its active scalar entries,
+including time. The default scope includes passive object and actuator channels;
+the actuator-only ablation masks out passive updates. The particle-noise arrays
+and routing RNG are held fixed. The regularizer penalizes change from the
+initial draw; it is \emph{not} a learned feasibility score or an exact Gaussian
+log-prior on the resulting noise.
+
+\begin{algorithm}[H]
+\caption{Current complete-rollout initial-noise optimization}
+\begin{algorithmic}[1]
+\REQUIRE Frozen generator $G_\theta$; history $c$; goal $g$; updates $I$;
+step size $\eta$; cap $\rho$; change weight $\lambda_z$
+\STATE Use a supplied initial rollout, or draw an ordinary one; retain $(z_w^p,z_w^q,r_w)$
+\STATE Initialize $\Delta_w\gets0$ for all windows; initialize Adam; $J^*\gets+\infty$
+\FOR{$i=0,\ldots,I$}
+  \STATE Regenerate \emph{all} windows from $c$, using the saved noise plus $M\odot\Delta$
+  \STATE Replay $r_w$ in each window; keep gradients through carried predicted history
+  \STATE Compute $J(\Delta)$ on the complete decoded trajectory
+  \IF{$J(\Delta)<J^*$}
+    \STATE $J^*\gets J(\Delta)$; save a detached copy of this rollout and its noise
+  \ENDIF
+  \IF{$i<I$}
+    \STATE Backpropagate through every window and denoising step to $\{\Delta_w\}$
+    \STATE $\{\Delta_w\}\gets\operatorname{AdamStep}(\{\Delta_w\},\nabla_\Delta J,\eta)$
+    \FOR{each window $w$}
+      \STATE $\Delta_w\gets M_w\odot\Delta_w$
+      \STATE $\Delta_w\gets\Delta_w\min\{1,\rho/\max(\rms_{M_w}(\Delta_w),10^{-12})\}$
+    \ENDFOR
+  \ENDIF
+\ENDFOR
+\STATE Run the separate geometric audit of the best saved trajectory
+\RETURN Best saved trajectory, optimization trace, and geometric audit
+\end{algorithmic}
+\end{algorithm}
+
+\clearpage
+\section{What one differentiable rollout does}
+The multiwindow procedure is one optimization over the whole requested future.
+It does not execute an action or acquire a new observation between windows.
+The next window conditions on the previous window's generated history.
+
+\begin{algorithm}[H]
+\caption{Windowed sampler $G_\theta$ inside each objective evaluation}
+\begin{algorithmic}[1]
+\REQUIRE Observed context $c$; horizon $H$; window length $F$; noise and RNG per window
+\STATE Initialize accumulated particles and rigid poses from the clean observations
+\WHILE{fewer than $H$ future frames have been produced}
+  \STATE Build the next window from the last $C$ accumulated context frames
+  \STATE Shorten its future to the remaining horizon; hide all future action conditioning
+  \STATE Initialize particle/pose diffusion states with that window's saved noise
+  \STATE Apply articulation masks and restore the window's saved routing RNG
+  \FOR{successive rows $k_m,k_{m+1}$ of the diffusion-forcing schedule}
+    \STATE Skip a row pair only if every frame's timestep is unchanged
+    \STATE Evaluate the frozen model with clean context and current noisy future states
+    \STATE Convert model predictions to velocities using the trained output convention
+    \STATE Update each future frame by Euler integration toward the next noise level
+    \STATE Reapply the valid pose-channel mask
+  \ENDFOR
+  \STATE Decode normalized deltas into physical poses and rigid-template particles
+  \STATE Append the window's new frames; preserve its computational graph
+\ENDWHILE
+\RETURN Accumulated object and actuator trajectories
+\end{algorithmic}
+\end{algorithm}
+
+For either diffusion state $x$ (particles or poses), the Euler update is
+\[
+ x_f^{m+1}=x_f^m-\frac{k_{m,f}-k_{m+1,f}}{T_{\rm train}}
+                  v_\theta(x^m,c,k_m)_f.
+\]
+This is the ordinary sampler inside an outer optimization. The campaign does
+not add a cost gradient at every denoising step; that is a separate optional
+method in the repository. Freezing routing RNG stabilizes random representative
+point choices; it does not freeze coordinate-dependent spatial neighborhoods.
+
+\textbf{Concrete settings.} Context $C=4$, window length $F=16$, nominal
+denoising steps $25$, pyramid schedule, and physical timestep $0.05$ s.
+$H=36$ uses windows $16+16+4$ (1.8 s); $H=68$ uses $16+16+16+16+4$ (3.4 s).
+The pyramid schedule can require more model calls than its nominal step count.
+The main runs use $I=64$, $\eta=0.03$, $\rho=0.5$, $\lambda_z=0.001$, full-frame
+updates, constant learning rate, no gradient normalization, and gradients
+across window boundaries. Smaller-budget/cap ablations are recorded separately.
+
+\textbf{Selection and optional variants.} The main campaign has geometric
+screening and augmented-Lagrangian constraints \emph{off}: the minimum weighted
+objective, including the change penalty, selects the iterate. Geometry is
+audited afterward and can fail. An optional screen elsewhere ranks full
+geometric acceptance first, non-goal geometric acceptance second, then
+interaction violation and loss. That screen is still not physics execution.
+For \pathcode{select_refine}, first sample $K=16$ complete trajectories, select
+the minimum task-plus-auxiliary cost, and run Algorithm 1 for 24 updates around
+that selected draw. No fixed grasp proposal or prescribed path is supplied.
+
+\textbf{Cost of the procedure.} The bottle/teacup campaign measured about
+23.4 minutes for 36 frames/64 updates and 43.2 minutes for 68 frames/64 updates
+on one PRO 6000 in FP32 with activation checkpointing. The former uses about
+14,040 model calls including recomputation. These are measured research-run
+costs, excluding loading/final audits/rendering, not optimized online latency.
+
+\clearpage
+\section{What is actually in the objective?}
+For the mesh-distance path used in this campaign,
+\begin{align}
+ L_{\rm task+aux}
+ &=w_g L_g+\mathbb{1}_{\rm place}\,w_R L_R
+       +\alpha\sum_{j\in\mathcal A}w_jL_j
+       +\mathbb{1}_{\rm obstacles}\,w_oL_o,\\
+ \mathcal A_{\rm pick}
+ &=\{\text{contact, rise, slip, penetration, object floor, gripper floor,
+                   joint limits, joint speed}\},\nonumber\\
+ \mathcal A_{\rm place}
+ &=\mathcal A_{\rm pick}\cup\{\text{rest, release, settle}\}.\nonumber
+\end{align}
+The default physical scale is $\alpha=1$. The zero-physical-cost ablation sets
+$\alpha=0$ while retaining position/rotation goals, noise regularization and any
+obstacle objective. Picking and placing also use different contact formulas.
+
+\small
+\begin{tabularx}{\linewidth}{@{}l r Y@{}}
+\toprule
+Term & Default weight & Meaning and assumptions\\
+\midrule
+Position goal & 1 & Mean or maximum distance over the last six frames; uses object origin.\\
+Orientation goal (place) & 0.04 & Mean geodesic rotation error; coefficient is metres/radian.\\
+Finger contact & 2 & Encourage both fingers near the lifted object; pick also rewards final proximity.\\
+Unsupported rise & 5 & Penalize upward object displacement when fingers were far at the previous frame.\\
+Slip & 1 & Penalize change in object origin in the hand frame while close and lifted.\\
+Object--gripper penetration & 5 & Mean and peak excess convex-component overlap.\\
+Object below support & 5 & Mean and peak intrusion below a supplied horizontal plane.\\
+Gripper below support & 5 & Same plane check for hand and fingers.\\
+Finger joint limits & 10 & Mean and peak excess beyond calibrated prismatic travel.\\
+Finger joint speed & 10 & Mean and peak excess per-frame travel beyond calibrated speed times $\Delta t$.\\
+Rest (place) & 5 & Put the object's lowest mesh vertex on the support plane.\\
+Release (place) & 2 & Separate both fingers from the object in the final interval.\\
+Settle (place) & 2 & Reduce final object-origin translation between frames.\\
+Obstacle clearance (optional) & 5 & Mean and peak shortfall from a 5 mm supplied-box clearance.\\
+Noise-change regularization & 0.001 & Mean squared active pose-noise change, plus a separate hard RMS cap.\\
+\bottomrule
+\end{tabularx}
+\normalsize
+
+\textbf{Counting honestly.} Picking has one goal, eight auxiliary costs and
+one noise penalty: ten scalar contributions. Placing has two goals, eleven
+auxiliary costs and one noise penalty: fourteen. Obstacles add one more. There
+are additional tolerances, gates and hold lengths; the weights are not the
+only hand-chosen quantities. The table lists the base configuration, not the
+stronger-weight ablations. The slip quantity includes changing hand coordinates
+but has no explicit object-relative-rotation term; settling only measures
+translation. The code's diagnostic key \pathcode{hand_step} refers to this
+object-in-hand coordinate change, not simply hand speed.
+
+\textbf{Why the generality concern is valid.} Noise optimization itself is a
+general numerical mechanism. Joint travel and collision geometry can be
+reused when a new robot/environment supplies those constraints. However,
+``upward without two nearby fingers'', ``stay fixed relative to the hand'',
+and ``rest on a horizontal plane then release'' encode particular manipulation
+strategies. They are inappropriate for many pushes, throws, sliding contacts,
+cloth interactions or granular flows. No grasp proposal is required, but the
+objective still contains a two-finger grasp assumption and a vertical support
+assumption. These should be disclosed as task-specific regularizers.
+
+\clearpage
+\appendix
+\section{Exact mesh-path cost definitions}
+All lengths below are in metres; write $[x]_+=\max(x,0)$ and
+$A(v)=\mean(v)+\max(v)$ over the specified entries. Let $t=0$ denote the last
+observed anchor and $t=1,\ldots,H$ future states. Let $p_t,R_t$ be the object
+origin and rotation, $h_t,Q_t$ the hand origin and rotation, and $b_t$ the
+object's lowest transformed collision-mesh vertex. Let $b^k_t$ be the lowest
+vertex of gripper link $k$, $z_s$ the support plane, and
+$\mathcal T=\{H-5,\ldots,H\}$ the six-frame goal interval.
+
+Let $s_{t,k}$ be the signed object-to-gripper distance for hand or finger $k$
+(negative for overlap). Distances use the minimum across supplied convex
+collision components. Define the farther-finger gap, lift gate, missing-contact
+gate, and object displacement in hand coordinates:
+\begin{align}
+ d_t&=\max_{k\in\{f_1,f_2\}}[s_{t,k}]_+,
+ &e_t&=[d_t-0.002]_+,\\
+ a_t&=\clip\!\left(\frac{b_t-z_s-0.003}{0.02}\right),
+ &m_t&=\clip\!\left(\frac{d_{t-1}-0.002}{0.01}\right),\\
+ u_t&=Q_t^\top(p_t-h_t),
+ &v_t&=\norm{u_t-u_{t-1}}_2.
+\end{align}
+The 2 mm contact tolerance, 3 mm support tolerance, 20 mm lift ramp and 10 mm
+missing-contact ramp are explicit design choices. The current pick contact
+cost has a four-frame terminal proximity term, even though the goal uses six.
+
+\subsection{Task goals and grasp-related penalties}
+For the main point-target experiments,
+\begin{align}
+ L_g&=\operatorname{reduce}_{t\in\mathcal T}\norm{p_t-g}_2,
+ &&\operatorname{reduce}\in\{\mean,\max\},\\
+ L_R&=\mean_{t\in\mathcal T}\operatorname{angle}(R_g^\top R_t),
+ &&\text{placing only},\\
+ L_{\rm contact}^{\rm pick}
+ &=\mean_{t=1:H}(a_te_t)+\mean_{t=H-3:H}e_t,\\
+ L_{\rm contact}^{\rm place}&=\mean_{t=1:H}(a_te_t),\\
+ L_{\rm rise}&=\mean_{t=1:H}\bigl([p_{t,z}-p_{t-1,z}]_+m_t\bigr),\\
+ L_{\rm slip}&=\mean_{t=1:H}\bigl(v_t(1-m_t)a_t\bigr).
+\end{align}
+Early comparisons use mean goal error; the selected jar/bowl replication uses
+maximum held-position error. The API also supports position regions for
+picking; that replaces the point distance with the supplied region's distance.
+None of these proximity gates tests friction, contact force or force balance.
+
+\subsection{Collision and support penalties}
+With $P_{t,k}=[-s_{t,k}-0.002]_+$ for all three gripper links,
+\begin{align}
+ L_{\rm penetration}&=\mean_{t=1:H}\max_k P_{t,k}
+                       +\max_{t=1:H,k}P_{t,k},\\
+ L_{\rm floor}^{\rm object}&=A\bigl([z_s-b_t-0.003]_+:t=1,\ldots,H\bigr),\\
+ L_{\rm floor}^{\rm gripper}&=A\bigl([z_s-b^k_t-0.003]_+:t=1,\ldots,H;
+                                  k\in\{h,f_1,f_2\}\bigr).
+\end{align}
+FCL supplies distances and witness points. The implementation preserves the
+distance value and uses frozen witnesses for a local first derivative with
+respect to poses. Collision-component selection is not differentiated, and
+feature/contact switches are nonsmooth. This is a geometric derivative, not
+differentiation through a contact simulator. Overlapping convex components
+also need not define the exact penetration distance of their union.
+
+\clearpage
+\section{Joint, placement and obstacle details}
+For finger $j$, the calibrated prismatic coordinate is reconstructed from its
+predicted position relative to the hand:
+\[
+ q_{t,j}=q_{0,j}+\left\langle
+ Q_t^\top(p^{f_j}_t-h_t)-\ell_{0,j},\,a_j^{\rm joint}\right\rangle.
+\]
+Here $\ell_{0,j}$ is its anchor offset in hand coordinates and $a_j^{\rm joint}$
+the calibrated axis. With travel limits $[q_j^-,q_j^+]$ and speed limit
+$\dot q_j^{\max}$,
+\begin{align}
+ L_{\rm joint}&=A\bigl([\max(q_j^- -q_{t,j},q_{t,j}-q_j^+)]_+:t=1:H,j\bigr),\\
+ L_{\rm joint\,speed}&=A\bigl([|q_{t,j}-q_{t-1,j}|-\dot q_j^{\max}\Delta t]_+
+                                      :t=1:H,j\bigr).
+\end{align}
+The latter is a length-valued excess per transition, not a squared velocity
+cost. There is no corresponding generic root-hand speed/acceleration penalty
+in this objective.
+
+The additional placement terms are
+\begin{align}
+ L_{\rm rest}&=\mean_{t\in\mathcal T}|b_t-z_s|,\\
+ L_{\rm release}&=\mean_{t\in\mathcal T}
+                       [0.005-\min_{j\in\{f_1,f_2\}}s_{t,j}]_+,\\
+ L_{\rm settle}&=\mean_{t=H-4:H}\norm{p_t-p_{t-1}}_2.
+\end{align}
+Release uses signed distance, so overlap is penalized as well as insufficient
+separation. The five settling transitions connect the last six states.
+
+For optional supplied static boxes, let $d^{o}_{\ell,k,b}$ be signed clearance
+of moving body $k$ from box $b$ at interpolation probe $\ell$. Include every
+supplied moving body and interpolate translation and shortest rotation from
+the observed anchor through the future. Excluding the fixed anchor from the
+optimization cost,
+\[
+ L_o=A\bigl([0.005-d^{o}_{\ell,k,b}]_+:\ell>0,k,b\bigr).
+\]
+The campaign uses three probes per transition for optimization and ten for
+the final geometric audit, which includes the anchor. This is not exact
+continuous collision detection. The obstacle boxes enter the objective and
+replay world; the frozen network does not receive them as conditioning.
+
+\section{What the optimizer does not establish}
+The default noise mask allows the optimizer to change the passive object's
+future as well as the hand's future. A small joint-trajectory cost does not
+establish that executing the hand causes that object motion. Restricting
+updates to actuator noise leaves the model jointly generative; it does not
+convert it into a verified conditional dynamics model.
+
+The geometric audit, the optimization objective and independent execution are
+distinct. The MuJoCo diagnostic commands a floating hand and articulated
+fingers while the object evolves dynamically. Converting generated achieved
+finger coordinates into motor commands uses a separate calibrated preload
+policy. The optional latched policy is a controller ablation, not a loss term.
+Neither that diagnostic nor this objective establishes source-simulator or
+hardware validity.
+
+The campaign's new jar/bowl goals give three model position hits out of four,
+but no complete independent-execution passes. These are previously inspected
+fixtures and exploratory goals, not a population success estimate. The
+zero-physical-cost comparison also produced unsupported predicted lifting and
+increased penetration. Simply deleting the auxiliary terms is therefore an
+honest baseline to test, not an established fix.
+
+\clearpage
+\section{A simpler formulation to investigate, not the current method}
+The appropriate general claim is \emph{task-cost optimization through a
+generative trajectory model}. The current objective should be described as a
+pick/place instantiation with explicit geometric regularization. It should not
+be described as a universal physical-feasibility objective.
+
+A useful separation for future work is:
+\begin{enumerate}
+ \item \textbf{Task request:} target position/orientation or another measurable
+       outcome. The task must specify success, but need not specify a grasp
+       phase schedule or a motion trajectory.
+ \item \textbf{Declared robot/environment feasibility:} joint travel, speed and
+       collision constraints supplied by the robot and environment. These
+       still require geometry, calibration and tolerances.
+ \item \textbf{Motion consistency:} whether the requested actuator motion
+       produces compatible passive-object motion across independently sampled
+       futures and, separately, independent execution.
+\end{enumerate}
+
+For example, if a qualified conditional sampler $x^{(s)}\sim
+p_\theta(x\mid c,u)$ were available for a shared actuator trajectory $u$, an
+experimental objective could take the form
+\[
+ \min_u\ \frac{1}{S}\sum_{s=1}^{S}L_g(x^{(s)})+\lambda_u R(u)
+ \quad\text{subject to declared robot/environment constraints.}
+\]
+This would reduce dependence on hand-designed ``rise'', ``slip'', and
+``release'' surrogates only if the conditional dynamics and action interface
+are reliable. The existing actuator-inpainting diagnostic is not a qualified
+conditional sampler, and this multi-draw objective is not implemented by the
+current campaign. Consistent wrong predictions would still pass an internal
+consistency check; execution validation remains necessary.
+
+The immediate comparison should expose, rather than hide, the design choices:
+goal plus noise regularization; add robot/environment geometry; then add the
+task-specific interaction terms. Compare equal planning horizons and measured
+model-evaluation budgets, retain independent evaluation seeds, and report
+goal achievement separately from geometric and execution failures. No
+generality or improvement claim follows from merely reducing the term count.
+
+\section{Source map and reproducibility}
+All source files below are in \pathcode{guidance/}, at the revision on page 1.
+
+\small
+\begin{tabularx}{\linewidth}{@{}Y Y@{}}
+\toprule
+Source & Responsibility\\
+\midrule
+\pathcode{unconditional.py} & \pathcode{noise_opt} (189),
+ \pathcode{sample_rollout} (65), \pathcode{select_then_refine} (359).\\
+\pathcode{sampler.py}, \pathcode{run_unconditional.py} & Euler sampler,
+ frozen-model CLI and objective/audit wiring.\\
+\pathcode{pick_objective.py}, \pathcode{physical_objective.py} & Base costs,
+ role/geometry features, held goals, joints and support.\\
+\pathcode{mesh_physical.py}, \pathcode{place_objective.py} & Mesh replacements
+ and placement-specific terms.\\
+\pathcode{obstacles.py}, \pathcode{collision_distance.py} & Box costs/audits
+ and FCL witness-based derivatives.\\
+\pathcode{pick_validation.py}, \pathcode{replay_control.py} & Separate
+ geometric selection rules and replay command policies.\\
+\bottomrule
+\end{tabularx}
+\normalsize
+
+Campaign records:\\
+\pathcode{validation/guidance_push_2026-09-15/}\\
+\pathcode{COMPUTE.md}, \pathcode{REPLICATION.md},
+\pathcode{PHYSICAL_ABLATION.md}, and individual \pathcode{protocol.json} files.
+The checkpoint SHA256 begins \pathcode{99ec6cc6102a0d65}.
+Earlier immutable campaign snapshots predate some optional CLI switches;
+their default behavior is represented above. Staged grasp proposals,
+augmented-Lagrangian constraints, local denoising guidance, beam search and
+feedback replanning are separate optional paths, not silently included here.
+
+\textbf{Build:} Run \pathcode{pdflatex -interaction=nonstopmode -halt-on-error}
+on this file (twice for references). It has no external figures or bibliography.
+\end{document}

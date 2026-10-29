@@ -1,0 +1,225 @@
+{
+ "source": "reports/unified/data_audit_0903 (flag_mpm.py, 2026-09-03)",
+ "criterion": "same as train; NOT applied by the adapter (eval-set comparability), listed for reference",
+ "n": 7,
+ "blocklist": [
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2_test_unseen_00001plus/1obj/00001.tar",
+   "key": "batch_00000007",
+   "elem": 2,
+   "root": "test_unseen",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.2993,
+     "E": 13033.923828125,
+     "nu": 0.29361364245414734
+    }
+   ]
+  },
+  {
+   "shard": "robert_mpm_v2_test_unseen_00001plus/1obj/00001.tar",
+   "key": "batch_00000007",
+   "elem": 2,
+   "root": "test_unseen",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.2993,
+     "E": 13033.923828125,
+     "nu": 0.29361364245414734
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2_test_unseen_00001plus/3obj/00002.tar",
+   "key": "batch_00000001",
+   "elem": 2,
+   "root": "test_unseen",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.2907,
+     "E": 189311.515625,
+     "nu": 0.05603223666548729
+    }
+   ]
+  },
+  {
+   "shard": "robert_mpm_v2_test_unseen_00001plus/3obj/00002.tar",
+   "key": "batch_00000001",
+   "elem": 2,
+   "root": "test_unseen",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.2907,
+     "E": 189311.515625,
+     "nu": 0.05603223666548729
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2_test_unseen_00001plus/3obj/00001.tar",
+   "key": "batch_00000002",
+   "elem": 0,
+   "root": "test_unseen",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.0,
+     "E": 14358.935546875,
+     "nu": 0.2512983977794647
+    }
+   ]
+  },
+  {
+   "shard": "robert_mpm_v2_test_unseen_00001plus/3obj/00001.tar",
+   "key": "batch_00000002",
+   "elem": 0,
+   "root": "test_unseen",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.0,
+     "E": 14358.935546875,
+     "nu": 0.2512983977794647
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2_test_seen/webdataset_full49/4obj/00001.tar",
+   "key": "batch_00000002",
+   "elem": 3,
+   "root": "test_seen",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.0999,
+     "E": 23337.767578125,
+     "nu": 0.21194002032279968
+    }
+   ]
+  },
+  {
+   "shard": "4obj/00001.tar",
+   "key": "batch_00000002",
+   "elem": 3,
+   "root": "test_seen",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.0999,
+     "E": 23337.767578125,
+     "nu": 0.21194002032279968
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2_test_seen/webdataset_full49/4obj/00001.tar",
+   "key": "batch_00000003",
+   "elem": 0,
+   "root": "test_seen",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 2,
+     "rg_ratio_min": 0.2076,
+     "E": 14745.8447265625,
+     "nu": 0.12057697772979736
+    }
+   ]
+  },
+  {
+   "shard": "4obj/00001.tar",
+   "key": "batch_00000003",
+   "elem": 0,
+   "root": "test_seen",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 2,
+     "rg_ratio_min": 0.2076,
+     "E": 14745.8447265625,
+     "nu": 0.12057697772979736
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2_ood_first_tar/5obj/00000.tar",
+   "key": "batch_00000001",
+   "elem": 2,
+   "root": "ood",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.0155,
+     "E": 23890.501953125,
+     "nu": 0.08310680836439133
+    }
+   ]
+  },
+  {
+   "shard": "robert_mpm_v2_ood_first_tar/5obj/00000.tar",
+   "key": "batch_00000001",
+   "elem": 2,
+   "root": "ood",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 0,
+     "rg_ratio_min": 0.0155,
+     "E": 23890.501953125,
+     "nu": 0.08310680836439133
+    }
+   ],
+   "rel": true
+  },
+  {
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/robert_mpm_v2_ood_first_tar/7obj/00000.tar",
+   "key": "batch_00000000",
+   "elem": 3,
+   "root": "ood",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.2342,
+     "E": 50990.453125,
+     "nu": 0.0922209694981575
+    }
+   ]
+  },
+  {
+   "shard": "robert_mpm_v2_ood_first_tar/7obj/00000.tar",
+   "key": "batch_00000000",
+   "elem": 3,
+   "root": "ood",
+   "reason": "COLLAPSE",
+   "objects": [
+    {
+     "obj": 1,
+     "rg_ratio_min": 0.2342,
+     "E": 50990.453125,
+     "nu": 0.0922209694981575
+    }
+   ],
+   "rel": true
+  }
+ ],
+ "note": "each episode appears twice: absolute shard path and root-relative path; the adapter matches either"
+}

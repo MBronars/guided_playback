@@ -1,0 +1,36 @@
+{
+ "source": {
+  "__url__": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00000.tar",
+  "__key__": "g20_08_half"
+ },
+ "hand_points": 200,
+ "finger_axes": [
+  [
+   0.26862387482566913,
+   0.9618681161060815,
+   0.05148729058884959
+  ],
+  [
+   -0.2686243099440519,
+   -0.9618679978108325,
+   -0.0514872304019314
+  ]
+ ],
+ "reference_slide_range_mm": [
+  43.00015085759584,
+  43.00010637439608
+ ],
+ "reference_line_residual_mm": [
+  9.96759617558531e-05,
+  0.00010337437495362813
+ ],
+ "left_right_axis_angle_deg": 2.613440040204917e-05,
+ "transfer_check": {
+  "episodes": 40,
+  "registration_mm": 0.00011593978999182391,
+  "axis_deg": 5.8031491522587755e-05,
+  "moving_fingers": 122
+ },
+ "revision": "b07e0aa",
+ "made": "2026-09-11 15:17"
+}

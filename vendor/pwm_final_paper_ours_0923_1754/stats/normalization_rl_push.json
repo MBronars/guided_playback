@@ -1,0 +1,178 @@
+{
+ "schema_version": 1,
+ "artifact_version": "rl-push-xy-p99-2026-09-15-frozen",
+ "units": {
+  "position": "m",
+  "translation_delta": "m/frame",
+  "rotation_delta": "rad/frame"
+ },
+ "position_half_range_m": 0.8,
+ "profiles": {
+  "xy_p99_per_domain": {
+   "particle": {
+    "mpm": [
+     0.02682609111070633,
+     0.0968426764011383
+    ],
+    "pickup": [
+     0.017173290252685547,
+     0.028820812702178955
+    ],
+    "cloth": [
+     0.0056610107421875,
+     0.0050855278968811035
+    ],
+    "pushing": [
+     0.003877609968185425,
+     0.00016488609253428876
+    ],
+    "rl_push": [
+     0.04639160633087158,
+     0.020081564784049988
+    ]
+   },
+   "pose": {
+    "pickup": [
+     0.015384865924715996,
+     0.028212731704115868,
+     0.13007056713104248,
+     0.18876968324184418
+    ],
+    "cloth": [
+     0.0090862475335598,
+     0.0053994618356227875,
+     0.048915959894657135,
+     0.006584832910448313
+    ],
+    "pushing": [
+     0.00388200837187469,
+     0.0001652689097682014,
+     0.0026072999462485313,
+     0.05427192896604538
+    ],
+    "rl_push": [
+     0.0452142097055912,
+     0.02023920603096485,
+     0.1665039360523224,
+     0.22025080025196075
+    ]
+   }
+  },
+  "xy_p99_global": {
+   "translation": [
+    0.02682609111070633,
+    0.0968426764011383
+   ],
+   "rotation": [
+    0.13007056713104248,
+    0.18876968324184418
+   ]
+  }
+ },
+ "provenance": {
+  "kind": "rl_push_entry_added",
+  "rl_push": "RL push release particle and pose scales for the opt-in rl_push domain; every other entry and the global profile are copied from the base artifact.",
+  "base_artifact_version": "frozen-xy-p99-2026-08-28",
+  "base_file_sha256": "88fd50a7bc606dd7cb05cf9b1ac717d674f67eec01667105a5708234305dd098",
+  "fit": {
+   "script": "scripts/dev/rl_push_stats.py",
+   "release": "/data/group_data/katefgroup-ssd/world_model/particle_world_model/releases/rl-push-lowdim-20260914",
+   "split": "train",
+   "objects": 1084,
+   "episodes": 32974,
+   "usable_episodes": 32522,
+   "excluded_episodes": 103,
+   "object_files_without_episodes": [
+    "objects/libero/bbq_sauce_bottle/asset_0129.npz"
+   ],
+   "object_files_modified": [
+    "2026-09-14 22:18:04",
+    "2026-09-14 22:51:42"
+   ],
+   "manifests_sha256": {
+    "/data/user_data/robertre/particle_world_model/.worktrees/rl-push-domain/data/manifests/rl_push_exclusions.json": "426c2b381a590003af223d5b46914cc25033096c43d435f9d891f7eeec9ee80d",
+    "/data/user_data/robertre/particle_world_model/.worktrees/rl-push-domain/data/manifests/rl_push_val_assets.json": "6597f65e8260be297336b7305f72edb6cabe8f9916666dbc665da340e22afb59"
+   },
+   "context_len": 4,
+   "future_len": 16,
+   "first_start": 3,
+   "layout": {
+    "gripper_points": [
+     241,
+     212,
+     218
+    ],
+    "object_points": 512,
+    "gripper_links_sha256": "fc6d1dbe203e1d4c303cbeed7d5945958616d400f45af7737c473f3ec7876172"
+   },
+   "estimator": "p99(abs) linear per component (data.stats_fitting._half_ranges); xy = max over x and y, rotation-vector xy likewise; componentwise maximum over the policies used",
+   "particle_rows": "32 random particles per window x every adjacent frame pair of the window",
+   "pose_rows": "future transitions of every rigid body, per-link world-frame deltas",
+   "policies_used": [
+    "prefix",
+    "uniform"
+   ],
+   "seed": 0,
+   "policies": {
+    "prefix": {
+     "windows": 32522,
+     "particle_rows": 19773376,
+     "pose_rows": 2081408,
+     "particle_xy_z_m": [
+      0.04639160633087158,
+      0.020081564784049988
+     ],
+     "pose_txy_tz_rxy_rz": [
+      0.0452142097055912,
+      0.02023920603096485,
+      0.1665039360523224,
+      0.22025080025196075
+     ]
+    },
+    "uniform": {
+     "windows": 32522,
+     "particle_rows": 19773376,
+     "pose_rows": 2081408,
+     "particle_xy_z_m": [
+      0.04542122781276703,
+      0.017340410500764847
+     ],
+     "pose_txy_tz_rxy_rz": [
+      0.044242195785045624,
+      0.015964612364768982,
+      0.15960922837257385,
+      0.2198491394519806
+     ]
+    }
+   },
+   "git_commit": "6f8fb4fc88847f55eb36ce8e2797db6112dbd1ce",
+   "git_dirty": true
+  },
+  "base_provenance": {
+   "kind": "exact_migration_not_refit",
+   "source_revision": "55c386c",
+   "source_generator_revision": "f1e25051d558fa1ff6092fe7dbd53c604fe94632",
+   "source_asset_pattern": "stats/unified_xy_p99{,_global}_{particle,pose_delta}_{domain}.npz",
+   "source_manifest": "stats/unified_norm_round2_manifest.json at source_revision",
+   "reference_domains": [
+    "mpm",
+    "pickup",
+    "cloth",
+    "pushing"
+   ],
+   "particle_scale_order": [
+    "translation_xy",
+    "translation_z"
+   ],
+   "pose_scale_order": [
+    "translation_xy",
+    "translation_z",
+    "rotation_xy",
+    "rotation_z"
+   ],
+   "global_aggregation": "componentwise maxima over all reference-domain particle and pose scales; particle and pose translation share the same two maxima",
+   "historical_fitting": "train episodes; particle per-axis absolute p99 with max(X,Y); pose bounds include training-policy and prefix windows",
+   "limitations": "Historical caches and sampling were not fully reproducible. This migration preserves behavior, not a new claim of calibration or holdout hygiene. Refit candidates require separate versions and audited source/window provenance."
+  }
+ }
+}

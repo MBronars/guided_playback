@@ -1,0 +1,75 @@
+{
+  "schema": "mpm-clean-integration-v1",
+  "date": "2026-09-13",
+  "scope": "MPM only; no SIM1/model/training/stat changes",
+  "reference_bundle": "/data/group_data/katefgroup-ssd/world_model/particle_world_model/tools/mpm-v1/template-v1",
+  "reference_bundle_sha256": "3acfb65a94a3b82ecad0e2acf2e6096896f9921bb8ce066515c00da538d4f0ea",
+  "source_worktree_commit": "6e3b6e363bfe96491b483fa4bf03c9e7d94d12ce",
+  "source_worktree_included_uncommitted_mpm_changes": true,
+  "exact_package_files": {
+    "collection/__init__.py": "4f81bdf9f8bd3fb6fcdffa409f05c3980672a4f6b9404e3ef465534ad708c151",
+    "collection/common.py": "6f7710a7c91c488fc28d0cb358ba7e0d7bd6137b74aac5a195f609507036970d",
+    "collection/consumer.py": "bacc15ab7dc2a47ebf4e013f60f8ee7b25efb430e00a23aa621efde55b9463b1",
+    "collection/lease.py": "20475735b48cf58049de9db1cb3c3461460f77c4ecbc335f84ba15db87b4a2fb",
+    "collection/storage.py": "cf3b216bda62144736bd680d6c710897a81ae28d0dd4009b2b99856a3259e8e7",
+    "collection/mpm/__init__.py": "8ac1d0e5a98368155430cc54fa2989469878e5fc36de901ebd6fc6544832c00a",
+    "collection/mpm/__main__.py": "e324fa5adfbf541d4698dab40ed5cb6c751fe1d8588463c851b12fbd769c3944",
+    "collection/mpm/asset_archive.py": "cbdc5854f49629535a36c9df6ab7cc88784bf92541d471e0387bd60fc9871e1a",
+    "collection/mpm/asset_bank_audit.py": "e09ebb6ab8180abc7f780ea5c7518739273ec9d3a705f7ee7345d6ce74301385",
+    "collection/mpm/asset_prefetch.py": "08e8aa17c4a0af808040e001c4d0a38ae7f9b2822dd7c57d8b5f862dd6ce4738",
+    "collection/mpm/asset_review.py": "2c74f1ff2551ef5dacfbe56ef383e0c62ee2aaa5b8c98d1bde8202d4554a02ea",
+    "collection/mpm/assets.py": "68c62462ad66d956bbb8da192ae2d522316d6d2afca78f4bd285237a48235df5",
+    "collection/mpm/banks.py": "992283eb29a12c1b7b1ca535360723a3c51afcde922cda743dfb71896ca75e8b",
+    "collection/mpm/clock.py": "6390bebe2b512b9e54e80488aa693099ccfec1f2f387ce9c66d972a6c90dbffb",
+    "collection/mpm/collapse.py": "16fec04abc6ad9b360efc8cfcab0f79e3cbbd9c2c2b3fd2dc15e1a9647cb685f",
+    "collection/mpm/collect.py": "855ae843cf3e5a6088c2417e012497211ee9241cdfab2bb14998154dbf51bc0c",
+    "collection/mpm/contracts.py": "48f846bdba4d6fbaee261556e2bcbe9dd7582cf959b0c6b78ecca76089105db4",
+    "collection/mpm/export.py": "5a46d86c647db389da7b660a3c83b9f7ab15421d3009e5231f1600f6ae045dde",
+    "collection/mpm/fresh_banks.py": "4db8b803758d83340fb93d7a9c5ae1e93d28016929c552fae303dd13857b28c8",
+    "collection/mpm/grouped.py": "6476bf57d72ed3e9a64d95d9168941df070093cca80923ea72e050d949f75041",
+    "collection/mpm/interactions.py": "036fb8c216a80008cbcb5d2ef3202d7a393bded434452810b4095f96711576df",
+    "collection/mpm/journal.py": "8a27d7f3087bdbdd179aca7182029ba61aff97231f672f672b0eb3b19e4b9e34",
+    "collection/mpm/kernels.py": "4b371a178226814be0063b3f20fd6422d250a8f2c9794b1b8e5fd6c85da18712",
+    "collection/mpm/material_control.py": "6cc0ad075ab4e66cdd91c295bd9e3af2b0baf98efdbf01b8185445dea4929cd5",
+    "collection/mpm/observer.py": "401d656be70493e9946f0c7b98bb7c1d082e008b8f44fa872388d305104ed356",
+    "collection/mpm/physics.py": "82b611058dfa4d572e7cae93c023a68d0c4a8c4e2f9dcc45eb56505b288502a7",
+    "collection/mpm/protocol.py": "7ba5ede3a37b5600878b99795dce39d507f554e9ff9b6b8560a7fc559adb903e",
+    "collection/mpm/recipes.py": "ed9a9f25e12078a708db6942a98ad25c30b8b92af44bf496c595f5a6dd090525",
+    "collection/mpm/recording.py": "eacf94d694cab20f19fb197ccd220f4ef31492fa8970c50c9776dd7f353353c7",
+    "collection/mpm/review.py": "86992091ad954fc4e6f56ef9fb555f3edee01fb9969efb8bba6e9d0ca8f59af3",
+    "collection/mpm/runtime.py": "adea110eb1c330545a54faa2d79cfdb4d25f8bc7cd7ce0521fbb90e1348bd9d9",
+    "collection/mpm/solver.py": "0fe764faac85d889247f181a20dd121caf39c683097fb18109b4ba77cf6e50c4",
+    "collection/mpm/state.py": "931a6e8bdcd80f3c29cdc6ebacc429912260e545def336cbf8bf3eeb84fedca6",
+    "collection/mpm/validate.py": "c16100f6d14d367744aa4ef2dc8dd1fccee8d427cc5ce586d54ac0cf92c6bb17",
+    "collection/mpm/wall_materials.py": "e5bc4c1e83b86f3bd54e7c09f50b604cc108de08d60cad7bc4aa2e773f231f16",
+    "collection/mpm/walls.py": "fdfe0d761dfbb0486420c27403c99092a3c5e8f704e1a4ce1f569fcc248e0bdc"
+  },
+  "deployment_only_changes": [
+    "mpm_ada.freeze no longer requires the archived Ada pilot sbatch",
+    "Use the shared interpreter-parameterized mpm_training_campaign.sbatch",
+    "Publisher requires committed canonical source and records REPOSITORY.json"
+  ],
+  "historical_driver_closure_retained": true,
+  "intentional_updates": {
+    "collection/mpm/physics.py": {
+      "sha256": "8b928b7e27db09d54230c984af82204580df3d1bd7d177eda6464ab8c0cf318e",
+      "reason": "2026-09-15 user-requested g256: extend integer grid admission to 256 and allow original physical wall installation for explicitly selected 100/256 grids in the same 1.5625 m box. Physical wall planes remain .03/1.47 m. Transfer/constitutive/native guard kernels and frozen campaign sources are unchanged. Native collection at 256 requires a separate measured reviewed-method gate."
+    },
+    "collection/mpm/clock.py": {
+      "sha256": "39ef78c3fb8e711f9e605eaac090a539561ccde92e92aa8a3673a1d3ff8c7310",
+      "reason": "2026-09-15 optional explicit dx_m for g256-native preparation. The default remains 1/64 m with identical passive clock selection. Finer-grid clocks use their actual cell size with the unchanged 0.4 CFL and 8 m/s advective budgets and identical saved-frame times."
+    },
+    "collection/mpm/validate.py": {
+      "sha256": "8a304658456439c7f87b8dbd2dc45471701f829187e32e819d6de8a9636e639f",
+      "reason": "2026-09-14 explicit drag v1 plus sand-free sequences v2/v3: reconstruct commands/patch, enforce 1-3 events, bounded continuous speeds/path lengths and versioned recording lengths; sequences exclude sand and side/ceiling contact and preserve provenance. V3 uses single-leg reversal of the preceding horizontal stage; legacy schedules retain their semantics. Measured settling, collapse and native wall evidence checks remain. 2026-09-15 adds explicitly versioned, pinned fragmentation screening for new dragging manifests, covering settling and driven saved positions with policy provenance in exports. Historical manifests and passive behavior are unchanged; this conservative quarantine rule is not calibrated fracture physics. Tests are not a numerical or scale certificate. Passive numerical sources and standalone passive import closure unchanged."
+    },
+    "collection/mpm/walls.py": {
+      "sha256": "f846506beaff129aaa9293f6f465c38853dc674b2f56504b95e7f725d30375fc",
+      "reason": "2026-09-15 add explicit gentle sequence v4 to v1/v2/v3 wall-evidence admission, retaining identical observation metadata/counter/coverage checks. V4 validator reconstructs three-transition ramp commands, enforces 0.25m/s maximum and mandatory pinned fragmentation policy. Historical schemas retain their original semantics. All sequences separately require strict wall-free retention. Unversioned historical drag remains unsupported."
+    },
+    "collection/mpm/collect.py": {
+      "sha256": "d8459a8e8f0c5587678436321c94f5310cb2ae50e63968ab81d858b09ebf59f6",
+      "reason": "Optional validated specification factory for configured sampling. Default specifications, physics, adaptive clock, filtering and guarded backend are unchanged. Original checkpoint hash remains above."
+    }
+  }
+}

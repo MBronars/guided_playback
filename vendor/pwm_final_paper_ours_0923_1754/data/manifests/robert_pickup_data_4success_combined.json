@@ -1,0 +1,2559 @@
+{
+  "source": "scripts/build_4success_combined_blocklist.py",
+  "per_dataset": {
+    "convex_success": {
+      "n_total": 12536,
+      "n_flagged": 191,
+      "flag_counts": {
+        "far_majority": 172,
+        "phantom": 28,
+        "teleport": 7,
+        "rot_glitch": 1,
+        "dropped": 5
+      }
+    },
+    "pick_success": {
+      "n_total": 12512,
+      "n_flagged": 28,
+      "flag_counts": {
+        "phantom": 25,
+        "far_majority": 6,
+        "teleport": 3,
+        "rot_glitch": 1
+      }
+    },
+    "upright_success": {
+      "n_total": 12500,
+      "n_flagged": 16,
+      "flag_counts": {
+        "teleport": 16,
+        "phantom": 11,
+        "dropped": 7
+      }
+    },
+    "place_success": {
+      "n_total": 7936,
+      "n_flagged": 64,
+      "flag_counts": {
+        "teleport": {
+          "count": 50,
+          "pct": 0.6300403225806451
+        },
+        "rot_glitch": {
+          "count": 9,
+          "pct": 0.11340725806451613
+        },
+        "phantom": {
+          "count": 39,
+          "pct": 0.49143145161290325
+        },
+        "dropped": {
+          "count": 0,
+          "pct": 0.0
+        },
+        "far_majority": {
+          "count": 2,
+          "pct": 0.025201612903225805
+        },
+        "static_object": {
+          "count": 0,
+          "pct": 0.0
+        },
+        "no_grasp": {
+          "count": 0,
+          "pct": 0.0
+        },
+        "any_v2": {
+          "count": 64,
+          "pct": 0.8064516129032258
+        }
+      }
+    }
+  },
+  "n_total_entries": 299,
+  "blocklist": [
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00000.tar",
+      "key": "batch_00000016",
+      "elem": 2,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00000.tar",
+      "key": "batch_00000020",
+      "elem": 3,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00000.tar",
+      "key": "batch_00000021",
+      "elem": 3,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00000.tar",
+      "key": "batch_00000036",
+      "elem": 2,
+      "flags": [
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00001.tar",
+      "key": "batch_00000084",
+      "elem": 2,
+      "flags": [
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00001.tar",
+      "key": "batch_00000107",
+      "elem": 3,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00002.tar",
+      "key": "batch_00000136",
+      "elem": 3,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00002.tar",
+      "key": "batch_00000143",
+      "elem": 3,
+      "flags": [
+        "phantom",
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00002.tar",
+      "key": "batch_00000147",
+      "elem": 2,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00002.tar",
+      "key": "batch_00000169",
+      "elem": 2,
+      "flags": [
+        "teleport",
+        "rot_glitch",
+        "phantom",
+        "dropped"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00002.tar",
+      "key": "batch_00000190",
+      "elem": 2,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00003.tar",
+      "key": "batch_00000210",
+      "elem": 0,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00003.tar",
+      "key": "batch_00000245",
+      "elem": 2,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00004.tar",
+      "key": "batch_00000257",
+      "elem": 3,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00004.tar",
+      "key": "batch_00000260",
+      "elem": 2,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00004.tar",
+      "key": "batch_00000274",
+      "elem": 0,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00004.tar",
+      "key": "batch_00000278",
+      "elem": 2,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00004.tar",
+      "key": "batch_00000283",
+      "elem": 0,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00005.tar",
+      "key": "batch_00000330",
+      "elem": 0,
+      "flags": [
+        "phantom",
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00005.tar",
+      "key": "batch_00000349",
+      "elem": 0,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00005.tar",
+      "key": "batch_00000355",
+      "elem": 0,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00005.tar",
+      "key": "batch_00000379",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00005.tar",
+      "key": "batch_00000380",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00006.tar",
+      "key": "batch_00000384",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00006.tar",
+      "key": "batch_00000437",
+      "elem": 0,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00006.tar",
+      "key": "batch_00000447",
+      "elem": 0,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00006.tar",
+      "key": "batch_00000447",
+      "elem": 3,
+      "flags": [
+        "phantom",
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00007.tar",
+      "key": "batch_00000472",
+      "elem": 3,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00007.tar",
+      "key": "batch_00000504",
+      "elem": 3,
+      "flags": [
+        "phantom",
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00008.tar",
+      "key": "batch_00000523",
+      "elem": 3,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00008.tar",
+      "key": "batch_00000545",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00009.tar",
+      "key": "batch_00000593",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00009.tar",
+      "key": "batch_00000601",
+      "elem": 2,
+      "flags": [
+        "phantom",
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00009.tar",
+      "key": "batch_00000604",
+      "elem": 0,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00009.tar",
+      "key": "batch_00000620",
+      "elem": 3,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00009.tar",
+      "key": "batch_00000624",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00010.tar",
+      "key": "batch_00000646",
+      "elem": 2,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00010.tar",
+      "key": "batch_00000658",
+      "elem": 2,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00010.tar",
+      "key": "batch_00000677",
+      "elem": 2,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00010.tar",
+      "key": "batch_00000687",
+      "elem": 2,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00011.tar",
+      "key": "batch_00000708",
+      "elem": 2,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00011.tar",
+      "key": "batch_00000716",
+      "elem": 3,
+      "flags": [
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00011.tar",
+      "key": "batch_00000741",
+      "elem": 3,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00011.tar",
+      "key": "batch_00000754",
+      "elem": 2,
+      "flags": [
+        "teleport",
+        "phantom",
+        "dropped"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00011.tar",
+      "key": "batch_00000763",
+      "elem": 2,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00012.tar",
+      "key": "batch_00000768",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00012.tar",
+      "key": "batch_00000808",
+      "elem": 3,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00012.tar",
+      "key": "batch_00000814",
+      "elem": 2,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00013.tar",
+      "key": "batch_00000879",
+      "elem": 3,
+      "flags": [
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00013.tar",
+      "key": "batch_00000891",
+      "elem": 2,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00014.tar",
+      "key": "batch_00000897",
+      "elem": 2,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00014.tar",
+      "key": "batch_00000904",
+      "elem": 3,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00014.tar",
+      "key": "batch_00000906",
+      "elem": 3,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00014.tar",
+      "key": "batch_00000908",
+      "elem": 2,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00014.tar",
+      "key": "batch_00000926",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00015.tar",
+      "key": "batch_00000963",
+      "elem": 0,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00015.tar",
+      "key": "batch_00000965",
+      "elem": 3,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00015.tar",
+      "key": "batch_00000994",
+      "elem": 2,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00015.tar",
+      "key": "batch_00001008",
+      "elem": 3,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00016.tar",
+      "key": "batch_00001086",
+      "elem": 0,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00017.tar",
+      "key": "batch_00001094",
+      "elem": 0,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00017.tar",
+      "key": "batch_00001110",
+      "elem": 2,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00017.tar",
+      "key": "batch_00001113",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00017.tar",
+      "key": "batch_00001122",
+      "elem": 0,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00017.tar",
+      "key": "batch_00001137",
+      "elem": 0,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00017.tar",
+      "key": "batch_00001150",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00018.tar",
+      "key": "batch_00001197",
+      "elem": 2,
+      "flags": [
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00018.tar",
+      "key": "batch_00001199",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00018.tar",
+      "key": "batch_00001202",
+      "elem": 0,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00019.tar",
+      "key": "batch_00001219",
+      "elem": 3,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00019.tar",
+      "key": "batch_00001225",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00019.tar",
+      "key": "batch_00001248",
+      "elem": 1,
+      "flags": [
+        "teleport",
+        "phantom",
+        "dropped"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00019.tar",
+      "key": "batch_00001253",
+      "elem": 3,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00020.tar",
+      "key": "batch_00001280",
+      "elem": 2,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00020.tar",
+      "key": "batch_00001299",
+      "elem": 3,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00020.tar",
+      "key": "batch_00001320",
+      "elem": 2,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00020.tar",
+      "key": "batch_00001323",
+      "elem": 0,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00020.tar",
+      "key": "batch_00001330",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00021.tar",
+      "key": "batch_00001351",
+      "elem": 2,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00021.tar",
+      "key": "batch_00001353",
+      "elem": 0,
+      "flags": [
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00021.tar",
+      "key": "batch_00001357",
+      "elem": 2,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00021.tar",
+      "key": "batch_00001366",
+      "elem": 0,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00021.tar",
+      "key": "batch_00001371",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00021.tar",
+      "key": "batch_00001390",
+      "elem": 1,
+      "flags": [
+        "phantom",
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00021.tar",
+      "key": "batch_00001393",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00022.tar",
+      "key": "batch_00001415",
+      "elem": 3,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00022.tar",
+      "key": "batch_00001419",
+      "elem": 3,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00022.tar",
+      "key": "batch_00001430",
+      "elem": 0,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00022.tar",
+      "key": "batch_00001435",
+      "elem": 0,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00022.tar",
+      "key": "batch_00001446",
+      "elem": 3,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00022.tar",
+      "key": "batch_00001447",
+      "elem": 2,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00022.tar",
+      "key": "batch_00001470",
+      "elem": 0,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00023.tar",
+      "key": "batch_00001481",
+      "elem": 0,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00023.tar",
+      "key": "batch_00001488",
+      "elem": 3,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00023.tar",
+      "key": "batch_00001497",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00023.tar",
+      "key": "batch_00001512",
+      "elem": 0,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00024.tar",
+      "key": "batch_00001584",
+      "elem": 0,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00024.tar",
+      "key": "batch_00001585",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00025.tar",
+      "key": "batch_00001604",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00025.tar",
+      "key": "batch_00001640",
+      "elem": 3,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00025.tar",
+      "key": "batch_00001651",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00025.tar",
+      "key": "batch_00001657",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00026.tar",
+      "key": "batch_00001685",
+      "elem": 0,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00026.tar",
+      "key": "batch_00001702",
+      "elem": 3,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00027.tar",
+      "key": "batch_00001731",
+      "elem": 2,
+      "flags": [
+        "phantom",
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00027.tar",
+      "key": "batch_00001758",
+      "elem": 0,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00027.tar",
+      "key": "batch_00001778",
+      "elem": 2,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00027.tar",
+      "key": "batch_00001784",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00027.tar",
+      "key": "batch_00001785",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00028.tar",
+      "key": "batch_00001805",
+      "elem": 0,
+      "flags": [
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00028.tar",
+      "key": "batch_00001817",
+      "elem": 3,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00028.tar",
+      "key": "batch_00001833",
+      "elem": 0,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00028.tar",
+      "key": "batch_00001833",
+      "elem": 3,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00028.tar",
+      "key": "batch_00001838",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00028.tar",
+      "key": "batch_00001839",
+      "elem": 2,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00029.tar",
+      "key": "batch_00001860",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00029.tar",
+      "key": "batch_00001865",
+      "elem": 3,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00030.tar",
+      "key": "batch_00001936",
+      "elem": 1,
+      "flags": [
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00030.tar",
+      "key": "batch_00001959",
+      "elem": 2,
+      "flags": [
+        "phantom",
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00030.tar",
+      "key": "batch_00001960",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00030.tar",
+      "key": "batch_00001963",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00031.tar",
+      "key": "batch_00002018",
+      "elem": 0,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00032.tar",
+      "key": "batch_00002097",
+      "elem": 0,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00032.tar",
+      "key": "batch_00002101",
+      "elem": 3,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00032.tar",
+      "key": "batch_00002102",
+      "elem": 3,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00032.tar",
+      "key": "batch_00002103",
+      "elem": 1,
+      "flags": [
+        "teleport",
+        "phantom",
+        "dropped"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00032.tar",
+      "key": "batch_00002107",
+      "elem": 0,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00032.tar",
+      "key": "batch_00002108",
+      "elem": 3,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00033.tar",
+      "key": "batch_00002125",
+      "elem": 3,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00033.tar",
+      "key": "batch_00002129",
+      "elem": 2,
+      "flags": [
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00033.tar",
+      "key": "batch_00002148",
+      "elem": 0,
+      "flags": [
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00033.tar",
+      "key": "batch_00002155",
+      "elem": 3,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00033.tar",
+      "key": "batch_00002163",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00034.tar",
+      "key": "batch_00002181",
+      "elem": 3,
+      "flags": [
+        "phantom",
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00034.tar",
+      "key": "batch_00002191",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00034.tar",
+      "key": "batch_00002198",
+      "elem": 2,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00034.tar",
+      "key": "batch_00002208",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00034.tar",
+      "key": "batch_00002210",
+      "elem": 3,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00034.tar",
+      "key": "batch_00002231",
+      "elem": 0,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00034.tar",
+      "key": "batch_00002236",
+      "elem": 3,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00035.tar",
+      "key": "batch_00002245",
+      "elem": 2,
+      "flags": [
+        "teleport",
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00035.tar",
+      "key": "batch_00002300",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00036.tar",
+      "key": "batch_00002307",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00036.tar",
+      "key": "batch_00002332",
+      "elem": 2,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00037.tar",
+      "key": "batch_00002382",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00037.tar",
+      "key": "batch_00002383",
+      "elem": 2,
+      "flags": [
+        "teleport",
+        "phantom",
+        "dropped"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00037.tar",
+      "key": "batch_00002390",
+      "elem": 0,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00037.tar",
+      "key": "batch_00002399",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00037.tar",
+      "key": "batch_00002428",
+      "elem": 0,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00037.tar",
+      "key": "batch_00002429",
+      "elem": 0,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00038.tar",
+      "key": "batch_00002440",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00038.tar",
+      "key": "batch_00002451",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00038.tar",
+      "key": "batch_00002451",
+      "elem": 3,
+      "flags": [
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00038.tar",
+      "key": "batch_00002458",
+      "elem": 2,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00039.tar",
+      "key": "batch_00002531",
+      "elem": 2,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00039.tar",
+      "key": "batch_00002535",
+      "elem": 2,
+      "flags": [
+        "phantom",
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00039.tar",
+      "key": "batch_00002547",
+      "elem": 2,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00040.tar",
+      "key": "batch_00002563",
+      "elem": 3,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00040.tar",
+      "key": "batch_00002570",
+      "elem": 0,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00040.tar",
+      "key": "batch_00002587",
+      "elem": 2,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00040.tar",
+      "key": "batch_00002615",
+      "elem": 3,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00041.tar",
+      "key": "batch_00002646",
+      "elem": 3,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00041.tar",
+      "key": "batch_00002659",
+      "elem": 2,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00041.tar",
+      "key": "batch_00002673",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00041.tar",
+      "key": "batch_00002680",
+      "elem": 2,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00041.tar",
+      "key": "batch_00002683",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00042.tar",
+      "key": "batch_00002702",
+      "elem": 3,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00043.tar",
+      "key": "batch_00002754",
+      "elem": 2,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00043.tar",
+      "key": "batch_00002756",
+      "elem": 0,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00043.tar",
+      "key": "batch_00002788",
+      "elem": 2,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00043.tar",
+      "key": "batch_00002805",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00044.tar",
+      "key": "batch_00002839",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00044.tar",
+      "key": "batch_00002852",
+      "elem": 3,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00044.tar",
+      "key": "batch_00002855",
+      "elem": 3,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00044.tar",
+      "key": "batch_00002868",
+      "elem": 2,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00044.tar",
+      "key": "batch_00002871",
+      "elem": 0,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00045.tar",
+      "key": "batch_00002892",
+      "elem": 2,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00045.tar",
+      "key": "batch_00002904",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00045.tar",
+      "key": "batch_00002917",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00045.tar",
+      "key": "batch_00002932",
+      "elem": 0,
+      "flags": [
+        "teleport"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00046.tar",
+      "key": "batch_00002946",
+      "elem": 2,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00046.tar",
+      "key": "batch_00002946",
+      "elem": 3,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00046.tar",
+      "key": "batch_00002972",
+      "elem": 3,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00046.tar",
+      "key": "batch_00002975",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00046.tar",
+      "key": "batch_00002983",
+      "elem": 1,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00047.tar",
+      "key": "batch_00003045",
+      "elem": 2,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00047.tar",
+      "key": "batch_00003064",
+      "elem": 2,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00048.tar",
+      "key": "batch_00003079",
+      "elem": 0,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00048.tar",
+      "key": "batch_00003099",
+      "elem": 0,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00048.tar",
+      "key": "batch_00003118",
+      "elem": 0,
+      "flags": [
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_convex_success/gpu0/00048.tar",
+      "key": "batch_00003129",
+      "elem": 2,
+      "flags": [
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_pick_success/gpu0/00001.tar",
+      "key": "batch_00000107",
+      "elem": 1,
+      "flags": [
+        "phantom",
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_pick_success/gpu0/00001.tar",
+      "key": "batch_00000120",
+      "elem": 1,
+      "flags": [
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_pick_success/gpu0/00003.tar",
+      "key": "batch_00000214",
+      "elem": 0,
+      "flags": [
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_pick_success/gpu0/00003.tar",
+      "key": "batch_00000229",
+      "elem": 0,
+      "flags": [
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_pick_success/gpu0/00006.tar",
+      "key": "batch_00000401",
+      "elem": 1,
+      "flags": [
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_pick_success/gpu0/00006.tar",
+      "key": "batch_00000428",
+      "elem": 0,
+      "flags": [
+        "phantom",
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_pick_success/gpu0/00009.tar",
+      "key": "batch_00000577",
+      "elem": 3,
+      "flags": [
+        "phantom",
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_pick_success/gpu0/00011.tar",
+      "key": "batch_00000710",
+      "elem": 1,
+      "flags": [
+        "teleport"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_pick_success/gpu0/00012.tar",
+      "key": "batch_00000804",
+      "elem": 1,
+      "flags": [
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_pick_success/gpu0/00012.tar",
+      "key": "batch_00000829",
+      "elem": 1,
+      "flags": [
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_pick_success/gpu0/00015.tar",
+      "key": "batch_00000987",
+      "elem": 3,
+      "flags": [
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_pick_success/gpu0/00016.tar",
+      "key": "batch_00001034",
+      "elem": 0,
+      "flags": [
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_pick_success/gpu0/00016.tar",
+      "key": "batch_00001072",
+      "elem": 1,
+      "flags": [
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_pick_success/gpu0/00019.tar",
+      "key": "batch_00001259",
+      "elem": 2,
+      "flags": [
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_pick_success/gpu0/00020.tar",
+      "key": "batch_00001340",
+      "elem": 3,
+      "flags": [
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_pick_success/gpu0/00020.tar",
+      "key": "batch_00001341",
+      "elem": 3,
+      "flags": [
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_pick_success/gpu0/00027.tar",
+      "key": "batch_00001731",
+      "elem": 0,
+      "flags": [
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_pick_success/gpu0/00028.tar",
+      "key": "batch_00001794",
+      "elem": 2,
+      "flags": [
+        "teleport"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_pick_success/gpu0/00028.tar",
+      "key": "batch_00001833",
+      "elem": 1,
+      "flags": [
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_pick_success/gpu0/00029.tar",
+      "key": "batch_00001871",
+      "elem": 2,
+      "flags": [
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_pick_success/gpu0/00030.tar",
+      "key": "batch_00001976",
+      "elem": 2,
+      "flags": [
+        "phantom",
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_pick_success/gpu0/00031.tar",
+      "key": "batch_00001999",
+      "elem": 0,
+      "flags": [
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_pick_success/gpu0/00032.tar",
+      "key": "batch_00002101",
+      "elem": 2,
+      "flags": [
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_pick_success/gpu0/00035.tar",
+      "key": "batch_00002256",
+      "elem": 2,
+      "flags": [
+        "rot_glitch"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_pick_success/gpu0/00037.tar",
+      "key": "batch_00002405",
+      "elem": 0,
+      "flags": [
+        "teleport",
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_pick_success/gpu0/00038.tar",
+      "key": "batch_00002461",
+      "elem": 3,
+      "flags": [
+        "phantom",
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_pick_success/gpu0/00038.tar",
+      "key": "batch_00002468",
+      "elem": 1,
+      "flags": [
+        "phantom",
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_pick_success/gpu0/00040.tar",
+      "key": "batch_00002597",
+      "elem": 2,
+      "flags": [
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_upright_success/gpu0/00001.tar",
+      "key": "batch_00000074",
+      "elem": 0,
+      "flags": [
+        "teleport",
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_upright_success/gpu0/00008.tar",
+      "key": "batch_00000526",
+      "elem": 0,
+      "flags": [
+        "teleport",
+        "phantom",
+        "dropped"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_upright_success/gpu0/00010.tar",
+      "key": "batch_00000648",
+      "elem": 0,
+      "flags": [
+        "teleport",
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_upright_success/gpu0/00011.tar",
+      "key": "batch_00000739",
+      "elem": 0,
+      "flags": [
+        "teleport",
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_upright_success/gpu0/00012.tar",
+      "key": "batch_00000788",
+      "elem": 1,
+      "flags": [
+        "teleport"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_upright_success/gpu0/00031.tar",
+      "key": "batch_00002025",
+      "elem": 3,
+      "flags": [
+        "teleport",
+        "phantom",
+        "dropped"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_upright_success/gpu0/00033.tar",
+      "key": "batch_00002144",
+      "elem": 0,
+      "flags": [
+        "teleport",
+        "phantom",
+        "dropped"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_upright_success/gpu0/00035.tar",
+      "key": "batch_00002296",
+      "elem": 2,
+      "flags": [
+        "teleport",
+        "phantom",
+        "dropped"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_upright_success/gpu0/00037.tar",
+      "key": "batch_00002401",
+      "elem": 2,
+      "flags": [
+        "teleport",
+        "phantom",
+        "dropped"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_upright_success/gpu0/00039.tar",
+      "key": "batch_00002511",
+      "elem": 0,
+      "flags": [
+        "teleport"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_upright_success/gpu0/00040.tar",
+      "key": "batch_00002588",
+      "elem": 2,
+      "flags": [
+        "teleport",
+        "phantom",
+        "dropped"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_upright_success/gpu0/00041.tar",
+      "key": "batch_00002624",
+      "elem": 3,
+      "flags": [
+        "teleport"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_upright_success/gpu0/00041.tar",
+      "key": "batch_00002627",
+      "elem": 1,
+      "flags": [
+        "teleport",
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_upright_success/gpu0/00041.tar",
+      "key": "batch_00002649",
+      "elem": 1,
+      "flags": [
+        "teleport"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_upright_success/gpu0/00041.tar",
+      "key": "batch_00002669",
+      "elem": 0,
+      "flags": [
+        "teleport",
+        "phantom",
+        "dropped"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_upright_success/gpu0/00045.tar",
+      "key": "batch_00002937",
+      "elem": 1,
+      "flags": [
+        "teleport"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00000.tar",
+      "key": "batch_00000024",
+      "elem": 0,
+      "flags": [
+        "teleport",
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00000.tar",
+      "key": "batch_00000024",
+      "elem": 3,
+      "flags": [
+        "teleport",
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00000.tar",
+      "key": "batch_00000045",
+      "elem": 3,
+      "flags": [
+        "rot_glitch"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00000.tar",
+      "key": "batch_00000053",
+      "elem": 2,
+      "flags": [
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00000.tar",
+      "key": "batch_00000059",
+      "elem": 0,
+      "flags": [
+        "teleport",
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00001.tar",
+      "key": "batch_00000070",
+      "elem": 2,
+      "flags": [
+        "rot_glitch"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00001.tar",
+      "key": "batch_00000093",
+      "elem": 3,
+      "flags": [
+        "teleport",
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00002.tar",
+      "key": "batch_00000130",
+      "elem": 0,
+      "flags": [
+        "teleport"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00003.tar",
+      "key": "batch_00000202",
+      "elem": 0,
+      "flags": [
+        "teleport",
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00003.tar",
+      "key": "batch_00000252",
+      "elem": 3,
+      "flags": [
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00004.tar",
+      "key": "batch_00000304",
+      "elem": 3,
+      "flags": [
+        "teleport",
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00004.tar",
+      "key": "batch_00000318",
+      "elem": 3,
+      "flags": [
+        "teleport"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00005.tar",
+      "key": "batch_00000328",
+      "elem": 0,
+      "flags": [
+        "teleport",
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00005.tar",
+      "key": "batch_00000369",
+      "elem": 3,
+      "flags": [
+        "teleport"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00006.tar",
+      "key": "batch_00000397",
+      "elem": 2,
+      "flags": [
+        "teleport",
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00006.tar",
+      "key": "batch_00000441",
+      "elem": 3,
+      "flags": [
+        "teleport",
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00007.tar",
+      "key": "batch_00000452",
+      "elem": 0,
+      "flags": [
+        "teleport",
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00007.tar",
+      "key": "batch_00000467",
+      "elem": 2,
+      "flags": [
+        "teleport",
+        "rot_glitch",
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00009.tar",
+      "key": "batch_00000620",
+      "elem": 0,
+      "flags": [
+        "teleport"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00009.tar",
+      "key": "batch_00000633",
+      "elem": 1,
+      "flags": [
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00010.tar",
+      "key": "batch_00000651",
+      "elem": 1,
+      "flags": [
+        "teleport"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00010.tar",
+      "key": "batch_00000671",
+      "elem": 2,
+      "flags": [
+        "teleport"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00011.tar",
+      "key": "batch_00000719",
+      "elem": 0,
+      "flags": [
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00011.tar",
+      "key": "batch_00000747",
+      "elem": 3,
+      "flags": [
+        "teleport",
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00011.tar",
+      "key": "batch_00000757",
+      "elem": 2,
+      "flags": [
+        "teleport"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00012.tar",
+      "key": "batch_00000798",
+      "elem": 2,
+      "flags": [
+        "teleport"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00013.tar",
+      "key": "batch_00000845",
+      "elem": 2,
+      "flags": [
+        "teleport",
+        "rot_glitch"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00013.tar",
+      "key": "batch_00000870",
+      "elem": 0,
+      "flags": [
+        "teleport",
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00013.tar",
+      "key": "batch_00000873",
+      "elem": 1,
+      "flags": [
+        "teleport"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00013.tar",
+      "key": "batch_00000878",
+      "elem": 1,
+      "flags": [
+        "teleport"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00014.tar",
+      "key": "batch_00000926",
+      "elem": 0,
+      "flags": [
+        "teleport"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00015.tar",
+      "key": "batch_00001000",
+      "elem": 2,
+      "flags": [
+        "teleport",
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00016.tar",
+      "key": "batch_00001027",
+      "elem": 0,
+      "flags": [
+        "teleport",
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00016.tar",
+      "key": "batch_00001074",
+      "elem": 0,
+      "flags": [
+        "teleport",
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00017.tar",
+      "key": "batch_00001101",
+      "elem": 3,
+      "flags": [
+        "teleport",
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00018.tar",
+      "key": "batch_00001186",
+      "elem": 1,
+      "flags": [
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00019.tar",
+      "key": "batch_00001256",
+      "elem": 2,
+      "flags": [
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00019.tar",
+      "key": "batch_00001267",
+      "elem": 2,
+      "flags": [
+        "teleport",
+        "phantom",
+        "far_majority"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00019.tar",
+      "key": "batch_00001276",
+      "elem": 0,
+      "flags": [
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00020.tar",
+      "key": "batch_00001292",
+      "elem": 2,
+      "flags": [
+        "teleport",
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00020.tar",
+      "key": "batch_00001311",
+      "elem": 1,
+      "flags": [
+        "teleport"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00020.tar",
+      "key": "batch_00001314",
+      "elem": 1,
+      "flags": [
+        "teleport"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00022.tar",
+      "key": "batch_00001412",
+      "elem": 3,
+      "flags": [
+        "teleport",
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00022.tar",
+      "key": "batch_00001466",
+      "elem": 1,
+      "flags": [
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00023.tar",
+      "key": "batch_00001490",
+      "elem": 0,
+      "flags": [
+        "teleport",
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00023.tar",
+      "key": "batch_00001501",
+      "elem": 1,
+      "flags": [
+        "rot_glitch",
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00023.tar",
+      "key": "batch_00001506",
+      "elem": 2,
+      "flags": [
+        "teleport",
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00024.tar",
+      "key": "batch_00001551",
+      "elem": 1,
+      "flags": [
+        "teleport"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00024.tar",
+      "key": "batch_00001555",
+      "elem": 0,
+      "flags": [
+        "teleport",
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00024.tar",
+      "key": "batch_00001567",
+      "elem": 0,
+      "flags": [
+        "teleport",
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00024.tar",
+      "key": "batch_00001576",
+      "elem": 3,
+      "flags": [
+        "rot_glitch"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00024.tar",
+      "key": "batch_00001583",
+      "elem": 1,
+      "flags": [
+        "teleport",
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00025.tar",
+      "key": "batch_00001646",
+      "elem": 1,
+      "flags": [
+        "teleport",
+        "rot_glitch",
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00025.tar",
+      "key": "batch_00001647",
+      "elem": 1,
+      "flags": [
+        "rot_glitch"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00025.tar",
+      "key": "batch_00001658",
+      "elem": 1,
+      "flags": [
+        "teleport",
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00027.tar",
+      "key": "batch_00001728",
+      "elem": 2,
+      "flags": [
+        "rot_glitch"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00027.tar",
+      "key": "batch_00001729",
+      "elem": 2,
+      "flags": [
+        "teleport",
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00027.tar",
+      "key": "batch_00001753",
+      "elem": 0,
+      "flags": [
+        "teleport"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00027.tar",
+      "key": "batch_00001784",
+      "elem": 2,
+      "flags": [
+        "teleport"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00028.tar",
+      "key": "batch_00001830",
+      "elem": 2,
+      "flags": [
+        "teleport"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00028.tar",
+      "key": "batch_00001845",
+      "elem": 1,
+      "flags": [
+        "teleport",
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00029.tar",
+      "key": "batch_00001883",
+      "elem": 1,
+      "flags": [
+        "teleport",
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00030.tar",
+      "key": "batch_00001972",
+      "elem": 3,
+      "flags": [
+        "teleport",
+        "phantom"
+      ]
+    },
+    {
+      "shard": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place_success/gpu0/00030.tar",
+      "key": "batch_00001977",
+      "elem": 3,
+      "flags": [
+        "teleport"
+      ]
+    }
+  ],
+  "key_repair": {
+    "date": "2026-09-05",
+    "method": "inverse sorted field index -> sorted sample index",
+    "verified_rows": 64,
+    "max_recomputed_metric_error_mm": 0.0034332275390625,
+    "script": "scripts/dev/repair_pickup_manifest.py",
+    "note": "Recorded motion statistics verified against actual recovered rows; not suffix stripping."
+  }
+}

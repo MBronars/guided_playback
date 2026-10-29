@@ -1,0 +1,43 @@
+{
+  "schema": "mpm-operator-v1",
+  "template_bundle": "/data/group_data/katefgroup-ssd/world_model/particle_world_model/tools/mpm-v4/template-v1",
+  "template_sha256": "88c84aa824a687393731c07e3bb638f13b050c401ea35fa75b098de95e87a184",
+  "shared_assets": "/data/group_data/katefgroup-ssd/world_model/particle_world_model/assets/mpm/fresh-10k-v1",
+  "access_group": "kfragki2_group",
+  "campaigns_root": "/data/group_data/katefgroup-ssd/world_model/particle_world_model/staging/mpm-operator-campaigns-v1",
+  "registry_root": "/data/group_data/katefgroup-ssd/world_model/particle_world_model/staging/mpm-operator-registry-v1",
+  "first_cycle": 84000,
+  "last_cycle_exclusive": 100000,
+  "cycles_per_run": 2000,
+  "partition": "katef",
+  "account": "kfragki2",
+  "qos": "katef_qos",
+  "collection": {
+    "split": "train",
+    "evaluation": "train",
+    "object_counts": [1, 2, 3, 4],
+    "object_weights": [1, 1, 1, 1],
+    "action_weights": {"drop": 1, "translate": 1, "collision": 1, "drop_on": 1, "stack": 1, "scatter": 1, "random": 1},
+    "max_attempts": 120000,
+    "target_retained": null,
+    "hardware": {"gpus": 4, "gpu_type": "RTX_PRO_6000", "walltime_hours": 48}
+  },
+  "existing_runs": [
+    {
+      "name": "original-pro-campaign",
+      "collection_root": "/data/group_data/katefgroup-ssd/world_model/particle_world_model/staging/mpm-fresh-campaign-20260913-v1"
+    },
+    {
+      "name": "live-two-pro-fast",
+      "collection_root": "/data/group_data/katefgroup-ssd/world_model/particle_world_model/staging/mpm-training-fast-20260913-v1"
+    },
+    {
+      "name": "ada-pilot",
+      "collection_root": "/data/group_data/katefgroup-ssd/world_model/particle_world_model/staging/mpm-ada-pilot-20260913-v2/pilot"
+    },
+    {
+      "name": "four-pro-job-10429006",
+      "collection_root": "/data/group_data/katefgroup-ssd/world_model/particle_world_model/staging/mpm-four-training-20260913-v1/collection"
+    }
+  ]
+}

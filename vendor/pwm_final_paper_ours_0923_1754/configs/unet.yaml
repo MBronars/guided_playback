@@ -1,0 +1,34 @@
+# Unified 331M UNet. Shared data/optimizer/FM defaults: utils/config.py.
+# Preserves the historical 40K stop on a 200K schedule. A matched 200K comparison
+# must explicitly override train.stop_after_step=0; cleanup does not retune runs.
+run_name: unified_unet
+model:
+  architecture: unet
+  normalize_physics_features: true
+  unet_actions: false
+  unet_l1_by_mat: "0:256,1:256,2:256,3:128,4:128,5:512"
+  unet_strides: 4,4,2
+  unet_widths: 128,256,512,1024
+  unet_enc_depths: 1,2,4,8
+  unet_dec_depths: 1,2,4
+  unet_head_dim: 64
+  unet_fps_random_start: true
+  unet_dual_ffn: true
+  unet_ckpt_from_level: 0
+  unet_ckpt_seams: true
+  unet_ckpt_ingraph: true
+  unet_register_from_level: 2
+  unet_register_objs: 1
+  unet_pool_mode: pointnet
+  unet_unpool_mode: pointnet
+  unet_pool_k: 8
+  unet_interp_k: 3
+  unet_geo_r_m: 0.133155
+  unet_rope_f_min: 0.15               # coarsest RoPE band: unique range 2*pi*0.133155/0.15 = 5.58 m per axis
+train:
+  compile: true
+  compile_regional: true
+  compile_dynamic: false
+  stop_after_step: 40000
+log:
+  save_every: 10000

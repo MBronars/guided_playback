@@ -1,0 +1,1093 @@
+{
+ "source": "reports/unified/data_audit_0903 (flag_cloth.py, 2026-09-03); user decision 2026-09-03: remove flat-layer garments",
+ "split": "val",
+ "n_episodes": 57,
+ "n_flat": 57,
+ "n_v2_549": 0,
+ "note": "whole-sample entries (one episode per cloth sample); each appears twice: absolute shard path and root-relative path",
+ "blocklist": [
+  {
+   "key": "v2_002_diag",
+   "garment": "v2_002",
+   "action": "diag",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.633,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00001.tar"
+  },
+  {
+   "key": "v2_002_diag",
+   "garment": "v2_002",
+   "action": "diag",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.633,
+   "shard": "shard-00001.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_002_half",
+   "garment": "v2_002",
+   "action": "half",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.619,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00001.tar"
+  },
+  {
+   "key": "v2_002_half",
+   "garment": "v2_002",
+   "action": "half",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.619,
+   "shard": "shard-00001.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_002_lift_random",
+   "garment": "v2_002",
+   "action": "lift_random",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.593,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00001.tar"
+  },
+  {
+   "key": "v2_002_lift_random",
+   "garment": "v2_002",
+   "action": "lift_random",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.593,
+   "shard": "shard-00001.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_002_side",
+   "garment": "v2_002",
+   "action": "side",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.594,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00001.tar"
+  },
+  {
+   "key": "v2_002_side",
+   "garment": "v2_002",
+   "action": "side",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.594,
+   "shard": "shard-00001.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_008_diag",
+   "garment": "v2_008",
+   "action": "diag",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.394,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00001.tar"
+  },
+  {
+   "key": "v2_008_diag",
+   "garment": "v2_008",
+   "action": "diag",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.394,
+   "shard": "shard-00001.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_008_half",
+   "garment": "v2_008",
+   "action": "half",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.437,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00001.tar"
+  },
+  {
+   "key": "v2_008_half",
+   "garment": "v2_008",
+   "action": "half",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.437,
+   "shard": "shard-00001.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_008_lift_random",
+   "garment": "v2_008",
+   "action": "lift_random",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.397,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00002.tar"
+  },
+  {
+   "key": "v2_008_lift_random",
+   "garment": "v2_008",
+   "action": "lift_random",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.397,
+   "shard": "shard-00002.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_008_side",
+   "garment": "v2_008",
+   "action": "side",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.388,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00002.tar"
+  },
+  {
+   "key": "v2_008_side",
+   "garment": "v2_008",
+   "action": "side",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.388,
+   "shard": "shard-00002.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_058_diag",
+   "garment": "v2_058",
+   "action": "diag",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.708,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00003.tar"
+  },
+  {
+   "key": "v2_058_diag",
+   "garment": "v2_058",
+   "action": "diag",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.708,
+   "shard": "shard-00003.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_058_half",
+   "garment": "v2_058",
+   "action": "half",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.549,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00003.tar"
+  },
+  {
+   "key": "v2_058_half",
+   "garment": "v2_058",
+   "action": "half",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.549,
+   "shard": "shard-00003.tar",
+   "rel": true
+  },
+  {
+   "key": "g20_08_diag",
+   "garment": "g20_08",
+   "action": "diag",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.717,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00000.tar"
+  },
+  {
+   "key": "g20_08_diag",
+   "garment": "g20_08",
+   "action": "diag",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.717,
+   "shard": "shard-00000.tar",
+   "rel": true
+  },
+  {
+   "key": "g20_08_lift_random",
+   "garment": "g20_08",
+   "action": "lift_random",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.681,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00000.tar"
+  },
+  {
+   "key": "g20_08_lift_random",
+   "garment": "g20_08",
+   "action": "lift_random",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.681,
+   "shard": "shard-00000.tar",
+   "rel": true
+  },
+  {
+   "key": "g20_08_side",
+   "garment": "g20_08",
+   "action": "side",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.66,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00000.tar"
+  },
+  {
+   "key": "g20_08_side",
+   "garment": "g20_08",
+   "action": "side",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.66,
+   "shard": "shard-00000.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_218_half",
+   "garment": "v2_218",
+   "action": "half",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.55,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00005.tar"
+  },
+  {
+   "key": "v2_218_half",
+   "garment": "v2_218",
+   "action": "half",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.55,
+   "shard": "shard-00005.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_218_lift_random",
+   "garment": "v2_218",
+   "action": "lift_random",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.548,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00005.tar"
+  },
+  {
+   "key": "v2_218_lift_random",
+   "garment": "v2_218",
+   "action": "lift_random",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.548,
+   "shard": "shard-00005.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_329_half",
+   "garment": "v2_329",
+   "action": "half",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.646,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00006.tar"
+  },
+  {
+   "key": "v2_329_half",
+   "garment": "v2_329",
+   "action": "half",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.646,
+   "shard": "shard-00006.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_329_lift_random",
+   "garment": "v2_329",
+   "action": "lift_random",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.624,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00006.tar"
+  },
+  {
+   "key": "v2_329_lift_random",
+   "garment": "v2_329",
+   "action": "lift_random",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.624,
+   "shard": "shard-00006.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_329_side",
+   "garment": "v2_329",
+   "action": "side",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.674,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00006.tar"
+  },
+  {
+   "key": "v2_329_side",
+   "garment": "v2_329",
+   "action": "side",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.674,
+   "shard": "shard-00006.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_374_diag",
+   "garment": "v2_374",
+   "action": "diag",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.626,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00006.tar"
+  },
+  {
+   "key": "v2_374_diag",
+   "garment": "v2_374",
+   "action": "diag",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.626,
+   "shard": "shard-00006.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_058_side",
+   "garment": "v2_058",
+   "action": "side",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.745,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00004.tar"
+  },
+  {
+   "key": "v2_058_side",
+   "garment": "v2_058",
+   "action": "side",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.745,
+   "shard": "shard-00004.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_374_lift_random",
+   "garment": "v2_374",
+   "action": "lift_random",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.623,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00007.tar"
+  },
+  {
+   "key": "v2_374_lift_random",
+   "garment": "v2_374",
+   "action": "lift_random",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.623,
+   "shard": "shard-00007.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_374_side",
+   "garment": "v2_374",
+   "action": "side",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.675,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00007.tar"
+  },
+  {
+   "key": "v2_374_side",
+   "garment": "v2_374",
+   "action": "side",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.675,
+   "shard": "shard-00007.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_432_half",
+   "garment": "v2_432",
+   "action": "half",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.522,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00007.tar"
+  },
+  {
+   "key": "v2_432_half",
+   "garment": "v2_432",
+   "action": "half",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.522,
+   "shard": "shard-00007.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_446_lift_random",
+   "garment": "v2_446",
+   "action": "lift_random",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.516,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00009.tar"
+  },
+  {
+   "key": "v2_446_lift_random",
+   "garment": "v2_446",
+   "action": "lift_random",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.516,
+   "shard": "shard-00009.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_446_side",
+   "garment": "v2_446",
+   "action": "side",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.484,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00009.tar"
+  },
+  {
+   "key": "v2_446_side",
+   "garment": "v2_446",
+   "action": "side",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.484,
+   "shard": "shard-00009.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_432_lift_random",
+   "garment": "v2_432",
+   "action": "lift_random",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.471,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00008.tar"
+  },
+  {
+   "key": "v2_432_lift_random",
+   "garment": "v2_432",
+   "action": "lift_random",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.471,
+   "shard": "shard-00008.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_432_side",
+   "garment": "v2_432",
+   "action": "side",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.466,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00008.tar"
+  },
+  {
+   "key": "v2_432_side",
+   "garment": "v2_432",
+   "action": "side",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.466,
+   "shard": "shard-00008.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_446_diag",
+   "garment": "v2_446",
+   "action": "diag",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.482,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00008.tar"
+  },
+  {
+   "key": "v2_446_diag",
+   "garment": "v2_446",
+   "action": "diag",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.482,
+   "shard": "shard-00008.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_446_half",
+   "garment": "v2_446",
+   "action": "half",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.477,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00008.tar"
+  },
+  {
+   "key": "v2_446_half",
+   "garment": "v2_446",
+   "action": "half",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.477,
+   "shard": "shard-00008.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_660_side",
+   "garment": "v2_660",
+   "action": "side",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.647,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00017.tar"
+  },
+  {
+   "key": "v2_660_side",
+   "garment": "v2_660",
+   "action": "side",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.647,
+   "shard": "shard-00017.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_602_side",
+   "garment": "v2_602",
+   "action": "side",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.623,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00014.tar"
+  },
+  {
+   "key": "v2_602_side",
+   "garment": "v2_602",
+   "action": "side",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.623,
+   "shard": "shard-00014.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_629_diag",
+   "garment": "v2_629",
+   "action": "diag",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.571,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00014.tar"
+  },
+  {
+   "key": "v2_629_diag",
+   "garment": "v2_629",
+   "action": "diag",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.571,
+   "shard": "shard-00014.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_629_half",
+   "garment": "v2_629",
+   "action": "half",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.63,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00014.tar"
+  },
+  {
+   "key": "v2_629_half",
+   "garment": "v2_629",
+   "action": "half",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.63,
+   "shard": "shard-00014.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_629_lift_random",
+   "garment": "v2_629",
+   "action": "lift_random",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.579,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00014.tar"
+  },
+  {
+   "key": "v2_629_lift_random",
+   "garment": "v2_629",
+   "action": "lift_random",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.579,
+   "shard": "shard-00014.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_629_side",
+   "garment": "v2_629",
+   "action": "side",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.582,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00014.tar"
+  },
+  {
+   "key": "v2_629_side",
+   "garment": "v2_629",
+   "action": "side",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.582,
+   "shard": "shard-00014.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_630_diag",
+   "garment": "v2_630",
+   "action": "diag",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.649,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00014.tar"
+  },
+  {
+   "key": "v2_630_diag",
+   "garment": "v2_630",
+   "action": "diag",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.649,
+   "shard": "shard-00014.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_630_half",
+   "garment": "v2_630",
+   "action": "half",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.605,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00014.tar"
+  },
+  {
+   "key": "v2_630_half",
+   "garment": "v2_630",
+   "action": "half",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.605,
+   "shard": "shard-00014.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_630_lift_random",
+   "garment": "v2_630",
+   "action": "lift_random",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.655,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00014.tar"
+  },
+  {
+   "key": "v2_630_lift_random",
+   "garment": "v2_630",
+   "action": "lift_random",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.655,
+   "shard": "shard-00014.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_602_diag",
+   "garment": "v2_602",
+   "action": "diag",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.597,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00013.tar"
+  },
+  {
+   "key": "v2_602_diag",
+   "garment": "v2_602",
+   "action": "diag",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.597,
+   "shard": "shard-00013.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_602_half",
+   "garment": "v2_602",
+   "action": "half",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.596,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00013.tar"
+  },
+  {
+   "key": "v2_602_half",
+   "garment": "v2_602",
+   "action": "half",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.596,
+   "shard": "shard-00013.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_602_lift_random",
+   "garment": "v2_602",
+   "action": "lift_random",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.596,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00013.tar"
+  },
+  {
+   "key": "v2_602_lift_random",
+   "garment": "v2_602",
+   "action": "lift_random",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.596,
+   "shard": "shard-00013.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_630_side",
+   "garment": "v2_630",
+   "action": "side",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.593,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00015.tar"
+  },
+  {
+   "key": "v2_630_side",
+   "garment": "v2_630",
+   "action": "side",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.593,
+   "shard": "shard-00015.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_635_diag",
+   "garment": "v2_635",
+   "action": "diag",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.642,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00015.tar"
+  },
+  {
+   "key": "v2_635_diag",
+   "garment": "v2_635",
+   "action": "diag",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.642,
+   "shard": "shard-00015.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_635_half",
+   "garment": "v2_635",
+   "action": "half",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.609,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00015.tar"
+  },
+  {
+   "key": "v2_635_half",
+   "garment": "v2_635",
+   "action": "half",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.609,
+   "shard": "shard-00015.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_635_lift_random",
+   "garment": "v2_635",
+   "action": "lift_random",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.628,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00015.tar"
+  },
+  {
+   "key": "v2_635_lift_random",
+   "garment": "v2_635",
+   "action": "lift_random",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.628,
+   "shard": "shard-00015.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_635_side",
+   "garment": "v2_635",
+   "action": "side",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.589,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00015.tar"
+  },
+  {
+   "key": "v2_635_side",
+   "garment": "v2_635",
+   "action": "side",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.589,
+   "shard": "shard-00015.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_636_diag",
+   "garment": "v2_636",
+   "action": "diag",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.476,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00015.tar"
+  },
+  {
+   "key": "v2_636_diag",
+   "garment": "v2_636",
+   "action": "diag",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.476,
+   "shard": "shard-00015.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_636_half",
+   "garment": "v2_636",
+   "action": "half",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.441,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00015.tar"
+  },
+  {
+   "key": "v2_636_half",
+   "garment": "v2_636",
+   "action": "half",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.441,
+   "shard": "shard-00015.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_636_lift_random",
+   "garment": "v2_636",
+   "action": "lift_random",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.482,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00015.tar"
+  },
+  {
+   "key": "v2_636_lift_random",
+   "garment": "v2_636",
+   "action": "lift_random",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.482,
+   "shard": "shard-00015.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_636_side",
+   "garment": "v2_636",
+   "action": "side",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.446,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00016.tar"
+  },
+  {
+   "key": "v2_636_side",
+   "garment": "v2_636",
+   "action": "side",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.446,
+   "shard": "shard-00016.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_651_diag",
+   "garment": "v2_651",
+   "action": "diag",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.657,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00016.tar"
+  },
+  {
+   "key": "v2_651_diag",
+   "garment": "v2_651",
+   "action": "diag",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.657,
+   "shard": "shard-00016.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_651_half",
+   "garment": "v2_651",
+   "action": "half",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.616,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00016.tar"
+  },
+  {
+   "key": "v2_651_half",
+   "garment": "v2_651",
+   "action": "half",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.616,
+   "shard": "shard-00016.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_651_lift_random",
+   "garment": "v2_651",
+   "action": "lift_random",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.602,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00016.tar"
+  },
+  {
+   "key": "v2_651_lift_random",
+   "garment": "v2_651",
+   "action": "lift_random",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.602,
+   "shard": "shard-00016.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_651_side",
+   "garment": "v2_651",
+   "action": "side",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.665,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00016.tar"
+  },
+  {
+   "key": "v2_651_side",
+   "garment": "v2_651",
+   "action": "side",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.665,
+   "shard": "shard-00016.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_660_diag",
+   "garment": "v2_660",
+   "action": "diag",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.643,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00016.tar"
+  },
+  {
+   "key": "v2_660_diag",
+   "garment": "v2_660",
+   "action": "diag",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.643,
+   "shard": "shard-00016.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_660_half",
+   "garment": "v2_660",
+   "action": "half",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.614,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00016.tar"
+  },
+  {
+   "key": "v2_660_half",
+   "garment": "v2_660",
+   "action": "half",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.614,
+   "shard": "shard-00016.tar",
+   "rel": true
+  },
+  {
+   "key": "v2_660_lift_random",
+   "garment": "v2_660",
+   "action": "lift_random",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.6,
+   "shard": "/data/group_data/katefgroup/VLA/3DPCWM/unified_v1/cloth/val/shard-00016.tar"
+  },
+  {
+   "key": "v2_660_lift_random",
+   "garment": "v2_660",
+   "action": "lift_random",
+   "root": "val",
+   "reason": "FLAT (coincident layers at frame 0: z-extent < 0.75 particle spacings)",
+   "z_over_spacing": 0.6,
+   "shard": "shard-00016.tar",
+   "rel": true
+  }
+ ]
+}

@@ -1,0 +1,1890 @@
+{
+ "kind": "rl_push_episode_exclusions",
+ "release": "/data/group_data/katefgroup/VLA/3DPCWM/rl_push_data_09_14",
+ "episodes_scanned": 36736,
+ "criteria": {
+  "airborne_mm": 20.0,
+  "sink_mm": 5.0,
+  "penetration_mm": 5.0,
+  "moves_before_contact_is_possible": true,
+  "unexplained_gain_mps": 0.1,
+  "settle_kick_from_frame": 3,
+  "launch_ratio": 2.0
+ },
+ "receipts": {
+  "/data/user_data/robertre/scratchpad/rl_push_0914/current/stage1_episodes.npz": "c6b6061a7156ba259645e77ba5b787de77e1d9dd7460215118e4678e96359e39",
+  "/data/user_data/robertre/scratchpad/rl_push_0914/current/stage2_all_rows.json": "029e11498e8e805a0c67e65de367395085cd6896c8c75adbc8137a1038d81a5d",
+  "/data/user_data/robertre/scratchpad/rl_push_0914/launches.json": "8d3cf574e9b1509435eb60d9b19aad50e073a7facc2fd598414bf2df47d43a6e"
+ },
+ "excluded_episodes": 110,
+ "episodes_per_reason": {
+  "object kicked with no contact possible at frame 3 or later": 8,
+  "object leaves a contact more than 2.0x faster than the gripper": 38,
+  "object sinks more than 5.0 mm into the table": 24,
+  "object leaves the table by more than 20.0 mm": 22,
+  "object starts moving before the gripper can reach it": 13,
+  "object gains more than 0.1 m/s in one frame while contact is impossible": 8,
+  "gripper more than 5.0 mm inside the object": 5
+ },
+ "made": "2026-09-15 11:30",
+ "script": "scripts/dev/rl_push_manifests.py",
+ "git_commit": "05685fbe4b89f53471a6ab2aa0d02b6ef95e7a18",
+ "git_dirty": false,
+ "episodes": [
+  {
+   "asset_key": "Bathroom_Counter/dental_floss_case/asset_0005",
+   "source_run": "rest_chunk_20",
+   "source_shard": "r0__shard_00013.npz",
+   "source_episode_index": 1638,
+   "source_env": 31,
+   "reasons": [
+    "object kicked with no contact possible at frame 3 or later"
+   ],
+   "values": {
+    "airborne_max_mm": 0.6492085574585499,
+    "bottom_min_mm": -0.7430292266861136,
+    "gripper_penetration_max_mm": 0.11748075485229492,
+    "settle_kick_frames": [
+     3
+    ]
+   }
+  },
+  {
+   "asset_key": "Bathroom_Counter/dental_floss_case/asset_0005",
+   "source_run": "rest_chunk_20",
+   "source_shard": "r1__shard_00008.npz",
+   "source_episode_index": 3488,
+   "source_env": 46,
+   "reasons": [
+    "object kicked with no contact possible at frame 3 or later"
+   ],
+   "values": {
+    "airborne_max_mm": 0.2560000753377492,
+    "bottom_min_mm": -0.24283352713030254,
+    "gripper_penetration_max_mm": 1.4771297574043274,
+    "settle_kick_frames": [
+     3
+    ]
+   }
+  },
+  {
+   "asset_key": "Bathroom_Counter/dental_floss_case/asset_0068",
+   "source_run": "rest_chunk_08",
+   "source_shard": "r0__shard_00037.npz",
+   "source_episode_index": 6357,
+   "source_env": 118,
+   "reasons": [
+    "object kicked with no contact possible at frame 3 or later"
+   ],
+   "values": {
+    "airborne_max_mm": 0.2082879222176301,
+    "bottom_min_mm": -0.3118261132322789,
+    "gripper_penetration_max_mm": 0.2950914204120636,
+    "settle_kick_frames": [
+     3
+    ]
+   }
+  },
+  {
+   "asset_key": "Bathroom_Counter/hair_straightener/asset_0038",
+   "source_run": "rest_chunk_13",
+   "source_shard": "r0__shard_00007.npz",
+   "source_episode_index": 753,
+   "source_env": 76,
+   "reasons": [
+    "object leaves a contact more than 2.0x faster than the gripper"
+   ],
+   "values": {
+    "airborne_max_mm": 1.104888013237524,
+    "bottom_min_mm": -1.1065113503551383,
+    "gripper_penetration_max_mm": 0.29162317514419556,
+    "launch_ratio": 3.939,
+    "launch_frame": 15,
+    "launch_object_mps": 1.658,
+    "launch_gripper_mps": 0.421
+   }
+  },
+  {
+   "asset_key": "Bathroom_Counter/moisturizer_jar/asset_0041",
+   "source_run": "rest_chunk_20",
+   "source_shard": "r0__shard_00004.npz",
+   "source_episode_index": 454,
+   "source_env": 160,
+   "reasons": [
+    "object leaves a contact more than 2.0x faster than the gripper"
+   ],
+   "values": {
+    "airborne_max_mm": 12.323101011576215,
+    "bottom_min_mm": -0.3699602147275022,
+    "gripper_penetration_max_mm": 0.225091353058815,
+    "launch_ratio": 2.295,
+    "launch_frame": 9,
+    "launch_object_mps": 1.633,
+    "launch_gripper_mps": 0.712
+   }
+  },
+  {
+   "asset_key": "Bathroom_Counter/moisturizer_jar/asset_0064",
+   "source_run": "rest_chunk_01",
+   "source_shard": "legacy__shard_00002.npz",
+   "source_episode_index": 941,
+   "source_env": 46,
+   "reasons": [
+    "object leaves a contact more than 2.0x faster than the gripper"
+   ],
+   "values": {
+    "airborne_max_mm": 0.6418952511658416,
+    "bottom_min_mm": -0.4404281391405876,
+    "gripper_penetration_max_mm": 0.27292966842651367,
+    "launch_ratio": 3.32,
+    "launch_frame": 27,
+    "launch_object_mps": 0.875,
+    "launch_gripper_mps": 0.263
+   }
+  },
+  {
+   "asset_key": "Bathroom_Counter/moisturizer_jar/asset_0066",
+   "source_run": "rest_chunk_16",
+   "source_shard": "r0__shard_00017.npz",
+   "source_episode_index": 2107,
+   "source_env": 76,
+   "reasons": [
+    "object leaves a contact more than 2.0x faster than the gripper"
+   ],
+   "values": {
+    "airborne_max_mm": 1.5817520441635604,
+    "bottom_min_mm": -0.6535763970387937,
+    "gripper_penetration_max_mm": 0.11963769793510437,
+    "launch_ratio": 2.997,
+    "launch_frame": 28,
+    "launch_object_mps": 0.535,
+    "launch_gripper_mps": 0.178
+   }
+  },
+  {
+   "asset_key": "Bathroom_Counter/moisturizer_jar/asset_0066",
+   "source_run": "rest_chunk_16",
+   "source_shard": "r0__shard_00017.npz",
+   "source_episode_index": 2136,
+   "source_env": 26,
+   "reasons": [
+    "object sinks more than 5.0 mm into the table"
+   ],
+   "values": {
+    "airborne_max_mm": 0.1647998754154903,
+    "bottom_min_mm": -5.067752202684517,
+    "gripper_penetration_max_mm": 0.20795315504074097
+   }
+  },
+  {
+   "asset_key": "Bathroom_Counter/moisturizer_jar/asset_0066",
+   "source_run": "rest_chunk_16",
+   "source_shard": "r0__shard_00019.npz",
+   "source_episode_index": 2420,
+   "source_env": 176,
+   "reasons": [
+    "object sinks more than 5.0 mm into the table"
+   ],
+   "values": {
+    "airborne_max_mm": 0.07327963635497467,
+    "bottom_min_mm": -5.743913449629566,
+    "gripper_penetration_max_mm": 0.07986277341842651
+   }
+  },
+  {
+   "asset_key": "Bathroom_Counter/moisturizer_jar/asset_0066",
+   "source_run": "rest_chunk_16",
+   "source_shard": "r0__shard_00030.npz",
+   "source_episode_index": 3998,
+   "source_env": 176,
+   "reasons": [
+    "object sinks more than 5.0 mm into the table"
+   ],
+   "values": {
+    "airborne_max_mm": 0.1758304002250563,
+    "bottom_min_mm": -6.167428581535569,
+    "gripper_penetration_max_mm": 0.5335099995136261
+   }
+  },
+  {
+   "asset_key": "Bathroom_Counter/moisturizer_jar/asset_0066",
+   "source_run": "rest_chunk_16",
+   "source_shard": "r0__shard_00034.npz",
+   "source_episode_index": 4824,
+   "source_env": 76,
+   "reasons": [
+    "object sinks more than 5.0 mm into the table"
+   ],
+   "values": {
+    "airborne_max_mm": 0.21639370185599915,
+    "bottom_min_mm": -6.069913987807564,
+    "gripper_penetration_max_mm": 0.27889013290405273
+   }
+  },
+  {
+   "asset_key": "Bathroom_Counter/moisturizer_jar/asset_0070",
+   "source_run": "rest_chunk_00",
+   "source_shard": "legacy__shard_00000.npz",
+   "source_episode_index": 177,
+   "source_env": 196,
+   "reasons": [
+    "object leaves a contact more than 2.0x faster than the gripper"
+   ],
+   "values": {
+    "airborne_max_mm": 0.082181862747506,
+    "bottom_min_mm": -0.30496776752654897,
+    "gripper_penetration_max_mm": 0.0,
+    "launch_ratio": 2.127,
+    "launch_frame": 10,
+    "launch_object_mps": 1.504,
+    "launch_gripper_mps": 0.707
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/avocado/asset_0012",
+   "source_run": "topup1_chunk_01",
+   "source_shard": "r0__shard_00009.npz",
+   "source_episode_index": 10492,
+   "source_env": 47,
+   "reasons": [
+    "object sinks more than 5.0 mm into the table"
+   ],
+   "values": {
+    "airborne_max_mm": 0.43323887237649295,
+    "bottom_min_mm": -7.516162923485926,
+    "gripper_penetration_max_mm": 0.5895737558603287
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/bowl/asset_0032",
+   "source_run": "rest_chunk_01",
+   "source_shard": "legacy__shard_00006.npz",
+   "source_episode_index": 3095,
+   "source_env": 72,
+   "reasons": [
+    "object leaves a contact more than 2.0x faster than the gripper"
+   ],
+   "values": {
+    "airborne_max_mm": 0.18112350913675884,
+    "bottom_min_mm": -0.6280806913257081,
+    "gripper_penetration_max_mm": 1.0436251759529114,
+    "launch_ratio": 2.562,
+    "launch_frame": 8,
+    "launch_object_mps": 1.715,
+    "launch_gripper_mps": 0.67
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/bowl/asset_0042",
+   "source_run": "rest_chunk_06",
+   "source_shard": "r1__shard_00015.npz",
+   "source_episode_index": 2614,
+   "source_env": 46,
+   "reasons": [
+    "object leaves a contact more than 2.0x faster than the gripper"
+   ],
+   "values": {
+    "airborne_max_mm": 0.4444793081470194,
+    "bottom_min_mm": -0.3036627036996989,
+    "gripper_penetration_max_mm": 0.5357265472412109,
+    "launch_ratio": 2.368,
+    "launch_frame": 45,
+    "launch_object_mps": 0.729,
+    "launch_gripper_mps": 0.308
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/bowl/asset_0093",
+   "source_run": "rest_chunk_21",
+   "source_shard": "r0__shard_00001.npz",
+   "source_episode_index": 169,
+   "source_env": 122,
+   "reasons": [
+    "object leaves a contact more than 2.0x faster than the gripper"
+   ],
+   "values": {
+    "airborne_max_mm": 0.6896169761877111,
+    "bottom_min_mm": 0.043134711006732884,
+    "gripper_penetration_max_mm": 0.4639364778995514,
+    "launch_ratio": 3.752,
+    "launch_frame": 30,
+    "launch_object_mps": 0.578,
+    "launch_gripper_mps": 0.154
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/colander/asset_0004",
+   "source_run": "rest_chunk_04",
+   "source_shard": "r0__shard_00038.npz",
+   "source_episode_index": 5317,
+   "source_env": 38,
+   "reasons": [
+    "object sinks more than 5.0 mm into the table"
+   ],
+   "values": {
+    "airborne_max_mm": 0.5349816920185019,
+    "bottom_min_mm": -6.255720768276129,
+    "gripper_penetration_max_mm": 0.7819682359695435
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/colander/asset_0004",
+   "source_run": "rest_chunk_04",
+   "source_shard": "r1__shard_00001.npz",
+   "source_episode_index": 637,
+   "source_env": 36,
+   "reasons": [
+    "object leaves the table by more than 20.0 mm"
+   ],
+   "values": {
+    "airborne_max_mm": 123.79380760142024,
+    "bottom_min_mm": -1.7726388955130874,
+    "gripper_penetration_max_mm": 1.0311305522918701
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/colander/asset_0008",
+   "source_run": "rest_chunk_19",
+   "source_shard": "r0__shard_00018.npz",
+   "source_episode_index": 2216,
+   "source_env": 145,
+   "reasons": [
+    "object leaves a contact more than 2.0x faster than the gripper"
+   ],
+   "values": {
+    "airborne_max_mm": 1.8161650566194814,
+    "bottom_min_mm": -0.7499237414608506,
+    "gripper_penetration_max_mm": 1.2672320008277893,
+    "launch_ratio": 2.01,
+    "launch_frame": 46,
+    "launch_object_mps": 0.403,
+    "launch_gripper_mps": 0.2
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/colander/asset_0011",
+   "source_run": "rest_chunk_03",
+   "source_shard": "legacy__shard_00010.npz",
+   "source_episode_index": 6915,
+   "source_env": 180,
+   "reasons": [
+    "object leaves a contact more than 2.0x faster than the gripper"
+   ],
+   "values": {
+    "airborne_max_mm": 2.6058646512316654,
+    "bottom_min_mm": -0.18941735485834832,
+    "gripper_penetration_max_mm": 0.7730796933174133,
+    "launch_ratio": 2.145,
+    "launch_frame": 69,
+    "launch_object_mps": 1.269,
+    "launch_gripper_mps": 0.592
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/colander/asset_0013",
+   "source_run": "rest_chunk_17",
+   "source_shard": "r1__shard_00002.npz",
+   "source_episode_index": 349,
+   "source_env": 1,
+   "reasons": [
+    "object sinks more than 5.0 mm into the table"
+   ],
+   "values": {
+    "airborne_max_mm": 0.8210210833833193,
+    "bottom_min_mm": -9.36116799218692,
+    "gripper_penetration_max_mm": 0.45318156480789185
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/colander/asset_0013",
+   "source_run": "rest_chunk_17",
+   "source_shard": "r1__shard_00002.npz",
+   "source_episode_index": 356,
+   "source_env": 87,
+   "reasons": [
+    "object sinks more than 5.0 mm into the table"
+   ],
+   "values": {
+    "airborne_max_mm": -0.05370644972738092,
+    "bottom_min_mm": -9.071454731481687,
+    "gripper_penetration_max_mm": 0.9783357381820679
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/colander/asset_0013",
+   "source_run": "rest_chunk_17",
+   "source_shard": "r1__shard_00007.npz",
+   "source_episode_index": 1144,
+   "source_env": 1,
+   "reasons": [
+    "object sinks more than 5.0 mm into the table",
+    "object leaves a contact more than 2.0x faster than the gripper"
+   ],
+   "values": {
+    "airborne_max_mm": 0.032954689705905205,
+    "bottom_min_mm": -7.0709564496999615,
+    "gripper_penetration_max_mm": 0.24622678756713867,
+    "launch_ratio": 2.295,
+    "launch_frame": 24,
+    "launch_object_mps": 0.914,
+    "launch_gripper_mps": 0.398
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/colander/asset_0013",
+   "source_run": "rest_chunk_17",
+   "source_shard": "r1__shard_00010.npz",
+   "source_episode_index": 1846,
+   "source_env": 87,
+   "reasons": [
+    "object starts moving before the gripper can reach it",
+    "object gains more than 0.1 m/s in one frame while contact is impossible"
+   ],
+   "values": {
+    "airborne_max_mm": -0.48879014948563504,
+    "bottom_min_mm": -1.5343884286178193,
+    "gripper_penetration_max_mm": 0.2736300230026245,
+    "push_onset_frame": 12,
+    "unexplained_gain_mps": 0.3519770749124696
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/colander/asset_0013",
+   "source_run": "rest_chunk_17",
+   "source_shard": "r1__shard_00010.npz",
+   "source_episode_index": 1847,
+   "source_env": 44,
+   "reasons": [
+    "object sinks more than 5.0 mm into the table"
+   ],
+   "values": {
+    "airborne_max_mm": 1.555963790951298,
+    "bottom_min_mm": -6.33816552262835,
+    "gripper_penetration_max_mm": 0.7369816303253174
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/colander/asset_0014",
+   "source_run": "rest_chunk_15",
+   "source_shard": "r0__shard_00035.npz",
+   "source_episode_index": 5178,
+   "source_env": 130,
+   "reasons": [
+    "object sinks more than 5.0 mm into the table"
+   ],
+   "values": {
+    "airborne_max_mm": 1.0391602596920568,
+    "bottom_min_mm": -9.567903254048174,
+    "gripper_penetration_max_mm": 0.5789026618003845
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/creamer/asset_0003",
+   "source_run": "rest_chunk_11",
+   "source_shard": "r0__shard_00037.npz",
+   "source_episode_index": 6243,
+   "source_env": 122,
+   "reasons": [
+    "object leaves the table by more than 20.0 mm",
+    "object leaves a contact more than 2.0x faster than the gripper"
+   ],
+   "values": {
+    "airborne_max_mm": 29.957959530915367,
+    "bottom_min_mm": -0.25753856679081727,
+    "gripper_penetration_max_mm": 0.5159806460142136,
+    "launch_ratio": 3.055,
+    "launch_frame": 26,
+    "launch_object_mps": 1.232,
+    "launch_gripper_mps": 0.403
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/garlic_bulb/asset_0001",
+   "source_run": "topup1_chunk_04",
+   "source_shard": "r0__shard_00008.npz",
+   "source_episode_index": 8911,
+   "source_env": 11,
+   "reasons": [
+    "object starts moving before the gripper can reach it"
+   ],
+   "values": {
+    "airborne_max_mm": 0.2575918314740334,
+    "bottom_min_mm": -0.20936936859577981,
+    "gripper_penetration_max_mm": 0.32013654708862305,
+    "push_onset_frame": 10
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/handleless_basket/asset_0003",
+   "source_run": "rest_chunk_01",
+   "source_shard": "legacy__shard_00000.npz",
+   "source_episode_index": 189,
+   "source_env": 142,
+   "reasons": [
+    "object sinks more than 5.0 mm into the table"
+   ],
+   "values": {
+    "airborne_max_mm": 0.5768098384352216,
+    "bottom_min_mm": -5.194460032612216,
+    "gripper_penetration_max_mm": 0.09376555681228638
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/handleless_basket/asset_0003",
+   "source_run": "rest_chunk_01",
+   "source_shard": "legacy__shard_00001.npz",
+   "source_episode_index": 801,
+   "source_env": 42,
+   "reasons": [
+    "object sinks more than 5.0 mm into the table"
+   ],
+   "values": {
+    "airborne_max_mm": 0.8922173366161523,
+    "bottom_min_mm": -5.19399987993166,
+    "gripper_penetration_max_mm": 0.21970272064208984
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/handleless_basket/asset_0003",
+   "source_run": "rest_chunk_01",
+   "source_shard": "legacy__shard_00010.npz",
+   "source_episode_index": 5740,
+   "source_env": 192,
+   "reasons": [
+    "object sinks more than 5.0 mm into the table"
+   ],
+   "values": {
+    "airborne_max_mm": 0.7729655522891177,
+    "bottom_min_mm": -7.526913639610666,
+    "gripper_penetration_max_mm": 0.5668476223945618
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/handleless_basket/asset_0003",
+   "source_run": "rest_chunk_01",
+   "source_shard": "legacy__shard_00010.npz",
+   "source_episode_index": 6105,
+   "source_env": 92,
+   "reasons": [
+    "object sinks more than 5.0 mm into the table"
+   ],
+   "values": {
+    "airborne_max_mm": 2.357725311937828,
+    "bottom_min_mm": -7.1417163204463705,
+    "gripper_penetration_max_mm": 0.12193992733955383
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/handleless_basket/asset_0019",
+   "source_run": "rest_chunk_03",
+   "source_shard": "legacy__shard_00008.npz",
+   "source_episode_index": 4822,
+   "source_env": 177,
+   "reasons": [
+    "object leaves the table by more than 20.0 mm"
+   ],
+   "values": {
+    "airborne_max_mm": 47.38154713257088,
+    "bottom_min_mm": -0.02412040409745242,
+    "gripper_penetration_max_mm": 0.22510439157485962
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/handleless_basket/asset_0024",
+   "source_run": "rest_chunk_00",
+   "source_shard": "legacy__shard_00008.npz",
+   "source_episode_index": 4341,
+   "source_env": 109,
+   "reasons": [
+    "object leaves a contact more than 2.0x faster than the gripper"
+   ],
+   "values": {
+    "airborne_max_mm": 16.326766957989665,
+    "bottom_min_mm": -1.7030886739540922,
+    "gripper_penetration_max_mm": 0.4976987838745117,
+    "launch_ratio": 3.98,
+    "launch_frame": 41,
+    "launch_object_mps": 1.045,
+    "launch_gripper_mps": 0.262
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/handleless_basket/asset_0026",
+   "source_run": "rest_chunk_01",
+   "source_shard": "legacy__shard_00005.npz",
+   "source_episode_index": 2467,
+   "source_env": 54,
+   "reasons": [
+    "object leaves a contact more than 2.0x faster than the gripper"
+   ],
+   "values": {
+    "airborne_max_mm": 2.309612899884142,
+    "bottom_min_mm": -0.0973744129068449,
+    "gripper_penetration_max_mm": 0.829063355922699,
+    "launch_ratio": 2.654,
+    "launch_frame": 61,
+    "launch_object_mps": 0.32,
+    "launch_gripper_mps": 0.12
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/handleless_basket/asset_0028",
+   "source_run": "rest_chunk_03",
+   "source_shard": "legacy__shard_00001.npz",
+   "source_episode_index": 736,
+   "source_env": 186,
+   "reasons": [
+    "object leaves a contact more than 2.0x faster than the gripper"
+   ],
+   "values": {
+    "airborne_max_mm": 3.2872198528597907,
+    "bottom_min_mm": -0.575637358656525,
+    "gripper_penetration_max_mm": 0.7925480604171753,
+    "launch_ratio": 2.072,
+    "launch_frame": 28,
+    "launch_object_mps": 0.867,
+    "launch_gripper_mps": 0.418
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/handleless_basket/asset_0030",
+   "source_run": "rest_chunk_11",
+   "source_shard": "r0__shard_00033.npz",
+   "source_episode_index": 5110,
+   "source_env": 109,
+   "reasons": [
+    "object leaves the table by more than 20.0 mm"
+   ],
+   "values": {
+    "airborne_max_mm": 76.8285134467867,
+    "bottom_min_mm": -0.03912028513004817,
+    "gripper_penetration_max_mm": 1.318708062171936
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/handleless_basket/asset_0031",
+   "source_run": "rest_chunk_14",
+   "source_shard": "r0__shard_00003.npz",
+   "source_episode_index": 335,
+   "source_env": 38,
+   "reasons": [
+    "object leaves a contact more than 2.0x faster than the gripper"
+   ],
+   "values": {
+    "airborne_max_mm": 0.5185218330474306,
+    "bottom_min_mm": -8.207709237956218e-05,
+    "gripper_penetration_max_mm": 0.11999905109405518,
+    "launch_ratio": 2.156,
+    "launch_frame": 30,
+    "launch_object_mps": 0.791,
+    "launch_gripper_mps": 0.367
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/handleless_basket/asset_0032",
+   "source_run": "rest_chunk_06",
+   "source_shard": "r1__shard_00008.npz",
+   "source_episode_index": 1328,
+   "source_env": 54,
+   "reasons": [
+    "object leaves a contact more than 2.0x faster than the gripper"
+   ],
+   "values": {
+    "airborne_max_mm": 2.0532994153277806,
+    "bottom_min_mm": -0.4707343084584814,
+    "gripper_penetration_max_mm": 0.3558695316314697,
+    "launch_ratio": 2.706,
+    "launch_frame": 33,
+    "launch_object_mps": 0.793,
+    "launch_gripper_mps": 0.293
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/handleless_basket/asset_0036",
+   "source_run": "rest_chunk_18",
+   "source_shard": "r0__shard_00008.npz",
+   "source_episode_index": 932,
+   "source_env": 9,
+   "reasons": [
+    "object leaves the table by more than 20.0 mm"
+   ],
+   "values": {
+    "airborne_max_mm": 85.70334895869557,
+    "bottom_min_mm": -0.7069142137954426,
+    "gripper_penetration_max_mm": 1.3271421194076538
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/handleless_bucket/asset_0008",
+   "source_run": "rest_chunk_03",
+   "source_shard": "legacy__shard_00004.npz",
+   "source_episode_index": 1997,
+   "source_env": 49,
+   "reasons": [
+    "object gains more than 0.1 m/s in one frame while contact is impossible"
+   ],
+   "values": {
+    "airborne_max_mm": 0.9970380534073675,
+    "bottom_min_mm": -0.17435511485175414,
+    "gripper_penetration_max_mm": 0.16286969184875488,
+    "unexplained_gain_mps": 0.11437982243085637
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/handleless_bucket/asset_0010",
+   "source_run": "rest_chunk_16",
+   "source_shard": "r0__shard_00039.npz",
+   "source_episode_index": 6073,
+   "source_env": 191,
+   "reasons": [
+    "object starts moving before the gripper can reach it",
+    "object gains more than 0.1 m/s in one frame while contact is impossible"
+   ],
+   "values": {
+    "airborne_max_mm": 0.8686788896677261,
+    "bottom_min_mm": -0.2358236503009481,
+    "gripper_penetration_max_mm": 0.4831179976463318,
+    "push_onset_frame": 12,
+    "unexplained_gain_mps": 0.18931750508886086
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/handleless_bucket/asset_0013",
+   "source_run": "rest_chunk_21",
+   "source_shard": "r0__shard_00036.npz",
+   "source_episode_index": 5401,
+   "source_env": 134,
+   "reasons": [
+    "object leaves a contact more than 2.0x faster than the gripper"
+   ],
+   "values": {
+    "airborne_max_mm": 1.3987862265214952,
+    "bottom_min_mm": -0.0682932985396345,
+    "gripper_penetration_max_mm": 0.48498064279556274,
+    "launch_ratio": 2.264,
+    "launch_frame": 73,
+    "launch_object_mps": 0.704,
+    "launch_gripper_mps": 0.311
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/handleless_bucket/asset_0022",
+   "source_run": "rest_chunk_22",
+   "source_shard": "r0__shard_00034.npz",
+   "source_episode_index": 4267,
+   "source_env": 78,
+   "reasons": [
+    "object leaves a contact more than 2.0x faster than the gripper"
+   ],
+   "values": {
+    "airborne_max_mm": 2.7456009750880943,
+    "bottom_min_mm": -0.2897439944673369,
+    "gripper_penetration_max_mm": 1.4534089714288712,
+    "launch_ratio": 2.073,
+    "launch_frame": 38,
+    "launch_object_mps": 0.462,
+    "launch_gripper_mps": 0.223
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/handleless_bucket/asset_0032",
+   "source_run": "rest_chunk_00",
+   "source_shard": "legacy__shard_00009.npz",
+   "source_episode_index": 4836,
+   "source_env": 41,
+   "reasons": [
+    "object leaves the table by more than 20.0 mm"
+   ],
+   "values": {
+    "airborne_max_mm": 108.03909878274314,
+    "bottom_min_mm": -0.6372942952538457,
+    "gripper_penetration_max_mm": 1.2677758932113647
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/handleless_bucket/asset_0035",
+   "source_run": "rest_chunk_11",
+   "source_shard": "r0__shard_00039.npz",
+   "source_episode_index": 6973,
+   "source_env": 127,
+   "reasons": [
+    "object leaves a contact more than 2.0x faster than the gripper"
+   ],
+   "values": {
+    "airborne_max_mm": 1.0501494128202504,
+    "bottom_min_mm": -1.2934324690905552,
+    "gripper_penetration_max_mm": 0.6585977971553802,
+    "launch_ratio": 2.68,
+    "launch_frame": 51,
+    "launch_object_mps": 0.772,
+    "launch_gripper_mps": 0.288
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/onion/asset_0005",
+   "source_run": "rest_chunk_22",
+   "source_shard": "r0__shard_00043.npz",
+   "source_episode_index": 6889,
+   "source_env": 39,
+   "reasons": [
+    "object starts moving before the gripper can reach it"
+   ],
+   "values": {
+    "airborne_max_mm": 0.17817076466981885,
+    "bottom_min_mm": -0.3617811040362573,
+    "gripper_penetration_max_mm": 1.0893046855926514,
+    "push_onset_frame": 11
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/onion/asset_0007",
+   "source_run": "rest_chunk_09",
+   "source_shard": "r0__shard_00021.npz",
+   "source_episode_index": 2932,
+   "source_env": 186,
+   "reasons": [
+    "object starts moving before the gripper can reach it"
+   ],
+   "values": {
+    "airborne_max_mm": 0.2926487120643272,
+    "bottom_min_mm": -0.5516222992303782,
+    "gripper_penetration_max_mm": 0.8684806525707245,
+    "push_onset_frame": 12
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/orange/asset_0003",
+   "source_run": "topup1_chunk_02",
+   "source_shard": "r0__shard_00009.npz",
+   "source_episode_index": 7923,
+   "source_env": 19,
+   "reasons": [
+    "object starts moving before the gripper can reach it"
+   ],
+   "values": {
+    "airborne_max_mm": 0.09163937725844423,
+    "bottom_min_mm": -0.5043438332738986,
+    "gripper_penetration_max_mm": 0.48953481018543243,
+    "push_onset_frame": 13
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/orange/asset_0014",
+   "source_run": "topup1_chunk_00",
+   "source_shard": "r0__shard_00001.npz",
+   "source_episode_index": 2180,
+   "source_env": 155,
+   "reasons": [
+    "object starts moving before the gripper can reach it"
+   ],
+   "values": {
+    "airborne_max_mm": 0.44850177772511046,
+    "bottom_min_mm": -0.208064194914849,
+    "gripper_penetration_max_mm": 0.7151253521442413,
+    "push_onset_frame": 12
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/potato/asset_0005",
+   "source_run": "rest_chunk_10",
+   "source_shard": "r0__shard_00036.npz",
+   "source_episode_index": 5630,
+   "source_env": 186,
+   "reasons": [
+    "object sinks more than 5.0 mm into the table"
+   ],
+   "values": {
+    "airborne_max_mm": 1.1518861363780872,
+    "bottom_min_mm": -11.087651056421004,
+    "gripper_penetration_max_mm": 0.0
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/potato/asset_0005",
+   "source_run": "rest_chunk_10",
+   "source_shard": "r0__shard_00038.npz",
+   "source_episode_index": 6544,
+   "source_env": 136,
+   "reasons": [
+    "object sinks more than 5.0 mm into the table"
+   ],
+   "values": {
+    "airborne_max_mm": 4.516567286637387,
+    "bottom_min_mm": -7.018192988369753,
+    "gripper_penetration_max_mm": 0.17927959561347961
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/potato/asset_0005",
+   "source_run": "topup1_chunk_01",
+   "source_shard": "r0__shard_00000.npz",
+   "source_episode_index": 449,
+   "source_env": 58,
+   "reasons": [
+    "object sinks more than 5.0 mm into the table"
+   ],
+   "values": {
+    "airborne_max_mm": 2.517730457986339,
+    "bottom_min_mm": -8.558254133920272,
+    "gripper_penetration_max_mm": 0.5367361009120941
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/potato/asset_0007",
+   "source_run": "rest_chunk_10",
+   "source_shard": "r0__shard_00018.npz",
+   "source_episode_index": 2262,
+   "source_env": 42,
+   "reasons": [
+    "object starts moving before the gripper can reach it"
+   ],
+   "values": {
+    "airborne_max_mm": 0.1199588012179148,
+    "bottom_min_mm": -0.9262877986781597,
+    "gripper_penetration_max_mm": 0.5890782922506332,
+    "push_onset_frame": 11
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/potato/asset_0007",
+   "source_run": "rest_chunk_10",
+   "source_shard": "r0__shard_00042.npz",
+   "source_episode_index": 8640,
+   "source_env": 42,
+   "reasons": [
+    "object leaves a contact more than 2.0x faster than the gripper"
+   ],
+   "values": {
+    "airborne_max_mm": 0.2491273433917196,
+    "bottom_min_mm": -0.8716692952285727,
+    "gripper_penetration_max_mm": 1.3209693133831024,
+    "launch_ratio": 2.207,
+    "launch_frame": 36,
+    "launch_object_mps": 0.757,
+    "launch_gripper_mps": 0.343
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/potato/asset_0008",
+   "source_run": "rest_chunk_20",
+   "source_shard": "r0__shard_00021.npz",
+   "source_episode_index": 2765,
+   "source_env": 183,
+   "reasons": [
+    "object starts moving before the gripper can reach it"
+   ],
+   "values": {
+    "airborne_max_mm": 0.11313324975302172,
+    "bottom_min_mm": -1.514514231642436,
+    "gripper_penetration_max_mm": 0.8479207754135132,
+    "push_onset_frame": 10
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/potato/asset_0011",
+   "source_run": "rest_chunk_05",
+   "source_shard": "r0__shard_00005.npz",
+   "source_episode_index": 580,
+   "source_env": 24,
+   "reasons": [
+    "object starts moving before the gripper can reach it"
+   ],
+   "values": {
+    "airborne_max_mm": 0.13575816687567271,
+    "bottom_min_mm": -0.9316296172516072,
+    "gripper_penetration_max_mm": 0.7076598703861237,
+    "push_onset_frame": 12
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/potato/asset_0011",
+   "source_run": "rest_chunk_05",
+   "source_shard": "r0__shard_00042.npz",
+   "source_episode_index": 7362,
+   "source_env": 124,
+   "reasons": [
+    "object starts moving before the gripper can reach it"
+   ],
+   "values": {
+    "airborne_max_mm": 0.37252795792452886,
+    "bottom_min_mm": -0.9153622379534342,
+    "gripper_penetration_max_mm": 1.2361775152385235,
+    "push_onset_frame": 11
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/potato/asset_0015",
+   "source_run": "rest_chunk_04",
+   "source_shard": "r0__shard_00003.npz",
+   "source_episode_index": 341,
+   "source_env": 56,
+   "reasons": [
+    "object starts moving before the gripper can reach it",
+    "object kicked with no contact possible at frame 3 or later"
+   ],
+   "values": {
+    "airborne_max_mm": 0.35697337181217137,
+    "bottom_min_mm": -0.26467976223425516,
+    "gripper_penetration_max_mm": 0.03158673644065857,
+    "push_onset_frame": 11,
+    "settle_kick_frames": [
+     3
+    ]
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/serving_bowl/asset_0008",
+   "source_run": "rest_chunk_04",
+   "source_shard": "r0__shard_00018.npz",
+   "source_episode_index": 2121,
+   "source_env": 111,
+   "reasons": [
+    "object leaves a contact more than 2.0x faster than the gripper"
+   ],
+   "values": {
+    "airborne_max_mm": 0.29333348049902924,
+    "bottom_min_mm": -0.17799710730341187,
+    "gripper_penetration_max_mm": 0.10307878255844116,
+    "launch_ratio": 2.079,
+    "launch_frame": 16,
+    "launch_object_mps": 1.604,
+    "launch_gripper_mps": 0.771
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/serving_bowl/asset_0034",
+   "source_run": "rest_chunk_05",
+   "source_shard": "r0__shard_00008.npz",
+   "source_episode_index": 1087,
+   "source_env": 61,
+   "reasons": [
+    "object leaves a contact more than 2.0x faster than the gripper"
+   ],
+   "values": {
+    "airborne_max_mm": 1.044564798374545,
+    "bottom_min_mm": 0.012366755924350659,
+    "gripper_penetration_max_mm": 1.118682324886322,
+    "launch_ratio": 2.241,
+    "launch_frame": 36,
+    "launch_object_mps": 0.45,
+    "launch_gripper_mps": 0.201
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/serving_bowl/asset_0035",
+   "source_run": "rest_chunk_18",
+   "source_shard": "r1__shard_00005.npz",
+   "source_episode_index": 755,
+   "source_env": 88,
+   "reasons": [
+    "object leaves a contact more than 2.0x faster than the gripper"
+   ],
+   "values": {
+    "airborne_max_mm": 0.5080770131637367,
+    "bottom_min_mm": -0.021350414560930564,
+    "gripper_penetration_max_mm": 0.14401227235794067,
+    "launch_ratio": 3.963,
+    "launch_frame": 25,
+    "launch_object_mps": 1.002,
+    "launch_gripper_mps": 0.253
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/small_saucepan/asset_0009",
+   "source_run": "rest_chunk_06",
+   "source_shard": "r1__shard_00023.npz",
+   "source_episode_index": 5347,
+   "source_env": 105,
+   "reasons": [
+    "object leaves the table by more than 20.0 mm"
+   ],
+   "values": {
+    "airborne_max_mm": 21.44233231213788,
+    "bottom_min_mm": -1.3399164294253183,
+    "gripper_penetration_max_mm": 0.20694173872470856
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/small_saucepan/asset_0014",
+   "source_run": "rest_chunk_01",
+   "source_shard": "legacy__shard_00011.npz",
+   "source_episode_index": 7229,
+   "source_env": 24,
+   "reasons": [
+    "object leaves the table by more than 20.0 mm"
+   ],
+   "values": {
+    "airborne_max_mm": 29.2045202203445,
+    "bottom_min_mm": -1.2902094760694691,
+    "gripper_penetration_max_mm": 0.6822682917118073
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/small_teacup/asset_0007",
+   "source_run": "rest_chunk_17",
+   "source_shard": "r0__shard_00020.npz",
+   "source_episode_index": 2370,
+   "source_env": 149,
+   "reasons": [
+    "object leaves a contact more than 2.0x faster than the gripper"
+   ],
+   "values": {
+    "airborne_max_mm": 0.8513959877615579,
+    "bottom_min_mm": -0.06036628014640874,
+    "gripper_penetration_max_mm": 0.36898069083690643,
+    "launch_ratio": 2.781,
+    "launch_frame": 15,
+    "launch_object_mps": 1.155,
+    "launch_gripper_mps": 0.415
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/small_teacup/asset_0021",
+   "source_run": "rest_chunk_20",
+   "source_shard": "r0__shard_00022.npz",
+   "source_episode_index": 2928,
+   "source_env": 19,
+   "reasons": [
+    "object leaves the table by more than 20.0 mm"
+   ],
+   "values": {
+    "airborne_max_mm": 26.661834354801613,
+    "bottom_min_mm": -0.3776442809458186,
+    "gripper_penetration_max_mm": 1.8566623330116272
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/small_teacup/asset_0071",
+   "source_run": "rest_chunk_18",
+   "source_shard": "r0__shard_00004.npz",
+   "source_episode_index": 508,
+   "source_env": 71,
+   "reasons": [
+    "object leaves the table by more than 20.0 mm"
+   ],
+   "values": {
+    "airborne_max_mm": 40.93861150436492,
+    "bottom_min_mm": -0.1505619514491699,
+    "gripper_penetration_max_mm": 0.15928037464618683
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/teapot/asset_0009",
+   "source_run": "rest_chunk_03",
+   "source_shard": "legacy__shard_00000.npz",
+   "source_episode_index": 86,
+   "source_env": 134,
+   "reasons": [
+    "gripper more than 5.0 mm inside the object"
+   ],
+   "values": {
+    "airborne_max_mm": 0.2986897725017826,
+    "bottom_min_mm": -2.7559123945830875,
+    "gripper_penetration_max_mm": 6.0013942420482635
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/teapot/asset_0009",
+   "source_run": "rest_chunk_03",
+   "source_shard": "legacy__shard_00000.npz",
+   "source_episode_index": 348,
+   "source_env": 134,
+   "reasons": [
+    "object sinks more than 5.0 mm into the table"
+   ],
+   "values": {
+    "airborne_max_mm": -0.176007596143557,
+    "bottom_min_mm": -5.798945809134024,
+    "gripper_penetration_max_mm": 3.240711987018585
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/teapot/asset_0009",
+   "source_run": "rest_chunk_03",
+   "source_shard": "legacy__shard_00006.npz",
+   "source_episode_index": 3236,
+   "source_env": 184,
+   "reasons": [
+    "object sinks more than 5.0 mm into the table",
+    "gripper more than 5.0 mm inside the object"
+   ],
+   "values": {
+    "airborne_max_mm": 0.5129430888914238,
+    "bottom_min_mm": -5.838089594079249,
+    "gripper_penetration_max_mm": 7.234666496515274
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/teapot/asset_0009",
+   "source_run": "rest_chunk_03",
+   "source_shard": "legacy__shard_00007.npz",
+   "source_episode_index": 3825,
+   "source_env": 34,
+   "reasons": [
+    "object sinks more than 5.0 mm into the table"
+   ],
+   "values": {
+    "airborne_max_mm": -0.5035693003898334,
+    "bottom_min_mm": -5.934868044611977,
+    "gripper_penetration_max_mm": 4.593029618263245
+   }
+  },
+  {
+   "asset_key": "Kitchen_Table/tuna_can/asset_0049",
+   "source_run": "rest_chunk_22",
+   "source_shard": "r0__shard_00027.npz",
+   "source_episode_index": 3144,
+   "source_env": 75,
+   "reasons": [
+    "object leaves a contact more than 2.0x faster than the gripper"
+   ],
+   "values": {
+    "airborne_max_mm": 0.6042126778257606,
+    "bottom_min_mm": -0.5940932191518324,
+    "gripper_penetration_max_mm": 0.9874403476715088,
+    "launch_ratio": 2.088,
+    "launch_frame": 39,
+    "launch_object_mps": 0.42,
+    "launch_gripper_mps": 0.201
+   }
+  },
+  {
+   "asset_key": "libero/basket/asset_0002",
+   "source_run": "rest_chunk_18",
+   "source_shard": "r1__shard_00011.npz",
+   "source_episode_index": 1841,
+   "source_env": 17,
+   "reasons": [
+    "object leaves a contact more than 2.0x faster than the gripper"
+   ],
+   "values": {
+    "airborne_max_mm": 3.1247429758610306,
+    "bottom_min_mm": -0.16483605421531433,
+    "gripper_penetration_max_mm": 0.7677674293518066,
+    "launch_ratio": 2.336,
+    "launch_frame": 48,
+    "launch_object_mps": 0.403,
+    "launch_gripper_mps": 0.173
+   }
+  },
+  {
+   "asset_key": "libero/basket/asset_0004",
+   "source_run": "batch01_2026-09-14",
+   "source_shard": "shard_00004.npz",
+   "source_episode_index": 2058,
+   "source_env": 64,
+   "reasons": [
+    "object leaves a contact more than 2.0x faster than the gripper"
+   ],
+   "values": {
+    "airborne_max_mm": 1.4283719625356184,
+    "bottom_min_mm": -0.0011516883227924435,
+    "gripper_penetration_max_mm": 1.3885498046875,
+    "launch_ratio": 2.09,
+    "launch_frame": 28,
+    "launch_object_mps": 0.908,
+    "launch_gripper_mps": 0.435
+   }
+  },
+  {
+   "asset_key": "libero/basket/asset_0014",
+   "source_run": "rest_chunk_12",
+   "source_shard": "r0__shard_00020.npz",
+   "source_episode_index": 2495,
+   "source_env": 158,
+   "reasons": [
+    "object leaves the table by more than 20.0 mm"
+   ],
+   "values": {
+    "airborne_max_mm": 47.69554389447869,
+    "bottom_min_mm": -2.2037282099707927,
+    "gripper_penetration_max_mm": 0.6876047700643539
+   }
+  },
+  {
+   "asset_key": "libero/basket/asset_0019",
+   "source_run": "rest_chunk_07",
+   "source_shard": "r0__shard_00009.npz",
+   "source_episode_index": 1111,
+   "source_env": 8,
+   "reasons": [
+    "object leaves the table by more than 20.0 mm"
+   ],
+   "values": {
+    "airborne_max_mm": 22.818871649510783,
+    "bottom_min_mm": -0.0015114034270236054,
+    "gripper_penetration_max_mm": 0.8957348763942719
+   }
+  },
+  {
+   "asset_key": "libero/basket/asset_0024",
+   "source_run": "rest_chunk_04",
+   "source_shard": "r0__shard_00020.npz",
+   "source_episode_index": 2371,
+   "source_env": 12,
+   "reasons": [
+    "object leaves the table by more than 20.0 mm"
+   ],
+   "values": {
+    "airborne_max_mm": 33.184452162086615,
+    "bottom_min_mm": -0.5423695403268397,
+    "gripper_penetration_max_mm": 0.8309073746204376
+   }
+  },
+  {
+   "asset_key": "libero/basket/asset_0029",
+   "source_run": "rest_chunk_01",
+   "source_shard": "legacy__shard_00009.npz",
+   "source_episode_index": 4561,
+   "source_env": 128,
+   "reasons": [
+    "object leaves the table by more than 20.0 mm"
+   ],
+   "values": {
+    "airborne_max_mm": 26.32306832424565,
+    "bottom_min_mm": -0.040968418691306185,
+    "gripper_penetration_max_mm": 0.9229667484760284
+   }
+  },
+  {
+   "asset_key": "libero/basket/asset_0031",
+   "source_run": "rest_chunk_18",
+   "source_shard": "r0__shard_00010.npz",
+   "source_episode_index": 1113,
+   "source_env": 8,
+   "reasons": [
+    "gripper more than 5.0 mm inside the object"
+   ],
+   "values": {
+    "airborne_max_mm": 0.3385103218058877,
+    "bottom_min_mm": -0.0014519405452384504,
+    "gripper_penetration_max_mm": 10.789744555950165
+   }
+  },
+  {
+   "asset_key": "libero/basket/asset_0033",
+   "source_run": "rest_chunk_00",
+   "source_shard": "legacy__shard_00004.npz",
+   "source_episode_index": 2089,
+   "source_env": 134,
+   "reasons": [
+    "object kicked with no contact possible at frame 3 or later"
+   ],
+   "values": {
+    "airborne_max_mm": 2.3029082192971284,
+    "bottom_min_mm": -0.003196794385970647,
+    "gripper_penetration_max_mm": 0.0,
+    "settle_kick_frames": [
+     5
+    ]
+   }
+  },
+  {
+   "asset_key": "libero/basket/asset_0033",
+   "source_run": "rest_chunk_00",
+   "source_shard": "legacy__shard_00009.npz",
+   "source_episode_index": 4813,
+   "source_env": 84,
+   "reasons": [
+    "object leaves the table by more than 20.0 mm"
+   ],
+   "values": {
+    "airborne_max_mm": 28.932610279550047,
+    "bottom_min_mm": -0.005827950480319366,
+    "gripper_penetration_max_mm": 1.2782923877239227
+   }
+  },
+  {
+   "asset_key": "libero/basket/asset_0036",
+   "source_run": "batch01_2026-09-14",
+   "source_shard": "shard_00005.npz",
+   "source_episode_index": 2639,
+   "source_env": 128,
+   "reasons": [
+    "object leaves the table by more than 20.0 mm"
+   ],
+   "values": {
+    "airborne_max_mm": 168.49695109073858,
+    "bottom_min_mm": -5.281641486665212e-05,
+    "gripper_penetration_max_mm": 1.2608468532562256
+   }
+  },
+  {
+   "asset_key": "libero/basket/asset_0039",
+   "source_run": "batch01_2026-09-14",
+   "source_shard": "shard_00002.npz",
+   "source_episode_index": 968,
+   "source_env": 155,
+   "reasons": [
+    "object gains more than 0.1 m/s in one frame while contact is impossible"
+   ],
+   "values": {
+    "airborne_max_mm": 0.5517806572854222,
+    "bottom_min_mm": -6.676435991559426e-05,
+    "gripper_penetration_max_mm": 0.31297653913497925,
+    "unexplained_gain_mps": 0.12169870474001947
+   }
+  },
+  {
+   "asset_key": "libero/basket/asset_0046",
+   "source_run": "rest_chunk_05",
+   "source_shard": "r0__shard_00017.npz",
+   "source_episode_index": 2236,
+   "source_env": 10,
+   "reasons": [
+    "object kicked with no contact possible at frame 3 or later"
+   ],
+   "values": {
+    "airborne_max_mm": 2.9317580966384953,
+    "bottom_min_mm": -0.00024077489471641123,
+    "gripper_penetration_max_mm": 0.7065385580062866,
+    "settle_kick_frames": [
+     4
+    ]
+   }
+  },
+  {
+   "asset_key": "libero/basket/asset_0056",
+   "source_run": "rest_chunk_12",
+   "source_shard": "r0__shard_00020.npz",
+   "source_episode_index": 2548,
+   "source_env": 35,
+   "reasons": [
+    "gripper more than 5.0 mm inside the object"
+   ],
+   "values": {
+    "airborne_max_mm": 0.006417690696841616,
+    "bottom_min_mm": -0.061553731400945666,
+    "gripper_penetration_max_mm": 12.915343046188354
+   }
+  },
+  {
+   "asset_key": "libero/basket/asset_0068",
+   "source_run": "rest_chunk_19",
+   "source_shard": "r0__shard_00029.npz",
+   "source_episode_index": 3731,
+   "source_env": 8,
+   "reasons": [
+    "gripper more than 5.0 mm inside the object"
+   ],
+   "values": {
+    "airborne_max_mm": 1.2899701594596968,
+    "bottom_min_mm": -0.0002721458928905962,
+    "gripper_penetration_max_mm": 5.068853497505188
+   }
+  },
+  {
+   "asset_key": "libero/basket/asset_0073",
+   "source_run": "rest_chunk_19",
+   "source_shard": "r0__shard_00004.npz",
+   "source_episode_index": 533,
+   "source_env": 162,
+   "reasons": [
+    "object leaves the table by more than 20.0 mm"
+   ],
+   "values": {
+    "airborne_max_mm": 36.003068665939665,
+    "bottom_min_mm": -2.5833697180603354,
+    "gripper_penetration_max_mm": 0.4193708300590515
+   }
+  },
+  {
+   "asset_key": "libero/basket/asset_0091",
+   "source_run": "rest_chunk_21",
+   "source_shard": "r0__shard_00033.npz",
+   "source_episode_index": 4721,
+   "source_env": 158,
+   "reasons": [
+    "object leaves a contact more than 2.0x faster than the gripper"
+   ],
+   "values": {
+    "airborne_max_mm": 1.9099105969918595,
+    "bottom_min_mm": -7.513546321225029e-05,
+    "gripper_penetration_max_mm": 0.5847811698913574,
+    "launch_ratio": 2.128,
+    "launch_frame": 37,
+    "launch_object_mps": 0.488,
+    "launch_gripper_mps": 0.23
+   }
+  },
+  {
+   "asset_key": "libero/basket/asset_0105",
+   "source_run": "rest_chunk_10",
+   "source_shard": "r0__shard_00015.npz",
+   "source_episode_index": 1957,
+   "source_env": 83,
+   "reasons": [
+    "object starts moving before the gripper can reach it",
+    "object gains more than 0.1 m/s in one frame while contact is impossible"
+   ],
+   "values": {
+    "airborne_max_mm": 0.8939489490121799,
+    "bottom_min_mm": -5.1172000484212e-05,
+    "gripper_penetration_max_mm": 0.8380860090255737,
+    "push_onset_frame": 14,
+    "unexplained_gain_mps": 0.2780994473323536
+   }
+  },
+  {
+   "asset_key": "libero/basket/asset_0119",
+   "source_run": "rest_chunk_09",
+   "source_shard": "r0__shard_00004.npz",
+   "source_episode_index": 476,
+   "source_env": 160,
+   "reasons": [
+    "object leaves a contact more than 2.0x faster than the gripper"
+   ],
+   "values": {
+    "airborne_max_mm": 3.820609212253995,
+    "bottom_min_mm": -1.8905037807683267,
+    "gripper_penetration_max_mm": 0.6689131259918213,
+    "launch_ratio": 2.139,
+    "launch_frame": 56,
+    "launch_object_mps": 0.661,
+    "launch_gripper_mps": 0.309
+   }
+  },
+  {
+   "asset_key": "libero/basket/asset_0122",
+   "source_run": "rest_chunk_15",
+   "source_shard": "r0__shard_00000.npz",
+   "source_episode_index": 41,
+   "source_env": 25,
+   "reasons": [
+    "object kicked with no contact possible at frame 3 or later"
+   ],
+   "values": {
+    "airborne_max_mm": 1.2840549717916816,
+    "bottom_min_mm": -0.00040950589484667343,
+    "gripper_penetration_max_mm": 0.02855062484741211,
+    "settle_kick_frames": [
+     3
+    ]
+   }
+  },
+  {
+   "asset_key": "libero/basket/asset_0128",
+   "source_run": "rest_chunk_08",
+   "source_shard": "r0__shard_00042.npz",
+   "source_episode_index": 8880,
+   "source_env": 101,
+   "reasons": [
+    "object gains more than 0.1 m/s in one frame while contact is impossible"
+   ],
+   "values": {
+    "airborne_max_mm": 1.2409932064355311,
+    "bottom_min_mm": -0.00677799753472097,
+    "gripper_penetration_max_mm": 0.4554837942123413,
+    "unexplained_gain_mps": 0.29938414419041753
+   }
+  },
+  {
+   "asset_key": "libero/basket/asset_0131",
+   "source_run": "rest_chunk_09",
+   "source_shard": "r0__shard_00040.npz",
+   "source_episode_index": 7467,
+   "source_env": 183,
+   "reasons": [
+    "object gains more than 0.1 m/s in one frame while contact is impossible"
+   ],
+   "values": {
+    "airborne_max_mm": 1.4047839403835138,
+    "bottom_min_mm": 0.0030251125209962426,
+    "gripper_penetration_max_mm": 0.532105565071106,
+    "unexplained_gain_mps": 0.10907735071844393
+   }
+  },
+  {
+   "asset_key": "libero/basket/asset_0135",
+   "source_run": "rest_chunk_21",
+   "source_shard": "r0__shard_00001.npz",
+   "source_episode_index": 178,
+   "source_env": 12,
+   "reasons": [
+    "object kicked with no contact possible at frame 3 or later"
+   ],
+   "values": {
+    "airborne_max_mm": 1.0679335307092614,
+    "bottom_min_mm": 0.2375357710569792,
+    "gripper_penetration_max_mm": 0.0,
+    "settle_kick_frames": [
+     3
+    ]
+   }
+  },
+  {
+   "asset_key": "libero/basket/asset_0139",
+   "source_run": "batch01_2026-09-14",
+   "source_shard": "shard_00005.npz",
+   "source_episode_index": 3045,
+   "source_env": 112,
+   "reasons": [
+    "object gains more than 0.1 m/s in one frame while contact is impossible"
+   ],
+   "values": {
+    "airborne_max_mm": 1.5440856838775523,
+    "bottom_min_mm": -1.6811199515926467,
+    "gripper_penetration_max_mm": 0.0,
+    "unexplained_gain_mps": 0.1400984636025179
+   }
+  },
+  {
+   "asset_key": "libero/basket/asset_0139",
+   "source_run": "batch01_2026-09-14",
+   "source_shard": "shard_00010.npz",
+   "source_episode_index": 6275,
+   "source_env": 162,
+   "reasons": [
+    "object sinks more than 5.0 mm into the table"
+   ],
+   "values": {
+    "airborne_max_mm": 2.496099382433961,
+    "bottom_min_mm": -6.5258946509239575,
+    "gripper_penetration_max_mm": 0.3593713045120239
+   }
+  },
+  {
+   "asset_key": "libero/basket/asset_0139",
+   "source_run": "batch01_2026-09-14",
+   "source_shard": "shard_00011.npz",
+   "source_episode_index": 7675,
+   "source_env": 62,
+   "reasons": [
+    "object sinks more than 5.0 mm into the table"
+   ],
+   "values": {
+    "airborne_max_mm": 3.317068949378832,
+    "bottom_min_mm": -5.271972288871912,
+    "gripper_penetration_max_mm": 0.443329568952322
+   }
+  },
+  {
+   "asset_key": "libero/basket/asset_0139",
+   "source_run": "topup1_chunk_00",
+   "source_shard": "r0__shard_00001.npz",
+   "source_episode_index": 1540,
+   "source_env": 93,
+   "reasons": [
+    "object leaves the table by more than 20.0 mm",
+    "object sinks more than 5.0 mm into the table"
+   ],
+   "values": {
+    "airborne_max_mm": 35.21057136917058,
+    "bottom_min_mm": -5.55836461572648,
+    "gripper_penetration_max_mm": 0.0019371509552001953
+   }
+  },
+  {
+   "asset_key": "libero/basket/asset_0154",
+   "source_run": "rest_chunk_01",
+   "source_shard": "legacy__shard_00001.npz",
+   "source_episode_index": 563,
+   "source_env": 108,
+   "reasons": [
+    "object leaves the table by more than 20.0 mm"
+   ],
+   "values": {
+    "airborne_max_mm": 22.7587272322657,
+    "bottom_min_mm": -0.23273694135518552,
+    "gripper_penetration_max_mm": 0.11001527309417725
+   }
+  },
+  {
+   "asset_key": "libero/basket/asset_0154",
+   "source_run": "rest_chunk_01",
+   "source_shard": "legacy__shard_00006.npz",
+   "source_episode_index": 3158,
+   "source_env": 158,
+   "reasons": [
+    "object leaves the table by more than 20.0 mm"
+   ],
+   "values": {
+    "airborne_max_mm": 71.31040988303118,
+    "bottom_min_mm": -0.2828211333192332,
+    "gripper_penetration_max_mm": 1.2849122285842896
+   }
+  },
+  {
+   "asset_key": "libero/basket/asset_0157",
+   "source_run": "rest_chunk_01",
+   "source_shard": "legacy__shard_00003.npz",
+   "source_episode_index": 1319,
+   "source_env": 12,
+   "reasons": [
+    "object leaves a contact more than 2.0x faster than the gripper"
+   ],
+   "values": {
+    "airborne_max_mm": 2.761473967795955,
+    "bottom_min_mm": -0.005520362475128215,
+    "gripper_penetration_max_mm": 0.0,
+    "launch_ratio": 2.15,
+    "launch_frame": 39,
+    "launch_object_mps": 0.385,
+    "launch_gripper_mps": 0.179
+   }
+  },
+  {
+   "asset_key": "libero/basket/asset_0165",
+   "source_run": "rest_chunk_20",
+   "source_shard": "r0__shard_00016.npz",
+   "source_episode_index": 2082,
+   "source_env": 105,
+   "reasons": [
+    "object leaves a contact more than 2.0x faster than the gripper"
+   ],
+   "values": {
+    "airborne_max_mm": 1.2447897691412053,
+    "bottom_min_mm": -0.43937571891998484,
+    "gripper_penetration_max_mm": 1.428963616490364,
+    "launch_ratio": 2.128,
+    "launch_frame": 36,
+    "launch_object_mps": 0.473,
+    "launch_gripper_mps": 0.222
+   }
+  },
+  {
+   "asset_key": "libero/black_bowl_1/asset_0064",
+   "source_run": "rest_chunk_02",
+   "source_shard": "legacy__shard_00003.npz",
+   "source_episode_index": 1435,
+   "source_env": 185,
+   "reasons": [
+    "object leaves a contact more than 2.0x faster than the gripper"
+   ],
+   "values": {
+    "airborne_max_mm": 0.38081151675591407,
+    "bottom_min_mm": -0.19413211798733482,
+    "gripper_penetration_max_mm": 0.5339868366718292,
+    "launch_ratio": 2.428,
+    "launch_frame": 39,
+    "launch_object_mps": 0.308,
+    "launch_gripper_mps": 0.127
+   }
+  },
+  {
+   "asset_key": "libero/black_bowl_1/asset_0094",
+   "source_run": "rest_chunk_11",
+   "source_shard": "r0__shard_00018.npz",
+   "source_episode_index": 2565,
+   "source_env": 123,
+   "reasons": [
+    "object leaves the table by more than 20.0 mm"
+   ],
+   "values": {
+    "airborne_max_mm": 20.085478686406347,
+    "bottom_min_mm": -1.893392104213021e-05,
+    "gripper_penetration_max_mm": 0.44995546340942383
+   }
+  },
+  {
+   "asset_key": "libero/black_bowl_2/asset_0007",
+   "source_run": "rest_chunk_06",
+   "source_shard": "r0__shard_00007.npz",
+   "source_episode_index": 949,
+   "source_env": 69,
+   "reasons": [
+    "object leaves a contact more than 2.0x faster than the gripper"
+   ],
+   "values": {
+    "airborne_max_mm": 0.124772883909538,
+    "bottom_min_mm": -0.0421247947624305,
+    "gripper_penetration_max_mm": 1.4153700321912766,
+    "launch_ratio": 2.639,
+    "launch_frame": 38,
+    "launch_object_mps": 0.606,
+    "launch_gripper_mps": 0.229
+   }
+  },
+  {
+   "asset_key": "libero/black_bowl_2/asset_0048",
+   "source_run": "rest_chunk_14",
+   "source_shard": "r0__shard_00009.npz",
+   "source_episode_index": 1054,
+   "source_env": 89,
+   "reasons": [
+    "object leaves a contact more than 2.0x faster than the gripper"
+   ],
+   "values": {
+    "airborne_max_mm": 0.3066551453468347,
+    "bottom_min_mm": -0.12273795480882699,
+    "gripper_penetration_max_mm": 1.4517046511173248,
+    "launch_ratio": 2.739,
+    "launch_frame": 23,
+    "launch_object_mps": 0.818,
+    "launch_gripper_mps": 0.299
+   }
+  },
+  {
+   "asset_key": "libero/black_bowl_2/asset_0082",
+   "source_run": "rest_chunk_09",
+   "source_shard": "r0__shard_00031.npz",
+   "source_episode_index": 4575,
+   "source_env": 23,
+   "reasons": [
+    "object leaves a contact more than 2.0x faster than the gripper"
+   ],
+   "values": {
+    "airborne_max_mm": 1.1778385090322683,
+    "bottom_min_mm": -0.35452548298715164,
+    "gripper_penetration_max_mm": 1.0283850133419037,
+    "launch_ratio": 2.924,
+    "launch_frame": 73,
+    "launch_object_mps": 0.803,
+    "launch_gripper_mps": 0.275
+   }
+  },
+  {
+   "asset_key": "libero/black_bowl_2/asset_0095",
+   "source_run": "rest_chunk_04",
+   "source_shard": "r0__shard_00011.npz",
+   "source_episode_index": 1241,
+   "source_env": 31,
+   "reasons": [
+    "object leaves a contact more than 2.0x faster than the gripper"
+   ],
+   "values": {
+    "airborne_max_mm": 0.7470364475339747,
+    "bottom_min_mm": -0.2782787565972361,
+    "gripper_penetration_max_mm": 1.3731815852224827,
+    "launch_ratio": 2.145,
+    "launch_frame": 31,
+    "launch_object_mps": 0.515,
+    "launch_gripper_mps": 0.24
+   }
+  },
+  {
+   "asset_key": "libero/black_bowl_2/asset_0100",
+   "source_run": "rest_chunk_09",
+   "source_shard": "r0__shard_00026.npz",
+   "source_episode_index": 3681,
+   "source_env": 0,
+   "reasons": [
+    "object leaves the table by more than 20.0 mm"
+   ],
+   "values": {
+    "airborne_max_mm": 268.75311149868367,
+    "bottom_min_mm": -0.22744428403406042,
+    "gripper_penetration_max_mm": 0.4091411828994751
+   }
+  },
+  {
+   "asset_key": "libero/ramekin/asset_0030",
+   "source_run": "rest_chunk_18",
+   "source_shard": "r0__shard_00006.npz",
+   "source_episode_index": 688,
+   "source_env": 131,
+   "reasons": [
+    "object leaves a contact more than 2.0x faster than the gripper"
+   ],
+   "values": {
+    "airborne_max_mm": 0.0468384774088941,
+    "bottom_min_mm": -0.11800322237186592,
+    "gripper_penetration_max_mm": 0.3374814987182617,
+    "launch_ratio": 4.426,
+    "launch_frame": 27,
+    "launch_object_mps": 1.258,
+    "launch_gripper_mps": 0.284
+   }
+  }
+ ]
+}

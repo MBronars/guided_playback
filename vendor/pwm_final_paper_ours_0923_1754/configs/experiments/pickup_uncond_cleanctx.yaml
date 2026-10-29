@@ -1,0 +1,59 @@
+# Experiment: clean-context continuation of the 40K unconditional pickup checkpoint.
+# Fresh optimizer/schedule from its EMA weights; not --resume of the noisy run.
+# Model fields match configs/unet.yaml and are checked against init_from.
+run_name: pickup_jointed_unet_bidir_uncond_cleanctx_from40k_0914
+normalization:
+  profile: xy_p99_per_domain
+data:
+  domains: [pickup]
+  context_len: 4
+  future_len: 16
+  batch_size: 8
+model:
+  architecture: unet
+  articulated_bodies: true
+  unet_bidirectional_temporal: true
+  normalize_physics_features: true
+  unet_actions: false
+  unet_l1_by_mat: "0:256,1:256,2:256,3:128,4:128,5:512"
+  unet_strides: 4,4,2
+  unet_widths: 128,256,512,1024
+  unet_enc_depths: 1,2,4,8
+  unet_dec_depths: 1,2,4
+  unet_head_dim: 64
+  unet_fps_random_start: true
+  unet_dual_ffn: true
+  unet_ckpt_from_level: 0
+  unet_ckpt_seams: true
+  unet_ckpt_ingraph: true
+  unet_register_from_level: 2
+  unet_register_objs: 1
+  unet_pool_mode: pointnet
+  unet_unpool_mode: pointnet
+  unet_pool_k: 8
+  unet_interp_k: 3
+  unet_geo_r_m: 0.133155
+train:
+  init_from: /data/group_data/katefgroup/runs_pwm_robertre/pickup_jointed_unet_bidir_uncond/checkpoints/final.pt
+  steps: 10000
+  lr: 1.0e-5
+  warmup_steps: 500
+  stop_after_step: 0
+  noise_context: false
+  light_context_noise_std: 0.0
+  clean_ctx_timesteps: false
+  supervise_context: false
+  action_dropout: 1.0
+  clip_pose_deltas: false
+  mixed_precision: bf16
+  compile: true
+  compile_regional: true
+  compile_dynamic: false
+log:
+  dir: /data/group_data/katefgroup/runs_pwm_robertre
+  save_every: 1000
+  val_every: 1000
+  val_batches: 40
+  sampler_batches: 8
+  best_metric: sample_mm
+  best_gate: ema

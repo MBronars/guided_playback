@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "particle_world_model"
+version = "0.1.0"
+description = "Unified pose-native particle world model with flow matching"
+requires-python = ">=3.10"
+dependencies = [
+    "torch>=2.0",
+    "diffusers>=0.25.0",
+    "pytorch3d",
+    "omegaconf",
+    "webdataset",
+    "einops",
+    "tqdm",
+    "accelerate",
+    "numpy",
+    "matplotlib",
+    "imageio",
+    "pillow",
+    "wandb",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "ruff"]
+data = ["h5py", "scipy"]
+collection-mpm = ["h5py", "scipy", "warp-lang==1.10.1"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "collection"]
+addopts = "-m 'not integration'"
+markers = ["integration: requires the external research corpora / normalization assets"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["data*", "models*", "diffusion*", "utils*", "collection*"]

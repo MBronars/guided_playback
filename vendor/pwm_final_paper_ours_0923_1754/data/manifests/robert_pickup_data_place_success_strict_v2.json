@@ -1,0 +1,987 @@
+{
+  "dataset_root": "/data/user_data/robertre/Genesis/3DPCWM_Data/robert_pickup_data_place",
+  "n_total": 7936,
+  "n_flagged": 64,
+  "flagged_pct": 0.8064516129032258,
+  "flag_counts": {
+    "teleport": {
+      "count": 50,
+      "pct": 0.6300403225806451
+    },
+    "rot_glitch": {
+      "count": 9,
+      "pct": 0.11340725806451613
+    },
+    "phantom": {
+      "count": 39,
+      "pct": 0.49143145161290325
+    },
+    "dropped": {
+      "count": 0,
+      "pct": 0.0
+    },
+    "far_majority": {
+      "count": 2,
+      "pct": 0.025201612903225805
+    },
+    "static_object": {
+      "count": 0,
+      "pct": 0.0
+    },
+    "no_grasp": {
+      "count": 0,
+      "pct": 0.0
+    },
+    "any_v2": {
+      "count": 64,
+      "pct": 0.8064516129032258
+    }
+  },
+  "thresholds": {
+    "STATIC_PATH_MM": 10.0,
+    "NO_GRASP_G2O_MM": 130.0,
+    "(plus prior strict thresholds \u2014 see v1 blocklist for those)": true
+  },
+  "blocklist": [
+    {
+      "shard": "gpu0/00000.tar",
+      "key": "batch_00000024",
+      "elem": 0,
+      "flags": [
+        "teleport",
+        "phantom"
+      ],
+      "max_obj_dt_mm": 53.75489807128906,
+      "max_obj_speed_when_far_mm_s": 1550.20751953125,
+      "late_vz_m_s": 0.0016017816960811615,
+      "far_frac": 0.15,
+      "obj_path_mm": 293.6065979003906,
+      "g2o_min_mm": 129.2840576171875
+    },
+    {
+      "shard": "gpu0/00000.tar",
+      "key": "batch_00000024",
+      "elem": 3,
+      "flags": [
+        "teleport",
+        "phantom"
+      ],
+      "max_obj_dt_mm": 58.671146392822266,
+      "max_obj_speed_when_far_mm_s": 509.2909240722656,
+      "late_vz_m_s": -0.0002625212073326111,
+      "far_frac": 0.075,
+      "obj_path_mm": 288.20428466796875,
+      "g2o_min_mm": 132.0259552001953
+    },
+    {
+      "shard": "gpu0/00000.tar",
+      "key": "batch_00000045",
+      "elem": 3,
+      "flags": [
+        "rot_glitch"
+      ],
+      "max_obj_dt_mm": 23.36111831665039,
+      "max_obj_speed_when_far_mm_s": 0.0,
+      "late_vz_m_s": 2.291002601850778e-06,
+      "far_frac": 0.0,
+      "obj_path_mm": 204.982666015625,
+      "g2o_min_mm": 104.28397369384766
+    },
+    {
+      "shard": "gpu0/00000.tar",
+      "key": "batch_00000053",
+      "elem": 2,
+      "flags": [
+        "phantom"
+      ],
+      "max_obj_dt_mm": 46.31304168701172,
+      "max_obj_speed_when_far_mm_s": 525.2377319335938,
+      "late_vz_m_s": -0.004256721585988998,
+      "far_frac": 0.05,
+      "obj_path_mm": 293.16094970703125,
+      "g2o_min_mm": 131.8646240234375
+    },
+    {
+      "shard": "gpu0/00000.tar",
+      "key": "batch_00000059",
+      "elem": 0,
+      "flags": [
+        "teleport",
+        "phantom"
+      ],
+      "max_obj_dt_mm": 54.06111526489258,
+      "max_obj_speed_when_far_mm_s": 1620.8145751953125,
+      "late_vz_m_s": 0.03841817006468773,
+      "far_frac": 0.175,
+      "obj_path_mm": 413.36102294921875,
+      "g2o_min_mm": 148.51165771484375
+    },
+    {
+      "shard": "gpu0/00001.tar",
+      "key": "batch_00000070",
+      "elem": 2,
+      "flags": [
+        "rot_glitch"
+      ],
+      "max_obj_dt_mm": 39.00564193725586,
+      "max_obj_speed_when_far_mm_s": 0.0,
+      "late_vz_m_s": -0.0017803723458200693,
+      "far_frac": 0.0,
+      "obj_path_mm": 348.0862121582031,
+      "g2o_min_mm": 137.8546600341797
+    },
+    {
+      "shard": "gpu0/00001.tar",
+      "key": "batch_00000093",
+      "elem": 3,
+      "flags": [
+        "teleport",
+        "phantom"
+      ],
+      "max_obj_dt_mm": 61.763511657714844,
+      "max_obj_speed_when_far_mm_s": 718.6380004882812,
+      "late_vz_m_s": -0.009298491291701794,
+      "far_frac": 0.05,
+      "obj_path_mm": 282.10491943359375,
+      "g2o_min_mm": 133.29864501953125
+    },
+    {
+      "shard": "gpu0/00002.tar",
+      "key": "batch_00000130",
+      "elem": 0,
+      "flags": [
+        "teleport"
+      ],
+      "max_obj_dt_mm": 50.55075454711914,
+      "max_obj_speed_when_far_mm_s": 0.0,
+      "late_vz_m_s": -0.006456300616264343,
+      "far_frac": 0.0,
+      "obj_path_mm": 357.65185546875,
+      "g2o_min_mm": 147.21853637695312
+    },
+    {
+      "shard": "gpu0/00003.tar",
+      "key": "batch_00000202",
+      "elem": 0,
+      "flags": [
+        "teleport",
+        "phantom"
+      ],
+      "max_obj_dt_mm": 52.15309143066406,
+      "max_obj_speed_when_far_mm_s": 1069.7088623046875,
+      "late_vz_m_s": -0.0028074905276298523,
+      "far_frac": 0.125,
+      "obj_path_mm": 286.4277648925781,
+      "g2o_min_mm": 117.46076202392578
+    },
+    {
+      "shard": "gpu0/00003.tar",
+      "key": "batch_00000252",
+      "elem": 3,
+      "flags": [
+        "phantom"
+      ],
+      "max_obj_dt_mm": 47.68730926513672,
+      "max_obj_speed_when_far_mm_s": 651.2680053710938,
+      "late_vz_m_s": 0.06223272159695625,
+      "far_frac": 0.05,
+      "obj_path_mm": 253.1043243408203,
+      "g2o_min_mm": 148.06101989746094
+    },
+    {
+      "shard": "gpu0/00004.tar",
+      "key": "batch_00000304",
+      "elem": 3,
+      "flags": [
+        "teleport",
+        "phantom"
+      ],
+      "max_obj_dt_mm": 67.52444458007812,
+      "max_obj_speed_when_far_mm_s": 569.4810791015625,
+      "late_vz_m_s": -0.0005313568981364369,
+      "far_frac": 0.125,
+      "obj_path_mm": 310.0121765136719,
+      "g2o_min_mm": 147.98114013671875
+    },
+    {
+      "shard": "gpu0/00004.tar",
+      "key": "batch_00000318",
+      "elem": 3,
+      "flags": [
+        "teleport"
+      ],
+      "max_obj_dt_mm": 60.19771194458008,
+      "max_obj_speed_when_far_mm_s": 341.91900634765625,
+      "late_vz_m_s": 0.011184587143361568,
+      "far_frac": 0.15,
+      "obj_path_mm": 250.8713836669922,
+      "g2o_min_mm": 121.25952911376953
+    },
+    {
+      "shard": "gpu0/00005.tar",
+      "key": "batch_00000328",
+      "elem": 0,
+      "flags": [
+        "teleport",
+        "phantom"
+      ],
+      "max_obj_dt_mm": 83.18163299560547,
+      "max_obj_speed_when_far_mm_s": 2495.44873046875,
+      "late_vz_m_s": 0.027247106656432152,
+      "far_frac": 0.25,
+      "obj_path_mm": 407.3556213378906,
+      "g2o_min_mm": 121.16863250732422
+    },
+    {
+      "shard": "gpu0/00005.tar",
+      "key": "batch_00000369",
+      "elem": 3,
+      "flags": [
+        "teleport"
+      ],
+      "max_obj_dt_mm": 53.24958038330078,
+      "max_obj_speed_when_far_mm_s": 471.9200134277344,
+      "late_vz_m_s": 0.02854876033961773,
+      "far_frac": 0.225,
+      "obj_path_mm": 249.03680419921875,
+      "g2o_min_mm": 147.52474975585938
+    },
+    {
+      "shard": "gpu0/00006.tar",
+      "key": "batch_00000397",
+      "elem": 2,
+      "flags": [
+        "teleport",
+        "phantom"
+      ],
+      "max_obj_dt_mm": 71.20470428466797,
+      "max_obj_speed_when_far_mm_s": 2136.14111328125,
+      "late_vz_m_s": 0.00905429944396019,
+      "far_frac": 0.2,
+      "obj_path_mm": 304.3944396972656,
+      "g2o_min_mm": 128.26058959960938
+    },
+    {
+      "shard": "gpu0/00006.tar",
+      "key": "batch_00000441",
+      "elem": 3,
+      "flags": [
+        "teleport",
+        "phantom"
+      ],
+      "max_obj_dt_mm": 71.24575805664062,
+      "max_obj_speed_when_far_mm_s": 2137.372802734375,
+      "late_vz_m_s": 0.0027882119175046682,
+      "far_frac": 0.325,
+      "obj_path_mm": 294.27752685546875,
+      "g2o_min_mm": 135.68341064453125
+    },
+    {
+      "shard": "gpu0/00007.tar",
+      "key": "batch_00000452",
+      "elem": 0,
+      "flags": [
+        "teleport",
+        "phantom"
+      ],
+      "max_obj_dt_mm": 57.58516311645508,
+      "max_obj_speed_when_far_mm_s": 513.0951538085938,
+      "late_vz_m_s": -0.011581833474338055,
+      "far_frac": 0.15,
+      "obj_path_mm": 246.96144104003906,
+      "g2o_min_mm": 109.55438995361328
+    },
+    {
+      "shard": "gpu0/00007.tar",
+      "key": "batch_00000467",
+      "elem": 2,
+      "flags": [
+        "teleport",
+        "rot_glitch",
+        "phantom"
+      ],
+      "max_obj_dt_mm": 59.75452423095703,
+      "max_obj_speed_when_far_mm_s": 1370.1234130859375,
+      "late_vz_m_s": 0.03675715997815132,
+      "far_frac": 0.125,
+      "obj_path_mm": 303.7607116699219,
+      "g2o_min_mm": 72.60047912597656
+    },
+    {
+      "shard": "gpu0/00009.tar",
+      "key": "batch_00000620",
+      "elem": 0,
+      "flags": [
+        "teleport"
+      ],
+      "max_obj_dt_mm": 50.313133239746094,
+      "max_obj_speed_when_far_mm_s": 0.0,
+      "late_vz_m_s": -0.0034339539706707,
+      "far_frac": 0.025,
+      "obj_path_mm": 286.1676025390625,
+      "g2o_min_mm": 149.00051879882812
+    },
+    {
+      "shard": "gpu0/00009.tar",
+      "key": "batch_00000633",
+      "elem": 1,
+      "flags": [
+        "phantom"
+      ],
+      "max_obj_dt_mm": 30.87602996826172,
+      "max_obj_speed_when_far_mm_s": 536.6778564453125,
+      "late_vz_m_s": -0.002162866061553359,
+      "far_frac": 0.5,
+      "obj_path_mm": 178.732421875,
+      "g2o_min_mm": 154.9666748046875
+    },
+    {
+      "shard": "gpu0/00010.tar",
+      "key": "batch_00000651",
+      "elem": 1,
+      "flags": [
+        "teleport"
+      ],
+      "max_obj_dt_mm": 57.6284065246582,
+      "max_obj_speed_when_far_mm_s": 0.0,
+      "late_vz_m_s": 0.007330979220569134,
+      "far_frac": 0.0,
+      "obj_path_mm": 372.4153137207031,
+      "g2o_min_mm": 136.5503387451172
+    },
+    {
+      "shard": "gpu0/00010.tar",
+      "key": "batch_00000671",
+      "elem": 2,
+      "flags": [
+        "teleport"
+      ],
+      "max_obj_dt_mm": 50.93539047241211,
+      "max_obj_speed_when_far_mm_s": 0.0,
+      "late_vz_m_s": 0.00215727835893631,
+      "far_frac": 0.0,
+      "obj_path_mm": 243.1982421875,
+      "g2o_min_mm": 115.09054565429688
+    },
+    {
+      "shard": "gpu0/00011.tar",
+      "key": "batch_00000719",
+      "elem": 0,
+      "flags": [
+        "phantom"
+      ],
+      "max_obj_dt_mm": 38.906776428222656,
+      "max_obj_speed_when_far_mm_s": 645.5238647460938,
+      "late_vz_m_s": -0.0025363636668771505,
+      "far_frac": 0.175,
+      "obj_path_mm": 191.14869689941406,
+      "g2o_min_mm": 151.0599365234375
+    },
+    {
+      "shard": "gpu0/00011.tar",
+      "key": "batch_00000747",
+      "elem": 3,
+      "flags": [
+        "teleport",
+        "phantom"
+      ],
+      "max_obj_dt_mm": 66.67788696289062,
+      "max_obj_speed_when_far_mm_s": 2000.336669921875,
+      "late_vz_m_s": -0.0017681343015283346,
+      "far_frac": 0.45,
+      "obj_path_mm": 312.3793640136719,
+      "g2o_min_mm": 130.50344848632812
+    },
+    {
+      "shard": "gpu0/00011.tar",
+      "key": "batch_00000757",
+      "elem": 2,
+      "flags": [
+        "teleport"
+      ],
+      "max_obj_dt_mm": 68.26408386230469,
+      "max_obj_speed_when_far_mm_s": 358.19580078125,
+      "late_vz_m_s": -1.1123484000563622e-07,
+      "far_frac": 0.05,
+      "obj_path_mm": 275.4467468261719,
+      "g2o_min_mm": 132.4166717529297
+    },
+    {
+      "shard": "gpu0/00012.tar",
+      "key": "batch_00000798",
+      "elem": 2,
+      "flags": [
+        "teleport"
+      ],
+      "max_obj_dt_mm": 52.2833366394043,
+      "max_obj_speed_when_far_mm_s": 380.36334228515625,
+      "late_vz_m_s": -0.00010058283805847168,
+      "far_frac": 0.15,
+      "obj_path_mm": 356.7715148925781,
+      "g2o_min_mm": 125.01089477539062
+    },
+    {
+      "shard": "gpu0/00013.tar",
+      "key": "batch_00000845",
+      "elem": 2,
+      "flags": [
+        "teleport",
+        "rot_glitch"
+      ],
+      "max_obj_dt_mm": 53.972198486328125,
+      "max_obj_speed_when_far_mm_s": 0.0,
+      "late_vz_m_s": -0.005548149347305298,
+      "far_frac": 0.0,
+      "obj_path_mm": 245.7140655517578,
+      "g2o_min_mm": 140.7149658203125
+    },
+    {
+      "shard": "gpu0/00013.tar",
+      "key": "batch_00000870",
+      "elem": 0,
+      "flags": [
+        "teleport",
+        "phantom"
+      ],
+      "max_obj_dt_mm": 68.20980834960938,
+      "max_obj_speed_when_far_mm_s": 2046.2939453125,
+      "late_vz_m_s": 0.0014609096106141806,
+      "far_frac": 0.225,
+      "obj_path_mm": 323.62872314453125,
+      "g2o_min_mm": 126.6624755859375
+    },
+    {
+      "shard": "gpu0/00013.tar",
+      "key": "batch_00000873",
+      "elem": 1,
+      "flags": [
+        "teleport"
+      ],
+      "max_obj_dt_mm": 58.354225158691406,
+      "max_obj_speed_when_far_mm_s": 0.0,
+      "late_vz_m_s": -5.062669879407622e-05,
+      "far_frac": 0.0,
+      "obj_path_mm": 230.5012969970703,
+      "g2o_min_mm": 116.6386947631836
+    },
+    {
+      "shard": "gpu0/00013.tar",
+      "key": "batch_00000878",
+      "elem": 1,
+      "flags": [
+        "teleport"
+      ],
+      "max_obj_dt_mm": 68.19356536865234,
+      "max_obj_speed_when_far_mm_s": 329.9598693847656,
+      "late_vz_m_s": -0.000719334464520216,
+      "far_frac": 0.1,
+      "obj_path_mm": 317.60906982421875,
+      "g2o_min_mm": 135.03530883789062
+    },
+    {
+      "shard": "gpu0/00014.tar",
+      "key": "batch_00000926",
+      "elem": 0,
+      "flags": [
+        "teleport"
+      ],
+      "max_obj_dt_mm": 59.163291931152344,
+      "max_obj_speed_when_far_mm_s": 0.0,
+      "late_vz_m_s": -0.008992384187877178,
+      "far_frac": 0.0,
+      "obj_path_mm": 364.6011047363281,
+      "g2o_min_mm": 139.32550048828125
+    },
+    {
+      "shard": "gpu0/00015.tar",
+      "key": "batch_00001000",
+      "elem": 2,
+      "flags": [
+        "teleport",
+        "phantom"
+      ],
+      "max_obj_dt_mm": 54.641780853271484,
+      "max_obj_speed_when_far_mm_s": 856.4105834960938,
+      "late_vz_m_s": 0.008741038851439953,
+      "far_frac": 0.075,
+      "obj_path_mm": 322.59375,
+      "g2o_min_mm": 145.3567657470703
+    },
+    {
+      "shard": "gpu0/00016.tar",
+      "key": "batch_00001027",
+      "elem": 0,
+      "flags": [
+        "teleport",
+        "phantom"
+      ],
+      "max_obj_dt_mm": 79.68941497802734,
+      "max_obj_speed_when_far_mm_s": 2390.68212890625,
+      "late_vz_m_s": -0.002098717028275132,
+      "far_frac": 0.225,
+      "obj_path_mm": 336.82196044921875,
+      "g2o_min_mm": 125.44869995117188
+    },
+    {
+      "shard": "gpu0/00016.tar",
+      "key": "batch_00001074",
+      "elem": 0,
+      "flags": [
+        "teleport",
+        "far_majority"
+      ],
+      "max_obj_dt_mm": 65.93941497802734,
+      "max_obj_speed_when_far_mm_s": 282.3768615722656,
+      "late_vz_m_s": -2.402812015134259e-06,
+      "far_frac": 0.625,
+      "obj_path_mm": 213.54075622558594,
+      "g2o_min_mm": 136.50335693359375
+    },
+    {
+      "shard": "gpu0/00017.tar",
+      "key": "batch_00001101",
+      "elem": 3,
+      "flags": [
+        "teleport",
+        "phantom"
+      ],
+      "max_obj_dt_mm": 70.62960052490234,
+      "max_obj_speed_when_far_mm_s": 2118.887939453125,
+      "late_vz_m_s": -0.007084942888468504,
+      "far_frac": 0.15,
+      "obj_path_mm": 376.53521728515625,
+      "g2o_min_mm": 149.46527099609375
+    },
+    {
+      "shard": "gpu0/00018.tar",
+      "key": "batch_00001186",
+      "elem": 1,
+      "flags": [
+        "phantom"
+      ],
+      "max_obj_dt_mm": 42.01604080200195,
+      "max_obj_speed_when_far_mm_s": 1237.91796875,
+      "late_vz_m_s": 0.0049890754744410515,
+      "far_frac": 0.125,
+      "obj_path_mm": 212.9259796142578,
+      "g2o_min_mm": 138.3285369873047
+    },
+    {
+      "shard": "gpu0/00019.tar",
+      "key": "batch_00001256",
+      "elem": 2,
+      "flags": [
+        "phantom"
+      ],
+      "max_obj_dt_mm": 47.911766052246094,
+      "max_obj_speed_when_far_mm_s": 1253.4637451171875,
+      "late_vz_m_s": -1.0281800314260181e-05,
+      "far_frac": 0.275,
+      "obj_path_mm": 283.43017578125,
+      "g2o_min_mm": 130.00758361816406
+    },
+    {
+      "shard": "gpu0/00019.tar",
+      "key": "batch_00001267",
+      "elem": 2,
+      "flags": [
+        "teleport",
+        "phantom",
+        "far_majority"
+      ],
+      "max_obj_dt_mm": 60.099056243896484,
+      "max_obj_speed_when_far_mm_s": 1802.9715576171875,
+      "late_vz_m_s": -0.0006336159422062337,
+      "far_frac": 0.95,
+      "obj_path_mm": 289.932861328125,
+      "g2o_min_mm": 174.1708221435547
+    },
+    {
+      "shard": "gpu0/00019.tar",
+      "key": "batch_00001276",
+      "elem": 0,
+      "flags": [
+        "phantom"
+      ],
+      "max_obj_dt_mm": 29.43494987487793,
+      "max_obj_speed_when_far_mm_s": 637.1244506835938,
+      "late_vz_m_s": -1.1175869474300271e-07,
+      "far_frac": 0.075,
+      "obj_path_mm": 248.4519500732422,
+      "g2o_min_mm": 121.00503540039062
+    },
+    {
+      "shard": "gpu0/00020.tar",
+      "key": "batch_00001292",
+      "elem": 2,
+      "flags": [
+        "teleport",
+        "phantom"
+      ],
+      "max_obj_dt_mm": 83.8367691040039,
+      "max_obj_speed_when_far_mm_s": 2515.10302734375,
+      "late_vz_m_s": 0.0018126142676919699,
+      "far_frac": 0.25,
+      "obj_path_mm": 303.8158874511719,
+      "g2o_min_mm": 98.39979553222656
+    },
+    {
+      "shard": "gpu0/00020.tar",
+      "key": "batch_00001311",
+      "elem": 1,
+      "flags": [
+        "teleport"
+      ],
+      "max_obj_dt_mm": 51.20231628417969,
+      "max_obj_speed_when_far_mm_s": 240.0263214111328,
+      "late_vz_m_s": 8.415439515374601e-05,
+      "far_frac": 0.05,
+      "obj_path_mm": 268.65240478515625,
+      "g2o_min_mm": 135.9788818359375
+    },
+    {
+      "shard": "gpu0/00020.tar",
+      "key": "batch_00001314",
+      "elem": 1,
+      "flags": [
+        "teleport"
+      ],
+      "max_obj_dt_mm": 54.41680145263672,
+      "max_obj_speed_when_far_mm_s": 452.776611328125,
+      "late_vz_m_s": -0.007999241352081299,
+      "far_frac": 0.05,
+      "obj_path_mm": 241.4409637451172,
+      "g2o_min_mm": 144.00238037109375
+    },
+    {
+      "shard": "gpu0/00022.tar",
+      "key": "batch_00001412",
+      "elem": 3,
+      "flags": [
+        "teleport",
+        "phantom"
+      ],
+      "max_obj_dt_mm": 56.39690017700195,
+      "max_obj_speed_when_far_mm_s": 1488.9459228515625,
+      "late_vz_m_s": -0.004904195200651884,
+      "far_frac": 0.175,
+      "obj_path_mm": 287.00830078125,
+      "g2o_min_mm": 118.79328918457031
+    },
+    {
+      "shard": "gpu0/00022.tar",
+      "key": "batch_00001466",
+      "elem": 1,
+      "flags": [
+        "phantom"
+      ],
+      "max_obj_dt_mm": 45.46699142456055,
+      "max_obj_speed_when_far_mm_s": 552.4678344726562,
+      "late_vz_m_s": 0.014720689505338669,
+      "far_frac": 0.05,
+      "obj_path_mm": 299.6071472167969,
+      "g2o_min_mm": 142.72520446777344
+    },
+    {
+      "shard": "gpu0/00023.tar",
+      "key": "batch_00001490",
+      "elem": 0,
+      "flags": [
+        "teleport",
+        "phantom"
+      ],
+      "max_obj_dt_mm": 73.00215148925781,
+      "max_obj_speed_when_far_mm_s": 856.8641967773438,
+      "late_vz_m_s": 5.587935447692871e-08,
+      "far_frac": 0.4,
+      "obj_path_mm": 320.858642578125,
+      "g2o_min_mm": 138.93983459472656
+    },
+    {
+      "shard": "gpu0/00023.tar",
+      "key": "batch_00001501",
+      "elem": 1,
+      "flags": [
+        "rot_glitch",
+        "phantom"
+      ],
+      "max_obj_dt_mm": 40.49920654296875,
+      "max_obj_speed_when_far_mm_s": 1214.9761962890625,
+      "late_vz_m_s": 1.1181691661477089e-07,
+      "far_frac": 0.2,
+      "obj_path_mm": 210.85177612304688,
+      "g2o_min_mm": 112.776123046875
+    },
+    {
+      "shard": "gpu0/00023.tar",
+      "key": "batch_00001506",
+      "elem": 2,
+      "flags": [
+        "teleport",
+        "phantom"
+      ],
+      "max_obj_dt_mm": 63.63549041748047,
+      "max_obj_speed_when_far_mm_s": 1438.6895751953125,
+      "late_vz_m_s": 0.0157797709107399,
+      "far_frac": 0.125,
+      "obj_path_mm": 260.8794860839844,
+      "g2o_min_mm": 137.70497131347656
+    },
+    {
+      "shard": "gpu0/00024.tar",
+      "key": "batch_00001551",
+      "elem": 1,
+      "flags": [
+        "teleport"
+      ],
+      "max_obj_dt_mm": 50.22357177734375,
+      "max_obj_speed_when_far_mm_s": 0.0,
+      "late_vz_m_s": 0.0016306714387610555,
+      "far_frac": 0.0,
+      "obj_path_mm": 255.6872100830078,
+      "g2o_min_mm": 123.01403045654297
+    },
+    {
+      "shard": "gpu0/00024.tar",
+      "key": "batch_00001555",
+      "elem": 0,
+      "flags": [
+        "teleport",
+        "phantom"
+      ],
+      "max_obj_dt_mm": 81.59246063232422,
+      "max_obj_speed_when_far_mm_s": 2447.773681640625,
+      "late_vz_m_s": -0.0002481043338775635,
+      "far_frac": 0.25,
+      "obj_path_mm": 273.66290283203125,
+      "g2o_min_mm": 151.88357543945312
+    },
+    {
+      "shard": "gpu0/00024.tar",
+      "key": "batch_00001567",
+      "elem": 0,
+      "flags": [
+        "teleport",
+        "phantom"
+      ],
+      "max_obj_dt_mm": 50.34101104736328,
+      "max_obj_speed_when_far_mm_s": 508.4879455566406,
+      "late_vz_m_s": 0.002620294690132141,
+      "far_frac": 0.05,
+      "obj_path_mm": 369.48175048828125,
+      "g2o_min_mm": 89.2950668334961
+    },
+    {
+      "shard": "gpu0/00024.tar",
+      "key": "batch_00001576",
+      "elem": 3,
+      "flags": [
+        "rot_glitch"
+      ],
+      "max_obj_dt_mm": 38.339073181152344,
+      "max_obj_speed_when_far_mm_s": 0.0,
+      "late_vz_m_s": 0.0097404969856143,
+      "far_frac": 0.0,
+      "obj_path_mm": 386.6175537109375,
+      "g2o_min_mm": 129.28126525878906
+    },
+    {
+      "shard": "gpu0/00024.tar",
+      "key": "batch_00001583",
+      "elem": 1,
+      "flags": [
+        "teleport",
+        "phantom"
+      ],
+      "max_obj_dt_mm": 58.04957962036133,
+      "max_obj_speed_when_far_mm_s": 1640.3995361328125,
+      "late_vz_m_s": 0.0009396672248840332,
+      "far_frac": 0.175,
+      "obj_path_mm": 324.80804443359375,
+      "g2o_min_mm": 116.86940002441406
+    },
+    {
+      "shard": "gpu0/00025.tar",
+      "key": "batch_00001646",
+      "elem": 1,
+      "flags": [
+        "teleport",
+        "rot_glitch",
+        "phantom"
+      ],
+      "max_obj_dt_mm": 53.10771179199219,
+      "max_obj_speed_when_far_mm_s": 685.2124633789062,
+      "late_vz_m_s": -0.0018980538006871939,
+      "far_frac": 0.05,
+      "obj_path_mm": 275.173583984375,
+      "g2o_min_mm": 123.1636962890625
+    },
+    {
+      "shard": "gpu0/00025.tar",
+      "key": "batch_00001647",
+      "elem": 1,
+      "flags": [
+        "rot_glitch"
+      ],
+      "max_obj_dt_mm": 40.7769660949707,
+      "max_obj_speed_when_far_mm_s": 0.0,
+      "late_vz_m_s": -0.0021795739885419607,
+      "far_frac": 0.0,
+      "obj_path_mm": 257.68499755859375,
+      "g2o_min_mm": 109.49061584472656
+    },
+    {
+      "shard": "gpu0/00025.tar",
+      "key": "batch_00001658",
+      "elem": 1,
+      "flags": [
+        "teleport",
+        "phantom"
+      ],
+      "max_obj_dt_mm": 56.62013244628906,
+      "max_obj_speed_when_far_mm_s": 934.2864990234375,
+      "late_vz_m_s": -0.02248026244342327,
+      "far_frac": 0.3,
+      "obj_path_mm": 336.8287048339844,
+      "g2o_min_mm": 118.98589324951172
+    },
+    {
+      "shard": "gpu0/00027.tar",
+      "key": "batch_00001728",
+      "elem": 2,
+      "flags": [
+        "rot_glitch"
+      ],
+      "max_obj_dt_mm": 39.554447174072266,
+      "max_obj_speed_when_far_mm_s": 0.0,
+      "late_vz_m_s": 0.023745426908135414,
+      "far_frac": 0.0,
+      "obj_path_mm": 431.0850524902344,
+      "g2o_min_mm": 142.03219604492188
+    },
+    {
+      "shard": "gpu0/00027.tar",
+      "key": "batch_00001729",
+      "elem": 2,
+      "flags": [
+        "teleport",
+        "phantom"
+      ],
+      "max_obj_dt_mm": 58.4316291809082,
+      "max_obj_speed_when_far_mm_s": 1752.94873046875,
+      "late_vz_m_s": -0.002791118808090687,
+      "far_frac": 0.175,
+      "obj_path_mm": 398.1477966308594,
+      "g2o_min_mm": 112.71507263183594
+    },
+    {
+      "shard": "gpu0/00027.tar",
+      "key": "batch_00001753",
+      "elem": 0,
+      "flags": [
+        "teleport"
+      ],
+      "max_obj_dt_mm": 59.00844955444336,
+      "max_obj_speed_when_far_mm_s": 0.0,
+      "late_vz_m_s": 0.004255267791450024,
+      "far_frac": 0.0,
+      "obj_path_mm": 455.33551025390625,
+      "g2o_min_mm": 128.21632385253906
+    },
+    {
+      "shard": "gpu0/00027.tar",
+      "key": "batch_00001784",
+      "elem": 2,
+      "flags": [
+        "teleport"
+      ],
+      "max_obj_dt_mm": 52.03783416748047,
+      "max_obj_speed_when_far_mm_s": 0.0,
+      "late_vz_m_s": -0.034539587795734406,
+      "far_frac": 0.0,
+      "obj_path_mm": 549.4791259765625,
+      "g2o_min_mm": 117.5796127319336
+    },
+    {
+      "shard": "gpu0/00028.tar",
+      "key": "batch_00001830",
+      "elem": 2,
+      "flags": [
+        "teleport"
+      ],
+      "max_obj_dt_mm": 53.23720169067383,
+      "max_obj_speed_when_far_mm_s": 0.0,
+      "late_vz_m_s": -0.002530775498598814,
+      "far_frac": 0.0,
+      "obj_path_mm": 324.0423278808594,
+      "g2o_min_mm": 134.9310302734375
+    },
+    {
+      "shard": "gpu0/00028.tar",
+      "key": "batch_00001845",
+      "elem": 1,
+      "flags": [
+        "teleport",
+        "phantom"
+      ],
+      "max_obj_dt_mm": 62.460636138916016,
+      "max_obj_speed_when_far_mm_s": 1873.8189697265625,
+      "late_vz_m_s": -0.0009889526991173625,
+      "far_frac": 0.2,
+      "obj_path_mm": 342.3926696777344,
+      "g2o_min_mm": 104.47108459472656
+    },
+    {
+      "shard": "gpu0/00029.tar",
+      "key": "batch_00001883",
+      "elem": 1,
+      "flags": [
+        "teleport",
+        "phantom"
+      ],
+      "max_obj_dt_mm": 62.0792350769043,
+      "max_obj_speed_when_far_mm_s": 1678.1185302734375,
+      "late_vz_m_s": 0.009179077111184597,
+      "far_frac": 0.175,
+      "obj_path_mm": 407.4190368652344,
+      "g2o_min_mm": 156.7779083251953
+    },
+    {
+      "shard": "gpu0/00030.tar",
+      "key": "batch_00001972",
+      "elem": 3,
+      "flags": [
+        "teleport",
+        "phantom"
+      ],
+      "max_obj_dt_mm": 66.31314086914062,
+      "max_obj_speed_when_far_mm_s": 809.4923706054688,
+      "late_vz_m_s": 0.00131998211145401,
+      "far_frac": 0.075,
+      "obj_path_mm": 315.6378479003906,
+      "g2o_min_mm": 129.0732879638672
+    },
+    {
+      "shard": "gpu0/00030.tar",
+      "key": "batch_00001977",
+      "elem": 3,
+      "flags": [
+        "teleport"
+      ],
+      "max_obj_dt_mm": 52.17802047729492,
+      "max_obj_speed_when_far_mm_s": 0.0,
+      "late_vz_m_s": -0.0033830469474196434,
+      "far_frac": 0.0,
+      "obj_path_mm": 303.07635498046875,
+      "g2o_min_mm": 141.09303283691406
+    }
+  ],
+  "key_repair": {
+    "date": "2026-09-05",
+    "method": "inverse sorted field index -> sorted sample index",
+    "verified_rows": 64,
+    "max_recomputed_metric_error_mm": 0.0034332275390625,
+    "script": "scripts/dev/repair_pickup_manifest.py",
+    "note": "Recorded motion statistics verified against actual recovered rows; not suffix stripping."
+  }
+}
