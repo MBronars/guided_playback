@@ -1,0 +1,28 @@
+[
+ {
+  "object": "soda_can",
+  "asset": "soda_can/asset_0012",
+  "run": "cyl_t4_soda_can_it10",
+  "variant": "guided",
+  "unguided_member": 1,
+  "target_id": "t4",
+  "lift_peak_mm": 266,
+  "end_height_above_start_mm": 100,
+  "sim_to_target_mm": 54,
+  "miss_horizontal_mm": 19,
+  "miss_vertical_mm": -51,
+  "guided_member": 1,
+  "guided_sim_to_target_mm": 54,
+  "camera_azimuth_deg": 75,
+  "camera_elevation_deg": 8,
+  "lifted_frames_object_60pct_visible": 1.0,
+  "mesh_fit_mm": 1.47,
+  "arm_track_mm": 0.0,
+  "arm_track_deg": 0.0,
+  "images": [
+   "soda_can__cyl_t4_soda_can_it10__m1_start.png",
+   "soda_can__cyl_t4_soda_can_it10__m1_end.png",
+   "soda_can__cyl_t4_soda_can_it10__m1_start_end.png"
+  ]
+ }
+]

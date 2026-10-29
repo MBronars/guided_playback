@@ -1,0 +1,170 @@
+[
+ {
+  "run": "mppiargmin_full19_t0_milk_carton_K20",
+  "member": 0,
+  "object": "milk_carton",
+  "lift_peak_mm": 206,
+  "sim_to_target_mm": 200,
+  "miss_vertical_mm": -114,
+  "miss_horizontal_mm": 164,
+  "arm_track_mm": 0.0,
+  "lo": [
+   -0.7175844436233567,
+   -0.06131965420282367,
+   -0.1
+  ],
+  "hi": [
+   -0.017893734490895485,
+   0.3315502107143402,
+   0.5570845814070076
+  ],
+  "mesh_fit_mm": 1.75,
+  "views": [
+   "-60:18"
+  ],
+  "files": [
+   "milk_carton__mppiargmin_full19_t0_milk_carton_K20__m0__az-60_el18_start.png",
+   "milk_carton__mppiargmin_full19_t0_milk_carton_K20__m0__az-60_el18_end.png"
+  ]
+ },
+ {
+  "run": "cyl_t0_milk_carton_it10",
+  "member": 0,
+  "object": "milk_carton",
+  "lift_peak_mm": 284,
+  "sim_to_target_mm": 26,
+  "miss_vertical_mm": 7,
+  "miss_horizontal_mm": 25,
+  "arm_track_mm": 0.0,
+  "lo": [
+   -0.7171042813586432,
+   -0.053281854483050776,
+   -0.1
+  ],
+  "hi": [
+   -0.0335591864504185,
+   0.4009953737258911,
+   0.6207329587044449
+  ],
+  "mesh_fit_mm": 1.76,
+  "views": [
+   "-60:18"
+  ],
+  "files": [
+   "milk_carton__cyl_t0_milk_carton_it10__m0__az-60_el18_start.png",
+   "milk_carton__cyl_t0_milk_carton_it10__m0__az-60_el18_end.png"
+  ]
+ },
+ {
+  "run": "pw_benchmark",
+  "member": 0,
+  "object": "milk_carton",
+  "lift_peak_mm": 0,
+  "sim_to_target_mm": 192,
+  "miss_vertical_mm": -150,
+  "miss_horizontal_mm": 120,
+  "arm_track_mm": 0.0,
+  "lo": [
+   -0.776237733129939,
+   -0.054978419909752996,
+   -0.1
+  ],
+  "hi": [
+   -0.12426521629095078,
+   0.5257375836372375,
+   0.6589990854263306
+  ],
+  "mesh_fit_mm": 1.81,
+  "views": [
+   "-60:18"
+  ],
+  "files": [
+   "milk_carton__pw_benchmark__m0__az-60_el18_start.png",
+   "milk_carton__pw_benchmark__m0__az-60_el18_end.png"
+  ]
+ },
+ {
+  "run": "mppiargmin_full19_t1_soda_can_K20",
+  "member": 0,
+  "object": "soda_can",
+  "lift_peak_mm": 48,
+  "sim_to_target_mm": 181,
+  "miss_vertical_mm": -177,
+  "miss_horizontal_mm": 36,
+  "arm_track_mm": 0.0,
+  "lo": [
+   -0.5388513247942263,
+   -0.06938886235626217,
+   -0.1
+  ],
+  "hi": [
+   0.1507128169446787,
+   0.2781139016151428,
+   0.5572332601600933
+  ],
+  "mesh_fit_mm": 1.54,
+  "views": [
+   "-60:18"
+  ],
+  "files": [
+   "soda_can__mppiargmin_full19_t1_soda_can_K20__m0__az-60_el18_start.png",
+   "soda_can__mppiargmin_full19_t1_soda_can_K20__m0__az-60_el18_end.png"
+  ]
+ },
+ {
+  "run": "cyl_t1_soda_can_it10",
+  "member": 0,
+  "object": "soda_can",
+  "lift_peak_mm": 312,
+  "sim_to_target_mm": 57,
+  "miss_vertical_mm": 41,
+  "miss_horizontal_mm": 40,
+  "arm_track_mm": 0.0,
+  "lo": [
+   -0.554097476082046,
+   -0.05064417103488186,
+   -0.1
+  ],
+  "hi": [
+   0.1507128169446787,
+   0.2781139016151428,
+   0.5998596420492572
+  ],
+  "mesh_fit_mm": 1.56,
+  "views": [
+   "-60:18"
+  ],
+  "files": [
+   "soda_can__cyl_t1_soda_can_it10__m0__az-60_el18_start.png",
+   "soda_can__cyl_t1_soda_can_it10__m0__az-60_el18_end.png"
+  ]
+ },
+ {
+  "run": "pw_benchmark",
+  "member": 8,
+  "object": "soda_can",
+  "lift_peak_mm": 0,
+  "sim_to_target_mm": 154,
+  "miss_vertical_mm": -150,
+  "miss_horizontal_mm": 30,
+  "arm_track_mm": 0.0,
+  "lo": [
+   -0.5035094802901066,
+   -0.05424644228773488,
+   -0.1
+  ],
+  "hi": [
+   0.17553361375528514,
+   0.3806768461889204,
+   0.564108669757843
+  ],
+  "mesh_fit_mm": 1.49,
+  "views": [
+   "-60:18"
+  ],
+  "files": [
+   "soda_can__pw_benchmark__m8__az-60_el18_start.png",
+   "soda_can__pw_benchmark__m8__az-60_el18_end.png"
+  ]
+ }
+]

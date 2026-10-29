@@ -1,0 +1,3 @@
+wrote figures/videos_ep046_new_notext/pile_ep046_pointworld_pred.mp4 151 frames
+wrote figures/videos_ep046_new_notext/pile_ep046_pointworld_sim.mp4 151 frames
+wrote figures/videos_ep046_new_notext/_pile_PointWorld/pile_cases.json

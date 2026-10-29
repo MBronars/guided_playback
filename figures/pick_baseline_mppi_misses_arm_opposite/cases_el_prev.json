@@ -1,0 +1,28 @@
+[
+ {
+  "object": "soda_can",
+  "asset": "soda_can/asset_0012",
+  "run": "mppiargmin_full19_t4_soda_can_K20",
+  "variant": "guided",
+  "unguided_member": 0,
+  "target_id": "full19",
+  "lift_peak_mm": 263,
+  "end_height_above_start_mm": 31,
+  "sim_to_target_mm": 141,
+  "miss_horizontal_mm": 75,
+  "miss_vertical_mm": -120,
+  "guided_member": 1,
+  "guided_sim_to_target_mm": 54,
+  "camera_azimuth_deg": 75,
+  "camera_elevation_deg": 18,
+  "lifted_frames_object_60pct_visible": 1.0,
+  "mesh_fit_mm": 1.51,
+  "arm_track_mm": 0.0,
+  "arm_track_deg": 0.0,
+  "images": [
+   "soda_can__mppiargmin_full19_t4_soda_can_K20__m0_start.png",
+   "soda_can__mppiargmin_full19_t4_soda_can_K20__m0_end.png",
+   "soda_can__mppiargmin_full19_t4_soda_can_K20__m0_start_end.png"
+  ]
+ }
+]

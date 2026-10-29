@@ -1,0 +1,2 @@
+wrote figures/videos_v1/pile_ep036_gns.mp4 156 frames
+wrote figures/videos_v1/_pile_a/pile_cases.json

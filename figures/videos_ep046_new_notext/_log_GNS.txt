@@ -1,0 +1,3 @@
+wrote figures/videos_ep046_new_notext/pile_ep046_gns_pred.mp4 156 frames
+wrote figures/videos_ep046_new_notext/pile_ep046_gns_sim.mp4 156 frames
+wrote figures/videos_ep046_new_notext/_pile_GNS/pile_cases.json

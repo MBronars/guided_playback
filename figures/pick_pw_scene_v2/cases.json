@@ -1,0 +1,64 @@
+[
+ {
+  "run": "pw_benchmark",
+  "member": 0,
+  "object": "milk_carton",
+  "lift_peak_mm": 0,
+  "sim_to_target_mm": 192,
+  "miss_vertical_mm": -150,
+  "miss_horizontal_mm": 120,
+  "arm_track_mm": 0.0,
+  "lo": [
+   -0.776237733129939,
+   -0.054978419909752996,
+   -0.1
+  ],
+  "hi": [
+   -0.12426521629095078,
+   0.5257375836372375,
+   0.6589990854263306
+  ],
+  "mesh_fit_mm": 1.78,
+  "views": [
+   "-60:18"
+  ],
+  "files": [
+   "milk_carton__pw_benchmark__pwcloud__m0__az-60_el18_f00.png",
+   "milk_carton__pw_benchmark__pwcloud__m0__az-60_el18_f15.png",
+   "milk_carton__pw_benchmark__pwcloud__m0__az-60_el18_f30.png",
+   "milk_carton__pw_benchmark__pwcloud__m0__az-60_el18_f45.png",
+   "milk_carton__pw_benchmark__pwcloud__m0__az-60_el18_f60.png"
+  ]
+ },
+ {
+  "run": "pw_benchmark",
+  "member": 8,
+  "object": "soda_can",
+  "lift_peak_mm": 0,
+  "sim_to_target_mm": 154,
+  "miss_vertical_mm": -150,
+  "miss_horizontal_mm": 30,
+  "arm_track_mm": 0.0,
+  "lo": [
+   -0.5035094802901066,
+   -0.05424644228773488,
+   -0.1
+  ],
+  "hi": [
+   0.17553361375528514,
+   0.3806768461889204,
+   0.564108669757843
+  ],
+  "mesh_fit_mm": 1.45,
+  "views": [
+   "-60:18"
+  ],
+  "files": [
+   "soda_can__pw_benchmark__pwcloud__m8__az-60_el18_f00.png",
+   "soda_can__pw_benchmark__pwcloud__m8__az-60_el18_f15.png",
+   "soda_can__pw_benchmark__pwcloud__m8__az-60_el18_f30.png",
+   "soda_can__pw_benchmark__pwcloud__m8__az-60_el18_f45.png",
+   "soda_can__pw_benchmark__pwcloud__m8__az-60_el18_f60.png"
+  ]
+ }
+]

@@ -1,0 +1,242 @@
+[
+ {
+  "run": "mppiargmin_full19_t1_soda_can_K20",
+  "member": 0,
+  "object": "soda_can",
+  "lift_peak_mm": 48,
+  "sim_to_target_mm": 181,
+  "miss_vertical_mm": -177,
+  "miss_horizontal_mm": 36,
+  "arm_track_mm": 0.0,
+  "mesh_fit_mm": 1.51,
+  "views": [
+   "-105:8",
+   "-60:18",
+   "-150:14",
+   "75:8"
+  ],
+  "files": [
+   "soda_can__mppiargmin_full19_t1_soda_can_K20__m0__az-105_el8_start.png",
+   "soda_can__mppiargmin_full19_t1_soda_can_K20__m0__az-105_el8_peak.png",
+   "soda_can__mppiargmin_full19_t1_soda_can_K20__m0__az-105_el8_end.png",
+   "soda_can__mppiargmin_full19_t1_soda_can_K20__m0__az-60_el18_start.png",
+   "soda_can__mppiargmin_full19_t1_soda_can_K20__m0__az-60_el18_peak.png",
+   "soda_can__mppiargmin_full19_t1_soda_can_K20__m0__az-60_el18_end.png",
+   "soda_can__mppiargmin_full19_t1_soda_can_K20__m0__az-150_el14_start.png",
+   "soda_can__mppiargmin_full19_t1_soda_can_K20__m0__az-150_el14_peak.png",
+   "soda_can__mppiargmin_full19_t1_soda_can_K20__m0__az-150_el14_end.png",
+   "soda_can__mppiargmin_full19_t1_soda_can_K20__m0__az+75_el8_start.png",
+   "soda_can__mppiargmin_full19_t1_soda_can_K20__m0__az+75_el8_peak.png",
+   "soda_can__mppiargmin_full19_t1_soda_can_K20__m0__az+75_el8_end.png"
+  ]
+ },
+ {
+  "run": "cyl_t1_soda_can_it10",
+  "member": 0,
+  "object": "soda_can",
+  "lift_peak_mm": 312,
+  "sim_to_target_mm": 57,
+  "miss_vertical_mm": 41,
+  "miss_horizontal_mm": 40,
+  "arm_track_mm": 0.0,
+  "mesh_fit_mm": 1.52,
+  "views": [
+   "-105:8",
+   "-60:18",
+   "-150:14",
+   "75:8"
+  ],
+  "files": [
+   "soda_can__cyl_t1_soda_can_it10__m0__az-105_el8_start.png",
+   "soda_can__cyl_t1_soda_can_it10__m0__az-105_el8_peak.png",
+   "soda_can__cyl_t1_soda_can_it10__m0__az-105_el8_end.png",
+   "soda_can__cyl_t1_soda_can_it10__m0__az-60_el18_start.png",
+   "soda_can__cyl_t1_soda_can_it10__m0__az-60_el18_peak.png",
+   "soda_can__cyl_t1_soda_can_it10__m0__az-60_el18_end.png",
+   "soda_can__cyl_t1_soda_can_it10__m0__az-150_el14_start.png",
+   "soda_can__cyl_t1_soda_can_it10__m0__az-150_el14_peak.png",
+   "soda_can__cyl_t1_soda_can_it10__m0__az-150_el14_end.png",
+   "soda_can__cyl_t1_soda_can_it10__m0__az+75_el8_start.png",
+   "soda_can__cyl_t1_soda_can_it10__m0__az+75_el8_peak.png",
+   "soda_can__cyl_t1_soda_can_it10__m0__az+75_el8_end.png"
+  ]
+ },
+ {
+  "run": "mppiargmin_full19_t3_soda_can_K20",
+  "member": 0,
+  "object": "soda_can",
+  "lift_peak_mm": 8,
+  "sim_to_target_mm": 179,
+  "miss_vertical_mm": -150,
+  "miss_horizontal_mm": 97,
+  "arm_track_mm": 0.0,
+  "mesh_fit_mm": 1.51,
+  "views": [
+   "-105:8",
+   "-60:18",
+   "-150:14",
+   "75:8"
+  ],
+  "files": [
+   "soda_can__mppiargmin_full19_t3_soda_can_K20__m0__az-105_el8_start.png",
+   "soda_can__mppiargmin_full19_t3_soda_can_K20__m0__az-105_el8_peak.png",
+   "soda_can__mppiargmin_full19_t3_soda_can_K20__m0__az-105_el8_end.png",
+   "soda_can__mppiargmin_full19_t3_soda_can_K20__m0__az-60_el18_start.png",
+   "soda_can__mppiargmin_full19_t3_soda_can_K20__m0__az-60_el18_peak.png",
+   "soda_can__mppiargmin_full19_t3_soda_can_K20__m0__az-60_el18_end.png",
+   "soda_can__mppiargmin_full19_t3_soda_can_K20__m0__az-150_el14_start.png",
+   "soda_can__mppiargmin_full19_t3_soda_can_K20__m0__az-150_el14_peak.png",
+   "soda_can__mppiargmin_full19_t3_soda_can_K20__m0__az-150_el14_end.png",
+   "soda_can__mppiargmin_full19_t3_soda_can_K20__m0__az+75_el8_start.png",
+   "soda_can__mppiargmin_full19_t3_soda_can_K20__m0__az+75_el8_peak.png",
+   "soda_can__mppiargmin_full19_t3_soda_can_K20__m0__az+75_el8_end.png"
+  ]
+ },
+ {
+  "run": "cyl_t3_soda_can_it10",
+  "member": 0,
+  "object": "soda_can",
+  "lift_peak_mm": 320,
+  "sim_to_target_mm": 22,
+  "miss_vertical_mm": 12,
+  "miss_horizontal_mm": 18,
+  "arm_track_mm": 0.0,
+  "mesh_fit_mm": 1.47,
+  "views": [
+   "-105:8",
+   "-60:18",
+   "-150:14",
+   "75:8"
+  ],
+  "files": [
+   "soda_can__cyl_t3_soda_can_it10__m0__az-105_el8_start.png",
+   "soda_can__cyl_t3_soda_can_it10__m0__az-105_el8_peak.png",
+   "soda_can__cyl_t3_soda_can_it10__m0__az-105_el8_end.png",
+   "soda_can__cyl_t3_soda_can_it10__m0__az-60_el18_start.png",
+   "soda_can__cyl_t3_soda_can_it10__m0__az-60_el18_peak.png",
+   "soda_can__cyl_t3_soda_can_it10__m0__az-60_el18_end.png",
+   "soda_can__cyl_t3_soda_can_it10__m0__az-150_el14_start.png",
+   "soda_can__cyl_t3_soda_can_it10__m0__az-150_el14_peak.png",
+   "soda_can__cyl_t3_soda_can_it10__m0__az-150_el14_end.png",
+   "soda_can__cyl_t3_soda_can_it10__m0__az+75_el8_start.png",
+   "soda_can__cyl_t3_soda_can_it10__m0__az+75_el8_peak.png",
+   "soda_can__cyl_t3_soda_can_it10__m0__az+75_el8_end.png"
+  ]
+ },
+ {
+  "run": "mppiargmin_full19_t4_soda_can_K20",
+  "member": 0,
+  "object": "soda_can",
+  "lift_peak_mm": 263,
+  "sim_to_target_mm": 141,
+  "miss_vertical_mm": -120,
+  "miss_horizontal_mm": 75,
+  "arm_track_mm": 0.0,
+  "mesh_fit_mm": 1.55,
+  "views": [
+   "-105:8",
+   "-60:18",
+   "-150:14",
+   "75:8"
+  ],
+  "files": [
+   "soda_can__mppiargmin_full19_t4_soda_can_K20__m0__az-105_el8_start.png",
+   "soda_can__mppiargmin_full19_t4_soda_can_K20__m0__az-105_el8_peak.png",
+   "soda_can__mppiargmin_full19_t4_soda_can_K20__m0__az-105_el8_end.png",
+   "soda_can__mppiargmin_full19_t4_soda_can_K20__m0__az-60_el18_start.png",
+   "soda_can__mppiargmin_full19_t4_soda_can_K20__m0__az-60_el18_peak.png",
+   "soda_can__mppiargmin_full19_t4_soda_can_K20__m0__az-60_el18_end.png",
+   "soda_can__mppiargmin_full19_t4_soda_can_K20__m0__az-150_el14_start.png",
+   "soda_can__mppiargmin_full19_t4_soda_can_K20__m0__az-150_el14_peak.png",
+   "soda_can__mppiargmin_full19_t4_soda_can_K20__m0__az-150_el14_end.png",
+   "soda_can__mppiargmin_full19_t4_soda_can_K20__m0__az+75_el8_start.png",
+   "soda_can__mppiargmin_full19_t4_soda_can_K20__m0__az+75_el8_peak.png",
+   "soda_can__mppiargmin_full19_t4_soda_can_K20__m0__az+75_el8_end.png"
+  ]
+ },
+ {
+  "run": "cyl_t4_soda_can_it10",
+  "member": 1,
+  "object": "soda_can",
+  "lift_peak_mm": 266,
+  "sim_to_target_mm": 54,
+  "miss_vertical_mm": -51,
+  "miss_horizontal_mm": 19,
+  "arm_track_mm": 0.0,
+  "mesh_fit_mm": 1.53,
+  "views": [
+   "-105:8",
+   "-60:18",
+   "-150:14",
+   "75:8"
+  ],
+  "files": [
+   "soda_can__cyl_t4_soda_can_it10__m1__az-105_el8_start.png",
+   "soda_can__cyl_t4_soda_can_it10__m1__az-105_el8_peak.png",
+   "soda_can__cyl_t4_soda_can_it10__m1__az-105_el8_end.png",
+   "soda_can__cyl_t4_soda_can_it10__m1__az-60_el18_start.png",
+   "soda_can__cyl_t4_soda_can_it10__m1__az-60_el18_peak.png",
+   "soda_can__cyl_t4_soda_can_it10__m1__az-60_el18_end.png",
+   "soda_can__cyl_t4_soda_can_it10__m1__az-150_el14_start.png",
+   "soda_can__cyl_t4_soda_can_it10__m1__az-150_el14_peak.png",
+   "soda_can__cyl_t4_soda_can_it10__m1__az-150_el14_end.png",
+   "soda_can__cyl_t4_soda_can_it10__m1__az+75_el8_start.png",
+   "soda_can__cyl_t4_soda_can_it10__m1__az+75_el8_peak.png",
+   "soda_can__cyl_t4_soda_can_it10__m1__az+75_el8_end.png"
+  ]
+ },
+ {
+  "run": "mppiargmin_full19_t0_milk_carton_K20",
+  "member": 0,
+  "object": "milk_carton",
+  "lift_peak_mm": 206,
+  "sim_to_target_mm": 200,
+  "miss_vertical_mm": -114,
+  "miss_horizontal_mm": 164,
+  "arm_track_mm": 0.0,
+  "mesh_fit_mm": 1.73,
+  "views": [
+   "-105:8",
+   "-60:18",
+   "75:8"
+  ],
+  "files": [
+   "milk_carton__mppiargmin_full19_t0_milk_carton_K20__m0__az-105_el8_start.png",
+   "milk_carton__mppiargmin_full19_t0_milk_carton_K20__m0__az-105_el8_peak.png",
+   "milk_carton__mppiargmin_full19_t0_milk_carton_K20__m0__az-105_el8_end.png",
+   "milk_carton__mppiargmin_full19_t0_milk_carton_K20__m0__az-60_el18_start.png",
+   "milk_carton__mppiargmin_full19_t0_milk_carton_K20__m0__az-60_el18_peak.png",
+   "milk_carton__mppiargmin_full19_t0_milk_carton_K20__m0__az-60_el18_end.png",
+   "milk_carton__mppiargmin_full19_t0_milk_carton_K20__m0__az+75_el8_start.png",
+   "milk_carton__mppiargmin_full19_t0_milk_carton_K20__m0__az+75_el8_peak.png",
+   "milk_carton__mppiargmin_full19_t0_milk_carton_K20__m0__az+75_el8_end.png"
+  ]
+ },
+ {
+  "run": "cyl_t0_milk_carton_it10",
+  "member": 0,
+  "object": "milk_carton",
+  "lift_peak_mm": 284,
+  "sim_to_target_mm": 26,
+  "miss_vertical_mm": 7,
+  "miss_horizontal_mm": 25,
+  "arm_track_mm": 0.0,
+  "mesh_fit_mm": 1.76,
+  "views": [
+   "-105:8",
+   "-60:18",
+   "75:8"
+  ],
+  "files": [
+   "milk_carton__cyl_t0_milk_carton_it10__m0__az-105_el8_start.png",
+   "milk_carton__cyl_t0_milk_carton_it10__m0__az-105_el8_peak.png",
+   "milk_carton__cyl_t0_milk_carton_it10__m0__az-105_el8_end.png",
+   "milk_carton__cyl_t0_milk_carton_it10__m0__az-60_el18_start.png",
+   "milk_carton__cyl_t0_milk_carton_it10__m0__az-60_el18_peak.png",
+   "milk_carton__cyl_t0_milk_carton_it10__m0__az-60_el18_end.png",
+   "milk_carton__cyl_t0_milk_carton_it10__m0__az+75_el8_start.png",
+   "milk_carton__cyl_t0_milk_carton_it10__m0__az+75_el8_peak.png",
+   "milk_carton__cyl_t0_milk_carton_it10__m0__az+75_el8_end.png"
+  ]
+ }
+]

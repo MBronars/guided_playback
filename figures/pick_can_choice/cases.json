@@ -1,0 +1,104 @@
+[
+ {
+  "run": "mppiargmin_full19_t4_soda_can_K20",
+  "member": 0,
+  "object": "soda_can",
+  "lift_peak_mm": 263,
+  "sim_to_target_mm": 141,
+  "miss_vertical_mm": -120,
+  "miss_horizontal_mm": 75,
+  "arm_track_mm": 0.0,
+  "mesh_fit_mm": 1.49,
+  "views": [
+   "-60:18"
+  ],
+  "files": [
+   "soda_can__mppiargmin_full19_t4_soda_can_K20__m0__az-60_el18_end.png"
+  ]
+ },
+ {
+  "run": "mppiargmin_full19_t1_soda_can_K20",
+  "member": 0,
+  "object": "soda_can",
+  "lift_peak_mm": 48,
+  "sim_to_target_mm": 181,
+  "miss_vertical_mm": -177,
+  "miss_horizontal_mm": 36,
+  "arm_track_mm": 0.0,
+  "mesh_fit_mm": 1.51,
+  "views": [
+   "-60:18"
+  ],
+  "files": [
+   "soda_can__mppiargmin_full19_t1_soda_can_K20__m0__az-60_el18_end.png"
+  ]
+ },
+ {
+  "run": "mppiargmin_full19_t3_soda_can_K20",
+  "member": 0,
+  "object": "soda_can",
+  "lift_peak_mm": 8,
+  "sim_to_target_mm": 179,
+  "miss_vertical_mm": -150,
+  "miss_horizontal_mm": 97,
+  "arm_track_mm": 0.0,
+  "mesh_fit_mm": 1.6,
+  "views": [
+   "-60:18"
+  ],
+  "files": [
+   "soda_can__mppiargmin_full19_t3_soda_can_K20__m0__az-60_el18_end.png"
+  ]
+ },
+ {
+  "run": "cyl_t4_soda_can_it10",
+  "member": 1,
+  "object": "soda_can",
+  "lift_peak_mm": 266,
+  "sim_to_target_mm": 54,
+  "miss_vertical_mm": -51,
+  "miss_horizontal_mm": 19,
+  "arm_track_mm": 0.0,
+  "mesh_fit_mm": 1.49,
+  "views": [
+   "-60:18"
+  ],
+  "files": [
+   "soda_can__cyl_t4_soda_can_it10__m1__az-60_el18_end.png"
+  ]
+ },
+ {
+  "run": "cyl_t1_soda_can_it10",
+  "member": 0,
+  "object": "soda_can",
+  "lift_peak_mm": 312,
+  "sim_to_target_mm": 57,
+  "miss_vertical_mm": 41,
+  "miss_horizontal_mm": 40,
+  "arm_track_mm": 0.0,
+  "mesh_fit_mm": 1.51,
+  "views": [
+   "-60:18"
+  ],
+  "files": [
+   "soda_can__cyl_t1_soda_can_it10__m0__az-60_el18_end.png"
+  ]
+ },
+ {
+  "run": "cyl_t3_soda_can_it10",
+  "member": 0,
+  "object": "soda_can",
+  "lift_peak_mm": 320,
+  "sim_to_target_mm": 22,
+  "miss_vertical_mm": 12,
+  "miss_horizontal_mm": 18,
+  "arm_track_mm": 0.0,
+  "mesh_fit_mm": 1.58,
+  "views": [
+   "-60:18"
+  ],
+  "files": [
+   "soda_can__cyl_t3_soda_can_it10__m0__az-60_el18_end.png"
+  ]
+ }
+]

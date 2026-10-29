@@ -1,0 +1,54 @@
+[
+ {
+  "object": "pasta_box",
+  "asset": "pasta_box/asset_0058",
+  "run": "mppiargmin_full19_t0_pasta_box_K20",
+  "variant": "guided",
+  "unguided_member": 0,
+  "target_id": "full19",
+  "lift_peak_mm": 368,
+  "end_height_above_start_mm": 216,
+  "sim_to_target_mm": 104,
+  "miss_horizontal_mm": 81,
+  "miss_vertical_mm": 65,
+  "guided_member": 3,
+  "guided_sim_to_target_mm": 44,
+  "camera_azimuth_deg": 18,
+  "camera_elevation_deg": 26,
+  "lifted_frames_object_60pct_visible": 1.0,
+  "mesh_fit_mm": 2.06,
+  "arm_track_mm": 4.4,
+  "arm_track_deg": 0.5,
+  "images": [
+   "pasta_box__mppiargmin_full19_t0_pasta_box_K20__m0_start.png",
+   "pasta_box__mppiargmin_full19_t0_pasta_box_K20__m0_end.png",
+   "pasta_box__mppiargmin_full19_t0_pasta_box_K20__m0_start_end.png"
+  ]
+ },
+ {
+  "object": "water_bottle",
+  "asset": "water_bottle/asset_0087",
+  "run": "mppiargmin_full19_t0_water_bottle_K20",
+  "variant": "guided",
+  "unguided_member": 0,
+  "target_id": "full19",
+  "lift_peak_mm": 180,
+  "end_height_above_start_mm": 103,
+  "sim_to_target_mm": 162,
+  "miss_horizontal_mm": 155,
+  "miss_vertical_mm": -47,
+  "guided_member": 0,
+  "guided_sim_to_target_mm": 22,
+  "camera_azimuth_deg": 10,
+  "camera_elevation_deg": 26,
+  "lifted_frames_object_60pct_visible": 1.0,
+  "mesh_fit_mm": 1.76,
+  "arm_track_mm": 0.0,
+  "arm_track_deg": 0.0,
+  "images": [
+   "water_bottle__mppiargmin_full19_t0_water_bottle_K20__m0_start.png",
+   "water_bottle__mppiargmin_full19_t0_water_bottle_K20__m0_end.png",
+   "water_bottle__mppiargmin_full19_t0_water_bottle_K20__m0_start_end.png"
+  ]
+ }
+]

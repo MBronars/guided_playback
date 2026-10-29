@@ -1,0 +1,2 @@
+wrote figures/videos_v1/pile_ep047_ours.mp4 151 frames
+wrote figures/videos_v1/_pile_b/pile_cases.json

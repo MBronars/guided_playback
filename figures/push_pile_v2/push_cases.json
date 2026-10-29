@@ -1,0 +1,70 @@
+[
+ {
+  "task": "push",
+  "ep": 5,
+  "method": "Ours",
+  "sim_final_cm": 0.87,
+  "block_moved_mm": 75,
+  "rod_path_mm": 346
+ },
+ {
+  "task": "push",
+  "ep": 5,
+  "method": "PointWorld",
+  "sim_final_cm": 7.89,
+  "block_moved_mm": 0,
+  "rod_path_mm": 241
+ },
+ {
+  "task": "push",
+  "ep": 5,
+  "method": "GNS",
+  "sim_final_cm": 7.89,
+  "block_moved_mm": 0,
+  "rod_path_mm": 306
+ },
+ {
+  "task": "push",
+  "ep": 5,
+  "files": {
+   "start": "push_ep05_start.png",
+   "Ours": "push_ep05_ours_end.png",
+   "PointWorld": "push_ep05_pointworld_end.png",
+   "GNS": "push_ep05_gns_end.png"
+  }
+ },
+ {
+  "task": "push",
+  "ep": 14,
+  "method": "Ours",
+  "sim_final_cm": 1.14,
+  "block_moved_mm": 79,
+  "rod_path_mm": 354
+ },
+ {
+  "task": "push",
+  "ep": 14,
+  "method": "PointWorld",
+  "sim_final_cm": 9.0,
+  "block_moved_mm": 0,
+  "rod_path_mm": 241
+ },
+ {
+  "task": "push",
+  "ep": 14,
+  "method": "GNS",
+  "sim_final_cm": 9.0,
+  "block_moved_mm": 0,
+  "rod_path_mm": 312
+ },
+ {
+  "task": "push",
+  "ep": 14,
+  "files": {
+   "start": "push_ep14_start.png",
+   "Ours": "push_ep14_ours_end.png",
+   "PointWorld": "push_ep14_pointworld_end.png",
+   "GNS": "push_ep14_gns_end.png"
+  }
+ }
+]

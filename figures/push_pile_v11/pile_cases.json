@@ -1,0 +1,136 @@
+[
+ {
+  "task": "pile",
+  "ep": 36,
+  "method": "Ours",
+  "pred_to_target_mm": 69,
+  "sim_to_target_mm": 71,
+  "pred_vs_sim_centroid_mm": 2,
+  "pred_below_table": 7,
+  "sim_below_table": 0,
+  "pred_moved_mm": 26,
+  "sim_moved_mm": 24,
+  "pred_paddle_frame": 150,
+  "pred_paddle_frames": 151,
+  "sim_paddle_frame": 149,
+  "sim_paddle_frames": 151
+ },
+ {
+  "task": "pile",
+  "ep": 36,
+  "method": "PointWorld",
+  "pred_to_target_mm": 61,
+  "sim_to_target_mm": 84,
+  "pred_vs_sim_centroid_mm": 24,
+  "pred_below_table": 727,
+  "sim_below_table": 6,
+  "pred_moved_mm": 34,
+  "sim_moved_mm": 10,
+  "pred_paddle_frame": 48,
+  "pred_paddle_frames": 151,
+  "sim_paddle_frame": 28,
+  "sim_paddle_frames": 151
+ },
+ {
+  "task": "pile",
+  "ep": 36,
+  "method": "GNS",
+  "pred_to_target_mm": 87,
+  "sim_to_target_mm": 89,
+  "pred_vs_sim_centroid_mm": 3,
+  "pred_below_table": 53,
+  "sim_below_table": 37,
+  "pred_moved_mm": 8,
+  "sim_moved_mm": 5,
+  "pred_paddle_frame": 155,
+  "pred_paddle_frames": 156,
+  "sim_paddle_frame": 149,
+  "sim_paddle_frames": 156
+ },
+ {
+  "task": "pile",
+  "ep": 36,
+  "files": {
+   "start": "pile_ep036_start.png",
+   "Ours": [
+    "pile_ep036_ours_pred.png",
+    "pile_ep036_ours_sim.png"
+   ],
+   "PointWorld": [
+    "pile_ep036_pointworld_pred.png",
+    "pile_ep036_pointworld_sim.png"
+   ],
+   "GNS": [
+    "pile_ep036_gns_pred.png",
+    "pile_ep036_gns_sim.png"
+   ]
+  }
+ },
+ {
+  "task": "pile",
+  "ep": 47,
+  "method": "Ours",
+  "pred_to_target_mm": 91,
+  "sim_to_target_mm": 92,
+  "pred_vs_sim_centroid_mm": 1,
+  "pred_below_table": 3,
+  "sim_below_table": 0,
+  "pred_moved_mm": 27,
+  "sim_moved_mm": 26,
+  "pred_paddle_frame": 150,
+  "pred_paddle_frames": 151,
+  "sim_paddle_frame": 149,
+  "sim_paddle_frames": 151
+ },
+ {
+  "task": "pile",
+  "ep": 47,
+  "method": "PointWorld",
+  "pred_to_target_mm": 74,
+  "sim_to_target_mm": 100,
+  "pred_vs_sim_centroid_mm": 27,
+  "pred_below_table": 125,
+  "sim_below_table": 6,
+  "pred_moved_mm": 44,
+  "sim_moved_mm": 18,
+  "pred_paddle_frame": 56,
+  "pred_paddle_frames": 151,
+  "sim_paddle_frame": 58,
+  "sim_paddle_frames": 151
+ },
+ {
+  "task": "pile",
+  "ep": 47,
+  "method": "GNS",
+  "pred_to_target_mm": 117,
+  "sim_to_target_mm": 120,
+  "pred_vs_sim_centroid_mm": 4,
+  "pred_below_table": 59,
+  "sim_below_table": 10,
+  "pred_moved_mm": 2,
+  "sim_moved_mm": 3,
+  "pred_paddle_frame": 155,
+  "pred_paddle_frames": 156,
+  "sim_paddle_frame": 149,
+  "sim_paddle_frames": 156
+ },
+ {
+  "task": "pile",
+  "ep": 47,
+  "files": {
+   "start": "pile_ep047_start.png",
+   "Ours": [
+    "pile_ep047_ours_pred.png",
+    "pile_ep047_ours_sim.png"
+   ],
+   "PointWorld": [
+    "pile_ep047_pointworld_pred.png",
+    "pile_ep047_pointworld_sim.png"
+   ],
+   "GNS": [
+    "pile_ep047_gns_pred.png",
+    "pile_ep047_gns_sim.png"
+   ]
+  }
+ }
+]
