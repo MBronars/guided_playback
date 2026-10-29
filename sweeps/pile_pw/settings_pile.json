@@ -1,0 +1,370 @@
+[
+ {
+  "tag": "dno_pool4_I0",
+  "shape": "B4_nograd",
+  "B": 4,
+  "knobs": {
+   "optimizer": "adamw",
+   "lr": 0.1,
+   "shell": false,
+   "prob_reg": 0.01,
+   "prob_mode": "dno",
+   "prob_k": 4,
+   "prob_shuffles": 10,
+   "grad_clip": 1.0,
+   "iterations": 0
+  }
+ },
+ {
+  "tag": "dno_pool8_I0",
+  "shape": "B8_nograd",
+  "B": 8,
+  "knobs": {
+   "optimizer": "adamw",
+   "lr": 0.1,
+   "shell": false,
+   "prob_reg": 0.01,
+   "prob_mode": "dno",
+   "prob_k": 4,
+   "prob_shuffles": 10,
+   "grad_clip": 1.0,
+   "iterations": 0
+  }
+ },
+ {
+  "tag": "dno_pool16_I0",
+  "shape": "B16_nograd",
+  "B": 16,
+  "knobs": {
+   "optimizer": "adamw",
+   "lr": 0.1,
+   "shell": false,
+   "prob_reg": 0.01,
+   "prob_mode": "dno",
+   "prob_k": 4,
+   "prob_shuffles": 10,
+   "grad_clip": 1.0,
+   "iterations": 0
+  }
+ },
+ {
+  "tag": "dno_pool32_I0",
+  "shape": "B32_nograd",
+  "B": 32,
+  "knobs": {
+   "optimizer": "adamw",
+   "lr": 0.1,
+   "shell": false,
+   "prob_reg": 0.01,
+   "prob_mode": "dno",
+   "prob_k": 4,
+   "prob_shuffles": 10,
+   "grad_clip": 1.0,
+   "iterations": 0
+  }
+ },
+ {
+  "tag": "dno_pool32_I1_P1",
+  "shape": "B1_grad",
+  "B": 1,
+  "knobs": {
+   "optimizer": "adamw",
+   "lr": 0.1,
+   "shell": false,
+   "prob_reg": 0.01,
+   "prob_mode": "dno",
+   "prob_k": 4,
+   "prob_shuffles": 10,
+   "grad_clip": 1.0,
+   "iterations": 1,
+   "screen_pool": 32
+  }
+ },
+ {
+  "tag": "dno_pool32_I2_P1",
+  "shape": "B1_grad",
+  "B": 1,
+  "knobs": {
+   "optimizer": "adamw",
+   "lr": 0.1,
+   "shell": false,
+   "prob_reg": 0.01,
+   "prob_mode": "dno",
+   "prob_k": 4,
+   "prob_shuffles": 10,
+   "grad_clip": 1.0,
+   "iterations": 2,
+   "screen_pool": 32
+  }
+ },
+ {
+  "tag": "dno_pool32_I3_P1",
+  "shape": "B1_grad",
+  "B": 1,
+  "knobs": {
+   "optimizer": "adamw",
+   "lr": 0.1,
+   "shell": false,
+   "prob_reg": 0.01,
+   "prob_mode": "dno",
+   "prob_k": 4,
+   "prob_shuffles": 10,
+   "grad_clip": 1.0,
+   "iterations": 3,
+   "screen_pool": 32
+  }
+ },
+ {
+  "tag": "dno_pool32_I5_P1",
+  "shape": "B1_grad",
+  "B": 1,
+  "knobs": {
+   "optimizer": "adamw",
+   "lr": 0.1,
+   "shell": false,
+   "prob_reg": 0.01,
+   "prob_mode": "dno",
+   "prob_k": 4,
+   "prob_shuffles": 10,
+   "grad_clip": 1.0,
+   "iterations": 5,
+   "screen_pool": 32
+  }
+ },
+ {
+  "tag": "dno_pool32_I5_P2",
+  "shape": "B2_grad",
+  "B": 2,
+  "knobs": {
+   "optimizer": "adamw",
+   "lr": 0.1,
+   "shell": false,
+   "prob_reg": 0.01,
+   "prob_mode": "dno",
+   "prob_k": 4,
+   "prob_shuffles": 10,
+   "grad_clip": 1.0,
+   "iterations": 5,
+   "screen_pool": 32
+  }
+ },
+ {
+  "tag": "dno_pool32_I5_P3",
+  "shape": "B3_grad",
+  "B": 3,
+  "knobs": {
+   "optimizer": "adamw",
+   "lr": 0.1,
+   "shell": false,
+   "prob_reg": 0.01,
+   "prob_mode": "dno",
+   "prob_k": 4,
+   "prob_shuffles": 10,
+   "grad_clip": 1.0,
+   "iterations": 5,
+   "prefilter": 10
+  }
+ },
+ {
+  "tag": "dno_pool32_I5_P4",
+  "shape": "B4_grad",
+  "B": 4,
+  "knobs": {
+   "optimizer": "adamw",
+   "lr": 0.1,
+   "shell": false,
+   "prob_reg": 0.01,
+   "prob_mode": "dno",
+   "prob_k": 4,
+   "prob_shuffles": 10,
+   "grad_clip": 1.0,
+   "iterations": 5,
+   "prefilter": 7
+  }
+ },
+ {
+  "tag": "dno_pool32_I5_P8",
+  "shape": "B8_grad",
+  "B": 8,
+  "knobs": {
+   "optimizer": "adamw",
+   "lr": 0.1,
+   "shell": false,
+   "prob_reg": 0.01,
+   "prob_mode": "dno",
+   "prob_k": 4,
+   "prob_shuffles": 10,
+   "grad_clip": 1.0,
+   "iterations": 5,
+   "prefilter": 3
+  }
+ },
+ {
+  "tag": "cem_noise_K4_R1",
+  "shape": "B4_nograd",
+  "B": 4,
+  "knobs": {
+   "planner": "cem",
+   "cem_K": 4,
+   "cem_rounds": 1,
+   "iterations": 0,
+   "lr": 0.1
+  }
+ },
+ {
+  "tag": "cem_noise_K8_R1",
+  "shape": "B4_nograd",
+  "B": 4,
+  "knobs": {
+   "planner": "cem",
+   "cem_K": 8,
+   "cem_rounds": 1,
+   "iterations": 0,
+   "lr": 0.1
+  }
+ },
+ {
+  "tag": "cem_noise_K16_R1",
+  "shape": "B4_nograd",
+  "B": 4,
+  "knobs": {
+   "planner": "cem",
+   "cem_K": 16,
+   "cem_rounds": 1,
+   "iterations": 0,
+   "lr": 0.1
+  }
+ },
+ {
+  "tag": "cem_noise_K32_R1",
+  "shape": "B4_nograd",
+  "B": 4,
+  "knobs": {
+   "planner": "cem",
+   "cem_K": 32,
+   "cem_rounds": 1,
+   "iterations": 0,
+   "lr": 0.1
+  }
+ },
+ {
+  "tag": "cem_noise_K32_R2",
+  "shape": "B4_nograd",
+  "B": 4,
+  "knobs": {
+   "planner": "cem",
+   "cem_K": 32,
+   "cem_rounds": 2,
+   "iterations": 0,
+   "lr": 0.1
+  }
+ },
+ {
+  "tag": "cem_noise_K32_R3",
+  "shape": "B4_nograd",
+  "B": 4,
+  "knobs": {
+   "planner": "cem",
+   "cem_K": 32,
+   "cem_rounds": 3,
+   "iterations": 0,
+   "lr": 0.1
+  }
+ },
+ {
+  "tag": "cem_noise_K64_R3",
+  "shape": "B4_nograd",
+  "B": 4,
+  "knobs": {
+   "planner": "cem",
+   "cem_K": 64,
+   "cem_rounds": 3,
+   "iterations": 0,
+   "lr": 0.1
+  }
+ },
+ {
+  "tag": "cem_act_K4_R1",
+  "shape": "B4_nograd",
+  "B": 4,
+  "knobs": {
+   "planner": "cem_actions",
+   "cem_K": 4,
+   "cem_rounds": 1,
+   "iterations": 0,
+   "lr": 0.1
+  }
+ },
+ {
+  "tag": "cem_act_K8_R1",
+  "shape": "B4_nograd",
+  "B": 4,
+  "knobs": {
+   "planner": "cem_actions",
+   "cem_K": 8,
+   "cem_rounds": 1,
+   "iterations": 0,
+   "lr": 0.1
+  }
+ },
+ {
+  "tag": "cem_act_K16_R1",
+  "shape": "B4_nograd",
+  "B": 4,
+  "knobs": {
+   "planner": "cem_actions",
+   "cem_K": 16,
+   "cem_rounds": 1,
+   "iterations": 0,
+   "lr": 0.1
+  }
+ },
+ {
+  "tag": "cem_act_K32_R1",
+  "shape": "B4_nograd",
+  "B": 4,
+  "knobs": {
+   "planner": "cem_actions",
+   "cem_K": 32,
+   "cem_rounds": 1,
+   "iterations": 0,
+   "lr": 0.1
+  }
+ },
+ {
+  "tag": "cem_act_K32_R2",
+  "shape": "B4_nograd",
+  "B": 4,
+  "knobs": {
+   "planner": "cem_actions",
+   "cem_K": 32,
+   "cem_rounds": 2,
+   "iterations": 0,
+   "lr": 0.1
+  }
+ },
+ {
+  "tag": "cem_act_K32_R3",
+  "shape": "B4_nograd",
+  "B": 4,
+  "knobs": {
+   "planner": "cem_actions",
+   "cem_K": 32,
+   "cem_rounds": 3,
+   "iterations": 0,
+   "lr": 0.1
+  }
+ },
+ {
+  "tag": "cem_act_K64_R3",
+  "shape": "B4_nograd",
+  "B": 4,
+  "knobs": {
+   "planner": "cem_actions",
+   "cem_K": 64,
+   "cem_rounds": 3,
+   "iterations": 0,
+   "lr": 0.1
+  }
+ }
+]

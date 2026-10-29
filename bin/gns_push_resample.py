@@ -1,0 +1,108 @@
+"""GNS block-pushing planner WITH resampling at every replan (budget study, docs/BUDGET_PUSH_PLAN.md).
+
+GNS push_direct takes no action input; its only source of candidate diversity is the random point-cloud realization of the
+rod and cube templates. The paper planner (gns-pytorch/pushing_eval_gns.py) draws K realizations once and rolls all 60 frames
+(best-of-K). gns-pytorch/pushing_eval_gns_recedhoriz.py replans but never resamples (after replan 0 every candidate is the
+winner's continuation, bit-identical to best-of-K). Here every replan draws K FRESH realizations:
+
+  history = the last 6 committed imagined frames, stored as rigid poses of the rod and the cube (Kabsch fits of the winner)
+  for r = 0, commit, 2*commit, ... < total:
+      K fresh (rod, cube) template draws, rng (template_seed, scenario, r, k); each posed at the 6 history poses -> context
+      roll all K to frame `total` (the remaining frames), score ONLY the final frame: |block centroid - target|^2
+      winner = argmin; Kabsch-fit its rod and cube templates on its next `commit` frames; append those poses; repeat
+The executed plan = the committed rod xy deltas (60 actions). Frame 0 context = 6 copies of the scenario start (zero
+velocity), exactly the paper's open-loop context. Timing = warm planning compute (model already loaded, CUDA warmed).
+
+  python bin/gns_push_resample.py --state_npz <all.npz> --scenario_idx 11 --K 64 --commit 5 --out <dir>
+"""
+import argparse, json, sys, time
+from pathlib import Path
+import numpy as np, torch
+G = Path("/data/user_data/mbronars/packages/gns-pytorch"); sys.path.insert(0, str(G))
+import pushing_eval_gns as E                                                   # noqa: E402
+
+ap = argparse.ArgumentParser()
+ap.add_argument("--checkpoint", default="/data/user_data/mbronars/runs/gns_pushing_direct_v1/model-7185000.pt")
+ap.add_argument("--metadata_json", default="/data/group_data/katefgroup/datasets/gns_pushing_direct_npz/metadata.json")
+ap.add_argument("--state_npz", required=True); ap.add_argument("--scenario_idx", type=int, required=True)
+ap.add_argument("--K", type=int, required=True); ap.add_argument("--commit", type=int, default=5); ap.add_argument("--total", type=int, default=60)
+ap.add_argument("--chunk_size", type=int, default=64); ap.add_argument("--template_seed", type=int, default=42); ap.add_argument("--seed", type=int, default=0)
+ap.add_argument("--n_block", type=int, default=128); ap.add_argument("--n_hand", type=int, default=128); ap.add_argument("--action_max_norm", type=float, default=0.015)
+ap.add_argument("--out", required=True)
+ap.add_argument("--presample", action="store_true", help="draw every replan's K templates before the timed loop (they depend only on (replan, k), not on the state)")
+A = ap.parse_args()
+dev = torch.device("cuda"); np.random.seed(A.seed); torch.manual_seed(A.seed)
+C = E.INPUT_SEQUENCE_LENGTH; NH, NB = A.n_hand, A.n_block; N = NH + NB
+meta = json.load(open(A.metadata_json)); sim = E.make_simulator(meta, dev); sim.load(A.checkpoint); sim.to(dev).eval()
+sc = E.load_scenario(Path(A.state_npz), A.scenario_idx)
+ptype = torch.from_numpy(np.concatenate([np.full(NH, 1), np.full(NB, 0)]).astype(np.int64)).to(dev)
+
+
+def quat_to_R(q):                                                              # wxyz
+    w, x, y, z = q
+    return np.array([[1 - 2 * (y * y + z * z), 2 * (x * y - w * z), 2 * (x * z + w * y)],
+                     [2 * (x * y + w * z), 1 - 2 * (x * x + z * z), 2 * (y * z - w * x)],
+                     [2 * (x * z - w * y), 2 * (y * z + w * x), 1 - 2 * (x * x + y * y)]], np.float32)
+
+
+def draw(r, k):
+    rng = np.random.default_rng((A.template_seed, A.scenario_idx, r, k)); t = E.sample_templates(NB, NH, rng)
+    return t["hand"].astype(np.float32), t["cube"].astype(np.float32)
+
+
+# frame-0 poses in the centered frame (same centering as the paper planner: bbox centre of the frame-0 cube points)
+hand0, cube0 = draw(0, 0)
+offset = E.compute_traj_offset_from_initial(E.apply_pose(cube0, sc["block_pos"], sc["block_quat"]))
+grip0 = np.array([sc["gripper_xy"][0], sc["gripper_xy"][1], E.GRIPPER_Z_FIXED], np.float32)
+pose_rod = [(np.eye(3, dtype=np.float32), grip0 - offset)] * C                    # history of rigid poses, local -> centered
+pose_cube = [(quat_to_R(sc["block_quat"]), sc["block_pos"].astype(np.float32) - offset)] * C
+target = torch.from_numpy((sc["target_xy"] - offset[:2]).astype(np.float32)).to(dev)
+posed = lambda tpl, R, t: tpl @ R.T + t
+
+# warm CUDA / kernels (not timed)
+with torch.no_grad():
+    E.free_rollout_batch(sim, torch.zeros(2, N, C, 3, device=dev) + torch.randn(2, N, 1, 3, device=dev) * 0.01, ptype, N, K=2, F=2, device=dev)
+torch.cuda.synchronize()
+
+BANK = {d: [draw(d, k) for k in range(A.K)] for d in range(0, A.total, A.commit)} if A.presample else None
+log, committed_pts = [], []; t_plan = 0.0; r = 0
+while len(pose_rod) - C < A.total:
+    t0 = time.time(); done = len(pose_rod) - C; F = A.total - done
+    tpl = BANK[done] if BANK is not None else [draw(done, k) for k in range(A.K)]
+    ctx = np.zeros((A.K, N, C, 3), np.float32)
+    for k, (th, tc) in enumerate(tpl):
+        for j in range(C):
+            ctx[k, :NH, j] = posed(th, *pose_rod[-C + j]); ctx[k, NH:, j] = posed(tc, *pose_cube[-C + j])
+    ctx_t = torch.from_numpy(ctx).to(dev); fut = []
+    for s in range(0, A.K, A.chunk_size):
+        fut.append(E.free_rollout_batch(sim, ctx_t[s:s + A.chunk_size], ptype, N, K=min(A.chunk_size, A.K - s), F=F, device=dev))
+    fut = torch.cat(fut)                                                       # [K, F, N, 3]
+    cost = ((fut[:, -1, NH:, :2].mean(1) - target[None]) ** 2).sum(1)
+    kb = int(torch.argmin(cost)); win = fut[kb].cpu().numpy(); torch.cuda.synchronize()
+    th, tc = tpl[kb]; c = min(A.commit, F)
+    for f in range(c):                                                          # rigid poses of the winner's next frames
+        Rr, tr = E.kabsch_np(th, win[f, :NH]); Rc, tcb = E.kabsch_np(tc, win[f, NH:])
+        pose_rod.append((Rr.astype(np.float32), tr.astype(np.float32))); pose_cube.append((Rc.astype(np.float32), tcb.astype(np.float32)))
+        committed_pts.append(win[f])
+    dt = time.time() - t0; t_plan += dt
+    cm = cost.sqrt().cpu().numpy()
+    log.append(dict(replan=r, done=done, frames=F, winner=kb, imagined_final_mm=round(float(cm[kb]) * 1e3, 2),
+                    cost_mm_median=round(float(np.median(cm)) * 1e3, 2), seconds=round(dt, 3)))
+    print(f"replan {r:2d} done {done:2d} roll {F:2d} K {A.K}: winner {kb} imagined {cm[kb]*1e3:6.1f} mm (median {np.median(cm)*1e3:6.1f})  {dt:.2f} s", flush=True)
+    r += 1
+
+rod_xy = np.array([p[1][:2] for p in pose_rod[C - 1:]])                        # frame 0 .. total
+actions = np.diff(rod_xy, axis=0).astype(np.float32)
+cube_xy_world = np.array([p[1][:2] for p in pose_cube[C - 1:]]) + offset[:2]
+imag = float(np.linalg.norm(cube_xy_world[-1] - sc["target_xy"]))
+out = Path(A.out); out.mkdir(parents=True, exist_ok=True)
+np.savez(out / "actions.npz", actions=actions, init_block_pos=sc["block_pos"], init_block_quat=sc["block_quat"], init_gripper_xy=sc["gripper_xy"],
+         target_xy=sc["target_xy"], imagined_block_xy=cube_xy_world.astype(np.float32), imagined_gripper_xy=(rod_xy + offset[:2]).astype(np.float32),
+         final_dist=np.float32(imag), wall_time_sec=np.float32(t_plan), action_max_norm=np.float32(A.action_max_norm))
+np.savez(out / "positions.npz", predicted_centered=np.concatenate([np.repeat(np.concatenate([posed(hand0, *pose_rod[0]), posed(cube0, *pose_cube[0])])[None], 1, 0),
+                                                                   np.array(committed_pts)]).astype(np.float32),
+         offset_world=offset.astype(np.float32), object_ids=np.concatenate([np.full(NH, 1), np.full(NB, 0)]), context_len=1)
+json.dump(dict(planner="gns_resample_per_replan", checkpoint=A.checkpoint, state_npz=A.state_npz, scenario_idx=A.scenario_idx, K=A.K, commit=A.commit,
+               total=A.total, template_seed=A.template_seed, plan_seconds=round(t_plan, 3), imagined_final_mm=round(imag * 1e3, 2),
+               action_norm_max_cm=round(float(np.linalg.norm(actions, axis=1).max() * 100), 3), replans=log), open(out / "meta.json", "w"), indent=1)
+print(f"PLAN_DONE K {A.K}: imagined {imag*1e3:.1f} mm, plan {t_plan:.2f} s -> {out}", flush=True)

@@ -1,0 +1,1842 @@
+[
+ {
+  "label": "milk_carton_asset_0037",
+  "extent": [
+   56,
+   46,
+   131
+  ],
+  "held": 4,
+  "stable": 3,
+  "members": [
+   {
+    "gen": {
+     "contact": 19,
+     "tilt": 0.8,
+     "disp": 0.5,
+     "peak": 305,
+     "end": 144,
+     "goal": 20
+    },
+    "sim": {
+     "contact": 18,
+     "tilt": 0.0,
+     "disp": 0.0,
+     "peak": 291,
+     "end": 136,
+     "goal": 20
+    },
+    "held": true,
+    "stable": true
+   },
+   {
+    "gen": {
+     "contact": 22,
+     "tilt": 10.8,
+     "disp": 12.0,
+     "peak": 277,
+     "end": 207,
+     "goal": 62
+    },
+    "sim": {
+     "contact": 19,
+     "tilt": 0.0,
+     "disp": 0.0,
+     "peak": 238,
+     "end": 152,
+     "goal": 28
+    },
+    "held": true,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 22,
+     "tilt": 1.4,
+     "disp": 1.0,
+     "peak": 297,
+     "end": 138,
+     "goal": 30
+    },
+    "sim": {
+     "contact": 19,
+     "tilt": 0.0,
+     "disp": 0.0,
+     "peak": 301,
+     "end": 126,
+     "goal": 42
+    },
+    "held": true,
+    "stable": true
+   },
+   {
+    "gen": {
+     "contact": 21,
+     "tilt": 1.2,
+     "disp": 0.8,
+     "peak": 291,
+     "end": 156,
+     "goal": 14
+    },
+    "sim": {
+     "contact": 19,
+     "tilt": 0.0,
+     "disp": 0.0,
+     "peak": 258,
+     "end": 95,
+     "goal": 56
+    },
+    "held": true,
+    "stable": true
+   }
+  ]
+ },
+ {
+  "label": "peanut_butter_jar_asset_0003",
+  "extent": [
+   57,
+   60,
+   92
+  ],
+  "held": 3,
+  "stable": 3,
+  "members": [
+   {
+    "gen": {
+     "contact": 8,
+     "tilt": 0.2,
+     "disp": 0.1,
+     "peak": 359,
+     "end": 121,
+     "goal": 38
+    },
+    "sim": {
+     "contact": 12,
+     "tilt": 0.0,
+     "disp": 0.0,
+     "peak": 334,
+     "end": 116,
+     "goal": 57
+    },
+    "held": true,
+    "stable": true
+   },
+   {
+    "gen": {
+     "contact": 13,
+     "tilt": 1.2,
+     "disp": 0.9,
+     "peak": 351,
+     "end": 159,
+     "goal": 18
+    },
+    "sim": {
+     "contact": 15,
+     "tilt": 0.0,
+     "disp": 0.0,
+     "peak": 317,
+     "end": 143,
+     "goal": 45
+    },
+    "held": true,
+    "stable": true
+   },
+   {
+    "gen": {
+     "contact": 17,
+     "tilt": 7.8,
+     "disp": 9.5,
+     "peak": 331,
+     "end": 126,
+     "goal": 39
+    },
+    "sim": {
+     "contact": 15,
+     "tilt": 0.1,
+     "disp": 0.0,
+     "peak": 3,
+     "end": -23,
+     "goal": 282
+    },
+    "held": false,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 12,
+     "tilt": 0.5,
+     "disp": 0.3,
+     "peak": 348,
+     "end": 137,
+     "goal": 16
+    },
+    "sim": {
+     "contact": 12,
+     "tilt": 0.0,
+     "disp": 0.0,
+     "peak": 320,
+     "end": 112,
+     "goal": 47
+    },
+    "held": true,
+    "stable": true
+   }
+  ]
+ },
+ {
+  "label": "soda_can_asset_0012",
+  "extent": [
+   56,
+   56,
+   102
+  ],
+  "held": 3,
+  "stable": 3,
+  "members": [
+   {
+    "gen": {
+     "contact": 13,
+     "tilt": 0.2,
+     "disp": 0.3,
+     "peak": 278,
+     "end": 139,
+     "goal": 15
+    },
+    "sim": {
+     "contact": 13,
+     "tilt": 0.0,
+     "disp": 0.0,
+     "peak": 270,
+     "end": 130,
+     "goal": 37
+    },
+    "held": true,
+    "stable": true
+   },
+   {
+    "gen": {
+     "contact": 11,
+     "tilt": 0.6,
+     "disp": 0.8,
+     "peak": 299,
+     "end": 187,
+     "goal": 39
+    },
+    "sim": {
+     "contact": 10,
+     "tilt": 0.0,
+     "disp": 0.0,
+     "peak": 265,
+     "end": 118,
+     "goal": 35
+    },
+    "held": true,
+    "stable": true
+   },
+   {
+    "gen": {
+     "contact": 13,
+     "tilt": 0.6,
+     "disp": 0.6,
+     "peak": 307,
+     "end": 77,
+     "goal": 78
+    },
+    "sim": {
+     "contact": 12,
+     "tilt": 0.0,
+     "disp": 0.0,
+     "peak": 328,
+     "end": 69,
+     "goal": 89
+    },
+    "held": true,
+    "stable": true
+   },
+   {
+    "gen": {
+     "contact": 17,
+     "tilt": 13.2,
+     "disp": 12.5,
+     "peak": 315,
+     "end": 139,
+     "goal": 15
+    },
+    "sim": {
+     "contact": 18,
+     "tilt": 10.0,
+     "disp": 9.6,
+     "peak": 4,
+     "end": -27,
+     "goal": 215
+    },
+    "held": false,
+    "stable": false
+   }
+  ]
+ },
+ {
+  "label": "pasta_box_asset_0058",
+  "extent": [
+   128,
+   147,
+   85
+  ],
+  "held": 4,
+  "stable": 2,
+  "members": [
+   {
+    "gen": {
+     "contact": 20,
+     "tilt": 5.0,
+     "disp": 5.9,
+     "peak": 224,
+     "end": 64,
+     "goal": 102
+    },
+    "sim": {
+     "contact": 18,
+     "tilt": 0.0,
+     "disp": 0.0,
+     "peak": 241,
+     "end": 92,
+     "goal": 84
+    },
+    "held": true,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 12,
+     "tilt": 0.4,
+     "disp": 0.4,
+     "peak": 193,
+     "end": 174,
+     "goal": 66
+    },
+    "sim": {
+     "contact": 12,
+     "tilt": 0.0,
+     "disp": 0.0,
+     "peak": 146,
+     "end": 143,
+     "goal": 60
+    },
+    "held": true,
+    "stable": true
+   },
+   {
+    "gen": {
+     "contact": 27,
+     "tilt": 14.6,
+     "disp": 9.2,
+     "peak": 277,
+     "end": 93,
+     "goal": 61
+    },
+    "sim": {
+     "contact": 17,
+     "tilt": 0.0,
+     "disp": 0.0,
+     "peak": 300,
+     "end": 126,
+     "goal": 71
+    },
+    "held": true,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 13,
+     "tilt": 0.6,
+     "disp": 0.6,
+     "peak": 319,
+     "end": 133,
+     "goal": 39
+    },
+    "sim": {
+     "contact": 13,
+     "tilt": 0.0,
+     "disp": 0.0,
+     "peak": 306,
+     "end": 135,
+     "goal": 40
+    },
+    "held": true,
+    "stable": true
+   }
+  ]
+ },
+ {
+  "label": "water_bottle_asset_0087",
+  "extent": [
+   52,
+   52,
+   122
+  ],
+  "held": 4,
+  "stable": 2,
+  "members": [
+   {
+    "gen": {
+     "contact": 13,
+     "tilt": 0.6,
+     "disp": 0.7,
+     "peak": 240,
+     "end": 137,
+     "goal": 21
+    },
+    "sim": {
+     "contact": 13,
+     "tilt": 0.0,
+     "disp": 0.0,
+     "peak": 241,
+     "end": 143,
+     "goal": 37
+    },
+    "held": true,
+    "stable": true
+   },
+   {
+    "gen": {
+     "contact": 11,
+     "tilt": 6.5,
+     "disp": 8.9,
+     "peak": 252,
+     "end": 142,
+     "goal": 17
+    },
+    "sim": {
+     "contact": 10,
+     "tilt": 0.0,
+     "disp": 0.0,
+     "peak": 226,
+     "end": 113,
+     "goal": 45
+    },
+    "held": true,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 13,
+     "tilt": 4.1,
+     "disp": 4.9,
+     "peak": 302,
+     "end": 177,
+     "goal": 37
+    },
+    "sim": {
+     "contact": 13,
+     "tilt": 0.0,
+     "disp": 0.0,
+     "peak": 305,
+     "end": 178,
+     "goal": 44
+    },
+    "held": true,
+    "stable": true
+   },
+   {
+    "gen": {
+     "contact": 18,
+     "tilt": 8.7,
+     "disp": 7.6,
+     "peak": 281,
+     "end": 155,
+     "goal": 16
+    },
+    "sim": {
+     "contact": 19,
+     "tilt": 7.7,
+     "disp": 7.7,
+     "peak": 255,
+     "end": 88,
+     "goal": 72
+    },
+    "held": true,
+    "stable": false
+   }
+  ]
+ },
+ {
+  "label": "spice_jar_asset_0025",
+  "extent": [
+   48,
+   48,
+   94
+  ],
+  "held": 4,
+  "stable": 1,
+  "members": [
+   {
+    "gen": {
+     "contact": 21,
+     "tilt": 4.9,
+     "disp": 4.0,
+     "peak": 267,
+     "end": 78,
+     "goal": 111
+    },
+    "sim": {
+     "contact": 22,
+     "tilt": 1.3,
+     "disp": 1.0,
+     "peak": 260,
+     "end": 63,
+     "goal": 138
+    },
+    "held": true,
+    "stable": true
+   },
+   {
+    "gen": {
+     "contact": 25,
+     "tilt": 17.8,
+     "disp": 17.8,
+     "peak": 241,
+     "end": 75,
+     "goal": 135
+    },
+    "sim": {
+     "contact": 20,
+     "tilt": 3.7,
+     "disp": 0.7,
+     "peak": 225,
+     "end": 52,
+     "goal": 168
+    },
+    "held": true,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 22,
+     "tilt": 9.4,
+     "disp": 7.8,
+     "peak": 286,
+     "end": 55,
+     "goal": 110
+    },
+    "sim": {
+     "contact": 20,
+     "tilt": 2.9,
+     "disp": 2.3,
+     "peak": 287,
+     "end": 56,
+     "goal": 118
+    },
+    "held": true,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 21,
+     "tilt": 18.0,
+     "disp": 15.1,
+     "peak": 306,
+     "end": 74,
+     "goal": 81
+    },
+    "sim": {
+     "contact": 19,
+     "tilt": 0.0,
+     "disp": 0.0,
+     "peak": 299,
+     "end": 65,
+     "goal": 103
+    },
+    "held": true,
+    "stable": false
+   }
+  ]
+ },
+ {
+  "label": "batch000_e1",
+  "extent": [
+   58,
+   55,
+   73
+  ],
+  "held": 3,
+  "stable": 1,
+  "members": [
+   {
+    "gen": {
+     "contact": 19,
+     "tilt": 5.6,
+     "disp": 5.3,
+     "peak": 299,
+     "end": 131,
+     "goal": 69
+    },
+    "sim": {
+     "contact": 18,
+     "tilt": 0.0,
+     "disp": 0.0,
+     "peak": 283,
+     "end": 119,
+     "goal": 88
+    },
+    "held": true,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 9,
+     "tilt": 0.4,
+     "disp": 0.2,
+     "peak": 157,
+     "end": 157,
+     "goal": 35
+    },
+    "sim": {
+     "contact": 9,
+     "tilt": 0.0,
+     "disp": 0.0,
+     "peak": 7,
+     "end": -10,
+     "goal": 189
+    },
+    "held": false,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 14,
+     "tilt": 1.1,
+     "disp": 1.7,
+     "peak": 338,
+     "end": 89,
+     "goal": 78
+    },
+    "sim": {
+     "contact": 20,
+     "tilt": 13.2,
+     "disp": 6.9,
+     "peak": 349,
+     "end": 120,
+     "goal": 73
+    },
+    "held": true,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 12,
+     "tilt": 0.6,
+     "disp": 0.4,
+     "peak": 344,
+     "end": 122,
+     "goal": 32
+    },
+    "sim": {
+     "contact": 12,
+     "tilt": 0.0,
+     "disp": 0.0,
+     "peak": 338,
+     "end": 104,
+     "goal": 58
+    },
+    "held": true,
+    "stable": true
+   }
+  ]
+ },
+ {
+  "label": "cracker_box_asset_0039",
+  "extent": [
+   39,
+   106,
+   149
+  ],
+  "held": 2,
+  "stable": 1,
+  "members": [
+   {
+    "gen": {
+     "contact": 18,
+     "tilt": 2.1,
+     "disp": 2.3,
+     "peak": 208,
+     "end": 85,
+     "goal": 79
+    },
+    "sim": {
+     "contact": 16,
+     "tilt": 0.0,
+     "disp": 0.0,
+     "peak": 12,
+     "end": -60,
+     "goal": 221
+    },
+    "held": false,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 17,
+     "tilt": 9.4,
+     "disp": 10.4,
+     "peak": 97,
+     "end": 97,
+     "goal": 65
+    },
+    "sim": {
+     "contact": 18,
+     "tilt": 0.0,
+     "disp": 0.0,
+     "peak": 1,
+     "end": -60,
+     "goal": 247
+    },
+    "held": false,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 22,
+     "tilt": 7.0,
+     "disp": 8.3,
+     "peak": 249,
+     "end": 159,
+     "goal": 68
+    },
+    "sim": {
+     "contact": 22,
+     "tilt": 3.7,
+     "disp": 4.0,
+     "peak": 274,
+     "end": 179,
+     "goal": 69
+    },
+    "held": true,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 19,
+     "tilt": 1.6,
+     "disp": 1.7,
+     "peak": 162,
+     "end": 162,
+     "goal": 15
+    },
+    "sim": {
+     "contact": 20,
+     "tilt": 0.0,
+     "disp": 0.0,
+     "peak": 194,
+     "end": 192,
+     "goal": 70
+    },
+    "held": true,
+    "stable": true
+   }
+  ]
+ },
+ {
+  "label": "food_can_asset_0039",
+  "extent": [
+   69,
+   71,
+   83
+  ],
+  "held": 2,
+  "stable": 1,
+  "members": [
+   {
+    "gen": {
+     "contact": 16,
+     "tilt": 0.8,
+     "disp": 0.7,
+     "peak": 310,
+     "end": 159,
+     "goal": 80
+    },
+    "sim": {
+     "contact": 19,
+     "tilt": 11.2,
+     "disp": 6.3,
+     "peak": 321,
+     "end": 189,
+     "goal": 79
+    },
+    "held": true,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 12,
+     "tilt": 0.4,
+     "disp": 0.3,
+     "peak": 258,
+     "end": 178,
+     "goal": 35
+    },
+    "sim": {
+     "contact": 12,
+     "tilt": 0.0,
+     "disp": 0.0,
+     "peak": 11,
+     "end": 0,
+     "goal": 228
+    },
+    "held": false,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 14,
+     "tilt": 0.3,
+     "disp": 0.1,
+     "peak": 334,
+     "end": 107,
+     "goal": 46
+    },
+    "sim": {
+     "contact": 14,
+     "tilt": 0.0,
+     "disp": 0.0,
+     "peak": 345,
+     "end": 141,
+     "goal": 29
+    },
+    "held": true,
+    "stable": true
+   },
+   {
+    "gen": {
+     "contact": 9,
+     "tilt": 0.1,
+     "disp": 0.1,
+     "peak": 342,
+     "end": 140,
+     "goal": 28
+    },
+    "sim": {
+     "contact": 9,
+     "tilt": 0.0,
+     "disp": 0.0,
+     "peak": 11,
+     "end": 0,
+     "goal": 222
+    },
+    "held": false,
+    "stable": false
+   }
+  ]
+ },
+ {
+  "label": "jam_jar_asset_0085",
+  "extent": [
+   59,
+   59,
+   104
+  ],
+  "held": 1,
+  "stable": 1,
+  "members": [
+   {
+    "gen": {
+     "contact": 14,
+     "tilt": 0.3,
+     "disp": 0.1,
+     "peak": 275,
+     "end": 143,
+     "goal": 24
+    },
+    "sim": {
+     "contact": 14,
+     "tilt": 0.0,
+     "disp": 0.0,
+     "peak": 293,
+     "end": 138,
+     "goal": 49
+    },
+    "held": true,
+    "stable": true
+   },
+   {
+    "gen": {
+     "contact": 10,
+     "tilt": 0.2,
+     "disp": 0.2,
+     "peak": 280,
+     "end": 121,
+     "goal": 103
+    },
+    "sim": {
+     "contact": 10,
+     "tilt": 0.0,
+     "disp": 0.0,
+     "peak": 222,
+     "end": 24,
+     "goal": 165
+    },
+    "held": false,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 14,
+     "tilt": 5.8,
+     "disp": 6.6,
+     "peak": 276,
+     "end": 43,
+     "goal": 117
+    },
+    "sim": {
+     "contact": 11,
+     "tilt": 0.4,
+     "disp": 0.4,
+     "peak": 260,
+     "end": 34,
+     "goal": 124
+    },
+    "held": false,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 12,
+     "tilt": 14.3,
+     "disp": 13.3,
+     "peak": 343,
+     "end": 139,
+     "goal": 16
+    },
+    "sim": {
+     "contact": 11,
+     "tilt": 0.0,
+     "disp": 0.0,
+     "peak": 4,
+     "end": -23,
+     "goal": 197
+    },
+    "held": false,
+    "stable": false
+   }
+  ]
+ },
+ {
+  "label": "mayonnaise_jar_asset_0008",
+  "extent": [
+   121,
+   116,
+   67
+  ],
+  "held": 2,
+  "stable": 0,
+  "members": [
+   {
+    "gen": {
+     "contact": 10,
+     "tilt": 0.5,
+     "disp": 0.2,
+     "peak": 374,
+     "end": 177,
+     "goal": 34
+    },
+    "sim": {
+     "contact": 14,
+     "tilt": 10.0,
+     "disp": 2.0,
+     "peak": 1,
+     "end": 0,
+     "goal": 213
+    },
+    "held": false,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 15,
+     "tilt": 29.7,
+     "disp": 11.6,
+     "peak": 216,
+     "end": 56,
+     "goal": 95
+    },
+    "sim": {
+     "contact": 13,
+     "tilt": 9.9,
+     "disp": 2.0,
+     "peak": 2,
+     "end": -1,
+     "goal": 268
+    },
+    "held": false,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 14,
+     "tilt": 10.2,
+     "disp": 3.8,
+     "peak": 270,
+     "end": 98,
+     "goal": 102
+    },
+    "sim": {
+     "contact": 13,
+     "tilt": 10.0,
+     "disp": 2.0,
+     "peak": 291,
+     "end": 122,
+     "goal": 135
+    },
+    "held": true,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 13,
+     "tilt": 19.7,
+     "disp": 11.7,
+     "peak": 312,
+     "end": 106,
+     "goal": 48
+    },
+    "sim": {
+     "contact": 12,
+     "tilt": 10.0,
+     "disp": 2.0,
+     "peak": 310,
+     "end": 83,
+     "goal": 82
+    },
+    "held": true,
+    "stable": false
+   }
+  ]
+ },
+ {
+  "label": "mustard_bottle_asset_0059",
+  "extent": [
+   55,
+   55,
+   164
+  ],
+  "held": 2,
+  "stable": 0,
+  "members": [
+   {
+    "gen": {
+     "contact": 20,
+     "tilt": 5.1,
+     "disp": 4.9,
+     "peak": 260,
+     "end": 121,
+     "goal": 38
+    },
+    "sim": {
+     "contact": 17,
+     "tilt": 0.1,
+     "disp": 0.0,
+     "peak": 277,
+     "end": 155,
+     "goal": 41
+    },
+    "held": true,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 22,
+     "tilt": 5.7,
+     "disp": 6.5,
+     "peak": 266,
+     "end": 140,
+     "goal": 51
+    },
+    "sim": {
+     "contact": 13,
+     "tilt": 0.1,
+     "disp": 0.0,
+     "peak": 227,
+     "end": 69,
+     "goal": 100
+    },
+    "held": true,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 21,
+     "tilt": 18.5,
+     "disp": 12.9,
+     "peak": 246,
+     "end": 26,
+     "goal": 136
+    },
+    "sim": {
+     "contact": 10,
+     "tilt": 0.1,
+     "disp": 0.1,
+     "peak": 1,
+     "end": -39,
+     "goal": 305
+    },
+    "held": false,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 20,
+     "tilt": 2.9,
+     "disp": 4.1,
+     "peak": 327,
+     "end": 155,
+     "goal": 10
+    },
+    "sim": {
+     "contact": 18,
+     "tilt": 0.0,
+     "disp": 0.0,
+     "peak": 60,
+     "end": -39,
+     "goal": 287
+    },
+    "held": false,
+    "stable": false
+   }
+  ]
+ },
+ {
+  "label": "tomato_asset_0012",
+  "extent": [
+   58,
+   62,
+   63
+  ],
+  "held": 1,
+  "stable": 0,
+  "members": [
+   {
+    "gen": {
+     "contact": 18,
+     "tilt": 79.5,
+     "disp": 51.8,
+     "peak": 322,
+     "end": 153,
+     "goal": 5
+    },
+    "sim": {
+     "contact": 14,
+     "tilt": 50.0,
+     "disp": 15.6,
+     "peak": 311,
+     "end": 135,
+     "goal": 29
+    },
+    "held": true,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 12,
+     "tilt": 81.3,
+     "disp": 45.1,
+     "peak": 389,
+     "end": 163,
+     "goal": 13
+    },
+    "sim": {
+     "contact": 11,
+     "tilt": 48.7,
+     "disp": 18.8,
+     "peak": 0,
+     "end": -1,
+     "goal": 175
+    },
+    "held": false,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 14,
+     "tilt": 106.6,
+     "disp": 62.0,
+     "peak": 390,
+     "end": 150,
+     "goal": 51
+    },
+    "sim": {
+     "contact": 14,
+     "tilt": 48.7,
+     "disp": 15.7,
+     "peak": 0,
+     "end": -2,
+     "goal": 222
+    },
+    "held": false,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 16,
+     "tilt": 124.5,
+     "disp": 67.0,
+     "peak": 390,
+     "end": 157,
+     "goal": 39
+    },
+    "sim": {
+     "contact": 13,
+     "tilt": 13.7,
+     "disp": 5.1,
+     "peak": 0,
+     "end": -1,
+     "goal": 203
+    },
+    "held": false,
+    "stable": false
+   }
+  ]
+ },
+ {
+  "label": "cereal_box_asset_0044",
+  "extent": [
+   59,
+   106,
+   149
+  ],
+  "held": 0,
+  "stable": 0,
+  "members": [
+   {
+    "gen": {
+     "contact": 28,
+     "tilt": 17.1,
+     "disp": 19.9,
+     "peak": 176,
+     "end": 116,
+     "goal": 113
+    },
+    "sim": {
+     "contact": 60,
+     "tilt": 85.2,
+     "disp": 78.9,
+     "peak": 0,
+     "end": -66,
+     "goal": 231
+    },
+    "held": false,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 24,
+     "tilt": 23.2,
+     "disp": 26.3,
+     "peak": 114,
+     "end": 29,
+     "goal": 133
+    },
+    "sim": {
+     "contact": 60,
+     "tilt": 86.0,
+     "disp": 80.9,
+     "peak": 0,
+     "end": -66,
+     "goal": 231
+    },
+    "held": false,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 19,
+     "tilt": 17.6,
+     "disp": 19.4,
+     "peak": 211,
+     "end": 91,
+     "goal": 72
+    },
+    "sim": {
+     "contact": 60,
+     "tilt": 85.9,
+     "disp": 80.7,
+     "peak": 0,
+     "end": -66,
+     "goal": 231
+    },
+    "held": false,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 27,
+     "tilt": 10.2,
+     "disp": 10.9,
+     "peak": 233,
+     "end": 101,
+     "goal": 56
+    },
+    "sim": {
+     "contact": 60,
+     "tilt": 86.1,
+     "disp": 80.9,
+     "peak": 0,
+     "end": -66,
+     "goal": 231
+    },
+    "held": false,
+    "stable": false
+   }
+  ]
+ },
+ {
+  "label": "drinking_glass_asset_0056",
+  "extent": [
+   70,
+   74,
+   108
+  ],
+  "held": 0,
+  "stable": 0,
+  "members": [
+   {
+    "gen": {
+     "contact": 11,
+     "tilt": 0.2,
+     "disp": 0.2,
+     "peak": 232,
+     "end": 73,
+     "goal": 84
+    },
+    "sim": {
+     "contact": 11,
+     "tilt": 1.5,
+     "disp": 0.2,
+     "peak": 7,
+     "end": -23,
+     "goal": 273
+    },
+    "held": false,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 18,
+     "tilt": 10.7,
+     "disp": 10.8,
+     "peak": 107,
+     "end": 107,
+     "goal": 79
+    },
+    "sim": {
+     "contact": 14,
+     "tilt": 1.5,
+     "disp": 0.2,
+     "peak": 5,
+     "end": -23,
+     "goal": 233
+    },
+    "held": false,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 16,
+     "tilt": 1.2,
+     "disp": 1.2,
+     "peak": 240,
+     "end": 72,
+     "goal": 84
+    },
+    "sim": {
+     "contact": 15,
+     "tilt": 1.5,
+     "disp": 0.2,
+     "peak": 6,
+     "end": 0,
+     "goal": 212
+    },
+    "held": false,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 12,
+     "tilt": 11.0,
+     "disp": 11.1,
+     "peak": 266,
+     "end": 70,
+     "goal": 101
+    },
+    "sim": {
+     "contact": 11,
+     "tilt": 1.5,
+     "disp": 0.3,
+     "peak": 7,
+     "end": -23,
+     "goal": 263
+    },
+    "held": false,
+    "stable": false
+   }
+  ]
+ },
+ {
+  "label": "juice_carton_asset_0025",
+  "extent": [
+   72,
+   70,
+   122
+  ],
+  "held": 0,
+  "stable": 0,
+  "members": [
+   {
+    "gen": {
+     "contact": 18,
+     "tilt": 0.3,
+     "disp": 0.1,
+     "peak": 199,
+     "end": 114,
+     "goal": 40
+    },
+    "sim": {
+     "contact": 19,
+     "tilt": 0.0,
+     "disp": 0.0,
+     "peak": 9,
+     "end": -27,
+     "goal": 274
+    },
+    "held": false,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 15,
+     "tilt": 0.2,
+     "disp": 0.1,
+     "peak": 281,
+     "end": 155,
+     "goal": 15
+    },
+    "sim": {
+     "contact": 16,
+     "tilt": 0.9,
+     "disp": 0.9,
+     "peak": 135,
+     "end": -25,
+     "goal": 281
+    },
+    "held": false,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 22,
+     "tilt": 1.5,
+     "disp": 1.2,
+     "peak": 254,
+     "end": 124,
+     "goal": 29
+    },
+    "sim": {
+     "contact": 20,
+     "tilt": 0.0,
+     "disp": 0.0,
+     "peak": 8,
+     "end": -27,
+     "goal": 302
+    },
+    "held": false,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 16,
+     "tilt": 0.3,
+     "disp": 0.2,
+     "peak": 257,
+     "end": 128,
+     "goal": 44
+    },
+    "sim": {
+     "contact": 16,
+     "tilt": 0.0,
+     "disp": 0.0,
+     "peak": 8,
+     "end": 0,
+     "goal": 215
+    },
+    "held": false,
+    "stable": false
+   }
+  ]
+ },
+ {
+  "label": "lemon_asset_0012",
+  "extent": [
+   62,
+   61,
+   59
+  ],
+  "held": 0,
+  "stable": 0,
+  "members": [
+   {
+    "gen": {
+     "contact": 21,
+     "tilt": 80.6,
+     "disp": 45.8,
+     "peak": 314,
+     "end": 169,
+     "goal": 22
+    },
+    "sim": {
+     "contact": 16,
+     "tilt": 12.8,
+     "disp": 4.3,
+     "peak": 3,
+     "end": -1,
+     "goal": 232
+    },
+    "held": false,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 16,
+     "tilt": 98.1,
+     "disp": 63.0,
+     "peak": 297,
+     "end": 147,
+     "goal": 36
+    },
+    "sim": {
+     "contact": 14,
+     "tilt": 10.8,
+     "disp": 1.3,
+     "peak": 4,
+     "end": 1,
+     "goal": 224
+    },
+    "held": false,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 19,
+     "tilt": 109.8,
+     "disp": 66.7,
+     "peak": 333,
+     "end": 144,
+     "goal": 6
+    },
+    "sim": {
+     "contact": 23,
+     "tilt": 17.1,
+     "disp": 1.3,
+     "peak": 4,
+     "end": 0,
+     "goal": 254
+    },
+    "held": false,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 13,
+     "tilt": 20.5,
+     "disp": 11.6,
+     "peak": 388,
+     "end": 158,
+     "goal": 15
+    },
+    "sim": {
+     "contact": 12,
+     "tilt": 16.9,
+     "disp": 2.6,
+     "peak": 4,
+     "end": 0,
+     "goal": 282
+    },
+    "held": false,
+    "stable": false
+   }
+  ]
+ },
+ {
+  "label": "pickle_jar_asset_0025",
+  "extent": [
+   71,
+   69,
+   122
+  ],
+  "held": 0,
+  "stable": 0,
+  "members": [
+   {
+    "gen": {
+     "contact": 13,
+     "tilt": 4.3,
+     "disp": 4.8,
+     "peak": 252,
+     "end": 144,
+     "goal": 22
+    },
+    "sim": {
+     "contact": 15,
+     "tilt": 26.2,
+     "disp": 28.5,
+     "peak": 4,
+     "end": -1,
+     "goal": 210
+    },
+    "held": false,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 12,
+     "tilt": 0.2,
+     "disp": 0.4,
+     "peak": 257,
+     "end": 247,
+     "goal": 138
+    },
+    "sim": {
+     "contact": 12,
+     "tilt": 4.2,
+     "disp": 4.5,
+     "peak": 6,
+     "end": -28,
+     "goal": 301
+    },
+    "held": false,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 7,
+     "tilt": 0.1,
+     "disp": 0.2,
+     "peak": 307,
+     "end": 146,
+     "goal": 42
+    },
+    "sim": {
+     "contact": 7,
+     "tilt": 2.8,
+     "disp": 1.8,
+     "peak": 4,
+     "end": -27,
+     "goal": 238
+    },
+    "held": false,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 9,
+     "tilt": 0.1,
+     "disp": 0.1,
+     "peak": 335,
+     "end": 155,
+     "goal": 17
+    },
+    "sim": {
+     "contact": 9,
+     "tilt": 2.8,
+     "disp": 1.8,
+     "peak": 3,
+     "end": -1,
+     "goal": 208
+    },
+    "held": false,
+    "stable": false
+   }
+  ]
+ },
+ {
+  "label": "tea_box_asset_0019",
+  "extent": [
+   97,
+   97,
+   121
+  ],
+  "held": 0,
+  "stable": 0,
+  "members": [
+   {
+    "gen": {
+     "contact": 16,
+     "tilt": 2.4,
+     "disp": 2.6,
+     "peak": 248,
+     "end": 85,
+     "goal": 65
+    },
+    "sim": {
+     "contact": 16,
+     "tilt": 0.0,
+     "disp": 0.0,
+     "peak": 9,
+     "end": -32,
+     "goal": 230
+    },
+    "held": false,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 9,
+     "tilt": 0.2,
+     "disp": 0.2,
+     "peak": 88,
+     "end": 73,
+     "goal": 120
+    },
+    "sim": {
+     "contact": 9,
+     "tilt": 0.0,
+     "disp": 0.0,
+     "peak": 15,
+     "end": -22,
+     "goal": 196
+    },
+    "held": false,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 9,
+     "tilt": 0.1,
+     "disp": 0.2,
+     "peak": 318,
+     "end": 126,
+     "goal": 124
+    },
+    "sim": {
+     "contact": 9,
+     "tilt": 0.0,
+     "disp": 0.0,
+     "peak": 11,
+     "end": 0,
+     "goal": 214
+    },
+    "held": false,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 9,
+     "tilt": 0.3,
+     "disp": 0.1,
+     "peak": 303,
+     "end": 192,
+     "goal": 47
+    },
+    "sim": {
+     "contact": 9,
+     "tilt": 0.0,
+     "disp": 0.0,
+     "peak": 13,
+     "end": -32,
+     "goal": 196
+    },
+    "held": false,
+    "stable": false
+   }
+  ]
+ },
+ {
+  "label": "tuna_can_asset_0023",
+  "extent": [
+   69,
+   71,
+   77
+  ],
+  "held": 0,
+  "stable": 0,
+  "members": [
+   {
+    "gen": {
+     "contact": 15,
+     "tilt": 0.4,
+     "disp": 0.3,
+     "peak": 276,
+     "end": 90,
+     "goal": 63
+    },
+    "sim": {
+     "contact": 15,
+     "tilt": 0.0,
+     "disp": 0.0,
+     "peak": 7,
+     "end": 0,
+     "goal": 218
+    },
+    "held": false,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 11,
+     "tilt": 0.2,
+     "disp": 0.4,
+     "peak": 373,
+     "end": 152,
+     "goal": 12
+    },
+    "sim": {
+     "contact": 12,
+     "tilt": 6.9,
+     "disp": 4.8,
+     "peak": 12,
+     "end": 0,
+     "goal": 245
+    },
+    "held": false,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 14,
+     "tilt": 0.2,
+     "disp": 0.2,
+     "peak": 330,
+     "end": 147,
+     "goal": 9
+    },
+    "sim": {
+     "contact": 14,
+     "tilt": 0.0,
+     "disp": 0.0,
+     "peak": 11,
+     "end": 0,
+     "goal": 213
+    },
+    "held": false,
+    "stable": false
+   },
+   {
+    "gen": {
+     "contact": 14,
+     "tilt": 0.2,
+     "disp": 0.1,
+     "peak": 342,
+     "end": 147,
+     "goal": 9
+    },
+    "sim": {
+     "contact": 15,
+     "tilt": 0.0,
+     "disp": 0.0,
+     "peak": 10,
+     "end": 0,
+     "goal": 204
+    },
+    "held": false,
+    "stable": false
+   }
+  ]
+ }
+]

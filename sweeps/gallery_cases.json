@@ -1,0 +1,257 @@
+[
+ {
+  "base": "gal_carton_over_crackers",
+  "object": "milk carton",
+  "title": "Over a row of three cracker boxes (15 cm tall cardboard barrier): 35 cm forward, ground (80 iterations)",
+  "twin": "gal_carton_fwd35"
+ },
+ {
+  "base": "gal_bowl5_air_fr24",
+  "object": "bowl (15 cm, synthetic scene)",
+  "title": "Air lift: 30 cm to the side (-y), 15 cm up; bowl mesh points in the water-bottle scene",
+  "failed": true,
+  "note": "Synthetic bowl (no bowl exists in the training data): generation reaches the target in 8/8 members, but the fingers close 20-60 mm above the 63 mm rim in 7 of them. Floating hand lifts 1/8 (213 mm); the commanded arm lifts that member 11 mm. The replay bowl is a convex hull of the points (a solid dome)."
+ },
+ {
+  "base": "gal_bowl1_air_fr24",
+  "object": "bowl (12 cm, synthetic scene)",
+  "title": "Air lift: 30 cm forward, 15 cm up; bowl mesh points in the milk-carton scene",
+  "failed": true,
+  "note": "Synthetic 12 cm bowl in the milk-carton scene: generation reaches the target (2-30 mm) in 8/8 members, but 0 of 8 lift in the floating hand (peak 1-8 mm)."
+ },
+ {
+  "base": "gal_carton_over_cereal_it80",
+  "object": "milk carton",
+  "title": "Over a cardboard box (cereal box on its long edge, 21 cm tall): 35 cm forward, ground (80 iterations)",
+  "twin": "gal_carton_fwd35",
+  "note": "80 iterations: 1 of 8 members crosses the 21 cm box in generation (same as at 40); the other seven lift the carton 20-35 cm and set it down at the edge of the buffer zone in front of the box."
+ },
+ {
+  "base": "gal_carton_air_fr24",
+  "object": "milk carton",
+  "title": "Air lift: 30 cm forward, 15 cm up"
+ },
+ {
+  "base": "gal_pasta_air_fr24",
+  "object": "pasta box",
+  "title": "Air lift: 30 cm forward, 15 cm up",
+  "failed": true,
+  "note": "Starts 0.24 m from the robot base: the elbow (joint 4) folds to its -3.07 rad limit at the grasp in all 8 members, and the arm loses the box during the carry. Floating hand held 8/8."
+ },
+ {
+  "base": "gal_bottle_air_fr24",
+  "object": "water bottle",
+  "title": "Air lift: 30 cm to the side (-y), 15 cm up"
+ },
+ {
+  "base": "gal_can_air_fr24",
+  "object": "soda can",
+  "title": "Air lift: 30 cm to the side (+y), 15 cm up"
+ },
+ {
+  "base": "gal_jar_left_fr24",
+  "object": "peanut butter jar",
+  "title": "Air lift to the side: 30 cm in +y, 15 cm up (within arm reach)"
+ },
+ {
+  "base": "gal_jar_air_fr24",
+  "object": "peanut butter jar",
+  "title": "Air lift: 30 cm forward, 15 cm up (40 iterations)",
+  "note": "Target 0.90 m from the robot base: past the Franka's reach. The commanded arm hits a joint limit in every member (hand rotation error up to 130-153 deg); the floating hand has no reach limit.",
+  "failed": true
+ },
+ {
+  "base": "gal_jar_air_fr24_it80",
+  "object": "peanut butter jar",
+  "title": "Air lift: 30 cm forward, 15 cm up (80 iterations, seed 0 only)",
+  "note": "Target 0.90 m from the robot base: past the Franka's reach. The commanded arm hits a joint limit in every member (hand rotation error up to 130-153 deg); the floating hand has no reach limit.",
+  "failed": true
+ },
+ {
+  "base": "gal_carton_over_cereal",
+  "object": "milk carton",
+  "title": "Over a cardboard box (cereal box on its long edge, 21 cm tall): 35 cm forward, ground (40 iterations)",
+  "twin": null
+ },
+ {
+  "base": "gal_carton_fwd35",
+  "object": "milk carton",
+  "title": "Twin without the box: 35 cm forward, ground"
+ },
+ {
+  "base": "gal_carton_on_cabinet",
+  "object": "milk carton",
+  "title": "Placed on top of the wooden cabinet, upright term",
+  "twin": "gal_carton_air_cab"
+ },
+ {
+  "base": "gal_carton_air_cab",
+  "object": "milk carton",
+  "title": "Twin without the cabinet: same point in the air, upright term"
+ },
+ {
+  "base": "gal_jar_over_cereal",
+  "object": "peanut butter jar",
+  "title": "Over the cardboard box sideways: 30 cm in +y, ground",
+  "twin": "gal_jar_side30",
+  "failed": true,
+  "note": "Sideways carry over the cereal box (80 it): the obstacle term is nonzero from iteration 0 (the gripper's start lies inside the buffer); 2 of 8 reach the target in generation but pass through the buffer; 6 lift in the floating hand (no box there); the commanded arm, with the box present, lifts none (peak 3-50 mm)."
+ },
+ {
+  "base": "gal_jar_side30",
+  "object": "peanut butter jar",
+  "title": "Twin without the box: 30 cm in +y, ground",
+  "note": "Ground target: shown is the member the arm carries closest (76 mm peak, ends 89 mm from the X), but it ends 23 mm below its start height, i.e. the jar lands on its side. Picked by hand (the 100 mm lift threshold is for air targets). Two other members are lifted 17-20 cm and dropped."
+ },
+ {
+  "base": "gal_jar_on_cabinet",
+  "object": "peanut butter jar",
+  "title": "Placed on the cabinet to the side, upright term",
+  "twin": "gal_jar_air_cab",
+  "failed": true,
+  "note": "Jar onto the cabinet to the side (upright term, 80 it): 7 of 8 lift in the floating hand (no cabinet there, best 11 mm), but with the arm and the physical cabinet none arrives: 3 members lift 12-16 cm and drop the jar, the rest barely lift (5-20 mm)."
+ },
+ {
+  "base": "gal_jar_air_cab",
+  "object": "peanut butter jar",
+  "title": "Twin without the cabinet: same point in the air, upright term"
+ },
+ {
+  "base": "gal_teabox_air_fr24",
+  "object": "tea box",
+  "title": "Air lift: 30 cm forward, 15 cm up",
+  "failed": true,
+  "note": "Grasp does not transfer: 1 of 8 members lifts in the floating hand and the commanded arm holds none."
+ },
+ {
+  "base": "gal_juice_air_fr24",
+  "object": "juice carton",
+  "title": "Air lift: 30 cm forward, 15 cm up",
+  "failed": true,
+  "note": "Grasp does not transfer: 0 of 8 members lift in the floating hand (generation 6-17 mm from the target)."
+ },
+ {
+  "base": "gal_tomato_air_fr24",
+  "object": "tomato",
+  "title": "Air lift: 30 cm to the side (+y), 15 cm up",
+  "failed": true,
+  "note": "Grasp does not transfer: 2 of 8 members lift in the floating hand (385-388 mm), the commanded arm holds neither (peak 1-8 mm)."
+ },
+ {
+  "base": "gal_tuna_air_fr24",
+  "object": "tuna can",
+  "title": "Air lift: 30 cm to the side (-y), 15 cm up",
+  "failed": true,
+  "note": "Grasp does not transfer: 0 of 8 members lift in the floating hand (generation 2-7 mm from the target)."
+ },
+ {
+  "base": "gal_mustard_air_fr24",
+  "object": "mustard bottle",
+  "title": "Air lift: 30 cm forward, 15 cm up",
+  "failed": true,
+  "note": "4 of 8 members lift in the floating hand (291-319 mm); the commanded arm lifts none (peak 2-11 mm)."
+ },
+ {
+  "base": "gal_jamjar_air_fr24",
+  "object": "jam jar",
+  "title": "Air lift: 30 cm forward, 15 cm up"
+ },
+ {
+  "base": "gal_mayo_air_fr24",
+  "object": "mayonnaise jar",
+  "title": "Air lift: 30 cm to the side (+y), 15 cm up"
+ },
+ {
+  "base": "gal_pickle_air_fr24",
+  "object": "pickle jar",
+  "title": "Air lift: 30 cm forward, 15 cm up"
+ },
+ {
+  "base": "gal_spice_air_fr24",
+  "object": "spice jar",
+  "title": "Air lift: 30 cm to the side (+y), 15 cm up"
+ },
+ {
+  "base": "gal_lemon_air_fr24",
+  "object": "lemon",
+  "title": "Air lift: 30 cm to the side (+y), 15 cm up"
+ },
+ {
+  "base": "gal_wineglass_air_fr24",
+  "object": "wine glass",
+  "title": "Air lift: 30 cm to -y, 15 cm up"
+ },
+ {
+  "base": "gal_glass_air_fr24",
+  "object": "drinking glass",
+  "title": "Air lift: 30 cm to +y, 15 cm up",
+  "failed": true,
+  "note": "Drinking glass lying on its side: 1 of 8 lifts in the floating hand (341 mm, 15 mm from the target); the commanded arm lifts it 28 mm and loses it."
+ },
+ {
+  "base": "gal_winebottle_air_fr24",
+  "object": "wine bottle",
+  "title": "Air lift: 30 cm to +y, 15 cm up"
+ },
+ {
+  "base": "gal_oilbottle_air_fr24",
+  "object": "oil bottle",
+  "title": "Air lift: 30 cm to -y, 15 cm up"
+ },
+ {
+  "base": "gal_ketchup_air_fr24",
+  "object": "ketchup bottle",
+  "title": "Air lift: 30 cm to -y, 15 cm up"
+ },
+ {
+  "base": "gal_saltshaker_air_fr24",
+  "object": "salt shaker",
+  "title": "Air lift: 30 cm to +y, 15 cm up"
+ },
+ {
+  "base": "gal_orange_air_fr24",
+  "object": "orange",
+  "title": "Air lift: 30 cm back, 15 cm up",
+  "failed": true,
+  "note": "Generation 60-140 mm from the target (weakest of the set); 1 of 8 lifts in the floating hand (391 mm), the commanded arm lifts it 15 mm."
+ },
+ {
+  "base": "gal_pear_air_fr24",
+  "object": "pear",
+  "title": "Air lift: 30 cm to +y, 15 cm up"
+ },
+ {
+  "base": "gal_mokapot_air_fr24",
+  "object": "moka pot",
+  "title": "Air lift: 30 cm to +y, 15 cm up"
+ },
+ {
+  "base": "gal_carton_above_air",
+  "object": "milk carton",
+  "title": "Air lift with the hand started 30 cm straight above the carton (edited start): 30 cm forward, 15 cm up"
+ },
+ {
+  "base": "gal_jar_above_air",
+  "object": "peanut butter jar",
+  "title": "Overhead start (hand 30 cm straight above): 30 cm in +y, 15 cm up"
+ },
+ {
+  "base": "gal_bottle_above_air",
+  "object": "water bottle",
+  "title": "Overhead start (hand 30 cm straight above): 30 cm to -y, 15 cm up",
+  "failed": true,
+  "note": "Overhead start: 5 of 8 lift in the floating hand (four within 18-34 mm of the ball), but the commanded arm lifts none (peak 3-41 mm). From the recorded start the arm held 5 of 8."
+ },
+ {
+  "base": "gal_can_above_air",
+  "object": "soda can",
+  "title": "Overhead start (hand 30 cm straight above): 30 cm in +y, 15 cm up",
+  "failed": true,
+  "note": "Overhead start: 7 of 8 lift in the floating hand (best 20 mm from the ball), but the commanded arm lifts none (peak 1-42 mm). From the recorded start the arm held 3 of 4."
+ },
+ {
+  "base": "gal_wineglass_above_air",
+  "object": "wine glass",
+  "title": "Overhead start (hand 30 cm straight above): 30 cm to -y, 15 cm up"
+ }
+]

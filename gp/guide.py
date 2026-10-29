@@ -16,11 +16,95 @@ def _lr_at(it, iters, lr, lr_final):
     return lr_final + (lr - lr_final) * 0.5 * (1 + math.cos(math.pi * it / (iters - 1)))
 
 
-def run(adapter, batch, state, objective, iterations, lr, lr_final=None, optimizer="adam", shell=False, log=print):
+def _sched_lr(it, iters, lr, schedule):
+    """lr_schedule (Adam and unitgrad): cosine = lr * 0.5 * (1 + cos(pi * it / iters)); every one of the `iters` steps moves
+    (the legacy lr_final cosine reaches lr_final ON the last step, so a decay to 0 wasted it)."""
+    if schedule == "cosine" and iters > 0:
+        return lr * 0.5 * (1 + math.cos(math.pi * it / iters))
+    return lr
+
+
+def _mdim(t, B):
+    """Member axis of a noise variable: 0 for [B, ...] draws (incl. the paper adapter's [B, N, L, Kr, 6] churn bank), 2 for the clean_push /
+    clean_pickup churn bank [calls, rows, B, K, 6]."""
+    return 0 if t.dim() < 5 or t.shape[0] == B else 2
+
+
+def _prob_penalty(v, free, k=2):
+    """DNO probability regularization (Tang et al., ICML 2025, arXiv 2405.18881), applied PER DRAW (the last two dims of v are one draw):
+    permute the draw's n numbers, cut into m = n // k blocks of k, M1 = |mean block|, M2 = |cov of blocks - I| (spectral);
+    log p1 = min(0, log 2 - m M1^2 / (2k)), log p2 = min(0, log 2 - m max(sqrt(1 + M2) - 1 - sqrt(k / m), 0)^2 / 2).
+    Returns -(log p1 + log p2) per draw (0 for typical Gaussian draws), masked to the optimized draws, plus the mean z-score sqrt(m) M1."""
+    n = v.shape[-1] * v.shape[-2]; m = n // k
+    z = v.reshape(*v.shape[:-2], n)[..., torch.randperm(n, device=v.device)[: m * k]].reshape(*v.shape[:-2], m, k)
+    mean = z.mean(-2); m1sq = (mean ** 2).sum(-1)
+    lp1 = torch.clamp(math.log(2) - m * m1sq / (2 * k), max=0.0)
+    C = torch.einsum("...mi,...mj->...ij", z, z) / m - torch.eye(k, device=v.device, dtype=v.dtype)
+    t = torch.clamp(torch.sqrt(1 + torch.linalg.matrix_norm(C, ord=2)) - 1 - math.sqrt(k / m), min=0.0)
+    lp2 = torch.clamp(math.log(2) - m * t ** 2 / 2, max=0.0)
+    pen, zs = -(lp1 + lp2), (m * m1sq).sqrt()
+    if free is not None:
+        f = free[..., 0, 0].to(pen.dtype); return pen * f, (zs * f).sum() / f.sum().clamp_min(1)
+    return pen, zs.mean()
+
+
+def _dno_prob_reg(z, k=4, shuffles=100):
+    """Tang et al. DNO probability regularization on ONE flattened noise vector z (their compute_probability_regularization):
+    the unshuffled pass (consecutive blocks of k) plus the average over `shuffles` random permutations; per pass
+    log p1 = min(-m M1^2 / (2k), -log 2), log p2 = min(-m max(sqrt(1 + M2) - 1 - sqrt(k / m), 0)^2 / 2, -log 2), M2 spectral.
+    Returns -(seq_logp1 + seq_logp2 + mean over shuffles of (logp1 + logp2)) and the unshuffled mean z-score sqrt(m) M1."""
+    m = z.numel() // k; z = z[: m * k]
+    eye = torch.eye(k, device=z.device, dtype=z.dtype)
+    def logs(blocks):                                                # blocks [S, m, k]
+        mean = blocks.mean(1); m1 = mean.norm(dim=-1)
+        C = torch.einsum("smi,smj->sij", blocks, blocks) / m - eye
+        t = torch.clamp(torch.sqrt(1 + torch.linalg.matrix_norm(C, ord=2)) - 1 - math.sqrt(k / m), min=0.0)
+        return (torch.clamp(-m * m1 ** 2 / (2 * k), max=-math.log(2)) + torch.clamp(-m * t ** 2 / 2, max=-math.log(2))), m1
+    seq, m1 = logs(z.reshape(1, m, k))
+    idx = torch.stack([torch.randperm(m * k, device=z.device) for _ in range(int(shuffles))])
+    sh, _ = logs(z[idx].reshape(int(shuffles), m, k))
+    return -(seq[0] + sh.mean()), float(math.sqrt(m) * m1[0])
+
+
+def _level_w(t, mode):
+    if mode == "t": return t
+    if mode == "1mt": return 1.0 - t
+    if mode == "tmid": return 4.0 * t * (1.0 - t)
+    return torch.ones_like(t)
+
+
+def run(adapter, batch, state, objective, iterations, lr, lr_final=None, optimizer="adam", shell=False, log=print, save_iterates=False,
+        norm="row", level_weight="const", lr_schedule=None, lr_scale=None, prob_reg=0.0, prob_k=2, prob_mode="per_draw", prob_shuffles=100, grad_clip=None, reseed=False, reseed_temp=1.0, seed=0, reseed_mode="rows", reseed_level=0.5, reseed_at=None, reseed_mix=1.0):
+    """norm (unitgrad): row = every draw moves lr*sqrt(D) (current recipe); member = one normalization over each member's whole free
+    gradient (relative magnitudes across draws kept, same total step as row); none = raw gradient, step = lr * g.
+    level_weight: step of a draw at noise level t scaled by w(t) (const | t | 1mt | tmid), renormalized to mean 1 over free draws.
+    lr_schedule: None (constant, or the legacy cosine when lr_final is given) | cosine (to 0, every step moves) |
+    halve (per member: the step is halved each time that member's last step did not improve its best objective).
+    lr_scale: per-variable multipliers on lr, in state.vars order (paper adapter, deterministic mould: [pose draws, particle draws]).
+    prob_reg: weight gamma of the DNO probability regularization, added to the summed objective. prob_mode per_draw = _prob_penalty on
+    each optimized draw; dno = _dno_prob_reg on each member's optimized noise flattened into one vector (Tang et al. code: k = prob_k,
+    unshuffled pass + prob_shuffles permutations). grad_clip: clip_grad_norm_ over all variables before the step (DNO uses 1.0).
+    optimizer adamw = torch AdamW with defaults (DNO's optimizer).
+    reseed: population reseeding between optimizer steps. After every step but the last, the next population is drawn with softmax
+    probabilities on this iteration's objective (temperature reseed_temp x its std; member 0 = the current best, kept unchanged); every
+    other slot takes its parent's noise for transition rows < split and FRESH Gaussian noise for rows >= split, where
+    split = (it + 1) / iterations of the horizon. Adam's moments follow the copied rows and are reset on the fresh ones.
+    reseed_mode levels (churn samplers that expose state.fixed["levels"]): a copy keeps its parent's draws injected at noise level >=
+    reseed_level and gets fresh draws below it, over the whole plan: it passes through the parent's partially noised plan at that level
+    and denoises differently from there. reseed_at: optimizer steps (1-based) after which to reseed (default: every step but the last).
+    reseed_mix rho: the redrawn draws are sqrt(1 - rho^2) * parent + rho * fresh (1 = fully fresh; small = a light jitter).
+    reseed_mode commit: after each step the transition rows < split (split = (it + 1) / iterations of the horizon) take the BEST member's
+    noise in every slot and are frozen (committed, approximately: the joint window still couples them to later rows); the next population
+    is drawn by softmax, slot 0 = the best unchanged, the others = their parent's remaining noise with a reseed_mix jitter."""
     B = batch.positions.shape[0]
-    opt = torch.optim.Adam(state.vars, lr=lr) if optimizer == "adam" else None
+    scales = [1.0] * len(state.vars) if lr_scale is None else [float(v) for v in lr_scale] + [1.0] * (len(state.vars) - len(lr_scale))
+    groups = [dict(params=[v], lr=lr * sc) for v, sc in zip(state.vars, scales)]
+    opt = torch.optim.Adam(groups) if optimizer == "adam" else (torch.optim.AdamW(groups) if optimizer == "adamw" else None)
     best_d = torch.full((B,), float("inf"), device=batch.positions.device); best = unguided = None
+    mscale = torch.ones(B, device=batch.positions.device)          # lr_schedule halve: per-member step factor
+    v_init = [v.detach().clone() for v in state.vars] if state.fixed.get("mode_basis") is not None else None
     trace, terms, times, peaks = [], [], [], []
+    iterates, iter_obj = [], []                      # save_iterates: every iteration's rollout of every member (the full plan trace)
     for it in range(iterations + 1):
         torch.cuda.reset_peak_memory_stats(); torch.cuda.synchronize(); t0 = time.time()
         if it < iterations:
@@ -31,37 +115,157 @@ def run(adapter, batch, state, objective, iterations, lr, lr_final=None, optimiz
         d, tm = objective(pos)
         if it == 0:
             unguided = pos.detach()
+        if save_iterates:
+            iterates.append(pos.detach().half().cpu()); iter_obj.append(d.detach().float().cpu())
         better = d.detach() < best_d; best_d = torch.where(better, d.detach(), best_d)
+        if lr_schedule == "halve" and it > 0:
+            mscale = torch.where(better, mscale, mscale * 0.5)
+        with torch.no_grad():                                        # the noise that produced each member's best iterate (warm starts)
+            bv = [] if it == 0 else best_vars
+            for i, v in enumerate(state.vars):
+                md = _mdim(v, B); sh = [1] * v.dim(); sh[md] = -1; m = better.view(sh)
+                cur = v.detach().clone()
+                bv.append(cur) if it == 0 else bv.__setitem__(i, torch.where(m, cur, bv[i]))
+            best_vars = bv
         best = pos.detach() if best is None else torch.where(better[:, None, None, None], pos.detach(), best)
         trace.append([round(v, 2) for v in (tm["goal"].detach() * 1e3).tolist()])
         terms.append({k: [round(v, 3) for v in (t.detach() * 1e3).tolist()] for k, t in tm.items()} | dict(objective=[round(v, 2) for v in (d.detach() * 1e3).tolist()]))
+        reg = None
+        if prob_reg and it < iterations and prob_mode == "dno":       # Tang et al.: one flattened vector per member (its optimized noise)
+            pens, zss = [], []
+            for b in range(B):
+                parts = []
+                for v, free in zip(state.vars, state.free):
+                    vb = v.select(_mdim(v, B), b)
+                    parts.append((vb[free.select(_mdim(free, B), b).bool()] if free is not None else vb).reshape(-1))
+                pe, zs_ = _dno_prob_reg(torch.cat(parts), int(prob_k), int(prob_shuffles)); pens.append(pe); zss.append(round(zs_, 3))
+            reg = float(prob_reg) * sum(pens); terms[-1]["prob_pen"] = [round(float(p_), 3) for p_ in pens]; terms[-1]["mean_z"] = zss
+        elif prob_reg and it < iterations:                            # per-draw variant on every optimized draw
+            pens, zss = [], []
+            for v, free in zip(state.vars, state.free):
+                pe, zs_ = _prob_penalty(v, free, int(prob_k)); pens.append(pe.sum()); zss.append(round(float(zs_), 3))
+            reg = float(prob_reg) * sum(pens); terms[-1]["prob_pen"] = round(float(sum(pens)), 3); terms[-1]["mean_z"] = zss
         if it < iterations:
-            cur_lr = _lr_at(it, iterations, lr, lr_final)
-            if optimizer == "adam":
-                for g in opt.param_groups: g["lr"] = cur_lr
-                opt.zero_grad(); d.sum().backward()
+            cur_lr = _sched_lr(it, iterations, lr, lr_schedule) if lr_schedule in ("cosine",) else _lr_at(it, iterations, lr, lr_final)
+            if optimizer in ("adam", "adamw"):
+                for g, sc in zip(opt.param_groups, scales): g["lr"] = cur_lr * sc
+                opt.zero_grad(); (d.sum() + (reg if reg is not None else 0.0)).backward()
                 for v, free in zip(state.vars, state.free):
                     if free is not None and v.grad is not None: v.grad.mul_(free)
+                if grad_clip: torch.nn.utils.clip_grad_norm_(state.vars, float(grad_clip))
+                old = [v.detach().clone() for v in state.vars] if lr_schedule == "halve" else None
+                keep = [v.detach().clone() if (optimizer == "adamw" and free is not None) else None for v, free in zip(state.vars, state.free)]
                 opt.step()
+                with torch.no_grad():                                        # AdamW's weight decay must not touch the frozen draws
+                    for v, kp, free in zip(state.vars, keep, state.free):
+                        if kp is not None: v.copy_(torch.where(free.bool(), v, kp))
+                if old is not None:
+                    with torch.no_grad():
+                        for v, o in zip(state.vars, old):
+                            md = _mdim(v, B); sh = [1] * v.dim(); sh[md] = -1
+                            v.copy_(o + mscale.view(sh) * (v - o))
             else:
-                grads = torch.autograd.grad(d.sum(), state.vars, allow_unused=True)
+                grads = torch.autograd.grad(d.sum() + (reg if reg is not None else 0.0), state.vars, allow_unused=True)
                 with torch.no_grad():
-                    for v, g, free in zip(state.vars, grads, state.free):
+                    levels = state.fixed.get("levels") or [None] * len(state.vars)
+                    ws = []
+                    for v, lv, free in zip(state.vars, levels, state.free):          # level weights, mean 1 over free draws
+                        w = torch.ones(1, device=v.device) if lv is None else _level_w(lv, level_weight)
+                        ws.append(w)
+                    if level_weight != "const":
+                        num = sum(((w * (free[..., :1, :1] if free is not None else 1.0)).expand(*v.shape[:-2], 1, 1)).sum() for v, w, free in zip(state.vars, ws, state.free))
+                        den = sum(((free[..., :1, :1] if free is not None else torch.ones_like(v[..., :1, :1]))).expand(*v.shape[:-2], 1, 1).sum() for v, free in zip(state.vars, state.free))
+                        ws = [w * den / num.clamp_min(1e-12) for w in ws]
+                    if norm == "member":                                              # per-member norm of the whole free gradient
+                        gm = [(g * (free if free is not None else 1.0)) if g is not None else None for g, free in zip(grads, state.free)]
+                        sq = 0; nel = 0
+                        for g, v, free in zip(gm, state.vars, state.free):
+                            if g is None: continue
+                            md = _mdim(g, B)                                         # E [calls, tr, B, K, 6] -> member dim 2; P0 [B, tr, K, 6] -> dim 0
+                            sq = sq + g.pow(2).transpose(0, md).flatten(1).sum(1)
+                            fm = (free if free is not None else torch.ones_like(v)).expand_as(v)
+                            nel = nel + fm.transpose(0, md).flatten(1).sum(1)
+                        scale = cur_lr * nel.sqrt() / sq.sqrt().clamp_min(1e-12)          # [B]
+                    for i, (v, g, free) in enumerate(zip(state.vars, grads, state.free)):
                         if g is None: continue
-                        D = v.shape[-1] * v.shape[-2]
-                        step = cur_lr * (D ** 0.5) * g / g.flatten(-2).norm(dim=-1).clamp_min(1e-12)[..., None, None]
+                        if norm == "row":
+                            D = v.shape[-1] * v.shape[-2]
+                            step = cur_lr * (D ** 0.5) * g / g.flatten(-2).norm(dim=-1).clamp_min(1e-12)[..., None, None]
+                        elif norm == "member":
+                            sh = [1] * g.dim(); md = _mdim(g, B); sh[md] = -1
+                            step = g * scale.view(sh)
+                        else:
+                            step = cur_lr * g
+                        step = step * ws[i] * scales[i]
+                        if lr_schedule == "halve":
+                            sh = [1] * g.dim(); sh[_mdim(g, B)] = -1; step = step * mscale.view(sh)
                         if free is not None: step = step * free
                         v.sub_(step)
+            mb = state.fixed.get("mode_basis")
+            if mb is not None:                                               # mode projection: undo the change along the frozen low-order modes
+                with torch.no_grad():
+                    for v, v0, Q in zip(state.vars, v_init, mb):
+                        if Q is None: continue
+                        d = v - v0                                           # [B, N, P, 3]
+                        v.sub_(torch.einsum("bpm,bnmc->bnpc", Q, torch.einsum("bpm,bnpc->bnmc", Q, d)))
             if shell:
                 with torch.no_grad():
                     for v, r in zip(state.vars, state.shell):
                         if r is None: continue
                         n = v.flatten(-2).norm(dim=-1).clamp_min(1e-8)[..., None, None]; v.mul_(r / n)
+            if reseed and it < iterations - 1 and B > 1 and (reseed_at is None or (it + 1) in [int(x) for x in reseed_at]):
+                with torch.no_grad():
+                    dd = d.detach(); T = pos.shape[1] - 1; split = max(1, min(T - 1, round((it + 1) / iterations * T)))
+                    w = torch.softmax(-(dd - dd.min()) / (float(reseed_temp) * dd.std().clamp_min(1e-9)), 0)
+                    g = torch.Generator(device=dd.device).manual_seed(int(seed) * 104729 + 31 * it + 7)
+                    idx = torch.multinomial(w, B, replacement=True, generator=g); idx[0] = dd.argmin()
+                    lvs = state.fixed.get("levels") or [None] * len(state.vars)
+                    if reseed_mode == "commit":                                              # proposal 2: commit frames < split from the best member, freeze them,
+                        bi = int(dd.argmin())                                                #             copies keep the parent's remaining noise + a jitter (reseed_mix)
+                        for vi, v in enumerate(state.vars):
+                            md = _mdim(v, B); src = v.detach().index_select(md, idx)
+                            rho = float(reseed_mix)
+                            jit = (1.0 - rho * rho) ** 0.5 * src + rho * torch.randn(v.shape, device=v.device, dtype=v.dtype, generator=g)
+                            sh = [1] * v.dim(); sh[1] = -1; pre = (torch.arange(v.shape[1], device=v.device) < split).view(sh)      # committed transition rows
+                            k0 = [1] * v.dim(); k0[md] = -1; first = (torch.arange(B, device=v.device) == 0).view(k0)
+                            bestv = v.detach().index_select(md, torch.full((B,), bi, device=v.device, dtype=torch.long))          # the best member's noise in every slot
+                            v.copy_(torch.where(pre, bestv, torch.where(first, src, jit)))
+                            fr = state.free[vi]; fr = torch.ones_like(v, dtype=torch.bool) if fr is None else fr.bool().expand_as(v).clone()
+                            state.free[vi] = fr & ~pre                                                       # committed rows are no longer optimized
+                            if opt is not None and v in opt.state:
+                                for kk in ("exp_avg", "exp_avg_sq"):
+                                    if kk in opt.state[v]:
+                                        mo = opt.state[v][kk].index_select(md, idx); opt.state[v][kk].copy_(torch.where(pre, torch.zeros_like(mo), mo))
+                        lvs = []
+                    for v, lv in zip(state.vars if reseed_mode != "commit" else [], lvs):
+                        md = _mdim(v, B); src = v.detach().index_select(md, idx)                 # parents' noise, slot by slot
+                        fresh = torch.randn(v.shape, device=v.device, dtype=v.dtype, generator=g)
+                        rho = float(reseed_mix)                                                  # 1 = replace; < 1 = blend, sqrt(1 - rho^2) parent + rho fresh (stays Gaussian)
+                        if rho < 1.0: fresh = (1.0 - rho * rho) ** 0.5 * src + rho * fresh
+                        if reseed_mode == "levels":                                              # fresh draws below the level, over the whole plan
+                            rm = (lv.to(v.device) < float(reseed_level)) if lv is not None else torch.zeros([1] * v.dim(), dtype=torch.bool, device=v.device)
+                        else:
+                            rows = torch.arange(v.shape[1], device=v.device) >= split                # dim 1 = transition rows in every adapter
+                            sh = [1] * v.dim(); sh[1] = -1; rm = rows.view(sh)
+                        keep0 = [1] * v.dim(); keep0[md] = -1
+                        first = (torch.arange(B, device=v.device) == 0).view(keep0)                  # slot 0 = the best member, untouched
+                        new = torch.where(first, src, torch.where(rm, fresh, src))
+                        v.copy_(new)
+                        if opt is not None and v in opt.state:                                    # Adam moments: follow the copied rows, zero on the fresh rows
+                            for kk in ("exp_avg", "exp_avg_sq"):
+                                if kk in opt.state[v]:
+                                    mo = opt.state[v][kk].index_select(md, idx)
+                                    opt.state[v][kk].copy_(torch.where(first, mo, torch.where(rm, torch.zeros_like(mo), mo)))
+                    if shell:
+                        state.shell = [None if r is None else v.detach().flatten(-2).norm(dim=-1)[..., None, None] for v, r in zip(state.vars, state.shell)]
+                    terms[-1]["reseed"] = dict(mode=reseed_mode, split=int(split), level=float(reseed_level), parents=int(idx.unique().numel()), idx=idx.tolist())
+                    what = f"fresh noise below level {reseed_level}" if reseed_mode == "levels" else (f"committed frames < {split}, jitter {reseed_mix}" if reseed_mode == "commit" else f"split frame {split}")
+                    log(f"   reseed after step {it + 1}: {what}, {int(idx.unique().numel())} distinct parents of {B}, slots <- {idx.tolist()}")
         torch.cuda.synchronize(); times.append(round(time.time() - t0, 1)); peaks.append(round(torch.cuda.max_memory_allocated() / 2**30, 1))
-        extra = "".join(f"  {k} mm {terms[-1][k]}" for k in ("box", "floor") if any(x > 0 for x in terms[-1][k]))
+        extra = "".join(f"  {k} mm {terms[-1][k]}" for k in ("box", "floor", "still", "upright", "phantom") if k in terms[-1] and any(x > 0 for x in terms[-1][k]))
         log(f"it {it:2d}: object-to-target mm {trace[-1]}{extra}  {times[-1]} s  peak {peaks[-1]} GiB")
-    return dict(predicted=best, unguided=unguided, best_mm=[round(v, 2) for v in (best_d * 1e3).tolist()], trace_mm=trace, terms=terms,
-                iteration_seconds=times, peak_gib=peaks)
+    return dict(predicted=best, unguided=unguided, final_step_scale=mscale.tolist(), best_mm=[round(v, 2) for v in (best_d * 1e3).tolist()], trace_mm=trace, terms=terms,
+                iteration_seconds=times, peak_gib=peaks, best_vars=[b.cpu() for b in best_vars], iterates=(torch.stack(iterates), torch.stack(iter_obj)) if save_iterates else None)
 
 
 def save(out, adapter, batch, res, objective, meta):
@@ -72,7 +276,10 @@ def save(out, adapter, batch, res, objective, meta):
     np.savez(os.path.join(out, "rollout.npz"), predicted=res["predicted"].cpu().numpy(), unguided=res["unguided"].cpu().numpy(),
              roles=adapter.roles(batch), object_mask=adapter.object_mask(batch).cpu().numpy(), episodes=np.array(batch.episodes),
              target=target.cpu().numpy(), offsets=off, boxes=np.array([torch.cat([c, 2 * h]).cpu().numpy() for c, h in objective.boxes], np.float32).reshape(-1, 6),
-             trace_mm=np.array(res["trace_mm"], np.float32), step=np.array(adapter.step), **ex)
+             trace_mm=np.array(res["trace_mm"], np.float32), step=np.array(adapter.step), **ex, **getattr(objective, "extra", {}))
+    if res.get("iterates") is not None:                                  # iterates.npz: positions [I+1, B, T, N, 3] float16, objective [I+1, B] (m), iteration 0 = unguided
+        P, O = res["iterates"]; np.savez(os.path.join(out, "iterates.npz"), positions=P.numpy(), objective=O.numpy(), picked_iteration=O.argmin(0).numpy())
+
     rj = dict(meta, adapter=adapter.name, domain=adapter.domain, sim=adapter.sim, step=adapter.step, frame_dt=adapter.frame_dt, mode=adapter.mode,
               best_mm=res["best_mm"], unguided_mm=res["trace_mm"][0], trace_mm=res["trace_mm"], terms=res["terms"], iteration_seconds=res["iteration_seconds"],
               peak_gib=res["peak_gib"], episodes=list(batch.episodes), joint_limits_mm=None if adapter.joint_limits is None else [v * 1e3 for v in adapter.joint_limits])

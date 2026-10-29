@@ -1,0 +1,254 @@
+[
+ {
+  "tag": "cem_act_s2c_K8_R1",
+  "shape": "B4_nograd_chunk2",
+  "B": 4,
+  "knobs": {
+   "planner": "cem_actions",
+   "cem_K": 8,
+   "cem_rounds": 1,
+   "iterations": 0,
+   "lr": 0.1,
+   "sampler": "chunked",
+   "steps": 2
+  }
+ },
+ {
+  "tag": "cem_act_s2c_K32_R1",
+  "shape": "B4_nograd_chunk2",
+  "B": 4,
+  "knobs": {
+   "planner": "cem_actions",
+   "cem_K": 32,
+   "cem_rounds": 1,
+   "iterations": 0,
+   "lr": 0.1,
+   "sampler": "chunked",
+   "steps": 2
+  }
+ },
+ {
+  "tag": "cem_act_s2c_K32_R3",
+  "shape": "B4_nograd_chunk2",
+  "B": 4,
+  "knobs": {
+   "planner": "cem_actions",
+   "cem_K": 32,
+   "cem_rounds": 3,
+   "iterations": 0,
+   "lr": 0.1,
+   "sampler": "chunked",
+   "steps": 2
+  }
+ },
+ {
+  "tag": "cem_act_s2c_K64_R3",
+  "shape": "B4_nograd_chunk2",
+  "B": 4,
+  "knobs": {
+   "planner": "cem_actions",
+   "cem_K": 64,
+   "cem_rounds": 3,
+   "iterations": 0,
+   "lr": 0.1,
+   "sampler": "chunked",
+   "steps": 2
+  }
+ },
+ {
+  "tag": "cem_act_s2c_K128_R3",
+  "shape": "B4_nograd_chunk2",
+  "B": 4,
+  "knobs": {
+   "planner": "cem_actions",
+   "cem_K": 128,
+   "cem_rounds": 3,
+   "iterations": 0,
+   "lr": 0.1,
+   "sampler": "chunked",
+   "steps": 2
+  }
+ },
+ {
+  "tag": "cem_act_s2c_K32_R6",
+  "shape": "B4_nograd_chunk2",
+  "B": 4,
+  "knobs": {
+   "planner": "cem_actions",
+   "cem_K": 32,
+   "cem_rounds": 6,
+   "iterations": 0,
+   "lr": 0.1,
+   "sampler": "chunked",
+   "steps": 2
+  }
+ },
+ {
+  "tag": "cem_act_s2c_K32_R12",
+  "shape": "B4_nograd_chunk2",
+  "B": 4,
+  "knobs": {
+   "planner": "cem_actions",
+   "cem_K": 32,
+   "cem_rounds": 12,
+   "iterations": 0,
+   "lr": 0.1,
+   "sampler": "chunked",
+   "steps": 2
+  }
+ },
+ {
+  "tag": "cem_act_s1c_K8_R1",
+  "shape": "B4_nograd_chunk1",
+  "B": 4,
+  "knobs": {
+   "planner": "cem_actions",
+   "cem_K": 8,
+   "cem_rounds": 1,
+   "iterations": 0,
+   "lr": 0.1,
+   "sampler": "chunked",
+   "steps": 1
+  }
+ },
+ {
+  "tag": "cem_act_s1c_K32_R1",
+  "shape": "B4_nograd_chunk1",
+  "B": 4,
+  "knobs": {
+   "planner": "cem_actions",
+   "cem_K": 32,
+   "cem_rounds": 1,
+   "iterations": 0,
+   "lr": 0.1,
+   "sampler": "chunked",
+   "steps": 1
+  }
+ },
+ {
+  "tag": "cem_act_s1c_K32_R3",
+  "shape": "B4_nograd_chunk1",
+  "B": 4,
+  "knobs": {
+   "planner": "cem_actions",
+   "cem_K": 32,
+   "cem_rounds": 3,
+   "iterations": 0,
+   "lr": 0.1,
+   "sampler": "chunked",
+   "steps": 1
+  }
+ },
+ {
+  "tag": "cem_act_s1c_K64_R3",
+  "shape": "B4_nograd_chunk1",
+  "B": 4,
+  "knobs": {
+   "planner": "cem_actions",
+   "cem_K": 64,
+   "cem_rounds": 3,
+   "iterations": 0,
+   "lr": 0.1,
+   "sampler": "chunked",
+   "steps": 1
+  }
+ },
+ {
+  "tag": "cem_act_s1c_K128_R3",
+  "shape": "B4_nograd_chunk1",
+  "B": 4,
+  "knobs": {
+   "planner": "cem_actions",
+   "cem_K": 128,
+   "cem_rounds": 3,
+   "iterations": 0,
+   "lr": 0.1,
+   "sampler": "chunked",
+   "steps": 1
+  }
+ },
+ {
+  "tag": "cem_act_s1c_K192_R3",
+  "shape": "B4_nograd_chunk1",
+  "B": 4,
+  "knobs": {
+   "planner": "cem_actions",
+   "cem_K": 192,
+   "cem_rounds": 3,
+   "iterations": 0,
+   "lr": 0.1,
+   "sampler": "chunked",
+   "steps": 1
+  }
+ },
+ {
+  "tag": "cem_act_s1c_K256_R3",
+  "shape": "B4_nograd_chunk1",
+  "B": 4,
+  "knobs": {
+   "planner": "cem_actions",
+   "cem_K": 256,
+   "cem_rounds": 3,
+   "iterations": 0,
+   "lr": 0.1,
+   "sampler": "chunked",
+   "steps": 1
+  }
+ },
+ {
+  "tag": "cem_act_s1c_K32_R6",
+  "shape": "B4_nograd_chunk1",
+  "B": 4,
+  "knobs": {
+   "planner": "cem_actions",
+   "cem_K": 32,
+   "cem_rounds": 6,
+   "iterations": 0,
+   "lr": 0.1,
+   "sampler": "chunked",
+   "steps": 1
+  }
+ },
+ {
+  "tag": "cem_act_s1c_K32_R12",
+  "shape": "B4_nograd_chunk1",
+  "B": 4,
+  "knobs": {
+   "planner": "cem_actions",
+   "cem_K": 32,
+   "cem_rounds": 12,
+   "iterations": 0,
+   "lr": 0.1,
+   "sampler": "chunked",
+   "steps": 1
+  }
+ },
+ {
+  "tag": "cem_act_s1c_K32_R18",
+  "shape": "B4_nograd_chunk1",
+  "B": 4,
+  "knobs": {
+   "planner": "cem_actions",
+   "cem_K": 32,
+   "cem_rounds": 18,
+   "iterations": 0,
+   "lr": 0.1,
+   "sampler": "chunked",
+   "steps": 1
+  }
+ },
+ {
+  "tag": "cem_act_s1c_K32_R24",
+  "shape": "B4_nograd_chunk1",
+  "B": 4,
+  "knobs": {
+   "planner": "cem_actions",
+   "cem_K": 32,
+   "cem_rounds": 24,
+   "iterations": 0,
+   "lr": 0.1,
+   "sampler": "chunked",
+   "steps": 1
+  }
+ }
+]

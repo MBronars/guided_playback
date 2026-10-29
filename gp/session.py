@@ -2,13 +2,18 @@
 import json, os, time
 import numpy as np, torch
 from .objectives import Objective, centroid, wall_between
+from .letter import LetterObjective, field_path
+
+
+def _g(A, k, d=None):
+    return A.get(k, d) if isinstance(A, dict) else getattr(A, k, d)
 from . import guide as G, scene_edit
 
 DEFAULTS = dict(domain=None, task="push", episodes="0,1,2,3", transitions=60, steps=10, keep=3, offset="0.15,0,0", random_offset=None, own_goal=None, goal_dist_m=None,
-                iterations=10, lr=0.2, lr_final=None, optimizer="adam", shell=False, seed=0, fix_fps=False, churn=False, t_freeze=0.0, joint_limits=None,
+                iterations=10, lr=0.2, lr_final=None, optimizer="adam", shell=False, seed=0, fix_fps=False, free_fps=False, churn=False, t_freeze=0.0, joint_limits=None,
                 close_fingers=False, closed_sep_mm=27.0, hand_start=None, hand_jitter_mm=30.0, hand_z_mm=105.0, hand_bearing_deg=60.0, hand_bearing_jitter_deg=15.0,
                 hand_dist_mm=250.0, hand_dist_jitter_mm=30.0, hand_dz_mm=85.0, hand_tilt_deg=0.0, wall_height=0.10, wall_thickness=0.02, wall_width=0.30,
-                clearance_mm=5.0, box_weight=5.0, floor_weight=0.0, eager=False, name=None, runs=None, desc="", adapter="paper", ckpt="", sampler="stream")
+                clearance_mm=5.0, box_weight=5.0, wall_at=0.5, upright_weight=0.0, upright_frames=5, still_weight=0.0, still_frames=24, contact_weight=0.0, contact_margin_mm=0.0, contact_stride=4, speed_weight=0.0, speed_max_mm=15.0, freeze_frames=0, object_mesh=None, object_label=None, object_yaw_deg=0.0, hand_above_mm=300.0, floor_weight=0.0, table_z=0.0115, letter=None, letter_seed=42, letter_frames="all", coverage_weight=1.0, letter_fields=None, save_iterates=False, phantom_weight=0.0, contact_mm=20.0, eager=False, name=None, runs=None, desc="", adapter="paper", ckpt="", sampler="stream", select=None, scenario=None, history=None, history_context=None, history_full_window=True, history_stop_at=None, goal_frame=None)
 
 
 class Args(dict):
@@ -24,15 +29,44 @@ def load_adapter(A):
 
 
 def guided_run(ad, A):
-    DEV = torch.device("cuda")
+    DEV = torch.device("cuda"); t_req = time.time()
     eps = [int(v) for v in A.episodes.split(",")]; B = len(eps)
+    sp = int(_g(A, "screen_pool", 0) or 0); screened = None
+    if sp > B:                                                         # batched screening: ONE no-grad rollout of sp draws (a recursive 0-step run), the B best are refined below
+        A2 = Args(dict(A)); A2.update(episodes=",".join([str(eps[0])] * sp), iterations=0, prefilter=0, screen_pool=0, name=f"{A.name}_screen", init_noise=None, _screen=True)
+        if isinstance(_g(A, "scenario", None), (list, tuple)): A2["scenario"] = [A.scenario[0]] * sp
+        _, screened = guided_run(ad, A2)
+    sel = A.get('select') if isinstance(A, dict) else getattr(A, 'select', None)
+    if hasattr(ad, 'select_path'): ad.select_path = sel or type(ad).select_path     # no select given -> the adapter default (never a previous request's)
     batch = ad.episodes(eps, A.transitions, domain=A.domain)
     print(f"{A.adapter} step {ad.step} domain {ad.domain}: {B} members, {A.transitions} transitions, {batch.positions.shape[2]} points", flush=True)
+    om = _g(A, "object_mesh")
+    if om:                                                             # synthetic object: the scene's object particles are replaced by a mesh's points (planned on, replayed as)
+        batch = scene_edit.replace_object(batch, ad.object_mask(batch), om, A.seed, float(A.get("object_yaw_deg", 0.0)))
+        lab = A.get("object_label") or (os.path.basename(os.path.dirname(om)).split("/")[-1])
+        cat = os.path.basename(os.path.dirname(os.path.dirname(om))); num = os.path.basename(os.path.dirname(om)).replace("asset_", "")
+        batch.episodes = [A.get("object_label") or f"{cat}_asset_{num}"] * B
+        A["scene_episodes"] = A.episodes                                  # the ORIGINAL scene's select indices (result.json 'episodes' becomes the labels)
+    f0 = _g(A, "frame0_points", None)
+    if f0:                                                             # closed loop: the executed state becomes frame 0
+        batch = scene_edit.set_frame0_points(batch, np.load(f0)["points"])
     if A.close_fingers:
         batch = scene_edit.close_fingers(batch, A.closed_sep_mm)
+    scen_target = None
+    if A.scenario:                                                     # paper PushBoundary scenarios: frame 0 IS the scenario
+        from . import push_scenes
+        paths = [A.scenario] * B if isinstance(A.scenario, str) else list(A.scenario)
+        if len(paths) != B: raise SystemExit(f"--scenario: {len(paths)} paths for {B} members")
+        scen = [push_scenes.load(p) for p in paths]
+        scen_target = push_scenes.apply(batch, ad, scen)
+        for p, sc in zip(paths, scen):
+            print(f"scenario {os.path.basename(p)}: block {np.round(sc['block_pos'], 4).tolist()} "
+                  f"gripper {np.round(sc['gripper_xy'], 4).tolist()} target {np.round(sc['target_xy'], 4).tolist()}", flush=True)
     mask = ad.object_mask(batch)
     c0 = centroid(batch.positions[:, 0], mask)
-    if A.own_goal:
+    if scen_target is not None:
+        target = scen_target; off = target - c0
+    elif A.own_goal:
         tags = {t["loader"]: t for t in json.load(open(A.own_goal))}
         R = "/data/group_data/katefgroup-ssd/world_model/particle_world_model/releases/pwm-data-v1/rl_push/test"
         goals = []
@@ -51,26 +85,145 @@ def guided_run(ad, A):
         off = torch.stack([rad * torch.cos(ang), rad * torch.sin(ang), torch.zeros(B)], 1).to(DEV); target = c0 + off
     else:
         off = torch.tensor([float(v) for v in A.offset.split(",")], device=DEV)[None].expand(B, -1).clone()
-        if A.task in ("push", "wall", "move"): off[:, 2] = 0
+        if A.task in ("push", "move", "place"): off[:, 2] = 0          # wall keeps the given z (pick over a barrier to a raised goal)
         target = c0 + off
+    if A.task == "place":                                              # held object set down on the table: target z puts its lowest frame-0 particle at table_z
+        minz0 = torch.stack([batch.positions[b, 0][mask[b]][:, 2].min() for b in range(B)])
+        tz = float(A.get("table_z", 0.0115) if isinstance(A, dict) else getattr(A, "table_z", 0.0115))
+        target = target.clone(); target[:, 2] = c0[:, 2] + (tz - minz0); off = target - c0
+        print(f"place: table_z {tz} m, object held {[round(float(v - tz) * 1e3) for v in minz0]} mm above it", flush=True)
+    ta = _g(A, "target_abs", None)
+    if ta is not None:                                                 # absolute target (model frame, m): fixed across closed-loop replans
+        target = torch.tensor([float(v) for v in (ta.split(",") if isinstance(ta, str) else ta)], device=DEV)[None].expand(B, -1).clone(); off = target - c0
     print("targets (mm):", [[round(float(v) * 1e3) for v in t] for t in target], flush=True)
     if A.hand_start == "natural":
         batch = scene_edit.hand_start_natural(batch, target, mask, A.seed, A.hand_bearing_deg, A.hand_bearing_jitter_deg, A.hand_dist_mm, A.hand_dist_jitter_mm, A.hand_dz_mm, A.hand_tilt_deg)
     elif A.hand_start == "mid":
         batch = scene_edit.hand_start_mid(batch, target, mask, A.seed, A.hand_jitter_mm, A.hand_z_mm)
+    elif A.hand_start == "above":
+        batch = scene_edit.hand_start_above(batch, mask, float(A.get("hand_above_mm", 300.0)))
     boxes = []
     if A.task == "wall":
         if A.random_offset: raise SystemExit("--task wall needs one shared --offset")
-        boxes = [wall_between(c0[0], off[0], A.wall_height, A.wall_thickness, A.wall_width)]
+        boxes = [wall_between(c0[0], off[0], A.wall_height, A.wall_thickness, A.wall_width, float(A.get("wall_at", 0.5) if isinstance(A, dict) else getattr(A, "wall_at", 0.5)))]
         print(f"wall centre {boxes[0][0].tolist()} half {boxes[0][1].tolist()} m", flush=True)
-    obj = Objective(target, mask, batch.get_valid_mask(), boxes, A.clearance_mm / 1000, A.box_weight, A.floor_weight)
+    letter_npz = None
+    if A.task == "letter":                                             # letter moulding: chamfer of the dough to a frozen letter footprint (gp/letter.py)
+        L = _g(A, "letter");  assert L, "--task letter needs --letter"
+        letter_npz = field_path(L, int(_g(A, "letter_seed", 42) or 42), _g(A, "letter_fields") or field_path.__globals__["FIELDS"])
+        fr = _g(A, "letter_frames", "all"); fr = "all" if str(fr) == "all" else int(fr)
+        obj = LetterObjective(letter_npz, mask, batch.get_valid_mask(), DEV, fr, float(_g(A, "coverage_weight", 1.0)), A.floor_weight, float(_g(A, "phantom_weight", 0.0) or 0.0), float(_g(A, "contact_mm", 20.0) or 20.0))
+        target = obj.target; off = torch.zeros_like(c0)
+        print(f"letter {obj.letter}: rotation {obj.chosen_rot_deg:+.2f} deg, {obj.coverage.shape[0]} coverage points, frames {fr}", flush=True)
+    else:
+        obj = Objective(target, mask, batch.get_valid_mask(), boxes, A.clearance_mm / 1000, A.box_weight, A.floor_weight, float(_g(A, "upright_weight", 0.0)), int(_g(A, "upright_frames", 5)),
+                        float(_g(A, "still_weight", 0.0)), int(_g(A, "still_frames", 24)),
+                        contact_weight=float(_g(A, "contact_weight", 0.0) or 0.0), contact_margin_m=float(_g(A, "contact_margin_mm", 0.0) or 0.0) / 1000.0, contact_stride=int(_g(A, "contact_stride", 4) or 4),
+                        speed_weight=float(_g(A, "speed_weight", 0.0) or 0.0), speed_max_m=float(_g(A, "speed_max_mm", 15.0) or 15.0) / 1000.0)
+        if float(_g(A, "phantom_weight", 0.0) or 0.0) > 0:          # phantom-motion penalty on a non-letter task (gp/objectives.WithPhantom)
+            from .objectives import WithPhantom
+            obj = WithPhantom(obj, mask, batch.get_valid_mask(), float(_g(A, "phantom_weight")), float(_g(A, "contact_mm", 20.0) or 20.0))
+    ad.freeze_frames = int(_g(A, "freeze_frames", 0) or 0)                  # clean_pickup: pose-noise rows of frames < freeze_frames are not optimized
     ad.sampler_mode = getattr(A, 'sampler', None) or (A.get('sampler') if isinstance(A, dict) else None) or 'stream'
+    h = _g(A, "history", None)
+    if h == "frame0":                                                  # closed loop at c = 0 through the prefix sampler: the episode's own frame 0
+        ad.history = dict(frame0=True)
+    else:
+        ad.history = None if not h else {k: v for k, v in np.load(h).items()}   # closed loop: executed frames 0..c (clean_push: block_pos/quat, gripper_xy; paper: positions, body_poses)
+    if ad.history is not None:
+        ad.history["context"] = _g(A, "history_context", None); ad.history["full_window"] = bool(_g(A, "history_full_window", True)); ad.history["stop_at"] = _g(A, "history_stop_at", None)
+    gf = _g(A, "goal_frame", None)
+    if gf is not None:                                                 # reward read at this rollout frame instead of the last one
+        from .objectives import GoalFrame; obj = GoalFrame(obj, int(gf)); print(f"objective at rollout frame {int(gf)}", flush=True)
+    if ad.history is not None and not ad.history.get("frame0"): print(f"history: {next(iter(v for kk, v in ad.history.items() if kk in ('block_pos', 'positions'))).shape[0] - 1} executed transitions from {h}", flush=True)
+    ad.free_fps = bool(A.get("free_fps", False) if isinstance(A, dict) else getattr(A, "free_fps", False))   # clean_push only: skip the per-rollout reseed
+    ad.stop_at = _g(A, "stop_at", None)
+    ad.resample = dict(every=int(_g(A, "resample_every")), temp=float(_g(A, "resample_temp", 1.0) or 1.0), target=target) if _g(A, "resample_every", None) else None   # clean_push: reseed the population at commit points
+    ad.pose_only = bool(_g(A, "pose_only", False))                       # paper adapter: optimize only pose noise (particle draws fixed, as in rigid scenes)
+    ad.freeze_modes = int(_g(A, "freeze_modes", 0) or 0)                 # paper adapter: 1 = keep the dough-noise mean, 2 = mean + linear modes, at their sampled values
+    hcp = _g(A, "history_clouds", None); ad.history_clouds = np.load(hcp)["clouds"] if hcp else None   # clean_pickup closed loop: executed frames 0..c                                   # clean_pickup: commit frames 0..stop_at of a longer (padded) schedule
     state = ad.prepare(batch, A.transitions, A.steps, A.keep, A.seed, A.churn, A.t_freeze, A.fix_fps)
     print("state:", state.info, flush=True)
-    res = G.run(ad, batch, state, obj, A.iterations, A.lr, A.lr_final, A.optimizer, A.shell)
+    pf = int(_g(A, "prefilter", 0) or 0); pf_s = 0.0
+    if pf > 0:                                                         # sample-then-refine: pf extra no-grad batches, keep the B best draws, guide those
+        torch.cuda.synchronize(); t_pf = time.time(); sc0 = state.fixed.get("sc"); pool = [state]
+        for c in range(pf):
+            st = ad.prepare(batch, A.transitions, A.steps, A.keep, A.seed + 1 + c, A.churn, A.t_freeze, A.fix_fps)
+            if sc0 is not None: st.fixed["sc"].seed = sc0.seed          # push: same FPS ladder as the refined batch -> transplanted draws reproduce exactly
+            if "fps_seed" in state.fixed: st.fixed["fps_seed"] = state.fixed["fps_seed"]   # pick with fix_fps: same
+            pool.append(st)
+        ds = []
+        with torch.no_grad():
+            for st in pool:
+                d_, _ = obj(ad.rollout(batch, st, grad=False)); ds.append(d_)
+        dall = torch.stack(ds)                                          # [chunks, B]
+        top = torch.topk(dall.flatten(), B, largest=False).indices; ci, bi = (top // B).tolist(), (top % B).tolist()
+        if "X0" in state.fixed:
+            state.fixed["X0"] = torch.stack([pool[c].fixed["X0"][b] for c, b in zip(ci, bi)])
+        if state.fixed.get("fps_seeds") is not None:                    # mould (paper adapter): per-member FPS seeds travel with the kept draws
+            state.fixed["fps_seeds"] = [pool[c].fixed["fps_seeds"][b] for c, b in zip(ci, bi)]
+        shells = []
+        for i, v in enumerate(state.vars):                              # member dim: 0 for [B, ...] draws, 2 for the churn bank [calls, tr, B, K, 6]
+            md = 0 if v.dim() < 5 or v.shape[0] == B else 2                 # paper churn bank [B, N, L, Kr, 6] -> 0; clean churn bank [calls, tr, B, K, 6] -> 2
+            new_v = torch.stack([pool[c].vars[i].detach().select(md, b) for c, b in zip(ci, bi)], dim=md)
+            v.data.copy_(new_v)
+            shells.append(None if state.shell[i] is None else new_v.flatten(-2).norm(dim=-1)[..., None, None])   # per draw (last two dims), as every adapter defines its shells
+        state.shell = shells
+        torch.cuda.synchronize(); pf_s = round(time.time() - t_pf, 2)
+        print(f"prefilter: {pf + 1} x {B} samples, kept {[round(float(v) * 1e3, 1) for v in dall.flatten()[top]]} mm, {pf_s} s", flush=True)
+    if screened is not None:
+        s2 = screened["_state"]; dall = torch.tensor(screened["terms"][0]["objective"]); top = torch.topk(dall, B, largest=False).indices.tolist()
+        if state.fixed.get("sc") is not None: state.fixed["sc"].seed = s2.fixed["sc"].seed
+        if "fps_seed" in state.fixed: state.fixed["fps_seed"] = s2.fixed["fps_seed"]
+        if "X0" in state.fixed: state.fixed["X0"] = torch.stack([s2.fixed["X0"][b] for b in top])
+        if state.fixed.get("fps_seeds") is not None: state.fixed["fps_seeds"] = [s2.fixed["fps_seeds"][b] for b in top]
+        shells = []
+        for i, v in enumerate(state.vars):
+            md = 0 if v.dim() < 5 or v.shape[0] == B else 2
+            new_v = torch.stack([s2.vars[i].detach().select(md, b) for b in top], dim=md)
+            v.data.copy_(new_v)
+            shells.append(None if state.shell[i] is None else new_v.flatten(-2).norm(dim=-1)[..., None, None])
+        state.shell = shells; pf_s = round(float(screened["iteration_seconds"][0]), 2); del s2; screened.pop("_state")
+        print(f"screen: 1 x {sp} samples, kept {[round(float(dall[b]), 1) for b in top]} mm, {pf_s} s", flush=True)
+    wn = _g(A, "init_noise", None)
+    if wn:                                                             # warm start: member 0 continues the previous plan's noise (shifted to transition c)
+        W_ = np.load(wn); v0 = torch.as_tensor(W_["P0"], dtype=state.vars[0].dtype, device=state.vars[0].device)
+        st0 = int(W_["start"]) if "start" in W_.files else 0              # first row of vars[0] the saved rows map onto
+        n_have = max(0, min(v0.shape[0], state.vars[0].shape[1] - st0))
+        with torch.no_grad():
+            state.vars[0][0, st0:st0 + n_have] = v0[:n_have]
+        if state.shell[0] is not None: state.shell[0] = state.vars[0].detach().flatten(2).norm(dim=-1)[..., None, None]
+        print(f"warm start: member 0 takes {n_have} rows of the previous plan's noise", flush=True)
+    if _g(A, "planner", None) == "cem_actions":                         # CEM over the hand motion, action-conditioned mode (gp/cem.py)
+        from . import cem as CEMP
+        AS = json.load(open(_g(A, "action_stats", "/data/group_data/katefgroup/runs_pwm_mbronars/noise_vs_action_dev/action_stats.json")))
+        res = CEMP.run_actions(ad, batch, state, obj, K=int(_g(A, "cem_K", B)), rounds=int(_g(A, "cem_rounds", 3)), std=AS["std"], clip=AS["p99"], seed=int(A.seed or 0),
+                               elite_div=int(_g(A, "cem_elite_div", 8)), min_elites=int(_g(A, "cem_min_elites", 2)), carry_frac=float(_g(A, "cem_carry", 0.3)),
+                               min_std_frac=float(_g(A, "cem_min_std", 0.1)), final_mean=bool(_g(A, "cem_final_mean", True)), tie_fingers=bool(_g(A, "cem_tie_fingers", True)))
+    elif _g(A, "planner", None) in ("cem", "bestofk", "mppi"):          # sampling planners over the same noise (gp/cem.py)
+        from . import cem as CEMP
+        bk = _g(A, "planner") == "bestofk"
+        res = CEMP.run(ad, batch, state, obj, K=int(_g(A, "cem_K", B)), rounds=1 if bk else int(_g(A, "cem_rounds", 3)), seed=int(A.seed or 0),
+                       elite_div=int(_g(A, "cem_elite_div", 8)), min_elites=int(_g(A, "cem_min_elites", 2)), carry_frac=float(_g(A, "cem_carry", 0.3)),
+                       min_std=float(_g(A, "cem_min_std", 0.1)), project=bool(_g(A, "cem_project", True)), final_mean=False if bk else bool(_g(A, "cem_final_mean", True)),
+                       update="mppi" if _g(A, "planner") == "mppi" else "cem", temperature=float(_g(A, "mppi_temperature", 0.1)))
+    else:
+      res = G.run(ad, batch, state, obj, A.iterations, A.lr, A.lr_final, A.optimizer, A.shell, save_iterates=bool(_g(A, "save_iterates", False)),
+                  norm=_g(A, "norm", "row") or "row", level_weight=_g(A, "level_weight", "const") or "const",
+                  lr_schedule=_g(A, "lr_schedule", None), lr_scale=_g(A, "lr_scale", None),
+                  prob_reg=float(_g(A, "prob_reg", 0.0) or 0.0), prob_k=int(_g(A, "prob_k", 2) or 2),
+                  prob_mode=_g(A, "prob_mode", "per_draw") or "per_draw", prob_shuffles=int(_g(A, "prob_shuffles", 100) or 100), grad_clip=_g(A, "grad_clip", None),
+                  reseed=bool(_g(A, "reseed", False)), reseed_temp=float(_g(A, "reseed_temp", 1.0) or 1.0), seed=int(A.seed or 0),
+                  reseed_mode=_g(A, "reseed_mode", "rows") or "rows", reseed_level=float(_g(A, "reseed_level", 0.5) or 0.5), reseed_at=_g(A, "reseed_at", None), reseed_mix=float(_g(A, "reseed_mix", 1.0) or 1.0))
+    if _g(A, "_screen", False):                                        # screening pass of screen_pool: nothing written, the caller transplants from the state
+        res["_state"] = state; return None, res
     out = os.path.join(A.runs, ad.domain, A.name)
     meta = dict((dict(A) if isinstance(A, dict) else vars(A)), offsets=off.cpu().numpy(), model_calls=ad.model_calls(state), sampler=state.info.get("sampler"), state_info={k: v for k, v in state.info.items() if isinstance(v, (int, float, str))},
-                created=time.strftime("%Y-%m-%d %H:%M:%S"))
+                created=time.strftime("%Y-%m-%d %H:%M:%S"), prefilter_seconds=pf_s, request_seconds=round(time.time() - t_req, 2))   # whole request up to (not incl.) writing results
     G.save(out, ad, batch, res, obj, meta)
+    if _g(A, "save_best_noise", False) and res.get("best_vars"):
+        np.savez(os.path.join(out, "best_noise.npz"), **{f"v{i}": b.numpy() for i, b in enumerate(res["best_vars"])})
+    if letter_npz:
+        import shutil; shutil.copy(letter_npz, os.path.join(out, "letter_field.npz"))     # the old layout: scoring + GIF scripts read it
     print("best mm", res["best_mm"], "wrote", out, flush=True)
     return out, res

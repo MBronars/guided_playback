@@ -1,0 +1,319 @@
+"""Paper-figure renders for block pushing and pile manipulation (cloud-centroid transport), from the saved paper runs in
+pwm_final_paper/results. No robot arm: the tool alone (rod / paddle), a textured table, mostly-overhead cameras.
+
+push: SAPIEN set_pose replay of each method's committed plan (replay_set_pose/sim_trajectory.npz: block pose, rod xy).
+      Start frame (shared) + each method's frame-60 state, with the rod path (blue) and the block-centre path (magenta),
+      target = green ring on the table.
+pile: Genesis MPM replay pickles (replay.pkl) hold BOTH the world model's predicted dough (pred_object_particles) and the
+      simulated dough (sim_object_particles) in one frame. Per method: start, world-model prediction at the last frame,
+      simulated outcome at the last frame with the prediction's outline overlaid; target = green ring, start centroid = cross.
+
+  PYOPENGL_PLATFORM=egl .../foundationpose/bin/python bin/render_push_pile.py --task push|pile [--eps 5,14,37]"""
+import argparse, glob, json, os, pickle, sys
+import numpy as np, trimesh
+from PIL import Image, ImageDraw, ImageFont
+HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.dirname(HERE); sys.path.insert(0, ROOT)
+from gp.render import frames as F
+from gp.replay.common import qmat
+import pyrender
+
+RES = "/data/user_data/mbronars/packages/pwm_final_paper/results"
+PUSH = {"Ours": RES + "/block_pushing/ours_paper_video_source_pop3_gw2_lookaheads/runs/seed42_ep{ep:02d}",
+        "PointWorld": RES + "/block_pushing/pointworld/runs/ep_{ep:03d}", "GNS": RES + "/block_pushing/gns/runs/ep{ep:03d}"}
+PILE = {"Ours": RES + "/moulding/ours/runs/paper42_ep{ep:03d}/replay_genesis/genesis_m*_guided/replay.pkl",
+        "PointWorld": RES + "/moulding/pointworld/runs/ep_{ep:03d}/replay_bigbounds/replay.pkl", "GNS": RES + "/moulding/gns/runs/ep{ep:03d}/replay_genesis/replay.pkl"}
+BLOCK = [214, 122, 58, 255]; ROD = [62, 104, 180, 255]; DOUGH_SIM = [222, 176, 124, 255]; DOUGH_PRED = [132, 146, 170, 255]; PADDLE = [62, 104, 180, 255]
+GREEN = (20, 160, 110); MAGENTA = (214, 40, 130); BLUE = (62, 104, 180)
+
+
+def base_scene(focus, top, table=(1.0, 1.0)):
+    sc = pyrender.Scene(bg_color=[1, 1, 1, 1], ambient_light=[0.46, 0.46, 0.46])
+    wood = F.material_texture("Wood010_1K-JPG"); tx, ty = table; cx, cy = focus[0], focus[1]
+    sc.add(F.plane([[cx - tx / 2, cy - ty / 2, top], [cx + tx / 2, cy - ty / 2, top], [cx + tx / 2, cy + ty / 2, top], [cx - tx / 2, cy + ty / 2, top]], wood, (tx / 0.65, ty / 0.7)))
+    return sc
+
+
+def ring(sc, xy, top, r_out, r_in, rgba):
+    m = trimesh.creation.annulus(r_min=r_in, r_max=r_out, height=0.0012); p = np.eye(4); p[:3, 3] = [xy[0], xy[1], top + 0.0008]
+    return sc.add(F.solid(m, rgba), pose=p)
+
+
+def cam_pose(focus, az, el, dist):
+    d = np.array([np.cos(el) * np.cos(az), np.cos(el) * np.sin(az), np.sin(el)]); return F.look_at(focus + dist * d, focus)
+
+
+def render(sc, cam, W, H, yfov):
+    sc.add(pyrender.PerspectiveCamera(yfov=yfov, aspectRatio=W / H), pose=cam)
+    sc.add(pyrender.DirectionalLight(intensity=2.6), pose=cam)
+    sc.add(pyrender.DirectionalLight(intensity=1.6), pose=F.look_at(np.array([-0.6, -0.4, 1.4]), np.zeros(3)))
+    r = pyrender.OffscreenRenderer(W, H); rgba, _ = r.render(sc, flags=pyrender.RenderFlags.RGBA | pyrender.RenderFlags.SHADOWS_DIRECTIONAL); r.delete()
+    al = rgba[..., 3:4] / 255.0; return Image.fromarray((rgba[..., :3] * al + 255 * (1 - al)).astype(np.uint8))
+
+
+def projector(cam, W, H, yfov):
+    Pm = pyrender.PerspectiveCamera(yfov=yfov, aspectRatio=W / H).get_projection_matrix(W, H); Vi = np.linalg.inv(cam)
+    def px(p):
+        q = Pm @ (Vi @ np.append(np.asarray(p, float), 1.0)); n = q[:3] / q[3]; return ((n[0] + 1) / 2 * W, (1 - n[1]) / 2 * H)
+    return px
+
+
+NO_TEXT = True
+TOWARD_PADDLE = False
+MOVE_CUE = False
+ARROW_LIFT = 0.0
+VIDEO = None                                                                      # list of methods to render as videos (instead of the stills)
+VIDEO_OUT = None
+PUSH_CROP = {5: (372, 201, 2155, 1538), 14: (340, 62, 2363, 1580)}              # the push figure's per-episode crop at 2400 x 1800 (make_push_pdf.py)
+
+
+def _times(size):
+    import glob as _g
+    fs = _g.glob(os.path.expanduser("~/.local/share/fonts/Times.TTF"))
+    return ImageFont.truetype(fs[0], size) if fs else ImageFont.load_default()
+
+
+def compose(panels, headers, bottom):
+    """panels side by side, a header above each, one line of text centred at the bottom (Times New Roman)."""
+    w, h = panels[0].size; g = max(4, w // 150); hh = int(h * 0.085) if any(headers) else 0; bh = int(h * 0.10) if bottom else 0
+    cv = Image.new("RGB", (len(panels) * w + (len(panels) - 1) * g, hh + h + bh), "white"); d = ImageDraw.Draw(cv); fh = _times(int(h * 0.055)); fb = _times(int(h * 0.058))
+    for i, (p, t) in enumerate(zip(panels, headers)):
+        x = i * (w + g); cv.paste(p, (x, hh))
+        if t: tw = d.textlength(t, font=fh); d.text((x + (w - tw) / 2, hh * 0.18), t, fill=(28, 35, 33), font=fh)
+    if bottom: tw = d.textlength(bottom, font=fb); d.text(((cv.size[0] - tw) / 2, hh + h + bh * 0.2), bottom, fill=(28, 35, 33), font=fb)
+    return cv
+
+
+def write_video(frames, path, fps):
+    import subprocess, tempfile, shutil
+    tmp = tempfile.mkdtemp(dir=os.path.dirname(path))
+    for i, im in enumerate(frames): im.save(os.path.join(tmp, f"{i:04d}.png"))
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-framerate", str(fps), "-i", os.path.join(tmp, "%04d.png"), "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "18",
+                    "-vf", "pad=ceil(iw/2)*2:ceil(ih/2)*2:color=white", path], check=True)
+    shutil.rmtree(tmp); print("wrote", path, len(frames), "frames", flush=True)
+ARROW_W = 6.0
+NO_START_DOT = False
+RING_ON_TOP = False
+PADDLE_ON_TABLE = False
+SHOW_SUNK = False
+CLAMP_TABLE = False
+NO_OVERLAY = False
+PULL_BACK = False
+
+
+def label(im, text, sub=None):
+    if NO_TEXT: return im
+    d = ImageDraw.Draw(im); f = F.ImageFont.load_default(size=30) if hasattr(F, "ImageFont") else None
+    from PIL import ImageFont
+    f = ImageFont.load_default(size=30); f2 = ImageFont.load_default(size=22)
+    d.rounded_rectangle([14, 14, 24 + d.textlength(text, font=f) + (0 if not sub else 0), 58], 8, fill=(255, 255, 255, 230))
+    d.text((24, 18), text, fill=(28, 34, 32), font=f)
+    if sub:
+        w = d.textlength(sub, font=f2); d.rounded_rectangle([14, 64, 28 + w, 96], 8, fill=(255, 255, 255, 230)); d.text((22, 67), sub, fill=(90, 98, 95), font=f2)
+    return im
+
+
+# ------------------------------------------------------------------ block pushing
+def push(eps, out, W, H):
+    yfov = np.pi / 5.5; recs = []
+    for ep in eps:
+        tr = {m: np.load(p.format(ep=ep) + "/replay_set_pose/sim_trajectory.npz") for m, p in PUSH.items()}
+        z0 = tr["Ours"]; tgt = z0["target_xy"]; b0 = z0["block_pos"][0]; top = float(b0[2]) - 0.025
+        pts = np.concatenate([np.concatenate([t["block_pos"][:, :2], t["gripper_xy"]]) for t in tr.values()] + [tgt[None]])
+        lo, hi = pts.min(0) - 0.055, pts.max(0) + 0.055; focus = np.array([(lo[0] + hi[0]) / 2, (lo[1] + hi[1]) / 2, top])   # 5.5 cm margin: the 9 cm rod leans outward in perspective
+        span = float(max((hi - lo)[0] * H / W, (hi - lo)[1])); dist = span / (2 * np.tan(yfov / 2)) * 1.02 + 0.03; az, el = np.radians(-90), np.radians(74)
+        cam = cam_pose(focus, az, el, dist); px = projector(cam, W, H, yfov)
+        def frame(t, f, name, sub, paths, upto=None):
+            sc = base_scene(focus, top); ring(sc, tgt, top, 0.030, 0.024, [20, 160, 110, 255])
+            cube = trimesh.creation.box((0.05, 0.05, 0.05)); R = qmat(t["block_quat"][f]); P = np.eye(4); P[:3, :3] = R; P[:3, 3] = t["block_pos"][f]; sc.add(F.solid(cube, BLOCK), pose=P)
+            rod = trimesh.creation.cylinder(radius=0.01, height=0.09); Pr = np.eye(4); Pr[:3, 3] = [*t["gripper_xy"][f], top + 0.045 + 0.004]; sc.add(F.solid(rod, ROD), pose=Pr)
+            im = render(sc, cam, W, H, yfov).convert("RGBA")
+            if paths:
+                ov = Image.new("RGBA", im.size, (0, 0, 0, 0)); d = ImageDraw.Draw(ov)
+                k_ = W / 960                                                      # stroke sizes scale with the render width
+                u_ = len(t["gripper_xy"]) if upto is None else upto + 1
+                rp = [px([x, y, top + 0.001]) for x, y in t["gripper_xy"][:u_]]; d.line(rp, fill=BLUE + (190,), width=round(7 * k_), joint="curve")
+                bp = [px([x, y, top + 0.001]) for x, y in t["block_pos"][:u_, :2]]; _mv = np.linalg.norm(t["block_pos"][u_ - 1, :2] - t["block_pos"][0, :2]) > 0.003
+                if _mv or not NO_START_DOT: d.line(bp, fill=MAGENTA + (240,), width=round(9 * k_), joint="curve")
+                for (x, y) in (() if NO_START_DOT else (bp[0],)): d.ellipse([x - 10 * k_, y - 10 * k_, x + 10 * k_, y + 10 * k_], fill=MAGENTA + (255,), outline=(255, 255, 255, 255), width=round(2 * k_))
+                im = Image.alpha_composite(im, ov)
+            return label(im.convert("RGB"), name, sub)
+        if VIDEO:                                                                  # videos: the same camera and crop as the push figure
+            cr = tuple(int(round(v * W / 2400)) for v in PUSH_CROP[ep]) if ep in PUSH_CROP else (0, 0, W, H)
+            for m in VIDEO:
+                t = tr[m]; rd = PUSH[m].format(ep=ep); b0_ = t["block_pos"][0, :2]; T = len(t["block_pos"])
+                if os.path.exists(rd + "/positions.npz"):                       # ours / GNS: one predicted rollout; block = object id 0; frame t <-> predicted index context-1+t
+                    zp = np.load(rd + "/positions.npz"); Pp = zp["predicted_centered"] + (zp["offset_world"] if "offset_world" in zp.files else 0); cx_ = int(zp["context_len"])
+                    pb = Pp[:, zp["object_ids"] == 0].mean(1)[:, :2]; pred = np.array([pb[min(cx_ - 1 + f, len(pb) - 1)] for f in range(T)])
+                else:                                                            # PointWorld MPC: the replan active at frame t, its chosen predicted block path
+                    rps = sorted(glob.glob(rd + "/replans/replan_*.npz")); RP = [np.load(q) for q in rps]; pred = []
+                    for f in range(T):
+                        r_ = max([z_ for z_ in RP if int(z_["step"]) <= f], key=lambda z_: int(z_["step"])); j = f - int(r_["step"])
+                        pred.append(r_["block_xy_at_replan"] if j == 0 else r_["chosen_centroid_xy"][min(j - 1, len(r_["chosen_centroid_xy"]) - 1)])
+                    pred = np.array(pred)
+                frames = []
+                for f in range(T):
+                    im = frame(t, f, m, "", True, upto=f).crop(cr)
+                    pm = float(np.linalg.norm(pred[f] - b0_)) * 1e3; sm = float(np.linalg.norm(t["block_pos"][f, :2] - b0_)) * 1e3
+                    frames.append(im)                                                # push videos: the frame alone (no text)
+                write_video(frames, os.path.join(VIDEO_OUT, f"push_ep{ep:02d}_{m.lower()}.mp4"), 20)
+            continue
+        files = {}
+        st = frame(z0, 0, "Start", "same scene for every method", False); p = f"push_ep{ep:02d}_start.png"; st.save(os.path.join(out, p)); files["start"] = p
+        for m, t in tr.items():
+            moved = float(np.linalg.norm(t["block_pos"][-1, :2] - t["block_pos"][0, :2])) * 1e3
+            im = frame(t, len(t["block_pos"]) - 1, m, f"final distance {float(t['sim_final_dist']) * 100:.1f} cm · block moved {moved:.0f} mm", True)
+            p = f"push_ep{ep:02d}_{m.lower()}_end.png"; im.save(os.path.join(out, p)); files[m] = p
+            recs.append(dict(task="push", ep=ep, method=m, sim_final_cm=round(float(t["sim_final_dist"]) * 100, 2), block_moved_mm=round(moved), rod_path_mm=round(float(np.linalg.norm(np.diff(t["gripper_xy"], axis=0), axis=1).sum()) * 1e3)))
+        recs.append(dict(task="push", ep=ep, files=files)); print("push ep", ep, "done", flush=True)
+    return recs
+
+
+# ------------------------------------------------------------------ pile manipulation
+def pile(eps, out, W, H):
+    yfov = np.pi / 6.0; recs = []
+    sph = trimesh.creation.icosphere(subdivisions=1, radius=0.0014)
+    for ep in eps:
+        off = np.load(RES + f"/moulding/scenarios/seed_42/ep_{ep:03d}.npz")["target_offset_xy"]
+        D = {m: pickle.load(open(glob.glob(p.format(ep=ep))[0], "rb")) for m, p in PILE.items()}
+        S0 = D["Ours"]["sim_object_particles"][0]; c0 = S0.mean(0); tgt = c0[:2] + off; top = float(S0[:, 2].min()) - 0.0025
+        # frame the dough (start + every method's predicted and simulated end, robust to a few stray predicted points) and the target; a paddle far away may leave the frame
+        def near_paddle(pp, pq, dough, reach=0.02):
+            """index of the paddle pose to draw: the final one, or the last one within `reach` of the dough's bounding box (the paddle often ends far away)"""
+            lo_, hi_ = np.percentile(dough[:, :2], 5, axis=0) - reach, np.percentile(dough[:, :2], 95, axis=0) + reach        # the dense part of the dough
+            inside = np.nonzero(((pp[:, :2] >= lo_) & (pp[:, :2] <= hi_)).all(1))[0]
+            return len(pp) - 1 if (len(inside) == 0 or inside[-1] == len(pp) - 1) else int(inside[-1])
+        # frame every dough point (start, every method's predicted and simulated end), the drawn paddles and the target
+        pad = []
+        for d in D.values():
+            for key, dk in (("pred", "pred_object_particles"), ("sim", "sim_object_particles")):
+                i = near_paddle(d[f"{key}_pusher_pos"], d[f"{key}_pusher_quat"], d[dk][-1]); pad.append(d[f"{key}_pusher_pos"][i, :2])
+        allp = np.concatenate([np.concatenate([np.percentile(d["sim_object_particles"][-1][:, :2], [1, 99], axis=0), np.percentile(d["pred_object_particles"][-1][:, :2], [1, 99], axis=0)]) for d in D.values()] + [S0[:, :2], tgt[None], np.array(pad)])
+        lo, hi = allp.min(0) - 0.02, allp.max(0) + 0.02; focus = np.array([(lo[0] + hi[0]) / 2, (lo[1] + hi[1]) / 2, top])
+        span = float(max((hi - lo)[0] * H / W, (hi - lo)[1])); dist = span / (2 * np.tan(yfov / 2)) * 1.12; az, el = np.radians(-90), np.radians(62)
+        if TOWARD_PADDLE:
+            # look TOWARD where the paddles end: camera on the opposite side of the dough from the farthest final paddle, lower tilt,
+            # every paddle drawn at its true last pose; distance fitted so every dough point and every paddle is inside the frame
+            dough_c = S0[:, :2].mean(0); fin3 = np.array([d[k][-1] for d in D.values() for k in ("pred_pusher_pos", "sim_pusher_pos")]); fin = fin3[:, :2]
+            far = fin[np.argmax(np.linalg.norm(fin - dough_c, axis=1))]; v = far - dough_c
+            if PULL_BACK:                                                        # frame the paddles where they are DRAWN: at their last pose next to the dough
+                fin3 = np.array([d[f"{k}_pusher_pos"][near_paddle(d[f"{k}_pusher_pos"], d[f"{k}_pusher_quat"], d[dk][-1])] for d in D.values() for k, dk in (("pred", "pred_object_particles"), ("sim", "sim_object_particles"))])
+                v = v / max(np.linalg.norm(v), 1e-9) * 0.12
+            az = float(np.arctan2(-v[1], -v[0]))
+            keep = np.concatenate([np.concatenate([d["sim_object_particles"][-1][::3], d["pred_object_particles"][-1][::3], d["sim_object_particles"][-1][np.argsort(-np.linalg.norm(d["sim_object_particles"][-1][:, :2] - S0[:, :2].mean(0), axis=1))[:40]], d["pred_object_particles"][-1][np.argsort(-np.linalg.norm(d["pred_object_particles"][-1][:, :2] - S0[:, :2].mean(0), axis=1))[:40]]]) for d in D.values()]
+                                  + [fin3 + [0, 0, 0.025], fin3 - [0, 0, 0.025], S0, np.array([[tgt[0], tgt[1], top]])])          # the paddles' true final 3-D positions (one is lifted 12 cm)
+            def fit(focus_, el_):
+                for dist_ in np.linspace(0.12, 3.0, 300):
+                    cm_ = cam_pose(focus_, az, el_, dist_); px_ = projector(cm_, W, H, yfov); q = np.array([px_(p) for p in keep])
+                    zc = (np.c_[keep, np.ones(len(keep))] @ np.linalg.inv(cm_).T)[:, 2]                 # camera looks down -z: every kept point must be in front
+                    if (zc < -0.02).all() and (q[:, 0] > 0.04 * W).all() and (q[:, 0] < 0.96 * W).all() and (q[:, 1] > 0.03 * H).all() and (q[:, 1] < 0.95 * H).all(): return dist_
+                return 3.0
+            best = None                                                           # aim point along dough -> paddle and tilt: the closest camera that still fits everything
+            for tt in np.linspace(0.0, 0.7, 8):
+                for el_ in np.radians([22, 28, 34]):
+                    f_ = np.array([*(dough_c + tt * v), top]); dd = fit(f_, el_)
+                    if best is None or dd < best[0]: best = (dd, f_, el_)
+            dist, focus, el = best
+        cam = cam_pose(focus, az, el, dist); px = projector(cam, W, H, yfov)
+        def frame(dough, rgba, ppos, pquat, psize, name, sub, overlay=None, start_marker=True):
+            sc = base_scene(focus, top, (4.0, 4.0)); ring(sc, tgt, top, 0.011, 0.0078, [20, 160, 110, 255])
+            if CLAMP_TABLE:                                                          # points under the table surface are drawn at table level (resting on it)
+                dough = dough.copy(); dough[:, 2] = np.maximum(dough[:, 2], top + 0.002)
+                if overlay is not None: overlay = overlay.copy(); overlay[:, 2] = np.maximum(overlay[:, 2], top + 0.002)
+            above = dough[:, 2] >= top if SHOW_SUNK else np.ones(len(dough), bool)   # points predicted under the table surface would be hidden by the table
+            poses = np.repeat(np.eye(4)[None], int(above.sum()), 0); poses[:, :3, 3] = dough[above]; s = sph.copy(); s.visual = trimesh.visual.ColorVisuals(s, face_colors=rgba)
+            if above.any(): sc.add(pyrender.Mesh.from_trimesh(s, poses=poses, smooth=False))
+            if ppos is not None:
+                box = trimesh.creation.box(tuple(psize)); P = np.eye(4); P[:3, :3] = qmat(pquat); P[:3, 3] = ppos
+                if PADDLE_ON_TABLE:                                               # the paddle never renders sunk into the table: lift it so its lowest corner rests on the surface
+                    zc = (np.array(box.vertices) @ P[:3, :3].T + P[:3, 3])[:, 2].min()
+                    if zc < top:
+                        if not VIDEO: print(f"  {name} {sub}: paddle lifted {1e3 * (top - zc):.1f} mm", flush=True)
+                        P[2, 3] += top - zc
+                if PULL_BACK:                                                     # semi-transparent paddle: the dough and target behind it stay visible
+                    mat = pyrender.MetallicRoughnessMaterial(baseColorFactor=[c / 255 for c in PADDLE[:3]] + [0.55], alphaMode="BLEND", metallicFactor=0.0, roughnessFactor=0.7)
+                    sc.add(pyrender.Mesh.from_trimesh(box, material=mat, smooth=False), pose=P)
+                else:
+                    sc.add(F.solid(box, PADDLE), pose=P)
+            im = render(sc, cam, W, H, yfov).convert("RGBA"); ov = Image.new("RGBA", im.size, (0, 0, 0, 0)); d = ImageDraw.Draw(ov)
+            if SHOW_SUNK and (~above).any():                                        # sunk points: drawn on top, in violet, at their projected positions
+                for p in dough[~above]:
+                    x, y = px(p); d.ellipse([x - 2.6, y - 2.6, x + 2.6, y + 2.6], fill=(128, 70, 190, 215))
+            if overlay is not None:                                               # the prediction's footprint on top of the simulated outcome
+                for p in overlay[::2]:
+                    x, y = px(p); d.ellipse([x - 2.0, y - 2.0, x + 2.0, y + 2.0], fill=(52, 66, 96, 150))
+            if MOVE_CUE:
+                from scipy.spatial import ConvexHull
+                hp = S0[:, :2][ConvexHull(S0[:, :2]).vertices]; hp = np.vstack([hp, hp[:1]])
+                pts2 = [px([x_, y_, top + 0.0005]) for x_, y_ in hp]
+                for k in range(len(pts2) - 1):                                    # dashed outline of the dough's starting footprint
+                    if k % 2 == 0: d.line([pts2[k], pts2[k + 1]], fill=(250, 250, 250, 230), width=max(1, round(3 * W / 960)))
+                ce = dough.mean(0)
+                if np.linalg.norm(ce[:2] - c0[:2]) > 0.003:                        # arrow: start centre -> final centre, on the table
+                    za = (float(S0[:, 2].max()) + ARROW_LIFT) if ARROW_LIFT > 0 else top + 0.001   # lifted: the arrow floats above the dough, not buried in it
+                    a_, b_ = px([c0[0], c0[1], za]), px([ce[0], ce[1], za])
+                    if ARROW_LIFT > 0:                                            # thin drop lines tie the lifted arrow to the start / end centres on the table
+                        for q_, top_pt in ((a_, px([c0[0], c0[1], top])), (b_, px([ce[0], ce[1], top]))):
+                            d.line([q_, top_pt], fill=MAGENTA + (200,), width=max(1, round(2 * W / 960)))
+                            r_ = 5 * W / 960; d.ellipse([top_pt[0] - r_, top_pt[1] - r_, top_pt[0] + r_, top_pt[1] + r_], fill=MAGENTA + (230,), outline=(255, 255, 255, 230), width=max(1, round(1.5 * W / 960)))
+                    ang = np.arctan2(b_[1] - a_[1], b_[0] - a_[0]); L_ = 3.2 * ARROW_W * W / 960
+                    sh_ = (b_[0] - 0.7 * L_ * np.cos(ang), b_[1] - 0.7 * L_ * np.sin(ang))   # shaft stops inside the head so a thick line keeps a sharp tip
+                    d.line([a_, sh_], fill=MAGENTA + (245,), width=round(ARROW_W * W / 960))
+                    d.polygon([b_, (b_[0] - L_ * np.cos(ang - 0.45), b_[1] - L_ * np.sin(ang - 0.45)), (b_[0] - L_ * np.cos(ang + 0.45), b_[1] - L_ * np.sin(ang + 0.45))], fill=MAGENTA + (245,))
+            if RING_ON_TOP:                                                       # target ring drawn over everything, so the paddle / dough can never hide it
+                th = np.linspace(0, 2 * np.pi, 97); rr = 0.0095
+                rp = [px([tgt[0] + rr * np.cos(t_), tgt[1] + rr * np.sin(t_), top + 0.001]) for t_ in th]
+                d.line(rp, fill=(255, 255, 255, 235), width=round(9 * W / 960), joint="curve")
+                d.line(rp, fill=(20, 160, 110, 255), width=round(5.5 * W / 960), joint="curve")
+            if start_marker:
+                k_ = W / 960; x, y = px([c0[0], c0[1], top]); d.line([x - 9 * k_, y - 9 * k_, x + 9 * k_, y + 9 * k_], fill=(40, 40, 40, 220), width=round(3 * k_)); d.line([x - 9 * k_, y + 9 * k_, x + 9 * k_, y - 9 * k_], fill=(40, 40, 40, 220), width=round(3 * k_))
+            im = Image.alpha_composite(im, ov)
+            return label(im.convert("RGB"), name, sub)
+        if VIDEO:                                                                  # videos: prediction | simulation, same camera as the pile figure
+            for m in VIDEO:
+                d = D[m]; fs_ = int(d.get("frame_skip", 1)); T = len(d["pred_object_particles"]); frames = []
+                for i in range(T):
+                    j = min(i * fs_, len(d["sim_object_particles"]) - 1); P, S = d["pred_object_particles"][i], d["sim_object_particles"][j]
+                    a_ = frame(P, DOUGH_PRED, d["pred_pusher_pos"][i], d["pred_pusher_quat"][i], d["pusher_size"], "", "", start_marker=True)
+                    b_ = frame(S, DOUGH_SIM, d["sim_pusher_pos"][j], d["sim_pusher_quat"][j], d["pusher_size"], "", "", start_marker=True)
+                    ct = int(H * 0.06); a_ = a_.crop((0, ct, W, H)); b_ = b_.crop((0, ct, W, H))
+                    pm = float(np.linalg.norm(P.mean(0)[:2] - c0[:2])) * 1e3; sm = float(np.linalg.norm(S.mean(0)[:2] - c0[:2])) * 1e3
+                    frames.append(compose([a_, b_], [f"{m}: model prediction", f"{m}: simulated outcome"], f"predicted movement {pm:.0f} mm    simulated movement {sm:.0f} mm"))
+                write_video(frames, os.path.join(VIDEO_OUT, f"pile_ep{ep:03d}_{m.lower()}.mp4"), 25)
+            continue
+        files = {}; d0 = D["Ours"]
+        st = frame(S0, DOUGH_SIM, d0["sim_pusher_pos"][0], d0["sim_pusher_quat"][0], d0["pusher_size"], "Start", "same dough and target for every method"); p = f"pile_ep{ep:03d}_start.png"; st.save(os.path.join(out, p)); files["start"] = p
+        for m, d in D.items():
+            P, S = d["pred_object_particles"][-1], d["sim_object_particles"][-1]
+            pt = float(np.linalg.norm(P.mean(0)[:2] - tgt)) * 1e3; stt = float(np.linalg.norm(S.mean(0)[:2] - tgt)) * 1e3; gap = float(np.linalg.norm(P.mean(0)[:2] - S.mean(0)[:2])) * 1e3
+            ipr = near_paddle(d["pred_pusher_pos"], d["pred_pusher_quat"], P); isr = near_paddle(d["sim_pusher_pos"], d["sim_pusher_quat"], S)
+            if TOWARD_PADDLE and not PULL_BACK: ipr, isr = len(d["pred_pusher_pos"]) - 1, len(d["sim_pusher_pos"]) - 1         # true final paddle poses
+            ip = frame(P, DOUGH_PRED, d["pred_pusher_pos"][ipr], d["pred_pusher_quat"][ipr], d["pusher_size"], f"{m}: world model prediction", f"predicted {pt:.0f} mm from target")
+            isim = frame(S, DOUGH_SIM, d["sim_pusher_pos"][isr], d["sim_pusher_quat"][isr], d["pusher_size"], f"{m}: simulated outcome", f"actual {stt:.0f} mm from target", overlay=(None if NO_OVERLAY else P))
+            paddle_note = dict(pred_paddle_frame=int(ipr), pred_paddle_frames=int(len(d["pred_pusher_pos"])), sim_paddle_frame=int(isr // int(d.get("frame_skip", 1))) if len(d["sim_pusher_pos"]) > len(P) else int(isr), sim_paddle_frames=int(len(d["pred_pusher_pos"])))
+            a = f"pile_ep{ep:03d}_{m.lower()}_pred.png"; b = f"pile_ep{ep:03d}_{m.lower()}_sim.png"; ip.save(os.path.join(out, a)); isim.save(os.path.join(out, b)); files[m] = [a, b]
+            recs.append(dict(task="pile", ep=ep, method=m, pred_to_target_mm=round(pt), sim_to_target_mm=round(stt), pred_vs_sim_centroid_mm=round(gap),
+                             pred_below_table=int((P[:, 2] < top).sum()), sim_below_table=int((S[:, 2] < top).sum()), pred_moved_mm=round(float(np.linalg.norm(P.mean(0)[:2] - c0[:2])) * 1e3), sim_moved_mm=round(float(np.linalg.norm(S.mean(0)[:2] - c0[:2])) * 1e3), **paddle_note))
+        recs.append(dict(task="pile", ep=ep, files=files)); print("pile ep", ep, "done", flush=True)
+    return recs
+
+
+if __name__ == "__main__":
+    ap = argparse.ArgumentParser(); ap.add_argument("--task", required=True, choices=("push", "pile")); ap.add_argument("--eps", default=None)
+    ap.add_argument("--out", default=os.path.join(ROOT, "figures", "push_pile_v2"))
+    ap.add_argument("--pull_back", action="store_true", help="pile: draw each paddle at its last pose next to the dough (tighter framing); the view still faces the travel")
+    ap.add_argument("--no_overlay", action="store_true", help="pile: no prediction dots on the simulated-outcome panel")
+    ap.add_argument("--clamp_table", action="store_true", help="pile: draw every point below the table surface at table level")
+    ap.add_argument("--show_sunk", action="store_true", help="pile: points below the table surface are drawn on top in violet instead of being hidden by the table")
+    ap.add_argument("--move_cue", action="store_true", help="pile: dashed outline of the starting dough + arrow from the start centre to the final centre")
+    ap.add_argument("--arrow_lift", type=float, default=0.0, help="pile: draw the movement arrow this many metres above the starting dough's top, with drop lines to the table")
+    ap.add_argument("--arrow_w", type=float, default=6.0, help="pile: movement-arrow line width in px at 960 wide (head scales with it)")
+    ap.add_argument("--ring_on_top", action="store_true", help="pile: draw the target ring as a 2-D outline over everything")
+    ap.add_argument("--paddle_on_table", action="store_true", help="pile: lift any paddle whose box dips below the table surface")
+    ap.add_argument("--no_start_dot", action="store_true", help="push: no magenta dot at the block's starting position")
+    ap.add_argument("--video", default=None, help="comma-separated methods (Ours,PointWorld,GNS): write mp4s instead of stills"); ap.add_argument("--video_out", default=None)
+    ap.add_argument("--toward_paddle", action="store_true", help="pile: camera looks toward where the paddle exits, true final paddle poses"); ap.add_argument("--size", default="960x720")
+    A = ap.parse_args(); VIDEO = A.video.split(",") if A.video else None; VIDEO_OUT = A.video_out or A.out; NO_START_DOT = A.no_start_dot; ARROW_LIFT = A.arrow_lift; ARROW_W = A.arrow_w; RING_ON_TOP = A.ring_on_top; PADDLE_ON_TABLE = A.paddle_on_table; TOWARD_PADDLE = A.toward_paddle; MOVE_CUE = A.move_cue; SHOW_SUNK = A.show_sunk; CLAMP_TABLE = A.clamp_table; NO_OVERLAY = A.no_overlay; PULL_BACK = A.pull_back; W, H = (int(v) for v in A.size.split("x")); os.makedirs(A.out, exist_ok=True)
+    eps = [int(v) for v in (A.eps or ("5,14,37" if A.task == "push" else "36,47")).split(",")]
+    recs = push(eps, A.out, W, H) if A.task == "push" else pile(eps, A.out, W, H)
+    fn = os.path.join(A.out, f"{A.task}_cases.json"); old = json.load(open(fn)) if os.path.exists(fn) else []
+    keep = [r for r in old if r.get("ep") not in eps]; json.dump(keep + recs, open(fn, "w"), indent=1); print("wrote", fn, flush=True)

@@ -13,7 +13,7 @@ GENESIS = "/data/user_data/mbronars/packages/Genesis"
 PY = "/data/user_data/mbronars/.miniconda3/envs/genesis/bin/python"
 
 
-def run(run_dir, out, variants=("guided", "unguided"), script="examples/replay_planner_output.py", frame_skip=25, gpu="0"):
+def run(run_dir, out, variants=("guided", "unguided"), script="examples/replay_planner_output.py", frame_skip=25, gpu="0", members=None):
     z, rj = C.load_run(run_dir); os.makedirs(out, exist_ok=True)
     B, T, N = z["predicted"].shape[:3]; V = len(variants); roles = z["roles"]; obj_mask = z["object_mask"]
     pred = np.stack([z[C.VARIANT_KEY[v]] for v in variants], 1).astype(np.float32)                 # [B, V, T, N, 3]
@@ -24,7 +24,8 @@ def run(run_dir, out, variants=("guided", "unguided"), script="examples/replay_p
     sim = np.zeros((V, B, T, N, 3), np.float32); sim_roles = roles.copy(); rows = []
     env = dict(os.environ, CUDA_VISIBLE_DEVICES=str(gpu))
     log = open(os.path.join(out, "replay.log"), "w")
-    for m in range(B):
+    lf = os.path.join(run_dir, "letter_field.npz"); cov = np.load(lf, allow_pickle=True)["coverage"] if os.path.exists(lf) else None
+    for m in (range(B) if members is None else members):        # members: replay only these (e.g. the picked one)
         for v, var in enumerate(variants):
             rd = os.path.abspath(os.path.join(out, f"genesis_m{m}_{var}"))
             print(f"[genesis] member {m} {var} -> {rd}", flush=True)
@@ -43,5 +44,8 @@ def run(run_dir, out, variants=("guided", "unguided"), script="examples/replay_p
             dst[1:, pad] = np.einsum("tij,pj->tpi", Rt, loc) + pt[:, None]
             row = C.analysis_row(gen, sim[v, m], roles[m], dough, z["target"][m], m, var)
             row.update(genesis_dir=os.path.relpath(rd, out))
+            if cov is not None:                                                                        # letter task: the paper metric (RMS chamfer, last frame, mm)
+                from ..letter import chamfer_rms_np
+                row.update(gen_chamfer_mm=chamfer_rms_np(gen[-1, dough, :2], cov) * 1e3, sim_chamfer_mm=chamfer_rms_np(sim[v, m][-1, dough, :2], cov) * 1e3)
             rows.append(row)
     C.write(out, sim, sim_roles, list(variants), rows, extra=dict(sim="genesis 0.4.6 MPM, PD paddle", frame_skip=frame_skip))

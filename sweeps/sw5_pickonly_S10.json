@@ -1,0 +1,53 @@
+{
+ "base": {
+  "domain": "pickup",
+  "adapter": "clean_pickup",
+  "task": "lift",
+  "transitions": 39,
+  "steps": 10,
+  "optimizer": "adam",
+  "lr": 0.1,
+  "iterations": 16,
+  "seed": 0,
+  "churn": false,
+  "shell": false
+ },
+ "arms": [
+  {
+   "name": "pickonlyS10_x20z10_batch000_e0",
+   "episodes": "0,0,0,0",
+   "offset": "0.20,0,0.10",
+   "desc": "pickup-only checkpoint, FAST path: bf16 + compiled, streaming S=10, Adam lr 0.1, 16 it; target 0.20,0,0.10 m; population 4 on batch000_e0"
+  },
+  {
+   "name": "pickonlyS10_x20z10_batch000_e1",
+   "episodes": "1,1,1,1",
+   "offset": "0.20,0,0.10",
+   "desc": "pickup-only checkpoint, FAST path: bf16 + compiled, streaming S=10, Adam lr 0.1, 16 it; target 0.20,0,0.10 m; population 4 on batch000_e1"
+  },
+  {
+   "name": "pickonlyS10_x20z10_batch001_e1",
+   "episodes": "3,3,3,3",
+   "offset": "0.20,0,0.10",
+   "desc": "pickup-only checkpoint, FAST path: bf16 + compiled, streaming S=10, Adam lr 0.1, 16 it; target 0.20,0,0.10 m; population 4 on batch001_e1"
+  },
+  {
+   "name": "pickonlyS10_y20z10_batch000_e0",
+   "episodes": "0,0,0,0",
+   "offset": "0,0.20,0.10",
+   "desc": "pickup-only checkpoint, FAST path: bf16 + compiled, streaming S=10, Adam lr 0.1, 16 it; target 0,0.20,0.10 m; population 4 on batch000_e0"
+  },
+  {
+   "name": "pickonlyS10_y20z10_batch000_e1",
+   "episodes": "1,1,1,1",
+   "offset": "0,0.20,0.10",
+   "desc": "pickup-only checkpoint, FAST path: bf16 + compiled, streaming S=10, Adam lr 0.1, 16 it; target 0,0.20,0.10 m; population 4 on batch000_e1"
+  },
+  {
+   "name": "pickonlyS10_y20z10_batch001_e1",
+   "episodes": "3,3,3,3",
+   "offset": "0,0.20,0.10",
+   "desc": "pickup-only checkpoint, FAST path: bf16 + compiled, streaming S=10, Adam lr 0.1, 16 it; target 0,0.20,0.10 m; population 4 on batch001_e1"
+  }
+ ]
+}

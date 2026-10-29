@@ -1,0 +1,34 @@
+{
+ "description": "rl_push baselines on the final set sweeps/rlpush_cl_mid5_dir1.json (gripper 200 mm behind, target 200 mm ahead); frame-0 state = our round-0 rollout (edited scene), member 0 frame 0",
+ "source_spec": "sweeps/rlpush_cl_mid5_dir1.json",
+ "horizon": 40,
+ "commit": 10,
+ "cost_frame": "task frame 40 in every plan (PointWorld rollout chained over all remaining frames, cost pred[:, -1]; GNS free-run over all remaining frames, cost fut[-1])",
+ "problems": [
+  {
+   "id": "D018",
+   "loader": 18,
+   "state": "runs/rl_push/rlpdir5_D018_r0/rollout.npz"
+  },
+  {
+   "id": "D037",
+   "loader": 37,
+   "state": "runs/rl_push/rlpdir5_D037_r0/rollout.npz"
+  },
+  {
+   "id": "D049",
+   "loader": 49,
+   "state": "runs/rl_push/rlpdir5_D049_r0/rollout.npz"
+  },
+  {
+   "id": "D121",
+   "loader": 121,
+   "state": "runs/rl_push/rlpdir5_D121_r0/rollout.npz"
+  },
+  {
+   "id": "D186",
+   "loader": 186,
+   "state": "runs/rl_push/rlpdir5_D186_r0/rollout.npz"
+  }
+ ]
+}

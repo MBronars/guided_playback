@@ -1,0 +1,42 @@
+[
+ {
+  "curve": "M",
+  "budget": 100
+ },
+ {
+  "curve": "M",
+  "budget": 90
+ },
+ {
+  "curve": "M",
+  "budget": 80
+ },
+ {
+  "curve": "M",
+  "budget": 70
+ },
+ {
+  "curve": "M",
+  "budget": 60
+ },
+ {
+  "curve": "M",
+  "budget": 50
+ },
+ {
+  "curve": "M",
+  "budget": 40
+ },
+ {
+  "curve": "M",
+  "budget": 30
+ },
+ {
+  "curve": "M",
+  "budget": 20
+ },
+ {
+  "curve": "M",
+  "budget": 10
+ }
+]

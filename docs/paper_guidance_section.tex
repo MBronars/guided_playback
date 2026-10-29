@@ -1,0 +1,209 @@
+% Draft: guidance, task settings, baselines. Numbers are from the runs listed in the comments; nothing was rounded by hand.
+% TODO markers are where a number or a decision is still open.
+
+\section{Planning by Guided Sampling}
+\label{sec:guidance}
+
+\subsection{Guidance on the initial noise}
+\label{sec:guidance-method}
+
+Our world model is an unconditional generative model over point-cloud trajectories: given the first observed frame,
+it samples the future motion of every particle in the scene, including the particles of the robot's gripper.
+We never condition the model on actions. Instead we plan by steering the sampler so that the generated future
+satisfies a task objective, and then execute the gripper motion contained in that future.
+
+Sampling is deterministic given the initial noise. We therefore treat the initial noise as the decision variable.
+Let $\epsilon$ denote the noise tensor that the sampler consumes, and let $X(\epsilon) = (x_0, x_1, \dots, x_T)$ be the
+generated trajectory, where $x_0$ is the observed first frame. For a task objective $J$ we solve
+\begin{equation}
+  \epsilon^\star = \arg\min_{\epsilon} \; J\big(X(\epsilon)\big)
+\end{equation}
+by differentiating through the full sampling chain and taking a small number of gradient steps on $\epsilon$.
+Gradients are obtained by backpropagation with gradient checkpointing over the sampler's model calls.
+
+\paragraph{Norm-preserving updates.}
+A gradient step moves the noise off the region the model was trained on. After every step we rescale each
+independent noise draw back to the norm it had when it was sampled (\emph{shell reprojection}):
+\begin{equation}
+  \epsilon_i \leftarrow \epsilon_i \, \frac{\lVert \epsilon_i^{(0)} \rVert}{\lVert \epsilon_i \rVert}.
+\end{equation}
+The guidance strength is then set entirely by the step size and the number of steps; there is no separate guidance weight.
+
+\paragraph{Optimizers.}
+We use one of two update rules.
+\emph{Adam} on the noise, with a constant learning rate.
+\emph{Unit-gradient} steps, $\epsilon_i \leftarrow \epsilon_i - \eta\sqrt{D}\, g_i/\lVert g_i\rVert$, where $D$ is the
+dimension of draw $i$; each draw moves by a fixed fraction $\eta$ of its own expected norm per step, independent of
+the gradient's scale.
+
+\paragraph{Population.}
+We optimize a population of $B$ noise samples of the same scene and the same target in parallel (the batch is the
+population). The executed plan is the member with the lowest \emph{imagined} objective, i.e.\ the objective evaluated
+on the model's own generated trajectory. No simulator or real-world information is used to choose the plan.
+
+\subsection{Objectives}
+\label{sec:objectives}
+
+All objectives are differentiable functions of the generated trajectory. Let $c_t$ be the centroid of the object's
+particles at frame $t$, $g$ the target, and $p_{t,j}$ the particles of the scene.
+
+\begin{itemize}
+  \item \textbf{Goal.} $J_{\text{goal}} = \lVert c_T - g \rVert$, the distance of the object's centroid at the last
+        frame to the target. This is the only term in the benchmark tasks.
+  \item \textbf{Obstacle clearance.} Each obstacle is an axis-aligned box. For every particle and every generated
+        frame we compute the signed distance $d$ to the box and penalize the shortfall
+        $s = \max(0,\, m - d)$ below a clearance margin $m$:
+        $J_{\text{box}} = \operatorname{mean}_{t,j}(s) + \max_{t,j}(s)$.
+        The margin acts as a buffer around the obstacle's volume.
+  \item \textbf{Floor.} Mean depth of particles below the table plane (used only where noted).
+  \item \textbf{Upright.} For placing tasks we penalize the tilt of the object at the end of the trajectory:
+        the rotation $R_t$ of the object's particles relative to frame~0 is recovered by a differentiable Kabsch fit,
+        and $J_{\text{up}} = \frac{1}{k}\sum_{t=T-k+1}^{T} \arccos\big((R_t)_{zz}\big)$ over the last $k = 5$ frames.
+\end{itemize}
+The total objective is $J = J_{\text{goal}} + w_{\text{box}}J_{\text{box}} + w_{\text{up}}J_{\text{up}}$.
+
+\subsection{Tasks and settings}
+\label{sec:task-settings}
+
+Table~\ref{tab:guidance-settings} lists the settings per task. All timings are for warm, compiled (bf16) generation on
+one NVIDIA L40S and exclude simulation.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Guidance settings per task.}
+\label{tab:guidance-settings}
+\begin{tabular}{lccc}
+\toprule
+ & Pick-to-location & Moulding (dough) & Pick, carry and place (gallery) \\
+\midrule
+Model & pickup, 104.8M & mould, 104.3M & pickup, 104.8M \\
+Horizon (transitions) & 60 (3.0\,s at 20\,fps) & 150 & 60 \\
+Sampler & streaming, window 16 & streaming, keep 3, full churn & streaming, window 16 \\
+Denoising steps / frame & 10 (Euler) & 6 & 10 (Euler) \\
+Optimized noise & initial pose noise & bank draws at level $\ge 0.8$ & initial pose noise$^\dagger$ \\
+Optimizer & Adam, lr 0.1 & unit-gradient, $\eta = 0.1$ & Adam, lr 0.1 \\
+Iterations & 10 & 6 & 40 (80 with obstacles) \\
+Shell reprojection & on & on & on \\
+Population & 4 & 3 & $2 \times 4$ (two seeds) \\
+Objective & goal & goal & goal (+ box, upright)$^\dagger$ \\
+Plan time & $126.5 \pm 0.8$\,s & $113.8$\,s (mean) & $\approx 8$\,min per seed \\
+\bottomrule
+\end{tabular}
+\\[2pt]\footnotesize $^\dagger$ Gallery only: see the comment in the pick-carry-place paragraph.
+\end{table}
+
+\paragraph{Pick-to-location.}
+Five objects (milk carton, peanut butter jar, soda can, pasta box, water bottle) from held-out episodes, each with five
+targets: target $=$ frame-0 object centroid $+ (\Delta x, \Delta y, 0.15\,\text{m})$, with $(\Delta x, \Delta y)$
+uniform in a 0.15\,m disc, drawn once with a fixed seed and shared by all objects and all methods (25 problems).
+Only frame~0 of the recorded episode is used.
+
+\paragraph{Moulding.}
+The dough-moulding task moves the centroid of a deformable dough by pushing it with a paddle. Fifty scenarios pin a
+dataset episode and an in-plane target offset of 7.5--15\,cm drawn with a fixed seed. The sampler re-forms every
+partially denoised row with fresh noise at every step (full churn, $\eta = 1$) on both the paddle and the dough
+particles. Only the noise draws at high noise levels ($\ge 0.8$) are optimized.
+
+\paragraph{Pick, carry and place.}
+For the qualitative gallery we use harder variants of the lift task: air targets 30\,cm away and 15\,cm up, ground
+targets behind a barrier (a cereal box standing on its long edge, 21\,cm tall, or a row of three cracker boxes, 15\,cm
+tall), and placement on top of a 19.6\,cm cabinet with the upright term ($w_{\text{up}} = 0.3$). Obstacle cases use
+a clearance margin of 25\,mm with $w_{\text{box}} = 10$; placement on the cabinet uses a 3\,mm margin. Every obstacle
+case is paired with a no-obstacle run to the same target.
+% GALLERY ONLY -- NOT used for any benchmark number (the 25 pick runs, cyl_t*_it10, were run 2026-09-23 without it):
+% the gallery runs keep the pose noise of the first 24 frames fixed (freeze_frames 24) and add a pre-grasp stillness
+% term (still_weight 5: mean object-centroid displacement from frame 0 over frames < 24). Decide whether the paper
+% mentions this for the figure; it is not part of the method used for Tables pick/mould.
+% TODO (paper choice): the gallery picks the member to render using the simulator (see Sec. evaluation).
+% Say so explicitly in the figure caption, or restrict the figure to the imagined-objective pick.
+
+\paragraph{Block pushing.}
+% Settings from the push sweep (block pushing, SAPIEN): settled recipe.
+Population 3, 6 denoising steps per frame, 6 unit-gradient iterations with $\eta = 0.1$, shell reprojection, and only
+draws at noise levels $\ge 0.5$ optimized; about 20\,s per plan.
+% TODO: final push numbers and whether rl_push is reported.
+
+\subsection{Evaluation in simulation}
+\label{sec:eval-sim}
+
+The model plans in its own imagination; we evaluate by executing the planned gripper motion in a physics simulator
+that the model has never seen.
+\begin{itemize}
+  \item \textbf{Pickup (Isaac Sim, floating hand).} A floating Franka hand tracks the gripper pose recovered from the
+        generated gripper particles (rigid fit per frame) at 20\,fps. The gripper is binary: commanded closed when the
+        generated finger opening falls below 35\,mm. The object is the convex hull of its frame-0 particles, with the
+        density and friction of the source asset.
+  \item \textbf{Pickup (Isaac Sim, commanded arm).} The same hand trajectory executed by a full, fixed-base Franka arm
+        via damped-least-squares inverse kinematics with PD joint control and velocity feed-forward, started from the
+        episode's recorded joint configuration. This adds reach and joint limits; obstacles are simulated as fixed
+        collision bodies. The rendered figures show this arm.
+  \item \textbf{Moulding (Genesis MPM).} The generated paddle poses are tracked by a PD-controlled paddle
+        (25 simulation steps per model frame) in an MPM dough initialized from the frame-0 dough particles.
+\end{itemize}
+The headline metric is the distance from the simulated object centroid at the last frame to the target
+(pickup), and the distance closed toward the target, $\lVert c_0 - g\rVert - \lVert c^{\text{sim}}_T - g\rVert$ (moulding).
+
+\subsection{Baselines}
+\label{sec:baselines}
+
+All baselines receive exactly the same problems: the same frame-0 state, the same targets, the same horizon, and the
+same scoring. Each chooses its plan by its own predicted objective, never by the simulator.
+
+\paragraph{No guidance: sample-and-select MPC with the same model.}
+To isolate the contribution of gradient guidance, we plan with the same world model and sampler but without
+gradients. At every replanning step we draw $K$ fresh noise samples, generate $K$ continuations of the committed
+trajectory prefix, keep the single candidate whose imagined final object centroid is closest to the target
+(argmin, no averaging), commit its next 5 frames, and repeat until the horizon is reached. Committed frames enter the
+sampler as clean context; every model call sees a full-size window, which slides back over committed frames near the
+end rather than shrinking. $K$ is chosen so that one plan costs about as much compute as guidance:
+$K = 20$ for pickup (138\,s) and $K = 6$ for moulding (151.5\,s).
+
+\paragraph{PointWorld.}
+PointWorld is an action-conditioned point-cloud world model. We train it on the same data and plan with the same
+sample-and-select MPC: per replanning step, $K = 88$ candidate gripper trajectories drawn around the current plan
+with Gaussian perturbations whose scale matches the recorded per-frame motion statistics (7.5\,mm translation,
+0.06\,rad rotation), argmin selection on the predicted object-centroid distance to the target, and a horizon that
+shrinks to the fixed final frame. $K$ is set to match our planning time (148.9\,s per plan).
+% TODO: state PointWorld training steps / checkpoint used (pick benchmark used a 74k/200k checkpoint).
+
+\paragraph{GNS.}
+% TODO: GNS protocol and numbers. Same benchmark files (sweeps/pick_benchmark_5x5*.{json,npz}) were handed over.
+
+\subsection{Results}
+\label{sec:guidance-results}
+
+\begin{table}[t]
+\centering
+\small
+\caption{Pick-to-location, 25 problems. Distance of the simulated (Isaac, floating hand) object centroid to the target
+at the last frame.}
+\label{tab:pick-results}
+\begin{tabular}{lcccc}
+\toprule
+Planner & median (mm) & $\le 50$\,mm & $\le 60$\,mm & plan time (s) \\
+\midrule
+Guided (ours) & \textbf{38} & \textbf{18/25} & \textbf{21/25} & $126.5 \pm 0.8$ \\
+No guidance, MPC ($K = 20$) & 121 & 2/25 & 4/25 & $138.1 \pm 0.6$ \\
+PointWorld, MPC ($K = 88$) & 190 & 0/25 & 0/25 & $148.9 \pm 20.8$ \\
+GNS & -- & -- & -- & -- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[t]
+\centering
+\small
+\caption{Moulding, 50 scenarios (targets 7.5--15\,cm away). Distance closed toward the target in Genesis.}
+\label{tab:mould-results}
+\begin{tabular}{lccccc}
+\toprule
+Planner & mean (mm) & median (mm) & $\ge 20$\,mm & $\ge 30$\,mm & plan time (s) \\
+\midrule
+Guided (ours) & \textbf{26.8} & \textbf{26.0} & \textbf{40/50} & \textbf{15/50} & 113.8 \\
+No guidance, MPC ($K = 6$) & 14.8 & 14.2 & 12/50 & 1/50 & $151.5 \pm 0.9$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+% Mould std of distance closed (guided): 8.0 mm; MPC: 7.6 mm. Guided closes more than MPC on 43/50 paired scenarios.
+% PointWorld predicted its own plans to 29.9 mm median on the pick benchmark; in Isaac the object was not lifted (peak lift 4.8 mm over all 25).

@@ -1,0 +1,109 @@
+{
+ "description": "5-problem subset of sweeps/rlpush_cl_5x5.json (user, 2026-09-25 19:20): goal t0 of each of the 5 objects. rl_push closed vs open loop: 5 objects = numpy default_rng(0).choice(test loaders, 5, replace=False); per object 5 goals from one default_rng(0) stream (objects in sorted order, goals in order): r = sqrt(U1*(0.15^2-0.05^2)+0.05^2) m (uniform over the 5-15 cm annulus), angle = 2*pi*U2; target = frame-0 object centroid + (r cos, r sin, 0) (model frame, z = start)",
+ "index": "/data/user_data/mbronars/packages/guided_playback/sweeps/rl_push/test_index.json",
+ "objects": [
+  53,
+  61,
+  101,
+  125,
+  166
+ ],
+ "problems": [
+  {
+   "id": "L053_t0",
+   "loader": 53,
+   "asset": "libero/yellow_and_white_mug/asset_0029",
+   "category": "yellow_and_white_mug",
+   "goal": 0,
+   "offset_m": [
+    -0.0153,
+    0.1225,
+    0.0
+   ],
+   "radius_m": 0.1234,
+   "angle_deg": 97.1
+  },
+  {
+   "id": "L061_t0",
+   "loader": 61,
+   "asset": "libero/black_bowl_2/asset_0031",
+   "category": "black_bowl_2",
+   "goal": 0,
+   "offset_m": [
+    0.1372,
+    0.0024,
+    0.0
+   ],
+   "radius_m": 0.1372,
+   "angle_deg": 1.0
+  },
+  {
+   "id": "L101_t0",
+   "loader": 101,
+   "asset": "Kitchen_Table/serving_bowl/asset_0024",
+   "category": "serving_bowl",
+   "goal": 0,
+   "offset_m": [
+    0.0393,
+    0.039,
+    0.0
+   ],
+   "radius_m": 0.0554,
+   "angle_deg": 44.7
+  },
+  {
+   "id": "L125_t0",
+   "loader": 125,
+   "asset": "libero/basket/asset_0064",
+   "category": "basket",
+   "goal": 0,
+   "offset_m": [
+    -0.0977,
+    0.082,
+    0.0
+   ],
+   "radius_m": 0.1275,
+   "angle_deg": 140.0
+  },
+  {
+   "id": "L166_t0",
+   "loader": 166,
+   "asset": "Kitchen_Table/small_saucepan/asset_0023",
+   "category": "small_saucepan",
+   "goal": 0,
+   "offset_m": [
+    -0.0515,
+    0.1062,
+    0.0
+   ],
+   "radius_m": 0.118,
+   "angle_deg": 115.9
+  }
+ ],
+ "checkpoint": "/data/group_data/katefgroup/runs_pwm_mbronars/pwm_v1_rl_push_ctxgen_100m_uncond_unet_bidir/checkpoints/step_180000.pt",
+ "planner": {
+  "members": 4,
+  "transitions": 40,
+  "steps": 10,
+  "iterations": 10,
+  "lr": 0.2,
+  "lr_final": 0.02,
+  "optimizer": "adam",
+  "t_freeze": 0.0,
+  "churn": true,
+  "fix_fps": true,
+  "shell": false,
+  "upright_weight": 1.0,
+  "upright_frames": 40,
+  "contact_weight": 2.0,
+  "seed": 0
+ },
+ "closed_loop": {
+  "commit": 10,
+  "context": "min(c,3)",
+  "plan": "max(remaining, trained future window)",
+  "reward": "task frame 40"
+ },
+ "simulator": "Isaac floating hand (gp/replay/isaac_float.py, rl_push CoACD hulls, density 500, friction 1.0)",
+ "reuse": "round-0 plans reused from runs/rl_push/rlpcl25_<id>_r0 (they depend only on frame 0); all Isaac executions redone as 5-env launches (tag rlpcl5) because Isaac differs across env slots (1.6 mm between identical envs in one launch)"
+}

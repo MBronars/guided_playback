@@ -1,5 +1,5 @@
 """Guidance objectives on a rollout pos [B, T, P, 3] (metres): per-member scalars. All terms are differentiable."""
-import torch
+import numpy as np, torch
 
 
 def centroid(pos, mask):
@@ -10,9 +10,76 @@ def centroid(pos, mask):
 class Objective:
     """objective = ||centroid_obj(last frame) - target|| + box_weight * (mean + worst clearance shortfall to every box)
     + floor_weight * mean depth below z = 0, over all valid particles and generated frames. Boxes: (centre, half) metres."""
-    def __init__(self, target, obj_mask, valid, boxes=(), clearance_m=0.005, box_weight=5.0, floor_weight=0.0):
+    def __init__(self, target, obj_mask, valid, boxes=(), clearance_m=0.005, box_weight=5.0, floor_weight=0.0, upright_weight=0.0, upright_frames=5,
+                 still_weight=0.0, still_frames=24, contact_weight=0.0, contact_margin_m=0.0, contact_stride=4, speed_weight=0.0, speed_max_m=0.015):
         self.target, self.obj_mask, self.valid = target, obj_mask, valid
+        self.contact_weight, self.contact_margin, self.contact_stride = contact_weight, contact_margin_m, int(contact_stride)
+        self.speed_weight, self.speed_max = speed_weight, speed_max_m
+        self.grip_mask = valid & ~obj_mask                                          # every valid non-object row = the actuator (hand + fingers)
         self.boxes, self.clearance, self.box_weight, self.floor_weight = list(boxes), clearance_m, box_weight, floor_weight
+        self.upright_weight, self.upright_frames = upright_weight, int(upright_frames)
+        self.still_weight, self.still_frames = still_weight, int(still_frames)
+
+    def still(self, pos):
+        """Pre-grasp stillness (metres): mean over frames 1..still_frames-1 of the object-centroid displacement from frame 0."""
+        c = centroid(pos[:, :self.still_frames], self.obj_mask[:, None])          # mask [B, 1, P] against pos [B, K, P, 3]
+        return (c[:, 1:] - c[:, :1]).norm(dim=-1).mean(1)
+
+    def tilt(self, pos):
+        """Tilt (rad) of the object's frame-0 vertical axis, averaged over the last `upright_frames` frames: Kabsch rotation of the
+        object particles from frame 0 to frame t (differentiable SVD), angle between R e_z and e_z."""
+        B = pos.shape[0]; out = []
+        for b in range(B):
+            m = self.obj_mask[b]; P0 = pos[b, 0, m]; P0c = P0 - P0.mean(0)
+            angs = []
+            for t in range(pos.shape[1] - self.upright_frames, pos.shape[1]):
+                Pt = pos[b, t, m]; Ptc = Pt - Pt.mean(0)
+                H = P0c.T @ Ptc; U, S, Vh = torch.linalg.svd(H)
+                d = torch.sign(torch.det(Vh.T @ U.T)); D = torch.diag(torch.stack([torch.ones_like(d), torch.ones_like(d), d]))
+                R = Vh.T @ D @ U.T                                              # maps frame-0 body directions to frame t
+                angs.append(torch.arccos(R[2, 2].clamp(-1 + 1e-6, 1 - 1e-6)))
+            out.append(torch.stack(angs).mean())
+        return torch.stack(out)
+
+    def _hulls(self, pos0, K=256):
+        """Outer convex-hull approximation of each member's frame-0 object points: K Fibonacci-sphere directions n_k with
+        support b_k = max_p n_k.p; inside <=> n_k.x - b_k <= 0 for every k. Returned as equations [K, 4] (n, -b), cached."""
+        if getattr(self, "_hull", None) is None:
+            i = torch.arange(K, device=pos0.device, dtype=pos0.dtype) + 0.5
+            phi = torch.arccos(1 - 2 * i / K); th = np.pi * (1 + 5 ** 0.5) * i
+            n = torch.stack([torch.cos(th) * torch.sin(phi), torch.sin(th) * torch.sin(phi), torch.cos(phi)], -1)      # [K, 3]
+            self._hull = []
+            for b in range(pos0.shape[0]):
+                P = pos0[b, self.obj_mask[b]].detach()
+                sup = (P @ n.T).amax(0)                                                                                # [K]
+                self._hull.append(torch.cat([n, -sup[:, None]], 1))
+        return self._hull
+
+    def contact(self, pos):
+        """Gripper-object penetration (metres): every `contact_stride`-th gripper point, mapped into the object's frame-0 pose by a
+        differentiable Kabsch fit of the object particles per frame, is inside the object's frame-0 convex hull by depth
+        min_faces(-(n.x + b)); shortfall = clamp(depth + margin, 0); per frame mean + max over gripper points, averaged over frames 1..T.
+        Concave objects (bowls) are treated as their hull: fingers over the rim count as penetration, which is what tips them."""
+        B = pos.shape[0]; hulls = self._hulls(pos[:, 0]); out = []
+        for b in range(B):
+            m = self.obj_mask[b]; O = pos[b, :, m]; O0 = O[0]; c0 = O0.mean(0); A = O0 - c0                # [T, P, 3]
+            Ct = O.mean(1, keepdim=True); Bt = O - Ct                                                       # [T, P, 3]
+            H = A.T[None] @ Bt; U, S, Vh = torch.linalg.svd(H)                                             # H[t] = A^T B_t
+            d = torch.sign(torch.det(Vh.transpose(1, 2) @ U.transpose(1, 2)))
+            D = torch.diag_embed(torch.stack([torch.ones_like(d), torch.ones_like(d), d], -1))
+            R = Vh.transpose(1, 2) @ D @ U.transpose(1, 2)                                                  # [T, 3, 3]: x_t = R (x_0 - c0) + c_t
+            G = pos[b, :, self.grip_mask[b]][:, ::self.contact_stride]                                      # [T, G, 3]
+            Gb = (G - Ct) @ R + c0                                                                          # R^T applied: back to frame-0 pose
+            eq = hulls[b]; depth = -(Gb @ eq[:, :3].T + eq[:, 3]).amax(-1)                                  # [T, G]: min_k (b_k - n_k.x) > 0 inside
+            short = (depth + self.contact_margin).clamp(min=0)[1:]
+            out.append((short.mean(1) + short.amax(1)).mean())
+        return torch.stack(out)
+
+    def speed(self, pos):
+        """Gripper speed cap (metres per frame): per-frame displacement of the actuator centroid above `speed_max`; mean + max over frames."""
+        c = centroid(pos, self.grip_mask[:, None])                                  # [B, T, 3]
+        v = (c[:, 1:] - c[:, :-1]).norm(dim=-1); over = (v - self.speed_max).clamp(min=0)
+        return over.mean(1) + over.amax(1)
 
     def terms(self, pos):
         B = pos.shape[0]
@@ -29,14 +96,59 @@ class Objective:
 
     def __call__(self, pos):
         goal, box, floor = self.terms(pos)
-        return goal + self.box_weight * box + self.floor_weight * floor, dict(goal=goal, box=box, floor=floor)
+        total = goal + self.box_weight * box + self.floor_weight * floor; d = dict(goal=goal, box=box, floor=floor)
+        if self.upright_weight > 0:
+            up = self.tilt(pos); total = total + self.upright_weight * up; d["upright"] = up           # radians (logged x1e3 = mrad)
+        if self.still_weight > 0:
+            st = self.still(pos); total = total + self.still_weight * st; d["still"] = st
+        if self.contact_weight > 0:
+            ct = self.contact(pos); total = total + self.contact_weight * ct; d["contact"] = ct
+        if self.speed_weight > 0:
+            sp = self.speed(pos); total = total + self.speed_weight * sp; d["speed"] = sp
+        return total, d
 
 
-def wall_between(c0, offset, height=0.10, thickness=0.02, width=0.30):
-    """A box at the midpoint between the object's start c0 and c0 + offset, across the push direction; (centre, half)."""
+def wall_between(c0, offset, height=0.10, thickness=0.02, width=0.30, at=0.5):
+    """A box at fraction `at` of the way from the object's start c0 to c0 + offset (0.5 = midway, 1 = under the target), across the push direction; (centre, half)."""
     along = offset.clone(); along[2] = 0
     size = torch.tensor([thickness, width, height], device=c0.device)
     if abs(float(along[1])) > abs(float(along[0])):
         size = size[[1, 0, 2]]
-    centre = torch.stack([c0[0] + along[0] / 2, c0[1] + along[1] / 2, torch.tensor(height / 2, device=c0.device)])
+    centre = torch.stack([c0[0] + along[0] * at, c0[1] + along[1] * at, torch.tensor(height / 2, device=c0.device)])
     return centre, size / 2
+
+
+class GoalFrame:
+    """Wrap an objective so it scores rollout frame `frame` (frames after it are generated but carry no reward)."""
+    def __init__(self, inner, frame):
+        self.inner, self.frame = inner, int(frame)
+
+    def __getattr__(self, k):
+        return getattr(self.inner, k)
+
+    def __call__(self, pos):
+        return self.inner(pos[:, :self.frame + 1])
+
+
+class WithPhantom:
+    """Any objective + phantom_weight * phantom motion (gp/letter.py LetterObjective.phantom, same definition): per frame the
+    object-centroid displacement, gated by how far the nearest actuator point is from the nearest object point beyond contact_mm
+    (sigmoid of width soft_mm), summed over frames. Off unless a request sets phantom_weight > 0 on a non-letter task."""
+    def __init__(self, base, obj_mask, valid, weight, contact_mm=20.0, soft_mm=5.0):
+        self.base, self.obj_mask, self.valid = base, obj_mask, valid
+        self.weight, self.contact_m, self.soft_m = float(weight), float(contact_mm) / 1e3, float(soft_mm) / 1e3
+
+    def __getattr__(self, k):
+        return getattr(self.base, k)
+
+    def phantom(self, pos):
+        m = self.obj_mask[0]; pad = (~self.obj_mask[0]) & self.valid[0]
+        c = pos[:, :, m].mean(2)
+        disp = (c[:, 1:] - c[:, :-1]).norm(dim=-1)
+        d = torch.cdist(pos[:, 1:, pad], pos[:, 1:, m]).amin(-1).amin(-1)
+        return (disp * torch.sigmoid((d - self.contact_m) / self.soft_m)).sum(1)
+
+    def __call__(self, pos):
+        total, d = self.base(pos)
+        ph = self.phantom(pos); d = dict(d); d["phantom"] = ph
+        return total + self.weight * ph, d

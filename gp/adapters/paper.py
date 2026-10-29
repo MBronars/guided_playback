@@ -9,12 +9,13 @@ import torch
 from . import paper_core as sc
 from .base import Adapter, State
 
-FRAME_DT = {"pickup": 1 / 20, "rl_push": 1 / 20, "yikai_small": 1 / 20, "mould": 0.05}
-SIM = {"pickup": "isaac", "rl_push": "isaac", "mould": "genesis"}
+FRAME_DT = {"pickup": 1 / 20, "rl_push": 1 / 20, "yikai_small": 1 / 20, "mould": 0.05, "pushing": 1 / 20}       # pushing = 04_18 (PushBoundary), 20 Hz
+SIM = {"pickup": "isaac", "rl_push": "isaac", "mould": "genesis", "pushing": "sapien"}
 
 
 class PaperAdapter(Adapter):
     name = "paper"
+    select_path = None          # a select json (sweeps/assetsweep_select.json): `episodes` then index ITS entries
 
     def load(self, ckpt, device, compile=True):
         self.dev = device
@@ -30,12 +31,23 @@ class PaperAdapter(Adapter):
         domain = domain or list(self.cfg.data.domains)[0]
         self.domain = domain
         self.frame_dt = FRAME_DT.get(domain, 1 / 20); self.sim = SIM.get(domain)
+        if self.select_path:                                   # benchmark scenes, matched by their frame-0 object centroid
+            import json
+            sel = json.load(open(self.select_path)); entries = [sel[i] for i in indices]
+            got = sc.episode_batch_select(self.cfg, entries, transitions, self.dev, domain=domain)
+            batch = sc.stack_batches(got); gf = batch.gt_frames
+            batch = batch.to(self.dev); batch.gt_frames = gf; batch.episodes = [e["label"] for e in entries]
+            return batch
         got = sc.episode_batch(self.cfg, indices, transitions, self.dev, domain=domain)
         batch = sc.stack_batches([got[i] for i in indices]); gf = batch.gt_frames
         batch = batch.to(self.dev); batch.gt_frames = gf; batch.episodes = list(indices)
         return batch
 
     def prepare(self, batch, transitions, steps, keep, seed, churn, t_freeze, fix_fps):
+        hist = getattr(self, "history", None)
+        if hist is not None and ("positions" in hist or hist.get("frame0")):   # closed loop: executed frames as clean rows (gp/adapters/paper_prefix.py)
+            from .paper_prefix import prepare_prefix
+            return prepare_prefix(self, batch, transitions, steps, keep, seed, churn, t_freeze, fix_fps, hist)
         B, N, P = batch.positions.shape[0], transitions, batch.positions.shape[2]
         self.S.joint_limits = self.joint_limits
         g = torch.Generator(device=self.dev).manual_seed(seed)
@@ -89,12 +101,26 @@ class PaperAdapter(Adapter):
             shell = XP.flatten(2).norm(dim=-1)[..., None, None]
             st = State(vars=[XP.requires_grad_(True)], free=[None], shell=[shell], fixed=fixed,
                        info=dict(model_calls=calls, sampler="deterministic (initial-noise optimization)"))
-        if deformable and not churn:                                                  # no churn: optimize the initial particle draws
+        if deformable and not churn and not getattr(self, "pose_only", False):        # no churn: optimize the initial particle draws (pose_only: keep them fixed, as for rigid scenes)
             st.vars.append(X.requires_grad_(True)); st.free.append(None); st.shell.append(X.flatten(2).norm(dim=-1)[..., None, None])
             st.info["particle_draws_optimized"] = True
+            fm = int(getattr(self, "freeze_modes", 0) or 0)
+            if fm > 0:                                                                # keep the low-order spatial modes of the dough noise at their sampled values
+                om = self.object_mask(batch).float()                                  # [B, P]
+                p0 = batch.positions[:, 0].float()                                    # [B, P, 3] frame-0 points
+                cols = [om]
+                if fm >= 2:
+                    mu = (p0 * om[..., None]).sum(1, keepdim=True) / om.sum(1, keepdim=True)[..., None]
+                    cols += [((p0 - mu)[..., k] * om) for k in range(3)]
+                Q, _ = torch.linalg.qr(torch.stack(cols, -1))                         # [B, P, M] orthonormal over the dough points (zero elsewhere)
+                st.fixed["mode_basis"] = [None] * (len(st.vars) - 1) + [Q]
+                st.info["frozen_modes"] = Q.shape[-1]
         return st
 
     def rollout(self, batch, state, grad):
+        if state.fixed.get("prefix") is not None:
+            from .paper_prefix import rollout_prefix
+            return rollout_prefix(self, batch, state, grad)
         f = state.fixed; X = state.vars[1] if len(state.vars) > 1 else f["X"]
         if f.get("chunked"):
             from .chunked import rollout_chunked

@@ -1,0 +1,134 @@
+{
+ "base": {
+  "domain": "mould",
+  "task": "letter",
+  "letter_seed": 42,
+  "episodes": "0,0,0",
+  "transitions": 150,
+  "steps": 6,
+  "churn": true,
+  "fix_fps": true,
+  "optimizer": "unitgrad",
+  "shell": true,
+  "t_freeze": 0.8,
+  "lr": 0.1,
+  "letter_frames": "all",
+  "seed": 0,
+  "save_iterates": true,
+  "iterations": 48,
+  "phantom_weight": 1.0,
+  "runs": "/data/group_data/katefgroup/runs_pwm_mbronars/guided_playback_letters/runs"
+ },
+ "arms": [
+  {
+   "name": "letters_R_it24_last1",
+   "letter": "R",
+   "letter_frames": "1",
+   "iterations": 24,
+   "phantom_weight": 0.0
+  },
+  {
+   "name": "letters_I_it48_lr0.1",
+   "letter": "I",
+   "letter_frames": "all",
+   "iterations": 48,
+   "phantom_weight": 0.0
+  },
+  {
+   "name": "letters3_R_all_it48_ph1",
+   "letter": "R"
+  },
+  {
+   "name": "letters3_L_all_it48_ph1",
+   "letter": "L"
+  },
+  {
+   "name": "letters3_I_all_it48_ph1",
+   "letter": "I"
+  },
+  {
+   "name": "letters3_C_all_it48_ph1_seed1",
+   "letter": "C",
+   "seed": 1
+  },
+  {
+   "name": "letters3_R_last15_S10_ph1_it24",
+   "letter": "R",
+   "letter_frames": "15",
+   "steps": 10,
+   "iterations": 24
+  },
+  {
+   "name": "letters3_I_last15_S10_ph1_it24",
+   "letter": "I",
+   "letter_frames": "15",
+   "steps": 10,
+   "iterations": 24
+  },
+  {
+   "name": "letters3_R_last15_T200_ph1_it24",
+   "letter": "R",
+   "letter_frames": "15",
+   "transitions": 200,
+   "iterations": 24
+  },
+  {
+   "name": "letters3_I_last15_T200_ph1_it24",
+   "letter": "I",
+   "letter_frames": "15",
+   "transitions": 200,
+   "iterations": 24
+  },
+  {
+   "name": "letters3_C_all_it48_ph1_seed2",
+   "letter": "C",
+   "seed": 2
+  },
+  {
+   "name": "letters3_L_last15_ph1_it24_seed1",
+   "letter": "L",
+   "letter_frames": "15",
+   "iterations": 24,
+   "seed": 1
+  },
+  {
+   "name": "letters3_L_last15_ph1_it24_seed2",
+   "letter": "L",
+   "letter_frames": "15",
+   "iterations": 24,
+   "seed": 2
+  },
+  {
+   "name": "letters3_R_last15_ph1_it24_seed3",
+   "letter": "R",
+   "letter_frames": "15",
+   "iterations": 24,
+   "seed": 3
+  },
+  {
+   "name": "letters3_R_last15_ph1_it24_seed4",
+   "letter": "R",
+   "letter_frames": "15",
+   "iterations": 24,
+   "seed": 4
+  },
+  {
+   "name": "letters3_R_last15_ph1_it24_seed5",
+   "letter": "R",
+   "letter_frames": "15",
+   "iterations": 24,
+   "seed": 5
+  },
+  {
+   "name": "letters3_C_all_it96_ph1",
+   "letter": "C",
+   "iterations": 96
+  },
+  {
+   "name": "letters3_R_all_S10_T200_ph1_it48",
+   "letter": "R",
+   "steps": 10,
+   "transitions": 200
+  }
+ ]
+}

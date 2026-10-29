@@ -14,18 +14,23 @@ PY = "/data/user_data/mbronars/.miniconda3/envs/planning_wrapper/bin/python"
 BOUNDARY_CENTER = np.array([-0.135, 0.0]); CUBE_Z_SPAWN = 0.025 + 1e-3
 
 
-def run(run_dir, out, variants=("guided", "unguided"), gpu="0"):
+def run(run_dir, out, variants=("guided", "unguided"), gpu="0", members=None):
     z, rj = C.load_run(run_dir); os.makedirs(out, exist_ok=True)
+    # Scenario runs (gp/push_scenes.py): the cube's yaw is baked into the frame-0 cloud and body_poses0 is identity, so the
+    # spawn orientation must come from the scenario file (2026-09-25 fix; before it, SAPIEN spawned these cubes at yaw 0).
+    scen = rj.get("scenario"); B_ = z["predicted"].shape[0]
+    scen = ([scen] * B_ if isinstance(scen, str) else list(scen)) if scen else None
+    R_scen = [C.qmat(np.load(sp)["block_quat"]) for sp in scen] if scen else None
     B, T, N = z["predicted"].shape[:3]; V = len(variants); roles = z["roles"]; obj_mask = z["object_mask"]
     plans = os.path.abspath(os.path.join(out, "plans")); os.makedirs(plans, exist_ok=True)
     meta = {}
-    for m in range(B):
+    for m in (range(B) if members is None else members):          # members: replay only these (e.g. the planner's pick)
         cube = obj_mask[m]; rod = roles[m] == 0
         for v, var in enumerate(variants):
             P = z[C.VARIANT_KEY[var]][m].astype(np.float64)
             c0 = P[0, cube].mean(0); shift = np.array([BOUNDARY_CENTER[0] - c0[0], BOUNDARY_CENTER[1] - c0[1], 0.0])
             ridx = int(np.nonzero(z["pose_action_mask"][m] == False)[0][0])                          # the cube's body index
-            R0 = z["body_poses0"][m, ridx, :3, :3]
+            R0 = R_scen[m] if R_scen is not None else z["body_poses0"][m, ridx, :3, :3]
             rod_xy = P[:, rod].mean(1)[:, :2] + shift[:2]; cube_xy = P[:, cube].mean(1)[:, :2] + shift[:2]
             target_xy = z["target"][m][:2] + shift[:2]
             pd = os.path.join(plans, f"m{m}_{var}"); os.makedirs(pd, exist_ok=True)
@@ -42,7 +47,7 @@ def run(run_dir, out, variants=("guided", "unguided"), gpu="0"):
         subprocess.run([PY, os.path.join(PW, "replay_actions.py"), plans, "--glob", "m*", "--use_set_pose", "--no_video"], check=True, stdout=log, stderr=subprocess.STDOUT,
                    env=dict(os.environ, CUDA_VISIBLE_DEVICES=str(gpu)))
     sim = np.zeros((V, B, T, N, 3), np.float32); rows = []
-    for m in range(B):
+    for m in (range(B) if members is None else members):          # members: replay only these (e.g. the planner's pick)
         cube = obj_mask[m]; rod = roles[m] == 0
         for v, var in enumerate(variants):
             info = meta[(m, var)]; P = z[C.VARIANT_KEY[var]][m].astype(np.float64); shift = info["shift"]
@@ -50,7 +55,7 @@ def run(run_dir, out, variants=("guided", "unguided"), gpu="0"):
             assert f, f"no replay npz under {info['dir']}/replay_set_pose"
             S = np.load(f[0]); bp, bq, gxy = S["block_pos"], S["block_quat"], S["gripper_xy"]              # [T', ...] step 0 = start
             Tk = min(T, bp.shape[0])
-            ridx = int(np.nonzero(z["pose_action_mask"][m] == False)[0][0]); R0 = z["body_poses0"][m, ridx, :3, :3]
+            ridx = int(np.nonzero(z["pose_action_mask"][m] == False)[0][0]); R0 = R_scen[m] if R_scen is not None else z["body_poses0"][m, ridx, :3, :3]
             loc = (P[0, cube] - P[0, cube].mean(0)) @ R0                                                    # cube-local
             Rt = C.qmat(bq[:Tk]); cube_sim = np.einsum("tij,pj->tpi", Rt, loc) + bp[:Tk][:, None] - shift   # back to the model frame
             rod_sim = P[0, rod][None] + np.concatenate([gxy[:Tk] - gxy[0], np.zeros((Tk, 1))], 1)[:, None]

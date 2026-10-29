@@ -11,10 +11,47 @@ from . import common as C
 SCRIPTS = "/data/user_data/mbronars/packages/pickup_replay_isaac/scripts"
 PY = "/data/user_data/mbronars/.miniconda3/envs/isaaclab/bin/python"
 POOL = "/data/user_data/mbronars/packages/pickup_replay_isaac/out/pool_pick_val/specs.npz"
-SHIFTS = [np.array([0.45, 0.0, 0.10]), np.array([0.45, 0.0, 0.11])]
+SHIFTS = [np.array([0.45, 0.0, 0.10]), np.array([0.45, 0.0, 0.11]), np.zeros(3)]
 
 
-def run(run_dir, out, variants=("guided", "unguided"), rate=20, close_threshold=0.035, gpu="0"):
+RLP_INDEX = "/data/user_data/mbronars/packages/guided_playback/sweeps/rl_push/test_index.json"
+RLP_ROOT = "/data/group_data/katefgroup-ssd/world_model/particle_world_model/releases/pwm-data-v1/rl_push/test/"
+
+
+def rl_push_hulls(z):
+    """Per member: the release object's CoACD hull vertices posed at the episode's frame 0 in the model frame (world), packed
+    [B, Vmax, 3] with start offsets [B, Hmax + 1] (-1 padded). Checked against the frame-0 particles' bounding box."""
+    idx = {r["loader"]: r for r in json.load(open(RLP_INDEX))}
+    B = z["predicted"].shape[0]; V, O = [], []
+    for m in range(B):
+        r = idx[int(z["episodes"][m])]; o = np.load(RLP_ROOT + r["file"], allow_pickle=True)
+        v = o["coacd_hull_vertices"].astype(np.float64); off = list(o["coacd_hull_offsets"].astype(int)) + [len(v)]
+        w = np.einsum("ij,pj->pi", C.qmat(np.array(r["obj_quat0"], np.float64)), v) + np.array(r["obj_pos0"]) + np.array([-0.45, 0.0, 0.0])
+        p0 = z["predicted"][m, 0, z["object_mask"][m]]
+        err = max(np.abs(w.min(0) - p0.min(0)).max(), np.abs(w.max(0) - p0.max(0)).max())
+        assert err < 0.02, f"member {m}: CoACD hulls off the frame-0 particles by {err * 1e3:.1f} mm"   # particles = 512-point subsample of the surface cloud
+        V.append(w); O.append(np.array(off))
+    Vmax, Hmax = max(len(v) for v in V), max(len(o) for o in O)
+    hv = np.zeros((B, Vmax, 3)); ho = np.full((B, Hmax), -1, np.int64)
+    for m in range(B): hv[m, :len(V[m])] = V[m]; ho[m, :len(O[m])] = O[m]
+    return hv, ho
+
+
+ARM_SHIFT = np.array([0.45, 0.0, 0.0])          # rl_push model frame -> robot base frame (data/rl_push.py CANONICAL_TRANSLATION undone)
+
+
+def rl_push_arm_q0(z):
+    """Per member: the recorded 7 arm joints at the episode's first frame (release joint_pos), the arm replay's IK seed."""
+    idx = {r["loader"]: r for r in json.load(open(RLP_INDEX))}; q = []
+    for m in range(z["predicted"].shape[0]):
+        r = idx[int(z["episodes"][m])]; o = np.load(RLP_ROOT + r["file"], allow_pickle=True)
+        q.append(o["joint_pos"][int(o["episode_start"][r["e"]]) + r["start"], :7].astype(np.float64))
+    return np.stack(q)
+
+
+def run(run_dir, out, variants=("guided", "unguided"), rate=20, close_threshold=0.035, gpu="0", arm=False):
+    """arm=True: pickup_replay_isaac/scripts/replay_isaac_arm.py, the gripper on a full fixed-base Franka (rl_push only: the
+    specs are shifted into the base frame, arm.npz holds the recorded frame-0 joints, results are shifted back)."""
     sys.path.insert(0, SCRIPTS)
     from build_specs import gripper_track
     z, rj = C.load_run(run_dir); os.makedirs(out, exist_ok=True)
@@ -44,10 +81,30 @@ def run(run_dir, out, variants=("guided", "unguided"), rate=20, close_threshold=
             arrays["hand_pos"][m, v], arrays["hand_quat"][m, v], arrays["finger_q"][m, v], arrays["fit_rms"][m, v] = hp, hq, fq, rms
             arrays["obj_centroid"][m, v] = P[:, obj_rows].mean(1); arrays["target"][m, v] = z["target"][m]
         arrays["obj_pts0"][m] = obj0; arrays["rho"][m] = rho; arrays["mu"][m] = mu
-        checks.append(dict(member=m, episode=int(z["episodes"][m]), pool_match=matched, pool_match_mm=round(best[1] * 1e3, 2) if best[0] is not None else None, rho=rho, mu=mu,
+        checks.append(dict(member=m, episode=str(z["episodes"][m]), pool_match=matched, pool_match_mm=round(best[1] * 1e3, 2) if best[0] is not None else None, rho=rho, mu=mu,
                            fit_rms_mm_max={var: round(float(arrays["fit_rms"][m, v].max()) * 1e3, 2) for v, var in enumerate(variants)}))
+    if rj.get("domain") == "rl_push" and not os.environ.get("GP_ISAAC_POOL_PHYSICS"):
+        # rl_push: the collection's object physics (RLSkills_IsaacLab franka_gripper base_env_cfg: density 500, friction 0.6-1.2 mean 1.0)
+        # and the object's own CoACD convex decomposition (release file), posed at frame 0 like the particles, instead of one solid hull.
+        arrays["rho"][:] = 500.0; arrays["mu"][:] = 1.0
+        hv, ho = rl_push_hulls(z); arrays["hull_vertices"], arrays["hull_offsets"] = hv, ho
+        print(f"[isaac] rl_push physics: density 500, friction 1.0, CoACD hulls per member {[int((o >= 0).sum() - 1) for o in ho]}", flush=True)
+    if rj.get("task") == "place" and not os.environ.get("GP_ISAAC_POOL_PHYSICS"):
+        # place runs (held start): the asset's CoACD decomposition posed at frame 0 + the recorded density / friction (gp/replay/place_assets.py).
+        # Pick / lift runs never enter here: they keep the single convex hull + pool physics above.
+        from .place_assets import place_hulls
+        hv, ho, prho, pmu, prow = place_hulls(z); arrays["hull_vertices"], arrays["hull_offsets"] = hv, ho; arrays["rho"][:] = prho; arrays["mu"][:] = pmu
+        for c_, pr in zip(checks, prow): c_.update(place_asset=pr)
+        print(f"[isaac] place physics: CoACD pieces per member {[int((o >= 0).sum() - 1) for o in ho]}, rho {prho.round(0).tolist()}, mu {pmu.tolist()}", flush=True)
+    if os.environ.get("GP_ISAAC_MU"): arrays["mu"][:] = float(os.environ["GP_ISAAC_MU"]); print("[isaac] object friction override", arrays["mu"][0], flush=True)
+    if os.environ.get("GP_ISAAC_RHO"): arrays["rho"][:] = float(os.environ["GP_ISAAC_RHO"]); print("[isaac] object density override", arrays["rho"][0], flush=True)
     closed = arrays["finger_q"].mean(-1) < close_threshold
     specs = os.path.abspath(os.path.join(out, "specs.npz"))
+    if arm:
+        assert rj.get("domain") == "rl_push", "arm replay: rl_push runs only (base frame known)"
+        for key in ("hand_pos", "obj_centroid", "target", "obj_pts0"): arrays[key] = arrays[key] + ARM_SHIFT
+        if "hull_vertices" in arrays: arrays["hull_vertices"] = arrays["hull_vertices"] + ARM_SHIFT
+        np.savez(os.path.join(out, "arm.npz"), arm_q0=rl_push_arm_q0(z))
     np.savez(specs, **arrays, closed=closed, close_threshold=close_threshold)
     json.dump(dict(variants=list(variants), episodes=[[os.path.basename(run_dir.rstrip("/")), c["member"]] for c in checks], checks=checks, shift=[0, 0, 0], close_threshold=close_threshold),
               open(specs[:-4] + ".json", "w"), indent=1)
@@ -58,8 +115,14 @@ def run(run_dir, out, variants=("guided", "unguided"), rate=20, close_threshold=
     if os.path.exists(os.path.join(sim_dir, "replay.npz")) and os.environ.get("GP_REUSE_SIM"):
         print("[isaac] reusing existing replay.npz", flush=True)
     else:
-        subprocess.run([PY, "-u", os.path.join(SCRIPTS, "replay_isaac.py"), "--specs", specs, "--out", sim_dir, "--rates", str(rate)], check=True, stdout=log, stderr=subprocess.STDOUT, env=env)
-    R = np.load(os.path.join(sim_dir, "replay.npz"))
+        extra = os.environ.get("GP_ISAAC_EXTRA", "").split()                       # e.g. "--kp_pos 100": controller / physics overrides passed to replay_isaac.py
+        if extra: print("[isaac] extra args", extra, flush=True)
+        script = "replay_isaac_arm.py" if arm else "replay_isaac.py"
+        subprocess.run([PY, "-u", os.path.join(SCRIPTS, script), "--specs", specs, "--out", sim_dir, "--rates", str(rate)] + extra, check=True, stdout=log, stderr=subprocess.STDOUT, env=env)
+    R = dict(np.load(os.path.join(sim_dir, "replay.npz")))
+    if arm:                                                                          # back to the model frame
+        R["body_pos"] = R["body_pos"] - ARM_SHIFT; R["obj_pos"] = R["obj_pos"] - ARM_SHIFT
+        for key in ("hand_pos", "obj_centroid", "target", "obj_pts0"): arrays[key] = arrays[key] - ARM_SHIFT
     N = z["predicted"].shape[2]; sim = np.zeros((V, B, T, N, 3), np.float32); sim_roles = np.zeros((B, N), np.int8); rows = []
     for k in range(len(R["env_episode"])):
         m, v = int(R["env_episode"][k]), int(R["env_variant"][k]); var = variants[v]
@@ -74,4 +137,10 @@ def run(run_dir, out, variants=("guided", "unguided"), rate=20, close_threshold=
         row = C.analysis_row(z[C.VARIANT_KEY[var]][m], sim[v, m], roles[m], obj_rows, z["target"][m], m, var)
         row.update(fit_rms_mm_max=checks[m]["fit_rms_mm_max"][var], closed_frames=int(R["cmd_closed"][k].sum()), rho=checks[m]["rho"], mu=checks[m]["mu"], pool_match=checks[m]["pool_match"])
         rows.append(row)
-    C.write(out, sim, sim_roles, list(variants), rows, extra=dict(sim="isaac floating hand", rate=rate, close_threshold=close_threshold))
+    if arm:
+        for row in rows:
+            k = [i for i in range(len(R["env_episode"])) if int(R["env_episode"][i]) == row["member"] and variants[int(R["env_variant"][i])] == row["variant"]][0]
+            pe = np.linalg.norm(R["hand_pos"][k] - R["target_pos"][k], axis=-1) * 1e3
+            lim = R["joint_limits"]; marg = np.minimum(R["arm_q"][k] - lim[:, 0], lim[:, 1] - R["arm_q"][k])
+            row.update(arm_hand_err_mm_mean=float(pe.mean()), arm_hand_err_mm_max=float(pe.max()), arm_min_joint_margin_rad=float(marg.min()))
+    C.write(out, sim, sim_roles, list(variants), rows, extra=dict(sim="isaac full arm (fixed base)" if arm else "isaac floating hand", rate=rate, close_threshold=close_threshold, isaac_extra=os.environ.get("GP_ISAAC_EXTRA", ""), mu_override=os.environ.get("GP_ISAAC_MU"), rho_override=os.environ.get("GP_ISAAC_RHO")))

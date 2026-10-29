@@ -1,0 +1,47 @@
+"""One PointWorld pile episode (positions/batch000.npz + a Genesis replay.pkl) -> a guided_playback run folder, so bin/render.py
+draws it exactly like our mould runs: left = PointWorld's imagined rollout, right = the Genesis replay of its plan.
+
+  python bin/pw_pile_to_run.py --episode <PW ep dir> --scenario <cloud_centroid ep npz> --replay replay_bigbounds --out runs/mould/<name>
+
+Simulated dough = the replay's particles at every model frame (substep f*frame_skip - 1); simulated paddle = the planned frame-0
+paddle points moved by the simulated paddle pose relative to the planned frame-0 pose. World frame throughout."""
+import argparse, json, os, pickle
+import numpy as np
+
+ap = argparse.ArgumentParser(); ap.add_argument("--episode", required=True); ap.add_argument("--scenario", required=True)
+ap.add_argument("--replay", default="replay_bigbounds"); ap.add_argument("--out", required=True)
+A = ap.parse_args()
+
+
+def qmat(q):
+    w, x, y, z = q
+    return np.array([[1 - 2 * (y * y + z * z), 2 * (x * y - z * w), 2 * (x * z + y * w)],
+                     [2 * (x * y + z * w), 1 - 2 * (x * x + z * z), 2 * (y * z - x * w)],
+                     [2 * (x * z - y * w), 2 * (y * z + x * w), 1 - 2 * (x * x + y * y)]])
+
+
+z = np.load(os.path.join(A.episode, "positions", "batch000.npz"))
+P = z["predicted"].reshape(-1, *z["predicted"].shape[-3:])[0].astype(np.float32)          # [T, N, 3]
+oid = np.asarray(z["object_ids"]).reshape(-1)[:P.shape[1]]
+dough, pad = oid == 0, oid != 0
+r = pickle.load(open(os.path.join(A.episode, A.replay, "replay.pkl"), "rb"))
+sb, sp, sq, fs = np.asarray(r["sim_object_particles"]), np.asarray(r["sim_pusher_pos"]), np.asarray(r["sim_pusher_quat"]), int(r["frame_skip"])
+T = P.shape[0]; idx = np.clip(np.arange(1, T) * fs - 1, 0, len(sb) - 1)
+p0, q0 = np.asarray(r["pred_pusher_pos"])[0], np.asarray(r["pred_pusher_quat"])[0]
+S = np.zeros_like(P); S[0] = P[0]
+nd = int(dough.sum()); S[1:, dough] = sb[idx][:, :nd] if sb.shape[1] >= nd else np.pad(sb[idx], ((0, 0), (0, nd - sb.shape[1]), (0, 0)), mode="edge")
+loc = (P[0, pad] - p0) @ qmat(q0)                                                            # paddle points in the planned frame-0 paddle frame
+for f, i in zip(range(1, T), idx):
+    S[f, pad] = loc @ qmat(sq[i]).T + sp[i]
+off = np.load(A.scenario)["target_offset_xy"]; c0 = P[0, dough].mean(0)
+target = np.array([[c0[0] + off[0], c0[1] + off[1], c0[2]]], np.float32)
+roles = np.where(dough, 2, 0).astype(np.int8)[None]
+os.makedirs(os.path.join(A.out, "replay_genesis"), exist_ok=True)
+np.savez(os.path.join(A.out, "rollout.npz"), predicted=P[None], unguided=P[None], gt=P[None], roles=roles, object_mask=dough[None], object_ids=oid[None],
+         target=target, offsets=np.array([[off[0], off[1], 0.0]], np.float32), boxes=np.zeros((0, 6), np.float32), trace_mm=np.zeros((1, 1), np.float32),
+         episodes=np.array([os.path.basename(A.episode.rstrip("/"))]), step=np.array(0))
+np.savez(os.path.join(A.out, "replay_genesis", "replay.npz"), sim=S[None, None], sim_roles=roles, variants=np.array(json.dumps(["guided"])))
+cT = S[-1, dough].mean(0); sim_mm = float(np.linalg.norm(cT[:2] - target[0, :2]) * 1e3); gen_mm = float(np.linalg.norm(P[-1, dough].mean(0)[:2] - target[0, :2]) * 1e3)
+json.dump(dict(domain="mould", task="move", sim="genesis", name=os.path.basename(A.out), method="pointworld", source_episode=os.path.abspath(A.episode),
+               replay=A.replay, gen_to_target_mm=gen_mm, sim_to_target_mm=sim_mm), open(os.path.join(A.out, "result.json"), "w"), indent=1)
+print(f"wrote {A.out}: T={T} dough {nd} paddle {int(pad.sum())}  imagined {gen_mm:.1f} mm  sim {sim_mm:.1f} mm  start {np.linalg.norm(off)*1e3:.1f} mm")

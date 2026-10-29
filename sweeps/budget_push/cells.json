@@ -1,0 +1,176 @@
+[
+ {
+  "curve": "A",
+  "budget": 100,
+  "P": 3,
+  "I": 36
+ },
+ {
+  "curve": "B",
+  "budget": 100,
+  "P": 37,
+  "I": 6
+ },
+ {
+  "curve": "C",
+  "budget": 100,
+  "P": 14,
+  "I": 14
+ },
+ {
+  "curve": "A",
+  "budget": 90,
+  "P": 3,
+  "I": 32
+ },
+ {
+  "curve": "B",
+  "budget": 90,
+  "P": 33,
+  "I": 6
+ },
+ {
+  "curve": "C",
+  "budget": 90,
+  "P": 13,
+  "I": 13
+ },
+ {
+  "curve": "A",
+  "budget": 80,
+  "P": 3,
+  "I": 29
+ },
+ {
+  "curve": "B",
+  "budget": 80,
+  "P": 29,
+  "I": 6
+ },
+ {
+  "curve": "C",
+  "budget": 80,
+  "P": 12,
+  "I": 12
+ },
+ {
+  "curve": "A",
+  "budget": 70,
+  "P": 3,
+  "I": 25
+ },
+ {
+  "curve": "B",
+  "budget": 70,
+  "P": 24,
+  "I": 6
+ },
+ {
+  "curve": "C",
+  "budget": 70,
+  "P": 11,
+  "I": 11
+ },
+ {
+  "curve": "A",
+  "budget": 60,
+  "P": 3,
+  "I": 22
+ },
+ {
+  "curve": "B",
+  "budget": 60,
+  "P": 20,
+  "I": 6
+ },
+ {
+  "curve": "C",
+  "budget": 60,
+  "P": 10,
+  "I": 10
+ },
+ {
+  "curve": "A",
+  "budget": 50,
+  "P": 3,
+  "I": 18
+ },
+ {
+  "curve": "B",
+  "budget": 50,
+  "P": 16,
+  "I": 6
+ },
+ {
+  "curve": "C",
+  "budget": 50,
+  "P": 9,
+  "I": 9
+ },
+ {
+  "curve": "A",
+  "budget": 40,
+  "P": 3,
+  "I": 14
+ },
+ {
+  "curve": "B",
+  "budget": 40,
+  "P": 12,
+  "I": 6
+ },
+ {
+  "curve": "C",
+  "budget": 40,
+  "P": 8,
+  "I": 8
+ },
+ {
+  "curve": "A",
+  "budget": 30,
+  "P": 3,
+  "I": 11
+ },
+ {
+  "curve": "B",
+  "budget": 30,
+  "P": 8,
+  "I": 6
+ },
+ {
+  "curve": "C",
+  "budget": 30,
+  "P": 7,
+  "I": 7
+ },
+ {
+  "curve": "A",
+  "budget": 20,
+  "P": 3,
+  "I": 7
+ },
+ {
+  "curve": "B",
+  "budget": 20,
+  "P": 4,
+  "I": 6
+ },
+ {
+  "curve": "C",
+  "budget": 20,
+  "P": 5,
+  "I": 5
+ },
+ {
+  "curve": "A",
+  "budget": 10,
+  "P": 3,
+  "I": 3
+ },
+ {
+  "curve": "B",
+  "budget": 10,
+  "P": 1,
+  "I": 6
+ }
+]

@@ -1,0 +1,65 @@
+[
+ {
+  "label": "drinking_glass_asset_0013",
+  "pool_row": 154,
+  "f0_obj_centroid_model": [
+   0.36771702766418457,
+   0.11325673758983612,
+   0.14739735424518585
+  ]
+ },
+ {
+  "label": "drinking_glass_asset_0036",
+  "pool_row": 171,
+  "f0_obj_centroid_model": [
+   0.4866884648799896,
+   -0.19654254615306854,
+   0.14674818515777588
+  ]
+ },
+ {
+  "label": "drinking_glass_asset_0004",
+  "pool_row": 180,
+  "f0_obj_centroid_model": [
+   0.3907216787338257,
+   0.2893843948841095,
+   0.1453055441379547
+  ]
+ },
+ {
+  "label": "drinking_glass_asset_0007",
+  "pool_row": 213,
+  "f0_obj_centroid_model": [
+   0.558368980884552,
+   0.11925537139177322,
+   0.14730283617973328
+  ]
+ },
+ {
+  "label": "wine_glass_asset_0022",
+  "pool_row": 141,
+  "f0_obj_centroid_model": [
+   0.38032034039497375,
+   -0.05280037969350815,
+   0.22710947692394257
+  ]
+ },
+ {
+  "label": "wine_glass_asset_0074",
+  "pool_row": 189,
+  "f0_obj_centroid_model": [
+   0.3997361660003662,
+   -0.0026137884706258774,
+   0.14512749016284943
+  ]
+ },
+ {
+  "label": "wine_glass_asset_0083",
+  "pool_row": 233,
+  "f0_obj_centroid_model": [
+   0.21759934723377228,
+   0.030658220872282982,
+   0.23126117885112762
+  ]
+ }
+]

@@ -1,0 +1,898 @@
+[
+ {
+  "name": "letters_R_it24_lr0.1",
+  "letter": "R",
+  "knobs": "R it24 lr 0.1 unitgrad S6 tf0.8 N150 frames all seed 0",
+  "picked": 2,
+  "imagined_obj_mm": [
+   6.37,
+   6.66,
+   6.1
+  ],
+  "imagined_last_mm": [
+   6.94,
+   9.91,
+   6.46
+  ],
+  "unguided_last_mm": [
+   7.71,
+   9.98,
+   13.68
+  ],
+  "guide_s": 237.6,
+  "peak_gib": 12.5,
+  "sim_mm": {
+   "0": 6.6,
+   "1": 8.58,
+   "2": 8.18
+  },
+  "sim_picked_mm": 8.18,
+  "sim_best_mm": 6.6,
+  "sim_best_member": 0,
+  "gap_mm": 1.73
+ },
+ {
+  "name": "letters_C_it24_lr0.1",
+  "letter": "C",
+  "knobs": "C it24 lr 0.1 unitgrad S6 tf0.8 N150 frames all seed 0",
+  "picked": 0,
+  "imagined_obj_mm": [
+   9.8,
+   12.82,
+   13.16
+  ],
+  "imagined_last_mm": [
+   9.27,
+   9.73,
+   4.67
+  ],
+  "unguided_last_mm": [
+   14.41,
+   16.6,
+   16.9
+  ],
+  "guide_s": 300.9,
+  "peak_gib": 12.5,
+  "sim_mm": {
+   "0": 8.14,
+   "1": 9.93,
+   "2": 5.14
+  },
+  "sim_picked_mm": 8.14,
+  "sim_best_mm": 5.14,
+  "sim_best_member": 2,
+  "gap_mm": 1.13
+ },
+ {
+  "name": "letters_L_it24_lr0.1",
+  "letter": "L",
+  "knobs": "L it24 lr 0.1 unitgrad S6 tf0.8 N150 frames all seed 0",
+  "picked": 0,
+  "imagined_obj_mm": [
+   9.28,
+   11.79,
+   11.16
+  ],
+  "imagined_last_mm": [
+   9.29,
+   8.74,
+   7.86
+  ],
+  "unguided_last_mm": [
+   13.83,
+   14.37,
+   19.74
+  ],
+  "guide_s": 300.9,
+  "peak_gib": 12.5,
+  "sim_mm": {
+   "0": 10.42,
+   "1": 9.51,
+   "2": 11.92
+  },
+  "sim_picked_mm": 10.42,
+  "sim_best_mm": 9.51,
+  "sim_best_member": 1,
+  "gap_mm": 4.05
+ },
+ {
+  "name": "letters_I_it24_lr0.1",
+  "letter": "I",
+  "knobs": "I it24 lr 0.1 unitgrad S6 tf0.8 N150 frames all seed 0",
+  "picked": 2,
+  "imagined_obj_mm": [
+   12.93,
+   10.5,
+   9.77
+  ],
+  "imagined_last_mm": [
+   7.29,
+   8.6,
+   6.25
+  ],
+  "unguided_last_mm": [
+   17.33,
+   21.18,
+   23.39
+  ],
+  "guide_s": 303.6,
+  "peak_gib": 12.5,
+  "sim_mm": {
+   "0": 8.67,
+   "1": 14.75,
+   "2": 8.62
+  },
+  "sim_picked_mm": 8.62,
+  "sim_best_mm": 8.62,
+  "sim_best_member": 2,
+  "gap_mm": 6.16
+ },
+ {
+  "name": "letters_R_it48_lr0.1",
+  "letter": "R",
+  "knobs": "R it48 lr 0.1 unitgrad S6 tf0.8 N150 frames all seed 0",
+  "picked": 2,
+  "imagined_obj_mm": [
+   6.17,
+   6.25,
+   5.71
+  ],
+  "imagined_last_mm": [
+   6.51,
+   5.78,
+   5.55
+  ],
+  "unguided_last_mm": [
+   7.71,
+   9.98,
+   13.68
+  ],
+  "guide_s": 540.8,
+  "peak_gib": 12.5,
+  "sim_mm": {
+   "0": 7.13,
+   "1": 6.38,
+   "2": 6.43
+  },
+  "sim_picked_mm": 6.43,
+  "sim_best_mm": 6.38,
+  "sim_best_member": 1,
+  "gap_mm": 0.88
+ },
+ {
+  "name": "letters_R_it24_lr0.05",
+  "letter": "R",
+  "knobs": "R it24 lr 0.05 unitgrad S6 tf0.8 N150 frames all seed 0",
+  "picked": 2,
+  "imagined_obj_mm": [
+   6.3,
+   6.77,
+   5.49
+  ],
+  "imagined_last_mm": [
+   6.22,
+   7.49,
+   5.12
+  ],
+  "unguided_last_mm": [
+   7.71,
+   9.98,
+   13.68
+  ],
+  "guide_s": 302.3,
+  "peak_gib": 12.5,
+  "sim_mm": {
+   "0": 6.28,
+   "1": 7.44,
+   "2": 6.97
+  },
+  "sim_picked_mm": 6.97,
+  "sim_best_mm": 6.28,
+  "sim_best_member": 0,
+  "gap_mm": 1.84
+ },
+ {
+  "name": "letters_R_it24_lr0.2",
+  "letter": "R",
+  "knobs": "R it24 lr 0.2 unitgrad S6 tf0.8 N150 frames all seed 0",
+  "picked": 2,
+  "imagined_obj_mm": [
+   6.36,
+   6.48,
+   5.67
+  ],
+  "imagined_last_mm": [
+   5.03,
+   6.92,
+   5.35
+  ],
+  "unguided_last_mm": [
+   7.71,
+   9.98,
+   13.68
+  ],
+  "guide_s": 304.4,
+  "peak_gib": 12.5,
+  "sim_mm": {
+   "0": 5.03,
+   "1": 7.05,
+   "2": 6.74
+  },
+  "sim_picked_mm": 6.74,
+  "sim_best_mm": 5.03,
+  "sim_best_member": 0,
+  "gap_mm": 1.39
+ },
+ {
+  "name": "letters_R_it48_lr0.2to0.02",
+  "letter": "R",
+  "knobs": "R it48 lr 0.2->0.02 unitgrad S6 tf0.8 N150 frames all seed 0",
+  "picked": 2,
+  "imagined_obj_mm": [
+   6.48,
+   5.94,
+   5.34
+  ],
+  "imagined_last_mm": [
+   6.7,
+   4.5,
+   4.87
+  ],
+  "unguided_last_mm": [
+   7.71,
+   9.98,
+   13.68
+  ],
+  "guide_s": 544.0,
+  "peak_gib": 12.5,
+  "sim_mm": {
+   "0": 7.3,
+   "1": 6.51,
+   "2": 6.49
+  },
+  "sim_picked_mm": 6.49,
+  "sim_best_mm": 6.49,
+  "sim_best_member": 2,
+  "gap_mm": 2.01
+ },
+ {
+  "name": "letters_R_it24_tf0.5",
+  "letter": "R",
+  "knobs": "R it24 lr 0.1 unitgrad S6 tf0.5 N150 frames all seed 0",
+  "picked": 0,
+  "imagined_obj_mm": [
+   7.64,
+   8.97,
+   8.44
+  ],
+  "imagined_last_mm": [
+   7.71,
+   37.83,
+   11.36
+  ],
+  "unguided_last_mm": [
+   7.71,
+   9.98,
+   13.68
+  ],
+  "guide_s": 304.6,
+  "peak_gib": 12.5,
+  "sim_mm": {
+   "0": 7.16,
+   "1": 25.32,
+   "2": 11.16
+  },
+  "sim_picked_mm": 7.16,
+  "sim_best_mm": 7.16,
+  "sim_best_member": 0,
+  "gap_mm": 12.5
+ },
+ {
+  "name": "letters_R_it24_tf0.65",
+  "letter": "R",
+  "knobs": "R it24 lr 0.1 unitgrad S6 tf0.65 N150 frames all seed 0",
+  "picked": 2,
+  "imagined_obj_mm": [
+   7.33,
+   6.84,
+   6.44
+  ],
+  "imagined_last_mm": [
+   7.19,
+   16.0,
+   6.71
+  ],
+  "unguided_last_mm": [
+   7.71,
+   9.98,
+   13.68
+  ],
+  "guide_s": 303.1,
+  "peak_gib": 12.5,
+  "sim_mm": {
+   "0": 6.74,
+   "1": 7.45,
+   "2": 9.74
+  },
+  "sim_picked_mm": 9.74,
+  "sim_best_mm": 6.74,
+  "sim_best_member": 0,
+  "gap_mm": 8.55
+ },
+ {
+  "name": "letters_R_it24_last15",
+  "letter": "R",
+  "knobs": "R it24 lr 0.1 unitgrad S6 tf0.8 N150 frames 15 seed 0",
+  "picked": 1,
+  "imagined_obj_mm": [
+   5.88,
+   4.82,
+   6.01
+  ],
+  "imagined_last_mm": [
+   6.16,
+   4.81,
+   6.01
+  ],
+  "unguided_last_mm": [
+   7.71,
+   9.98,
+   13.68
+  ],
+  "guide_s": 302.8,
+  "peak_gib": 8.3,
+  "sim_mm": {
+   "0": 6.72,
+   "1": 5.03,
+   "2": 6.96
+  },
+  "sim_picked_mm": 5.03,
+  "sim_best_mm": 5.03,
+  "sim_best_member": 1,
+  "gap_mm": 0.95
+ },
+ {
+  "name": "letters_R_it24_last1",
+  "letter": "R",
+  "knobs": "R it24 lr 0.1 unitgrad S6 tf0.8 N150 frames 1 seed 0",
+  "picked": 1,
+  "imagined_obj_mm": [
+   6.92,
+   4.75,
+   5.68
+  ],
+  "imagined_last_mm": [
+   6.92,
+   4.75,
+   5.68
+  ],
+  "unguided_last_mm": [
+   7.71,
+   9.98,
+   13.68
+  ],
+  "guide_s": 301.5,
+  "peak_gib": 8.3,
+  "sim_mm": {
+   "0": 7.12,
+   "1": 5.06,
+   "2": 6.6
+  },
+  "sim_picked_mm": 5.06,
+  "sim_best_mm": 5.06,
+  "sim_best_member": 1,
+  "gap_mm": 0.93
+ },
+ {
+  "name": "letters_C_it48_lr0.1",
+  "letter": "C",
+  "knobs": "C it48 lr 0.1 unitgrad S6 tf0.8 N150 frames all seed 0",
+  "picked": 0,
+  "imagined_obj_mm": [
+   5.74,
+   7.89,
+   8.35
+  ],
+  "imagined_last_mm": [
+   4.94,
+   6.3,
+   5.01
+  ],
+  "unguided_last_mm": [
+   14.41,
+   16.6,
+   16.9
+  ],
+  "guide_s": 543.3,
+  "peak_gib": 12.5,
+  "sim_mm": {
+   "0": 18.69,
+   "1": 16.31,
+   "2": 14.14
+  },
+  "sim_picked_mm": 18.69,
+  "sim_best_mm": 14.14,
+  "sim_best_member": 2,
+  "gap_mm": 13.75
+ },
+ {
+  "name": "letters_L_it48_lr0.1",
+  "letter": "L",
+  "knobs": "L it48 lr 0.1 unitgrad S6 tf0.8 N150 frames all seed 0",
+  "picked": 2,
+  "imagined_obj_mm": [
+   11.76,
+   12.95,
+   9.11
+  ],
+  "imagined_last_mm": [
+   10.64,
+   10.0,
+   5.3
+  ],
+  "unguided_last_mm": [
+   13.83,
+   14.37,
+   19.74
+  ],
+  "guide_s": 542.6,
+  "peak_gib": 12.5,
+  "sim_mm": {
+   "0": 11.38,
+   "1": 17.03,
+   "2": 15.84
+  },
+  "sim_picked_mm": 15.84,
+  "sim_best_mm": 11.38,
+  "sim_best_member": 0,
+  "gap_mm": 10.54
+ },
+ {
+  "name": "letters_I_it48_lr0.1",
+  "letter": "I",
+  "knobs": "I it48 lr 0.1 unitgrad S6 tf0.8 N150 frames all seed 0",
+  "picked": 2,
+  "imagined_obj_mm": [
+   10.22,
+   10.13,
+   9.4
+  ],
+  "imagined_last_mm": [
+   6.33,
+   9.69,
+   5.87
+  ],
+  "unguided_last_mm": [
+   17.33,
+   21.18,
+   23.39
+  ],
+  "guide_s": 541.9,
+  "peak_gib": 12.5,
+  "sim_mm": {
+   "0": 8.37,
+   "1": 14.56,
+   "2": 11.45
+  },
+  "sim_picked_mm": 11.45,
+  "sim_best_mm": 8.37,
+  "sim_best_member": 0,
+  "gap_mm": 5.57
+ },
+ {
+  "name": "letters_R_it24_S10",
+  "letter": "R",
+  "knobs": "R it24 lr 0.1 unitgrad S10 tf0.8 N150 frames all seed 0",
+  "picked": 1,
+  "imagined_obj_mm": [
+   6.88,
+   5.14,
+   6.74
+  ],
+  "imagined_last_mm": [
+   6.14,
+   4.96,
+   6.38
+  ],
+  "unguided_last_mm": [
+   6.57,
+   11.86,
+   8.34
+  ],
+  "guide_s": 464.9,
+  "peak_gib": 12.7,
+  "sim_mm": {
+   "0": 6.91,
+   "1": 5.44,
+   "2": 6.25
+  },
+  "sim_picked_mm": 5.44,
+  "sim_best_mm": 5.44,
+  "sim_best_member": 1,
+  "gap_mm": 0.77
+ },
+ {
+  "name": "letters_R_it24_adam0.1",
+  "letter": "R",
+  "knobs": "R it24 lr 0.1 adam S6 tf0.8 N150 frames all seed 0",
+  "picked": 2,
+  "imagined_obj_mm": [
+   6.17,
+   6.42,
+   5.85
+  ],
+  "imagined_last_mm": [
+   4.78,
+   7.53,
+   5.49
+  ],
+  "unguided_last_mm": [
+   7.71,
+   9.98,
+   13.68
+  ],
+  "guide_s": 304.7,
+  "peak_gib": 12.5,
+  "sim_mm": {
+   "0": 5.34,
+   "1": 7.72,
+   "2": 6.65
+  },
+  "sim_picked_mm": 6.65,
+  "sim_best_mm": 5.34,
+  "sim_best_member": 0,
+  "gap_mm": 1.16
+ },
+ {
+  "name": "letters_R_it24_lr0.1_seed1",
+  "letter": "R",
+  "knobs": "R it24 lr 0.1 unitgrad S6 tf0.8 N150 frames all seed 1",
+  "picked": 0,
+  "imagined_obj_mm": [
+   6.42,
+   6.84,
+   6.85
+  ],
+  "imagined_last_mm": [
+   9.36,
+   6.82,
+   7.19
+  ],
+  "unguided_last_mm": [
+   14.96,
+   13.21,
+   13.43
+  ],
+  "guide_s": 303.9,
+  "peak_gib": 12.5,
+  "sim_mm": {
+   "0": 11.12,
+   "1": 7.22,
+   "2": 7.32
+  },
+  "sim_picked_mm": 11.12,
+  "sim_best_mm": 7.22,
+  "sim_best_member": 1,
+  "gap_mm": 1.76
+ },
+ {
+  "name": "letters_R_it96_lr0.1",
+  "letter": "R",
+  "knobs": "R it96 lr 0.1 unitgrad S6 tf0.8 N150 frames all seed 0",
+  "picked": 2,
+  "imagined_obj_mm": [
+   5.68,
+   6.38,
+   5.25
+  ],
+  "imagined_last_mm": [
+   5.57,
+   6.68,
+   4.49
+  ],
+  "unguided_last_mm": [
+   7.71,
+   9.98,
+   13.68
+  ],
+  "guide_s": 1023.8,
+  "peak_gib": 12.5,
+  "sim_mm": {
+   "0": 6.24,
+   "1": 8.09,
+   "2": 6.37
+  },
+  "sim_picked_mm": 6.37,
+  "sim_best_mm": 6.24,
+  "sim_best_member": 0,
+  "gap_mm": 1.88
+ },
+ {
+  "name": "letters_R_it48_lr0.1to0.01",
+  "letter": "R",
+  "knobs": "R it48 lr 0.1->0.01 unitgrad S6 tf0.8 N150 frames all seed 0",
+  "picked": 2,
+  "imagined_obj_mm": [
+   5.92,
+   5.67,
+   5.41
+  ],
+  "imagined_last_mm": [
+   5.66,
+   4.35,
+   6.62
+  ],
+  "unguided_last_mm": [
+   7.71,
+   9.98,
+   13.68
+  ],
+  "guide_s": 536.8,
+  "peak_gib": 12.5,
+  "sim_mm": {
+   "0": 6.12,
+   "1": 6.15,
+   "2": 7.86
+  },
+  "sim_picked_mm": 7.86,
+  "sim_best_mm": 6.12,
+  "sim_best_member": 0,
+  "gap_mm": 1.81
+ },
+ {
+  "name": "letters_R_it24_T200",
+  "letter": "R",
+  "knobs": "R it24 lr 0.1 unitgrad S6 tf0.8 N200 frames all seed 0",
+  "picked": 1,
+  "imagined_obj_mm": [
+   6.15,
+   5.58,
+   6.15
+  ],
+  "imagined_last_mm": [
+   6.49,
+   5.29,
+   8.05
+  ],
+  "unguided_last_mm": [
+   9.59,
+   11.48,
+   11.04
+  ],
+  "guide_s": 373.0,
+  "peak_gib": 16.6,
+  "sim_mm": {
+   "0": 7.06,
+   "1": 5.66,
+   "2": 8.19
+  },
+  "sim_picked_mm": 5.66,
+  "sim_best_mm": 5.66,
+  "sim_best_member": 1,
+  "gap_mm": 0.57
+ },
+ {
+  "name": "letters_C_it48_lr0.2to0.02",
+  "letter": "C",
+  "knobs": "C it48 lr 0.2->0.02 unitgrad S6 tf0.8 N150 frames all seed 0",
+  "picked": 2,
+  "imagined_obj_mm": [
+   6.34,
+   11.58,
+   5.66
+  ],
+  "imagined_last_mm": [
+   7.45,
+   11.19,
+   3.51
+  ],
+  "unguided_last_mm": [
+   14.41,
+   16.6,
+   16.9
+  ],
+  "guide_s": 551.9,
+  "peak_gib": 12.5,
+  "sim_mm": {
+   "0": 15.76,
+   "1": 15.85,
+   "2": 16.31
+  },
+  "sim_picked_mm": 16.31,
+  "sim_best_mm": 15.76,
+  "sim_best_member": 0,
+  "gap_mm": 12.79
+ },
+ {
+  "name": "letters_L_it48_lr0.2to0.02",
+  "letter": "L",
+  "knobs": "L it48 lr 0.2->0.02 unitgrad S6 tf0.8 N150 frames all seed 0",
+  "picked": 2,
+  "imagined_obj_mm": [
+   11.32,
+   12.7,
+   8.87
+  ],
+  "imagined_last_mm": [
+   15.46,
+   5.46,
+   5.79
+  ],
+  "unguided_last_mm": [
+   13.83,
+   14.37,
+   19.74
+  ],
+  "guide_s": 531.7,
+  "peak_gib": 12.5,
+  "sim_mm": {
+   "0": 15.58,
+   "1": 5.31,
+   "2": 15.67
+  },
+  "sim_picked_mm": 15.67,
+  "sim_best_mm": 5.31,
+  "sim_best_member": 1,
+  "gap_mm": 9.88
+ },
+ {
+  "name": "letters_I_it48_lr0.2to0.02",
+  "letter": "I",
+  "knobs": "I it48 lr 0.2->0.02 unitgrad S6 tf0.8 N150 frames all seed 0",
+  "picked": 2,
+  "imagined_obj_mm": [
+   10.22,
+   10.25,
+   3.64
+  ],
+  "imagined_last_mm": [
+   9.97,
+   9.67,
+   3.22
+  ],
+  "unguided_last_mm": [
+   17.33,
+   21.18,
+   23.39
+  ],
+  "guide_s": 528.7,
+  "peak_gib": 12.5,
+  "sim_mm": {
+   "0": 9.41,
+   "1": 13.38,
+   "2": 10.18
+  },
+  "sim_picked_mm": 10.18,
+  "sim_best_mm": 9.41,
+  "sim_best_member": 0,
+  "gap_mm": 6.96
+ },
+ {
+  "name": "letters_C_it24_tf0.5",
+  "letter": "C",
+  "knobs": "C it24 lr 0.1 unitgrad S6 tf0.5 N150 frames all seed 0",
+  "picked": 0,
+  "imagined_obj_mm": [
+   13.54,
+   13.81,
+   14.7
+  ],
+  "imagined_last_mm": [
+   9.86,
+   13.37,
+   9.95
+  ],
+  "unguided_last_mm": [
+   14.41,
+   16.6,
+   16.9
+  ],
+  "guide_s": 298.7,
+  "peak_gib": 12.5,
+  "sim_mm": {
+   "0": 22.25,
+   "1": 13.09,
+   "2": 12.15
+  },
+  "sim_picked_mm": 22.25,
+  "sim_best_mm": 12.15,
+  "sim_best_member": 2,
+  "gap_mm": 12.4
+ },
+ {
+  "name": "letters_L_it24_tf0.5",
+  "letter": "L",
+  "knobs": "L it24 lr 0.1 unitgrad S6 tf0.5 N150 frames all seed 0",
+  "picked": 1,
+  "imagined_obj_mm": [
+   14.83,
+   14.43,
+   17.25
+  ],
+  "imagined_last_mm": [
+   13.95,
+   13.35,
+   19.74
+  ],
+  "unguided_last_mm": [
+   13.83,
+   14.37,
+   19.74
+  ],
+  "guide_s": 298.8,
+  "peak_gib": 12.5,
+  "sim_mm": {
+   "0": 17.03,
+   "1": 14.72,
+   "2": 19.32
+  },
+  "sim_picked_mm": 14.72,
+  "sim_best_mm": 14.72,
+  "sim_best_member": 1,
+  "gap_mm": 3.08
+ },
+ {
+  "name": "letters_I_it24_tf0.5",
+  "letter": "I",
+  "knobs": "I it24 lr 0.1 unitgrad S6 tf0.5 N150 frames all seed 0",
+  "picked": 0,
+  "imagined_obj_mm": [
+   10.27,
+   13.07,
+   14.16
+  ],
+  "imagined_last_mm": [
+   10.26,
+   9.84,
+   44.94
+  ],
+  "unguided_last_mm": [
+   17.33,
+   21.18,
+   23.39
+  ],
+  "guide_s": 298.0,
+  "peak_gib": 12.5,
+  "sim_mm": {
+   "0": 13.37,
+   "1": 12.06,
+   "2": 18.04
+  },
+  "sim_picked_mm": 13.37,
+  "sim_best_mm": 12.06,
+  "sim_best_member": 1,
+  "gap_mm": 26.91
+ },
+ {
+  "name": "letters_R_it96_lr0.2to0.02",
+  "letter": "R",
+  "knobs": "R it96 lr 0.2->0.02 unitgrad S6 tf0.8 N150 frames all seed 0",
+  "picked": 2,
+  "imagined_obj_mm": [
+   5.72,
+   4.32,
+   3.84
+  ],
+  "imagined_last_mm": [
+   5.15,
+   3.79,
+   3.27
+  ],
+  "unguided_last_mm": [
+   7.71,
+   9.98,
+   13.68
+  ],
+  "guide_s": 998.0,
+  "peak_gib": 12.5,
+  "sim_mm": {
+   "0": 5.67,
+   "1": 6.37,
+   "2": 14.81
+  },
+  "sim_picked_mm": 14.81,
+  "sim_best_mm": 5.67,
+  "sim_best_member": 0,
+  "gap_mm": 11.54
+ }
+]

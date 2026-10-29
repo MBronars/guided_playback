@@ -1,0 +1,33 @@
+{
+ "description": "rl_push baselines on the near-start set sweeps/rlpush_cl_near5.json; frame-0 state = our round-0 rollout (edited scene), member 0 frame 0",
+ "source_spec": "sweeps/rlpush_cl_near5.json",
+ "horizon": 40,
+ "commit": 10,
+ "problems": [
+  {
+   "id": "N018",
+   "loader": 18,
+   "state": "runs/rl_push/rlpnear5_N018_r0/rollout.npz"
+  },
+  {
+   "id": "N037",
+   "loader": 37,
+   "state": "runs/rl_push/rlpnear5_N037_r0/rollout.npz"
+  },
+  {
+   "id": "N049",
+   "loader": 49,
+   "state": "runs/rl_push/rlpnear5_N049_r0/rollout.npz"
+  },
+  {
+   "id": "N121",
+   "loader": 121,
+   "state": "runs/rl_push/rlpnear5_N121_r0/rollout.npz"
+  },
+  {
+   "id": "N186",
+   "loader": 186,
+   "state": "runs/rl_push/rlpnear5_N186_r0/rollout.npz"
+  }
+ ]
+}

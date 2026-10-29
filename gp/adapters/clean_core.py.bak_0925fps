@@ -1,0 +1,182 @@
+"""Shared pieces for push0418 streaming churn guidance: data, schedule, differentiable churn staircase, draw optimizer.
+
+Staircase = inference.streaming_chain (levels, window, commits) with a per-row churn (or Euler) update. The global RNG
+is reseeded before every rollout (the UNet draws its FPS ladder start from it each forward).
+"""
+import json, math, sys
+from dataclasses import replace
+
+import torch
+from torch.utils.checkpoint import checkpoint as _ckpt
+
+sys.path.insert(0, "/data/user_data/mbronars/packages/pwm_final_clean")
+from omegaconf import OmegaConf  # noqa: E402
+from inference import (load_model_and_diffusion, streaming_noise, streaming_schedule_levels,  # noqa: E402
+                       _stream_window, _stream_frame_positions)
+from data.dataset import create_dataloader  # noqa: E402
+from utils.conditioning import hide_actions, model_metadata  # noqa: E402
+from utils.pose_native import _integrate_and_write, pose_channel_mask  # noqa: E402
+
+CKPT = "/data/user_data/mbronars/packages/pwm_final_clean/runs/push0418_rigid_x0_rope_regpass_mix/checkpoints/final.pt"
+OFFSETS = "/data/user_data/mbronars/packages/pwm_production_unet/guidance_inference_results/raw256_target_offsets.json"
+
+
+def load(dev, ckpt=CKPT):
+    model, diffusion, cfg, _ = load_model_and_diffusion(ckpt, dev)
+    for prm in model.parameters():
+        prm.requires_grad_(False)
+    return model, diffusion, cfg
+
+
+def load_batch(cfg, dev, horizon=60, offsets=OFFSETS):
+    C = int(cfg.data.context_len)
+    ld = create_dataloader(
+        wds_location=cfg.data.wds_location, format=cfg.data.format, normalization=cfg.normalization,
+        prediction_target=cfg.prediction_target, context_len=C, future_len=horizon + 1 - C,
+        batch_size=cfg.data.batch_size, num_workers=0, emit_sidecar=cfg.data.emit_sidecar,
+        bucket_max_items=cfg.data.bucket_max_items, articulated=bool(cfg.model.get("articulated_bodies", False)),
+        domains=cfg.data.domains, seed=int(cfg.data.get("seed", 0)),
+        roots=OmegaConf.to_container(cfg.data.roots, resolve=True), training=False, shuffle=False,
+        no_shard_split=True, first_window=False, rigid_poses=bool(cfg.data.get("rigid_poses", True)), yaw_aug=False)
+    b = next(iter(ld)).to(dev)
+    T = b.positions.shape[1]
+    batch = replace(b, positions=b.positions[:, :1].expand(-1, T, -1, -1).clone(),
+                    body_poses=b.body_poses[:, :1].expand(-1, T, -1, -1, -1).clone(),
+                    pose_deltas_gt=torch.zeros_like(b.pose_deltas_gt))
+    valid = batch.get_valid_mask()
+    rows = ((batch.body_type == 1) & ~batch.pose_action_mask).gather(1, batch.particle_body) & valid
+    assert bool((rows == ((batch.object_ids == 0) & valid)).all())
+    offs = json.load(open(offsets))
+    offset = torch.tensor([[offs[str(e)][0], offs[str(e)][1], 0.0] for e in range(batch.batch_size)], device=dev)
+    target = centroid(b.positions[:, 0], rows) + offset
+    return b, batch, rows, target, offset
+
+
+def centroid(pos, r):
+    w = r.to(pos.dtype)[..., None]
+    return (pos * w).sum(-2) / w.sum(-2).clamp(min=1)
+
+
+def slice_batch(x, n):
+    """First n elements of a TrajectoryBatch (tensor fields only)."""
+    import dataclasses
+    return dataclasses.replace(x, **{f.name: getattr(x, f.name)[:n] for f in dataclasses.fields(x)
+                                     if torch.is_tensor(getattr(x, f.name))})
+
+
+class Staircase:
+    def __init__(self, model, diffusion, cfg, batch, steps, horizon=60, seed=0, amp_dtype=None):
+        self.model, self.diffusion, self.batch = model, diffusion, batch
+        self.base = model_metadata(model)
+        C, F = int(cfg.data.context_len), int(cfg.data.future_len)
+        self.Cm1, self.window, self.S, self.n_tr, self.seed = C - 1, F, int(steps), int(horizon), int(seed)
+        self.u = self.S / self.window
+        self.T_train = diffusion.num_train_timesteps
+        self.top = float(self.T_train) if bool(getattr(self.base, "_sampler_full_clock", False)) else float(self.T_train - 1)
+        self.hide = bool(getattr(self.base, "_hides_given_actions", False))
+        self.ridx = (batch.body_type[0] == 1).nonzero(as_tuple=True)[0]
+        assert pose_channel_mask(batch, self.ridx) is None
+        self.amp_dtype = amp_dtype
+        dev = batch.device
+        levels, call = [], 0
+        while True:
+            levels.append(streaming_schedule_levels(self.n_tr, self.S, self.u, call))
+            if bool((levels[-1] <= 0).all()):
+                break
+            call += 1
+        self.L = torch.stack(levels).to(dev)
+        self.n_calls = self.L.shape[0] - 1
+        t_next = self.L[1:] / self.S
+        stepped = (self.L[:-1] - self.L[1:]) > 0
+        self.used = stepped & (t_next > 0)
+        self.t_next = t_next
+
+    def draws(self, gen):
+        X0, P0 = streaming_noise(self.model, self.batch, self.n_tr, gen)
+        E = torch.randn((self.n_calls, self.n_tr, self.batch.batch_size, P0.shape[2], 6), device=P0.device, generator=gen)
+        return X0, P0, E
+
+    def opt_mask(self, t_freeze):
+        return (self.used & (self.t_next >= t_freeze))[:, :, None, None, None]
+
+    def rollout(self, X0, P0_, E_, mode="churn", timers=None):
+        torch.manual_seed(self.seed); torch.cuda.manual_seed(self.seed)
+        batch, B, S, top, T_train, Cm1 = self.batch, self.batch.batch_size, self.S, self.top, self.T_train, self.Cm1
+        use_ckpt = torch.is_grad_enabled()
+        ridx, dev = self.ridx, batch.device
+        valid = batch.get_valid_mask()
+        Ps = [P0_[:, j] for j in range(self.n_tr)]
+        R = [batch.body_poses[:, 0, ridx, :3, :3].float()]
+        Tt = [batch.body_poses[:, 0, ridx, :3, 3].float()]
+        pos = [batch.positions[:, 0]]
+        committed, c = 0, 0
+        while committed < self.n_tr:
+            lv, lvn = self.L[c], self.L[c + 1]
+            s = max(0, committed - Cm1)
+            nr = min(Cm1 + self.window, self.n_tr - s)
+            win = _stream_window(batch, pos[s], R[s], Tt[s], ridx, s, nr)
+            if self.hide:
+                win = hide_actions(win, 1.0)
+            tb = (lv[s:s + nr] / S * top).float().unsqueeze(0).expand(B, -1)
+            xc = torch.stack([X0[:, k] for k in range(s, s + Cm1)], 1)
+            xf = torch.stack([X0[:, k] for k in range(s + Cm1, s + nr)], 1)
+
+            def call_model(pc, pf, _win=win, _tb=tb, _xc=xc, _xf=xf):
+                with torch.autocast("cuda", dtype=self.amp_dtype, enabled=self.amp_dtype is not None):
+                    part_f, pose_f = self.model(_win, _xf, _tb[:, Cm1:], noisy_context=_xc, context_timesteps=_tb[:, :Cm1],
+                                                noisy_pose=pf, noisy_ctx_pose=pc)
+                    out = torch.cat([self.base._last_ctx_pose_pred, pose_f], 1)
+                assert part_f is None
+                return out.float()
+
+            pc = torch.stack(Ps[s:s + Cm1], 1); pf = torch.stack(Ps[s + Cm1:s + nr], 1)
+            pred = _ckpt(call_model, pc, pf, use_reentrant=False) if use_ckpt else call_model(pc, pf)
+            p_rows = torch.cat([pc, pf], 1)
+            dt = ((lv[s:s + nr] - lvn[s:s + nr]) / S * (top / T_train)).float()
+            tn = (lvn[s:s + nr] / S * (top / T_train)).float()
+            if mode == "euler":
+                v = self.diffusion.as_velocity(pred, p_rows, tb)
+            else:
+                x0 = self.diffusion.get_x0_est(pred, tb, p_rows)
+            for i in range(nr):
+                if float(dt[i]) > 0:
+                    j = s + i
+                    Ps[j] = Ps[j] - dt[i] * v[:, i] if mode == "euler" else (1 - tn[i]) * x0[:, i] + tn[i] * E_[c, j]
+            c += 1
+            while committed < self.n_tr and float(lvn[committed]) <= 0.0:
+                j = committed
+                raw = batch.pose_delta_stats.denormalize(torch.stack(Ps[s:j + 1], 1).float()).float()
+                dummy = torch.zeros((B, j + 1 - s, batch.positions.shape[2], 3), device=dev)
+                _, R_all, T_all = _integrate_and_write(win, ridx, raw, R[s], Tt[s], dummy, valid)
+                R.append(R_all[:, -1]); Tt.append(T_all[:, -1])
+                pos.append(_stream_frame_positions(batch, ridx, R_all[:, -1], T_all[:, -1], pos[j], X0[:, j]))
+                committed += 1
+        return torch.stack(pos, 1)
+
+
+def lr_at(it, iters, lr, lr_final):
+    if lr_final is None or iters <= 1:
+        return lr
+    return lr_final + (lr - lr_final) * 0.5 * (1 + math.cos(math.pi * it / (iters - 1)))
+
+
+def unit_scaled(g, D):
+    return g * (D ** 0.5 / g.flatten(-2).norm(dim=-1).clamp_min(1e-12))[..., None, None]
+
+
+def shell(x, D):
+    return x * (D ** 0.5 / x.flatten(-2).norm(dim=-1).clamp_min(1e-8))[..., None, None]
+
+
+def draw_step(sc, X0, P_cur, E_cur, rows, target, lr, opt_E):
+    """One joint-draw iteration: rollout with grad, distance, unit-gradient step + shell on the optimized draws."""
+    D = P_cur.shape[2] * 6
+    P_in = P_cur.detach().requires_grad_(True); E_in = E_cur.detach().requires_grad_(True)
+    pos = sc.rollout(X0, P_in, E_in, "churn")
+    d = (centroid(pos[:, -1], rows) - target).norm(dim=-1)
+    gP, gE = torch.autograd.grad(d.sum(), [P_in, E_in], allow_unused=True)
+    with torch.no_grad():
+        P_new = shell(P_cur - lr * unit_scaled(gP, D), D)
+        E_new = shell(E_cur - lr * unit_scaled(gE if gE is not None else torch.zeros_like(E_cur), D), D)
+        E_new = torch.where(opt_E, E_new, E_cur)
+    return d.detach(), P_new, E_new

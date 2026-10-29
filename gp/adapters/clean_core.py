@@ -9,7 +9,9 @@ from dataclasses import replace
 import torch
 from torch.utils.checkpoint import checkpoint as _ckpt
 
-sys.path.insert(0, "/data/user_data/mbronars/packages/pwm_final_clean")
+import os  # noqa: E402
+# GP_CLEAN_REPO (opt-in): another pwm_final_clean-compatible tree, e.g. mb/clean-flowmap for flow-map checkpoints
+sys.path.insert(0, os.environ.get("GP_CLEAN_REPO", "/data/user_data/mbronars/packages/pwm_final_clean"))
 from omegaconf import OmegaConf  # noqa: E402
 from inference import (load_model_and_diffusion, streaming_noise, streaming_schedule_levels,  # noqa: E402
                        _stream_window, _stream_frame_positions)
@@ -100,7 +102,8 @@ class Staircase:
         return (self.used & (self.t_next >= t_freeze))[:, :, None, None, None]
 
     def rollout(self, X0, P0_, E_, mode="churn", timers=None):
-        torch.manual_seed(self.seed); torch.cuda.manual_seed(self.seed)
+        if getattr(self, "reseed", True):                        # False (free_fps): FPS starts are fresh draws on every call (2026-09-25 option)
+            torch.manual_seed(self.seed); torch.cuda.manual_seed(self.seed)
         batch, B, S, top, T_train, Cm1 = self.batch, self.batch.batch_size, self.S, self.top, self.T_train, self.Cm1
         use_ckpt = torch.is_grad_enabled()
         ridx, dev = self.ridx, batch.device

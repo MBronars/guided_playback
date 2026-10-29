@@ -1,0 +1,380 @@
+[
+ {
+  "label": "wine_glass_asset_0022",
+  "f0_obj_centroid_model": [
+   -0.06967965960502626,
+   -0.05280037969350815,
+   0.12710947692394256
+  ],
+  "pool_index": 141,
+  "asset_id": 8938,
+  "asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/wine_glass/asset_0022",
+  "asset_verified": true,
+  "best_fit_asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/wine_glass/asset_0022",
+  "dims_mm": [
+   54.0,
+   54.0,
+   194.0
+  ],
+  "rho": 403.2121276855469,
+  "mu": 1.0,
+  "start_radius_m": 0.384
+ },
+ {
+  "label": "wine_glass_asset_0074",
+  "f0_obj_centroid_model": [
+   -0.0502638339996338,
+   -0.0026137884706258774,
+   0.04512749016284942
+  ],
+  "pool_index": 189,
+  "asset_id": 8990,
+  "asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/wine_glass/asset_0074",
+  "asset_verified": true,
+  "best_fit_asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/wine_glass/asset_0074",
+  "dims_mm": [
+   72.0,
+   179.0,
+   66.0
+  ],
+  "rho": 234.64144897460938,
+  "mu": 1.0,
+  "start_radius_m": 0.4
+ },
+ {
+  "label": "drinking_glass_asset_0013",
+  "f0_obj_centroid_model": [
+   -0.08228297233581544,
+   0.11325673758983612,
+   0.047397354245185846
+  ],
+  "pool_index": 154,
+  "asset_id": 5520,
+  "asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/drinking_glass/asset_0013",
+  "asset_verified": true,
+  "best_fit_asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/drinking_glass/asset_0013",
+  "dims_mm": [
+   104.0,
+   117.0,
+   69.0
+  ],
+  "rho": 921.2941284179688,
+  "mu": 1.0,
+  "start_radius_m": 0.385
+ },
+ {
+  "label": "drinking_glass_asset_0004",
+  "f0_obj_centroid_model": [
+   -0.05927832126617433,
+   0.2893843948841095,
+   0.045305544137954706
+  ],
+  "pool_index": 180,
+  "asset_id": 5511,
+  "asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/drinking_glass/asset_0004",
+  "asset_verified": true,
+  "best_fit_asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/drinking_glass/asset_0004",
+  "dims_mm": [
+   94.0,
+   81.0,
+   65.0
+  ],
+  "rho": 630.3775024414062,
+  "mu": 1.0,
+  "start_radius_m": 0.486
+ },
+ {
+  "label": "drinking_glass_asset_0036",
+  "f0_obj_centroid_model": [
+   0.03668846487998961,
+   -0.19654254615306854,
+   0.04674818515777587
+  ],
+  "pool_index": 171,
+  "asset_id": 5543,
+  "asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/drinking_glass/asset_0036",
+  "asset_verified": true,
+  "best_fit_asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/drinking_glass/asset_0036",
+  "dims_mm": [
+   111.0,
+   125.0,
+   68.0
+  ],
+  "rho": 632.1700439453125,
+  "mu": 1.0,
+  "start_radius_m": 0.525
+ },
+ {
+  "label": "wine_bottle_asset_0010",
+  "f0_obj_centroid_model": [
+   -0.12266649007797242,
+   0.26127615571022034,
+   0.08789322674274444
+  ],
+  "pool_index": 5,
+  "asset_id": 8826,
+  "asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/wine_bottle/asset_0010",
+  "asset_verified": true,
+  "best_fit_asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/wine_bottle/asset_0010",
+  "dims_mm": [
+   57.0,
+   57.0,
+   195.0
+  ],
+  "rho": 789.137451171875,
+  "mu": 1.0,
+  "start_radius_m": 0.419
+ },
+ {
+  "label": "wine_bottle_asset_0098",
+  "f0_obj_centroid_model": [
+   -0.178545218706131,
+   -0.3032473027706146,
+   0.037267097830772394
+  ],
+  "pool_index": 188,
+  "asset_id": 8914,
+  "asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/wine_bottle/asset_0098",
+  "asset_verified": true,
+  "best_fit_asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/wine_bottle/asset_0098",
+  "dims_mm": [
+   63.0,
+   197.0,
+   51.0
+  ],
+  "rho": 977.647705078125,
+  "mu": 1.0,
+  "start_radius_m": 0.407
+ },
+ {
+  "label": "oil_bottle_asset_0074",
+  "f0_obj_centroid_model": [
+   -0.11656160354614259,
+   -0.1992931067943573,
+   0.07476703226566314
+  ],
+  "pool_index": 12,
+  "asset_id": 6911,
+  "asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/oil_bottle/asset_0074",
+  "asset_verified": true,
+  "best_fit_asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/oil_bottle/asset_0074",
+  "dims_mm": [
+   65.0,
+   62.0,
+   156.0
+  ],
+  "rho": 705.3506469726562,
+  "mu": 1.0,
+  "start_radius_m": 0.388
+ },
+ {
+  "label": "ketchup_bottle_asset_0006",
+  "f0_obj_centroid_model": [
+   -0.08142600655555726,
+   -0.017176885157823563,
+   0.04036844670772552
+  ],
+  "pool_index": 125,
+  "asset_id": 6218,
+  "asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/ketchup_bottle/asset_0006",
+  "asset_verified": true,
+  "best_fit_asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/ketchup_bottle/asset_0006",
+  "dims_mm": [
+   91.0,
+   176.0,
+   57.0
+  ],
+  "rho": 871.8291625976562,
+  "mu": 1.0,
+  "start_radius_m": 0.369
+ },
+ {
+  "label": "syrup_bottle_asset_0041",
+  "f0_obj_centroid_model": [
+   -0.09941945672035218,
+   0.18265067040920258,
+   0.034675472974777216
+  ],
+  "pool_index": 69,
+  "asset_id": 8303,
+  "asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/syrup_bottle/asset_0041",
+  "asset_verified": true,
+  "best_fit_asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/syrup_bottle/asset_0041",
+  "dims_mm": [
+   113.0,
+   133.0,
+   46.0
+  ],
+  "rho": 1526.3780517578125,
+  "mu": 1.0,
+  "start_radius_m": 0.395
+ },
+ {
+  "label": "salt_shaker_asset_0047",
+  "f0_obj_centroid_model": [
+   -0.06627233028411866,
+   0.07090636342763901,
+   0.05218305587768554
+  ],
+  "pool_index": 108,
+  "asset_id": 7494,
+  "asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/salt_shaker/asset_0047",
+  "asset_verified": true,
+  "best_fit_asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/salt_shaker/asset_0047",
+  "dims_mm": [
+   58.0,
+   56.0,
+   93.0
+  ],
+  "rho": 626.8275756835938,
+  "mu": 1.0,
+  "start_radius_m": 0.39
+ },
+ {
+  "label": "pepper_shaker_asset_0046",
+  "f0_obj_centroid_model": [
+   -0.0770725429058075,
+   -0.20320527255535126,
+   0.03423818349838256
+  ],
+  "pool_index": 115,
+  "asset_id": 7228,
+  "asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/pepper_shaker/asset_0046",
+  "asset_verified": true,
+  "best_fit_asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/pepper_shaker/asset_0046",
+  "dims_mm": [
+   93.0,
+   65.0,
+   43.0
+  ],
+  "rho": 823.9994506835938,
+  "mu": 1.0,
+  "start_radius_m": 0.425
+ },
+ {
+  "label": "orange_asset_0014",
+  "f0_obj_centroid_model": [
+   -0.11903147101402284,
+   0.33661726117134094,
+   0.0598510593175888
+  ],
+  "pool_index": 80,
+  "asset_id": 6966,
+  "asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/orange/asset_0014",
+  "asset_verified": true,
+  "best_fit_asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/orange/asset_0014",
+  "dims_mm": [
+   67.0,
+   69.0,
+   68.0
+  ],
+  "rho": 569.7998657226562,
+  "mu": 1.0,
+  "start_radius_m": 0.472
+ },
+ {
+  "label": "pear_asset_0004",
+  "f0_obj_centroid_model": [
+   -0.06770695447921754,
+   -0.15042459964752197,
+   0.04624841511249542
+  ],
+  "pool_index": 201,
+  "asset_id": 7171,
+  "asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/pear/asset_0004",
+  "asset_verified": true,
+  "best_fit_asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/pear/asset_0004",
+  "dims_mm": [
+   100.0,
+   70.0,
+   68.0
+  ],
+  "rho": 431.75762939453125,
+  "mu": 1.100000023841858,
+  "start_radius_m": 0.411
+ },
+ {
+  "label": "moka_pot_asset_0047",
+  "f0_obj_centroid_model": [
+   -0.12573034763336183,
+   -0.3133198320865631,
+   0.04469814300537109
+  ],
+  "pool_index": 198,
+  "asset_id": 10616,
+  "asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/libero/moka_pot/asset_0047",
+  "asset_verified": true,
+  "best_fit_asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/libero/moka_pot/asset_0047",
+  "dims_mm": [
+   147.0,
+   83.0,
+   64.0
+  ],
+  "rho": 308.6465148925781,
+  "mu": 0.995698094367981,
+  "start_radius_m": 0.451
+ },
+ {
+  "label": "left_plate_asset_0164",
+  "f0_obj_centroid_model": [
+   0.1595837354660034,
+   0.060860250145196915,
+   0.04123213291168212
+  ],
+  "pool_index": 114,
+  "asset_id": 10497,
+  "asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/libero/left_plate/asset_0164",
+  "asset_verified": true,
+  "best_fit_asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/libero/left_plate/asset_0164",
+  "dims_mm": [
+   70.0,
+   121.0,
+   58.0
+  ],
+  "rho": 620.9031982421875,
+  "mu": 1.0433926582336426,
+  "start_radius_m": 0.613
+ },
+ {
+  "label": "salt_shaker_asset_0011",
+  "f0_obj_centroid_model": [
+   0.0026063203811645397,
+   -0.08691251277923584,
+   0.034369522333145136
+  ],
+  "pool_index": 22,
+  "asset_id": 7458,
+  "asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/salt_shaker/asset_0011",
+  "asset_verified": true,
+  "best_fit_asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/salt_shaker/asset_0011",
+  "dims_mm": [
+   91.0,
+   98.0,
+   45.0
+  ],
+  "rho": 949.404541015625,
+  "mu": 1.0,
+  "start_radius_m": 0.461
+ },
+ {
+  "label": "drinking_glass_asset_0007",
+  "f0_obj_centroid_model": [
+   0.10836898088455199,
+   0.11925537139177322,
+   0.04730283617973327
+  ],
+  "pool_index": 213,
+  "asset_id": 5514,
+  "asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/drinking_glass/asset_0007",
+  "asset_verified": true,
+  "best_fit_asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/drinking_glass/asset_0007",
+  "dims_mm": [
+   82.0,
+   98.0,
+   70.0
+  ],
+  "rho": 516.774658203125,
+  "mu": 0.8999999761581421,
+  "start_radius_m": 0.571
+ }
+]

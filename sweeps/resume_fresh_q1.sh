@@ -1,0 +1,31 @@
+#!/bin/bash
+# Resume queue 1 on a FRESH node (job $1): own pickup server :8769 on GPU 1 as its own srun step; Isaac/EGL launches serialized by a node lock.
+# usage: bash sweeps/resume_fresh_q1.sh <jobid>
+JOB=$1; cd /data/user_data/mbronars/packages/guided_playback
+NODE=$(squeue -j $JOB -h -o %N); echo "queue 1 on $NODE (job $JOB)"
+nohup srun --jobid=$JOB --overlap --export=ALL -N1 -n1 -c1 --job-name=gsrv1 bash -c "cd /data/user_data/mbronars/packages/guided_playback; CUDA_VISIBLE_DEVICES=1 exec /data/user_data/mbronars/.miniconda3/envs/pwm211/bin/python -u bin/serve.py --adapter clean_pickup --ckpt /data/user_data/mbronars/packages/pwm_final/runs/pickup_uncond_x0_regpass_cont200k/checkpoints/final.pt --port 8769 --warmup --warmup_transitions 60 --warmup_episodes 1,1,1,1 --warmup_iterations 1" > logs/serve_${NODE}_gpu1_8769.log 2>&1 &
+echo "server step pid $!"
+BODY=sweeps/_fresh_q1_body.sh
+cat > $BODY <<'BODYEOF'
+cd /data/user_data/mbronars/packages/guided_playback
+export GP_SRV=http://$(hostname):8769 GP_REPLAY_GPU=1
+SEL=/data/user_data/mbronars/packages/guided_playback/sweeps/assetsweep_select.json
+CER=/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/cereal_box/asset_0002
+CAB=/data/group_data/katefgroup-ssd/sim_scene_gen/assets/libero/wooden_cabinet/asset_0170
+CR=/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/cracker_box/asset_0001
+B1=/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/bowl/asset_0001/asset_0001_visual.ply
+DSEL=/data/user_data/mbronars/packages/guided_playback/sweeps/diverse_select.json
+COMMON='"transitions":60,"steps":10,"optimizer":"adam","lr":0.1,"iterations":80,"shell":true,"freeze_frames":24,"still_weight":5,"still_frames":24'
+COMMON40='"transitions":60,"steps":10,"optimizer":"adam","lr":0.1,"iterations":40,"shell":true,"freeze_frames":24,"still_weight":5,"still_frames":24'
+C='"transitions":60,"steps":10,"optimizer":"adam","lr":0.1,"iterations":40,"shell":true,"freeze_frames":24,"still_weight":5,"still_frames":24,"hand_start":"above","hand_above_mm":300'
+bash sweeps/gallery_chain2.sh gal_bowl1_air_fr24 '{"domain":"pickup","task":"lift","select":"'$SEL'","episodes":"11,11,11,11","offset":"0.30,0,0.15",'$COMMON40',"object_mesh":"'$B1'","desc":"bowl (Kitchen_Table bowl asset_0001, 12.2 x 12.3 x 5.2 cm) in the milk-carton scene (object particles replaced by the bowl mesh points), air target 30 cm forward and 15 cm up; freeze 24, still 5, 40 it, shell, pop 4 per seed"}' "0 1" > logs/gal_bowl1_air_fr24_chain.log 2>&1
+bash sweeps/gallery_chain2.sh gal_oilbottle_air_fr24 '{"domain": "pickup", "task": "lift", "select": "/data/user_data/mbronars/packages/guided_playback/sweeps/diverse_select.json", "episodes": "7,7,7,7", "transitions": 60, "steps": 10, "offset": "0,-0.3,0.15", "optimizer": "adam", "lr": 0.1, "iterations": 40, "shell": true, "freeze_frames": 24, "still_weight": 5, "still_frames": 24, "desc": "stage 2c: oil bottle, air target 30 cm to -y and 15 cm up, no obstacle; Adam lr 0.1, 40 it, shell, freeze_frames 24, still_weight 5 (frames <24), pop 4 per seed"}' "0 1" > logs/gal_oilbottle_air_fr24_chain.log 2>&1
+bash sweeps/gallery_chain2.sh gal_pear_air_fr24 '{"domain": "pickup", "task": "lift", "select": "/data/user_data/mbronars/packages/guided_playback/sweeps/diverse_select.json", "episodes": "13,13,13,13", "transitions": 60, "steps": 10, "offset": "0,0.3,0.15", "optimizer": "adam", "lr": 0.1, "iterations": 40, "shell": true, "freeze_frames": 24, "still_weight": 5, "still_frames": 24, "desc": "stage 2c: pear, air target 30 cm to +y and 15 cm up, no obstacle; Adam lr 0.1, 40 it, shell, freeze_frames 24, still_weight 5 (frames <24), pop 4 per seed"}' "0 1" > logs/gal_pear_air_fr24_chain.log 2>&1
+bash sweeps/gallery_chain2.sh gal_lemon_air_fr24 '{"domain":"pickup","task":"lift","select":"'$SEL'","episodes":"18,18,18,18","transitions":60,"steps":10,"offset":"0,0.30,0.15","optimizer":"adam","lr":0.1,"iterations":40,"shell":true,"freeze_frames":24,"still_weight":5,"still_frames":24,"desc":"stage 2c: lemon, air target 30 cm to +y and 15 cm up, no obstacle; Adam lr 0.1, 40 it, shell, freeze_frames 24, still_weight 5 (frames <24), pop 4 per seed"}' "0 1" > logs/gal_lemon_air_fr24_chain.log 2>&1
+bash sweeps/gallery_chain2.sh gal_saltshaker_air_fr24 '{"domain": "pickup", "task": "lift", "select": "/data/user_data/mbronars/packages/guided_playback/sweeps/diverse_select.json", "episodes": "10,10,10,10", "transitions": 60, "steps": 10, "offset": "0,0.3,0.15", "optimizer": "adam", "lr": 0.1, "iterations": 40, "shell": true, "freeze_frames": 24, "still_weight": 5, "still_frames": 24, "desc": "stage 2c: salt shaker, air target 30 cm to +y and 15 cm up, no obstacle; Adam lr 0.1, 40 it, shell, freeze_frames 24, still_weight 5 (frames <24), pop 4 per seed"}' "0 1" > logs/gal_saltshaker_air_fr24_chain.log 2>&1
+bash sweeps/gallery_chain2.sh gal_ketchup_air_fr24 '{"domain": "pickup", "task": "lift", "select": "/data/user_data/mbronars/packages/guided_playback/sweeps/diverse_select.json", "episodes": "8,8,8,8", "transitions": 60, "steps": 10, "offset": "0,-0.3,0.15", "optimizer": "adam", "lr": 0.1, "iterations": 40, "shell": true, "freeze_frames": 24, "still_weight": 5, "still_frames": 24, "desc": "stage 2c: ketchup bottle, air target 30 cm to -y and 15 cm up, no obstacle; Adam lr 0.1, 40 it, shell, freeze_frames 24, still_weight 5 (frames <24), pop 4 per seed"}' "0 1" > logs/gal_ketchup_air_fr24_chain.log 2>&1
+bash sweeps/gallery_chain2.sh gal_mokapot_air_fr24 '{"domain": "pickup", "task": "lift", "select": "/data/user_data/mbronars/packages/guided_playback/sweeps/diverse_select.json", "episodes": "14,14,14,14", "transitions": 60, "steps": 10, "offset": "0,0.3,0.15", "optimizer": "adam", "lr": 0.1, "iterations": 40, "shell": true, "freeze_frames": 24, "still_weight": 5, "still_frames": 24, "desc": "stage 2c: moka pot, air target 30 cm to +y and 15 cm up, no obstacle; Adam lr 0.1, 40 it, shell, freeze_frames 24, still_weight 5 (frames <24), pop 4 per seed"}' "0 1" > logs/gal_mokapot_air_fr24_chain.log 2>&1
+echo QUEUE1_FRESH_DONE
+BODYEOF
+nohup srun --jobid=$JOB --overlap --export=ALL -N1 -n1 -c2 --job-name=gq1 bash $BODY > logs/resume_fresh_q1.log 2>&1 &
+echo "queue step pid $!"

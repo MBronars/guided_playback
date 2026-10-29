@@ -147,7 +147,7 @@ def add_bodies(scene, domain, P0, roles, obj_mask, z, m, sc=1.0):
         sph = trimesh.creation.icosphere(subdivisions=1, radius=0.0016 * sc); sph.visual = trimesh.visual.ColorVisuals(sph, face_colors=COL_OBJ)
         n = int(obj_mask.sum()); poses = np.repeat(np.eye(4)[None], n, 0); poses[:, :3, 3] = P0[obj_mask]
         node = scene.add(pyrender.Mesh.from_trimesh(sph, poses=poses, smooth=False))
-        bodies.append(("dough", node, obj_mask))
+        bodies.append(["dough", node, obj_mask, sph])
     elif domain == "pushing":
         cube = obj_mask; rod = roles == 0
         ridx = int(np.nonzero(z["pose_action_mask"][m] == False)[0][0]); R0 = z["body_poses0"][m, ridx, :3, :3]
@@ -163,15 +163,20 @@ def place(scene, bodies, P0, Pf):
         if isinstance(b, Body):
             poses.append(b.place(scene, P0, Pf))
         else:                                                                    # dough: one sphere per particle, moved to Pf
-            _, node, mask = b; mesh = node.mesh; sp = np.repeat(np.eye(4)[None], int(mask.sum()), 0); sp[:, :3, 3] = Pf[mask]
-            for prim in mesh.primitives:
-                prim.poses = sp
+            # pyrender uploads instance poses to the GPU only once per mesh, so setting prim.poses later is silently ignored:
+            # rebuild the instanced mesh every frame (the renderer frees the old one's buffers).
+            _, node, mask, sph = b; sp = np.repeat(np.eye(4)[None], int(mask.sum()), 0); sp[:, :3, 3] = Pf[mask]
+            scene.remove_node(node); b[1] = scene.add(pyrender.Mesh.from_trimesh(sph, poses=sp, smooth=False))
     return poses
 
 
-def render_run(run, sim, out, variants=("guided",), size=(480, 360), fps=10, max_frames=40, wood="Wood010_1K-JPG", arm=False, scale=None):
+def render_run(run, sim, out, variants=("guided",), size=(480, 360), fps=10, max_frames=40, wood="Wood010_1K-JPG", arm=False, scale=None,
+               rot180=False, keyframes=False, members=None, camera_from=None):
+    """rot180: rotate the whole scene (generated, simulated, target) 180 deg about the vertical axis through the object's frame-0
+    centroid -- a rigid transform, so the robot base ends up on the other side of the object. keyframes: one PNG of the SIMULATED
+    replay, [frame 0 | last frame], the last frame with the object-centroid trace."""
     z = np.load(os.path.join(run, "rollout.npz")); rj = json.load(open(os.path.join(run, "result.json"))); domain = rj["domain"]
-    S = np.load(os.path.join(run, f"replay_{sim}", "replay.npz")); sim_variants = json.loads(str(S["variants"]))
+    S = np.load(os.path.join(run, f"replay_{sim}{os.environ.get('GP_REPLAY_SUFFIX', '')}", "replay.npz")); sim_variants = json.loads(str(S["variants"]))   # GP_REPLAY_SUFFIX=_yawfix: read a corrected replay
     os.makedirs(out, exist_ok=True); W, H = size
     wall_img = Image.open(os.path.join(BG, "walls/textures", WALL.get(domain, "kitchen__kitchen_orig0") + "_tex.png")).convert("RGB")
     _wa = np.asarray(wall_img.convert("L"), dtype=float).mean(1)
@@ -182,11 +187,21 @@ def render_run(run, sim, out, variants=("guided",), size=(480, 360), fps=10, max
     B, T = z["predicted"].shape[:2]
     sc = float(SCALE.get(domain, 1.0) if scale is None else scale)
     for m in range(B):
+        if members is not None and m not in members: continue
         for var in variants:
             P = z[VARIANT_KEY[var]][m] * sc; Q = S["sim"][sim_variants.index(var), m] * sc; roles = z["roles"][m]; obj = z["object_mask"][m]
             target = z["target"][m] * sc
+            if rot180:
+                c0 = P[0, obj].mean(0); flip = lambda X: np.concatenate([2 * c0[:2] - X[..., :2], X[..., 2:]], -1)
+                P, Q, target = flip(P), flip(Q), flip(target)
             top = 0.0 if domain in ("mould", "pushing") else float(P[0, obj][:, 2].min())   # MPM ground / PushBoundary table = z 0; pickup objects rest at their lowest particle
+            if rj.get("task") == "place": top = float(rj.get("table_z", 0.0115)) * sc          # held start: the object is in the air at frame 0; the table is the dataset table
             pts = np.concatenate([P[:, roles >= 0].reshape(-1, 3), Q[:, roles >= 0].reshape(-1, 3), target[None]])
+            if camera_from is not None:                                              # frame the scene like another run (shared camera across methods)
+                zc = np.load(os.path.join(camera_from, 'rollout.npz')); Sc = np.load(os.path.join(camera_from, f'replay_{sim}' + os.environ.get('GP_CAMERA_SUFFIX', ''), 'replay.npz'))
+                mc = int(os.environ['GP_CAMERA_MEMBER']) if os.environ.get('GP_CAMERA_MEMBER') else (m if zc['predicted'].shape[0] > m else 0)                            # a single-member camera run frames every member
+                Pc = zc['predicted'][mc] * sc; Qc = Sc['sim'][0, mc] * sc; rc = zc['roles'][mc]
+                pts = np.concatenate([Pc[:, rc >= 0].reshape(-1, 3), Qc[:, rc >= 0].reshape(-1, 3), (zc['target'][mc] * sc)[None]])
             cam_dir = np.array([0.50, -0.80, 0.34]) / np.linalg.norm([0.50, -0.80, 0.34]); away = -cam_dir[:2] / np.linalg.norm(cam_dir[:2])
             centre = (pts.min(0) + pts.max(0)) / 2
             if arm and domain in ("pickup", "rl_push"):
@@ -212,8 +227,11 @@ def render_run(run, sim, out, variants=("guided",), size=(480, 360), fps=10, max
             tgt = trimesh.creation.icosphere(subdivisions=2, radius=0.008 * max(1.0, sc ** 0.5)); tp = np.eye(4); tp[:3, 3] = target
             scene.add(solid(tgt, [30, 170, 120, 255]), pose=tp)
             lo, hi = pts.min(0), pts.max(0); focus = (lo + hi) / 2; focus[2] = max(focus[2], top + 0.04); span = max(float((hi - lo).max()), 0.12)
-            if domain == "mould":                                                    # frame the dough + goal, not the paddle's whole travel
-                po = np.concatenate([P[:, obj].reshape(-1, 3), Q[:, obj].reshape(-1, 3), target[None]]); lo, hi = po.min(0), po.max(0)
+            if domain == "mould" and not os.environ.get("GP_FRAME_ALL"):             # frame the dough + goal, not the paddle's whole travel (GP_FRAME_ALL=1: include it)
+                po = np.concatenate([P[:, obj].reshape(-1, 3), Q[:, obj].reshape(-1, 3), target[None]])
+                if camera_from is not None:                                          # shared camera: fit the other run's dough + goal instead
+                    oc = zc['object_mask'][mc]; po = np.concatenate([Pc[:, oc].reshape(-1, 3), Qc[:, oc].reshape(-1, 3), (zc['target'][mc] * sc)[None]])
+                lo, hi = po.min(0), po.max(0)
                 focus = (lo + hi) / 2; focus[2] = top + 0.02; span = max(float((hi - lo)[:2].max()), 0.12)
                 eye = focus + (0.30 + 1.2 * span) * np.array([0.50, -0.80, 0.30]) / np.linalg.norm([0.50, -0.80, 0.30])
             else:
@@ -226,9 +244,10 @@ def render_run(run, sim, out, variants=("guided",), size=(480, 360), fps=10, max
             scene.add(pyrender.DirectionalLight(intensity=3.2), pose=cam)
             scene.add(pyrender.DirectionalLight(intensity=2.0), pose=look_at(focus + np.array([-0.5, -0.8, 1.9]), focus))
             idx = np.unique(np.linspace(0, T - 1, min(T, max_frames)).round().astype(int)); frames = []
+            if keyframes: idx = np.array([0, T - 1])
             for f in idx:
                 row = []
-                for Pf in (P[f], Q[f]):
+                for Pf in ((Q[f],) if keyframes else (P[f], Q[f])):
                     poses = place(scene, bodies, P[0], Pf)
                     if ARM is not None:
                         if domain in ("pickup", "rl_push"):
@@ -263,8 +282,31 @@ def render_run(run, sim, out, variants=("guided",), size=(480, 360), fps=10, max
                         for li, node, o in arm_nodes: scene.set_pose(node, Tb @ links[li] @ o)
                     rgba, _ = renderer.render(scene, flags=pyrender.RenderFlags.RGBA | pyrender.RenderFlags.SHADOWS_DIRECTIONAL)
                     al = rgba[..., 3:4].astype(np.float32) / 255.0; row.append((rgba[..., :3] * al + 255 * (1 - al)).astype(np.uint8))
-                frames.append(np.concatenate([row[0], np.full((H, 6, 3), 255, np.uint8), row[1]], 1))
+                if keyframes and f == T - 1:                                        # object-centroid trace of the simulated replay, drawn on top
+                    from PIL import ImageDraw
+                    Pm = pyrender.PerspectiveCamera(yfov=np.pi / 4.5, aspectRatio=W / H).get_projection_matrix(W, H); Vi = np.linalg.inv(cam)
+                    def px(p):
+                        c = Pm @ (Vi @ np.append(p, 1.0)); n = c[:3] / c[3]; return ((n[0] + 1) / 2 * W, (1 - n[1]) / 2 * H)
+                    cpath = [px(p) for p in Q[:, obj].mean(1)]; im = Image.fromarray(row[0]); dr = ImageDraw.Draw(im)
+                    dr.line(cpath, fill=(214, 40, 130), width=4, joint="curve")
+                    for (x, y), col in ((cpath[0], (214, 40, 130)), (cpath[-1], (214, 40, 130))): dr.ellipse([x - 6, y - 6, x + 6, y + 6], fill=col, outline=(255, 255, 255), width=2)
+                    tx, ty = px(target); dr.ellipse([tx - 9, ty - 9, tx + 9, ty + 9], outline=(20, 160, 110), width=3)
+                    row[0] = np.asarray(im)
+                frames.append(row[0] if keyframes else np.concatenate([row[0], np.full((H, 6, 3), 255, np.uint8), row[1]], 1))
             name = f"m{m}_{var}"; gif = os.path.join(out, name + ".gif")
+            if keyframes:
+                png = os.path.join(out, name + "_keyframes.png"); imageio.imwrite(png, np.concatenate([frames[0], np.full((H, 6, 3), 255, np.uint8), frames[1]], 1))
+                print(f"[render] keyframes -> {png}", flush=True); written.append(dict(member=m, variant=var, keyframes=png)); continue
+            if os.environ.get("GP_SPLIT"):                                          # GP_SPLIT=1: two standalone mp4s (prediction, simulation) straight from the frames, no gif
+                import subprocess
+                for half, sl in (("pred", slice(0, W)), ("sim", slice(W + 6, 2 * W + 6))):
+                    mp4 = os.path.join(out, f"{name}_{half}.mp4")
+                    pr = subprocess.Popen(["ffmpeg", "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(fps), "-i", "-",
+                                           "-movflags", "+faststart", "-pix_fmt", "yuv420p", "-c:v", "libx264", "-crf", "16", "-preset", "slow", mp4], stdin=subprocess.PIPE)
+                    for fr in frames: pr.stdin.write(np.ascontiguousarray(fr[:, sl]).tobytes())
+                    pr.stdin.close(); pr.wait(); imageio.imwrite(os.path.join(out, f"{name}_{half}_last.png"), frames[-1][:, sl])
+                    print(f"[render] {os.path.basename(run)} {name} {half}: {len(frames)} frames -> {mp4}", flush=True)
+                written.append(dict(member=m, variant=var, split=True, frames=int(len(idx)), size=[W, H])); continue
             imageio.mimsave(gif, frames, duration=1.0 / fps, loop=0); imageio.imwrite(os.path.join(out, name + ".png"), frames[len(frames) // 2])
             written.append(dict(member=m, variant=var, gif=gif, frames=int(len(idx)), size=[2 * W + 6, H], arm=bool(arm), scale=sc, arm_track_mm_max=round(track[0], 2), arm_track_deg_max=round(track[1], 2)))
             print(f"[render] {domain} {os.path.basename(run)} {name}: {len(idx)} frames -> {gif} ({os.path.getsize(gif) / 1e6:.1f} MB)" + (f"  arm tracks the hand to {track[0]:.1f} mm / {track[1]:.1f} deg" if arm else ""), flush=True)

@@ -1,0 +1,19 @@
+[
+ {
+  "tag": "dno_pool32_I5_P6",
+  "shape": "B6_grad",
+  "B": 6,
+  "knobs": {
+   "optimizer": "adamw",
+   "lr": 0.1,
+   "shell": false,
+   "prob_reg": 0.01,
+   "prob_mode": "dno",
+   "prob_k": 4,
+   "prob_shuffles": 10,
+   "grad_clip": 1.0,
+   "iterations": 5,
+   "prefilter": 4
+  }
+ }
+]

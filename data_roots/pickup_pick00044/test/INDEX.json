@@ -1,0 +1,31 @@
+{
+ "schema": "pwm-shard-index-v1",
+ "domain": "pickup",
+ "split": "test",
+ "created_utc": "2026-09-19T20:31:39+00:00",
+ "split_policy": "every shard of the convex, pick and upright collections and 49 of the 63 place shards (seeded permutation, seed 20260919), so placing is one collection in four (user decision 2026-09-19: include the earlier pick-and-place data with a reasonable amount of placing). No development split: the registered loader's last-10%-of-shards validation split is part of train (release policy of 2026-09-17). The test set is the held-out assets, never these shards' training episodes",
+ "exclusions": [],
+ "episodes": 256,
+ "episodes_stored": 256,
+ "episodes_by_collection": {
+  "pick": 256
+ },
+ "samples": 64,
+ "states_by_points": {
+  "T=40,N=1183": 42253
+ },
+ "note": "one-shard view of pwm-data-v1 pickup train pick/00044.tar (source robert_pickup_data_pick_success/gpu0/00044.tar) for a guidance check; not a split",
+ "shards": [
+  {
+   "shard": "pick/00044.tar",
+   "source": "/data/group_data/katefgroup/VLA/3DPCWM/robert_pickup_data_pick_success/gpu0/00044.tar",
+   "sha256": "8a189ba73deb7f17b921bcfd06e56f4a2d33c64ea3d7d4caf21e54aa62bf544d",
+   "bytes": 317859840,
+   "samples": 64,
+   "episodes_stored": 256,
+   "excluded_audited": 0,
+   "excluded_held_out": 32,
+   "episodes": 224
+  }
+ ]
+}

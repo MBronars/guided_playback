@@ -1,0 +1,269 @@
+"""streaming_chain (pwm_final_clean/inference.py, copied verbatim 2026-09-29) with ONE change: stop_at. The noise covers n_tr transitions
+(e.g. 60 + window) but only frames 0..stop_at are committed and returned, so every model call that produces frames <= stop_at reads the
+full trained window (Cm1 + window rows) instead of a shrinking tail. Calls stop as soon as frame stop_at is committed."""
+import numpy as np
+import torch
+from typing import Dict
+from inference import streaming_schedule_levels, _stream_window, _stream_frame_positions
+
+
+def streaming_chain_stop(model, diffusion, batch, X0, P0, *, window: int, num_inference_steps: int, stop_at: int | None = None, E=None, lev_out=None,
+                    uncertainty_scale: float | None = None, hide_given_actions: bool | None = None,
+                    grad_checkpoint: bool = True, trace: list | None = None, enter_full_noise: bool = False) -> Dict:
+    """The streaming staircase as a pure function of its initial noise, differentiable end to end.
+
+    enter_full_noise: a transition's scheduled level runs on the global clock even while it is still outside
+    the window, so with several transitions sliding in per call (small S) they arrive labelled below pure noise
+    while their content is still pure noise. With enter_full_noise=True every row is given (and stepped from)
+    its ACTUAL level: a row that slides in is labelled pure noise, and its first Euler step takes it straight
+    to the level the staircase schedules for the next call. Default False keeps the historical labels.
+
+    X0 [B, n, N, 3] / P0 [B, n, Kr, 6]: normalized initial noise of the n generated transitions
+    (particle deltas / pose deltas). Nothing is written in place, so under torch.enable_grad the
+    returned poses and positions carry gradients back to X0 and P0 through every model call and
+    every Euler step (each call is activation-checkpointed when grad_checkpoint is set).
+    See streaming_rollout_native for the schedule and the window contract.
+    Returns dict(positions [B, 1+n, N, 3], R [B, 1+n, Kr, 3, 3], T [B, 1+n, Kr, 3], rigid_idx, calls,
+    steps, uncertainty_scale, window, horizon=n)."""
+    from torch.utils.checkpoint import checkpoint as _ckpt
+    from utils.conditioning import hide_actions, model_metadata
+    from utils.pose_native import _integrate_and_write, pose_channel_mask
+    base = model_metadata(model)
+    cfg = getattr(base, "cfg", None)
+    if not bool(getattr(base, "_context_predicted", False)):
+        raise ValueError("streaming_rollout_native needs a checkpoint trained to predict its context rows "
+                         "(train.pose_noise_context / supervise_context)")
+    if not (bool(getattr(cfg, "pose_native", False)) and batch.body_poses is not None and batch.pose_deltas_gt is not None):
+        raise ValueError("streaming_rollout_native needs a pose-native checkpoint and sidecar batches")
+    C = batch.context_len
+    Cm1 = C - 1
+    S = int(num_inference_steps)
+    if window < 1 or S < 1:
+        raise ValueError("window and num_inference_steps must be positive")
+    u = float(S / window) if uncertainty_scale is None else float(uncertainty_scale)
+    if u < S / window - 1e-9:
+        raise ValueError(f"uncertainty_scale {u} < steps/window = {S / window}: transitions would enter the "
+                         "window already partly denoised without ever having been sampled")
+    hide = bool(getattr(base, "_hides_given_actions", False)) if hide_given_actions is None else bool(hide_given_actions)
+    T_train = diffusion.num_train_timesteps
+    top = float(T_train) if bool(getattr(base, "_sampler_full_clock", False)) else float(T_train - 1)
+    n_tr = int(P0.shape[1])
+    if n_tr > batch.positions.shape[1] - 1 or X0.shape[1] != n_tr:
+        raise ValueError("noise must cover at most positions.shape[1] - 1 transitions, particles and poses alike")
+    B, dev = batch.batch_size, batch.device
+    ridx = (batch.body_type[0] == 1).nonzero(as_tuple=True)[0]
+    pmask = pose_channel_mask(batch, ridx)
+    pmask = None if pmask is None else pmask.to(dev)
+    Xs = [X0[:, j] for j in range(n_tr)]
+    Ps = [P0[:, j] if pmask is None else P0[:, j] * pmask for j in range(n_tr)]
+    R = [batch.body_poses[:, 0, ridx, :3, :3].float()]
+    T = [batch.body_poses[:, 0, ridx, :3, 3].float()]
+    pos = [batch.positions[:, 0]]
+    valid = batch.get_valid_mask()
+    committed, call = 0, 0
+    cur = torch.full((n_tr,), float(S), dtype=torch.float64)       # actual level of every transition (enter_full_noise)
+    max_calls = S + int(np.ceil((n_tr - 1) * u)) + 2
+    use_ckpt = grad_checkpoint and torch.is_grad_enabled()
+    stop = n_tr if stop_at is None else int(stop_at)
+    while committed < stop:
+        if call > max_calls:
+            raise RuntimeError("streaming schedule did not converge (bug)")
+        lv = streaming_schedule_levels(n_tr, S, u, call).to(dev)
+        lv_next = streaming_schedule_levels(n_tr, S, u, call + 1).to(dev)
+        s = max(0, committed - Cm1)
+        n_rows = min(Cm1 + window, n_tr - s)
+        if s + n_rows < n_tr:
+            assert float(lv[s + n_rows]) >= S - 1e-9, "a transition would enter the window partly denoised"
+        win = _stream_window(batch, pos[s], R[s], T[s], ridx, s, n_rows)
+        if hide:
+            win = hide_actions(win, 1.0)
+        lv_in = cur[s:s + n_rows].clone().to(dev) if enter_full_noise else lv[s:s + n_rows]   # copy: cur is updated below
+        t_rows = (lv_in / S * top).float()
+        tb = t_rows.unsqueeze(0).expand(B, -1)
+
+        def call_model(xc, xf, pc, pf, _win=win, _tb=tb):
+            part_f, pose_f = model(_win, xf, _tb[:, Cm1:], noisy_context=xc, context_timesteps=_tb[:, :Cm1],
+                                   noisy_pose=pf, noisy_ctx_pose=pc)
+            pose_c = getattr(base, "_last_ctx_pose_pred", None)
+            if pose_c is None:
+                raise RuntimeError("the model did not return context pose predictions (unet_pose_supervise_context off?)")
+            part_c = getattr(base, "_last_ctx_pred", None)
+            pred_pose = torch.cat([pose_c, pose_f], dim=1)
+            if part_f is None or part_c is None:
+                return pred_pose, torch.zeros_like(torch.cat([xc, xf], dim=1)), torch.zeros((), device=xf.device)
+            return pred_pose, torch.cat([part_c, part_f], dim=1), torch.ones((), device=xf.device)
+
+        xc = torch.stack(Xs[s:s + Cm1], 1); xf = torch.stack(Xs[s + Cm1:s + n_rows], 1)
+        pc = torch.stack(Ps[s:s + Cm1], 1); pf = torch.stack(Ps[s + Cm1:s + n_rows], 1)
+        if use_ckpt:
+            pred_pose, pred_part, has_part = _ckpt(call_model, xc, xf, pc, pf, use_reentrant=False)
+        else:
+            pred_pose, pred_part, has_part = call_model(xc, xf, pc, pf)
+        p_rows = torch.cat([pc, pf], 1); x_rows = torch.cat([xc, xf], 1)
+        dt = ((lv_in - lv_next[s:s + n_rows]).clamp(min=0.0) / S * (top / T_train)).float()
+        if enter_full_noise:
+            cur[s:s + n_rows] = torch.minimum(cur[s:s + n_rows], lv_next[s:s + n_rows].cpu().double())
+        vp = diffusion.as_velocity(pred_pose, p_rows, tb)
+        vx = diffusion.as_velocity(pred_part, x_rows, tb) if bool(has_part) else None
+        if E is not None:                                            # full churn (eta = 1, push recipe): re-form every stepped row from x0 + fresh draw
+            x0p = diffusion.get_x0_est(pred_pose, tb, p_rows); tnr = (lv_next[s:s + n_rows] / S * (top / T_train)).float()
+        for i in range(n_rows):
+            if float(dt[i]) > 0:
+                j = s + i
+                new_p = Ps[j] - dt[i] * vp[:, i] if E is None else (1 - tnr[i]) * x0p[:, i] + tnr[i] * E[call, j]
+                if E is not None and lev_out is not None: lev_out[call, j] = float(tnr[i])      # noise level this draw is injected at
+                Ps[j] = new_p if pmask is None else new_p * pmask
+                if vx is not None:
+                    Xs[j] = Xs[j] - dt[i] * vx[:, i]
+        if trace is not None:
+            trace.append(dict(call=call, window_start=s, rows=n_rows,
+                              levels=[round(float(v), 3) for v in lv_in], committed=committed))
+        call += 1
+        while committed < stop and float(lv_next[committed]) <= 0.0:
+            j = committed
+            raw = batch.pose_delta_stats.denormalize(torch.stack(Ps[s:j + 1], 1).float()).float()
+            dummy = torch.zeros((B, j + 1 - s, batch.positions.shape[2], 3), device=dev)
+            _, R_all, T_all = _integrate_and_write(win, ridx, raw, R[s], T[s], dummy, valid)
+            R.append(R_all[:, -1]); T.append(T_all[:, -1])
+            pos.append(_stream_frame_positions(batch, ridx, R_all[:, -1], T_all[:, -1], pos[j], Xs[j]))
+            committed += 1
+    return {"positions": torch.stack(pos, 1), "R": torch.stack(R, 1), "T": torch.stack(T, 1), "rigid_idx": ridx,
+            "calls": call, "horizon": n_tr, "steps": S, "uncertainty_scale": u, "window": window,
+            "enter_full_noise": bool(enter_full_noise)}
+
+
+
+def chain_prefix(model, diffusion, batch, pre, Xn, Pn, *, window, S, full_window=True, grad_checkpoint=True, E=None, lev_out=None):
+    """streaming_chain (pwm_final_clean inference.py) with the first c transitions already committed.
+    pre = dict(X=[c x [B,N,3]], P=[c x [B,Kr,6]], pos=[c+1 x [B,N,3]], R=[c+1], T=[c+1]); Xn/Pn [B, n_new, ...] fresh noise.
+    Returns positions [B, 1+c+n_new, N, 3] and the clean normalized rows X, P (lists) for committing.
+    full_window: never truncate -- when fewer than `window` unfinished rows remain, slide the window start back so every model
+    call sees Cm1 + window rows; the extra rows are already-committed transitions at level 0 (clean, never stepped)."""
+    from utils.conditioning import hide_actions, model_metadata
+    from utils.pose_native import _integrate_and_write, pose_channel_mask
+    from inference import _stream_window, _stream_frame_positions
+    base = model_metadata(model)
+    C = batch.context_len; Cm1 = C - 1
+    u = float(S / window)
+    hide = bool(getattr(base, "_hides_given_actions", False))
+    T_train = diffusion.num_train_timesteps
+    top = float(T_train) if bool(getattr(base, "_sampler_full_clock", False)) else float(T_train - 1)
+    c = len(pre["X"]); n_new = int(Pn.shape[1]); n_tr = c + n_new
+    B, dev = batch.batch_size, batch.device
+    ridx = (batch.body_type[0] == 1).nonzero(as_tuple=True)[0]
+    pmask = pose_channel_mask(batch, ridx); pmask = None if pmask is None else pmask.to(dev)
+    Xs = list(pre["X"]) + [Xn[:, j] for j in range(n_new)]
+    Ps = list(pre["P"]) + [Pn[:, j] if pmask is None else Pn[:, j] * pmask for j in range(n_new)]
+    R, T, pos = list(pre["R"]), list(pre["T"]), list(pre["pos"])
+    valid = batch.get_valid_mask()
+    j_all = torch.arange(n_tr, dtype=torch.float64)
+
+    def levels(call):   # committed rows level 0; the new staircase starts at transition c
+        lv = (S + (j_all - c) * u - call).clamp(0.0, float(S)); lv[:c] = 0.0
+        return lv.to(dev)
+
+    committed, call = c, 0; rows_seen = []
+    max_calls = S + int(np.ceil((n_new - 1) * u)) + 2
+    while committed < n_tr:
+        if call > max_calls:
+            raise RuntimeError("prefix streaming schedule did not converge (bug)")
+        lv, lv_next = levels(call), levels(call + 1)
+        s = max(0, committed - Cm1)
+        if full_window and n_tr - s < Cm1 + window:
+            s = max(0, n_tr - (Cm1 + window))
+        n_rows = min(Cm1 + window, n_tr - s)
+        rows_seen.append(int(n_rows))
+        win = _stream_window(batch, pos[s], R[s], T[s], ridx, s, n_rows)
+        if hide:
+            win = hide_actions(win, 1.0)
+        lv_in = lv[s:s + n_rows]
+        tb = (lv_in / S * top).float().unsqueeze(0).expand(B, -1)
+        xc = torch.stack(Xs[s:s + Cm1], 1); xf = torch.stack(Xs[s + Cm1:s + n_rows], 1)
+        pc = torch.stack(Ps[s:s + Cm1], 1); pf = torch.stack(Ps[s + Cm1:s + n_rows], 1)
+        def call_model(xc, xf, pc, pf, _win=win, _tb=tb):
+            part_f, pose_f = model(_win, xf, _tb[:, Cm1:], noisy_context=xc, context_timesteps=_tb[:, :Cm1], noisy_pose=pf, noisy_ctx_pose=pc)
+            pc_ = getattr(base, "_last_ctx_pose_pred", None); xc_ = getattr(base, "_last_ctx_pred", None)
+            return part_f, pose_f, pc_, xc_
+        if grad_checkpoint and torch.is_grad_enabled():
+            from torch.utils.checkpoint import checkpoint as _ck
+            part_f, pose_f, pose_c, part_c = _ck(call_model, xc, xf, pc, pf, use_reentrant=False)
+        else:
+            part_f, pose_f, pose_c, part_c = call_model(xc, xf, pc, pf)
+        pred_pose = torch.cat([pose_c, pose_f], dim=1)
+        has_part = part_f is not None and part_c is not None
+        p_rows = torch.cat([pc, pf], 1); x_rows = torch.cat([xc, xf], 1)
+        dt = ((lv_in - lv_next[s:s + n_rows]).clamp(min=0.0) / S * (top / T_train)).float()
+        vp = diffusion.as_velocity(pred_pose, p_rows, tb)
+        vx = diffusion.as_velocity(torch.cat([part_c, part_f], 1), x_rows, tb) if has_part else None
+        if E is not None:                                            # full churn; E indexed [call, row - c] (rows past the executed prefix)
+            x0p = diffusion.get_x0_est(pred_pose, tb, p_rows); tnr = (lv_next[s:s + n_rows] / S * (top / T_train)).float()
+        for i in range(n_rows):
+            if float(dt[i]) > 0:
+                j = s + i
+                new_p = Ps[j] - dt[i] * vp[:, i] if E is None else (1 - tnr[i]) * x0p[:, i] + tnr[i] * E[call, j - c]
+                if E is not None and lev_out is not None: lev_out[call, j - c] = float(tnr[i])
+                Ps[j] = new_p if pmask is None else new_p * pmask
+                if vx is not None:
+                    Xs[j] = Xs[j] - dt[i] * vx[:, i]
+        call += 1
+        while committed < n_tr and float(lv_next[committed]) <= 0.0:
+            j = committed
+            raw = batch.pose_delta_stats.denormalize(torch.stack(Ps[s:j + 1], 1).float()).float()
+            dummy = torch.zeros((B, j + 1 - s, batch.positions.shape[2], 3), device=dev)
+            _, R_all, T_all = _integrate_and_write(win, ridx, raw, R[s], T[s], dummy, valid)
+            R.append(R_all[:, -1]); T.append(T_all[:, -1])
+            pos.append(_stream_frame_positions(batch, ridx, R_all[:, -1], T_all[:, -1], pos[j], Xs[j]))
+            committed += 1
+    return dict(positions=torch.stack(pos, 1), X=Xs, P=Ps, R=R, T=T, calls=call, rows=rows_seen)
+
+
+
+def executed_prefix(batch, clouds):
+    """Executed clouds [c+1, N, 3] (model frame, batch row order; frame 0 = the episode start) -> the committed-prefix dict of
+    chain_prefix: per frame the rigid pose of every body (Kabsch of its frame-0 rows onto the executed rows), clean normalized
+    pose-delta rows in the model's own convention (free bodies: world translation delta + so3 log of the world rotation delta;
+    jointed bodies: joint-coordinate increment in their joint channel, measured in the parent frame along the joint axis),
+    zero particle rows (rigid pose-native model: particles follow the poses), and the positions rebuilt from the poses.
+    Returns (pre, max reconstruction error in m of re-integrating the rows from frame 0)."""
+    from utils.pose_ops import so3_log
+    from utils.pose_native import _integrate_and_write, pose_channel_mask, joint_layout, JOINT_CHANNEL, JOINT_PRISMATIC, JOINT_FIXED, JOINT_FREE
+    from inference import _stream_frame_positions
+    dev = batch.device; B = batch.batch_size; n = clouds.shape[0]
+    ridx = (batch.body_type[0] == 1).nonzero(as_tuple=True)[0]; valid = batch.get_valid_mask()
+    Cl = torch.as_tensor(clouds, dtype=torch.float64, device=dev)
+    P0 = batch.positions[0, 0].double(); R0 = batch.body_poses[:, 0, ridx, :3, :3].double(); T0 = batch.body_poses[:, 0, ridx, :3, 3].double()
+    R = torch.zeros(n, B, len(ridx), 3, 3, dtype=torch.float64, device=dev); T = torch.zeros(n, B, len(ridx), 3, dtype=torch.float64, device=dev)
+    for j, k in enumerate(ridx.tolist()):
+        rows = (batch.particle_body[0] == k) & valid[0]
+        X = P0[rows]; cx = X.mean(0)
+        for t in range(n):
+            Y = Cl[t][rows]; cy = Y.mean(0); U, _, Vt = torch.linalg.svd((X - cx).T @ (Y - cy)); d = torch.sign(torch.linalg.det(Vt.T @ U.T))
+            M = Vt.T @ torch.diag(torch.tensor([1.0, 1.0, float(d)], dtype=torch.float64, device=dev)) @ U.T; tt = cy - M @ cx
+            R[t, :, j] = M @ R0[:, j]; T[t, :, j] = (M @ T0[:, j].T).T + tt
+    layout = joint_layout(batch, ridx)
+    parent, jt, axis = (layout[0], layout[1], layout[2]) if layout is not None else (None, None, None)
+    raw = torch.zeros(B, n - 1, len(ridx), 6, dtype=torch.float64, device=dev)
+    for t in range(n - 1):
+        for j in range(len(ridx)):
+            kind = JOINT_FREE if jt is None else int(jt[j])
+            if kind == JOINT_FREE:
+                raw[:, t, j, :3] = T[t + 1, :, j] - T[t, :, j]
+                raw[:, t, j, 3:] = so3_log((R[t + 1, :, j] @ R[t, :, j].transpose(-1, -2)).float()).double()
+            elif kind in JOINT_CHANNEL:
+                p = int(parent[j]); a = axis[:, j].double()
+                rel = lambda tt: (R[tt, :, p].transpose(-1, -2) @ (T[tt, :, j] - T[tt, :, p])[..., None])[..., 0]
+                assert kind == JOINT_PRISMATIC, "revolute joints not handled"
+                raw[:, t, j, JOINT_CHANNEL[kind]] = ((rel(t + 1) - rel(t)) * a).sum(-1)
+    pm = pose_channel_mask(batch, ridx)
+    Pn = batch.pose_delta_stats.normalize(raw.float(), clip=False).float()
+    if pm is not None: Pn = Pn * pm.to(dev)
+    # re-integrate from frame 0 with the model's own integrator: the prefix must reproduce the executed poses
+    dummy = torch.zeros((B, n - 1, batch.positions.shape[2], 3), device=dev)
+    _, Ri, Ti = _integrate_and_write(batch, ridx, batch.pose_delta_stats.denormalize(Pn).float(), R0.float(), T0.float(), dummy, valid) if n > 1 else (None, None, None)
+    err = 0.0 if n == 1 else float((Ti - T[1:].permute(1, 0, 2, 3).float()).norm(dim=-1).max())
+    Rl = [R[t].float() for t in range(n)]; Tl = [T[t].float() for t in range(n)]
+    pos = [batch.positions[:, 0]]; zero = torch.zeros_like(batch.positions[:, 0])
+    for t in range(1, n):
+        pos.append(_stream_frame_positions(batch, ridx, Rl[t], Tl[t], pos[-1], zero))
+    pre = dict(X=[zero.clone() for _ in range(n - 1)], P=[Pn[:, t] for t in range(n - 1)], pos=pos, R=Rl, T=Tl)
+    return pre, err

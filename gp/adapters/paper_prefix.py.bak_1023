@@ -1,0 +1,165 @@
+"""Closed-loop (receding-horizon) sampler for the paper adapter (pwm_final_paper context-predicting pose-native UNet:
+mould / rl_push / pickup). Mirrors gp/adapters/clean_core_prefix.py for paper_core.Streamer.
+
+Generic history contract (domain-agnostic; model frame, the adapter's particle order):
+  positions  [c+1, N, 3]     every row of executed frames 0..c (frame 0 = the episode start the request loads)
+  body_poses [c+1, K, 4, 4]  every body; bodies that are not rigid keep their frame-0 pose
+  (or the request passes history="frame0": the episode's own frame 0, c = 0)
+The last k = min(c, context) executed transitions enter as CLEAN rows at level 0 (particle rows = normalized per-frame
+deltas, pose rows = normalized [dt, so3_log(dR)] / joint deltas via utils.pose_native.context_pose_deltas); the anchor
+frame is executed frame c - k; rollout frame 0 = that anchor. Only rows k.. are generated, on the stream staircase
+shifted by k. stop_at: rows past it keep entering at pure noise, so every model call reads the full NW-row window
+(no slide-back over committed rows, no shrinking), and only rows [0, stop_at) are committed; the output is
+positions [B, stop_at + 1, P, 3] from the anchor. Used only when a request carries a history; every other path is
+paper_core unchanged."""
+import dataclasses
+import numpy as np
+import torch
+from torch.utils.checkpoint import checkpoint
+from .paper_core import pose_channel_mask, MEMLOG
+from .base import State
+
+
+def prefix_schedule(steps, keep, NW, n_int, k, stop):
+    """Replay of the shifted stream staircase: returns calls [(start, levels fed)] and per-row injection levels."""
+    m, D = NW - keep, steps * (NW - keep)
+    sched = lambda j, call: 0.0 if j < k else min(D, max(0, D + (j - k) * steps - call * m)) / D
+    lev = [0.0] * k + [1.0] * (n_int - k); committed, call = k, 0
+    calls, inj = [], [[] for _ in range(n_int)]
+    while committed < stop:
+        start = max(0, committed - keep)
+        if start + NW > n_int:
+            raise ValueError(f"window [{start}, {start + NW}) runs past the {n_int} scheduled rows: pad the tail (transitions >= stop_at + {NW - keep})")
+        calls.append((start, list(lev[start:start + NW])))
+        for j in range(start, start + NW):
+            l0, l1 = lev[j], min(lev[j], sched(j, call + 1))
+            if l0 <= 0 or l1 == l0:
+                continue
+            if l1 > 0:
+                inj[j].append(l1)
+            lev[j] = l1
+        while committed < stop and lev[committed] <= 0:
+            committed += 1
+        call += 1
+    return calls, inj
+
+
+def history_rows(S, batch, hist):
+    """Executed history -> clean rows. Returns dict(rows, prows, pos_a [B, P, 3], bp_a [B, K, 4, 4], k, anchor_frame, executed, exec_pos [k+1, P, 3])."""
+    from utils.pose_native import context_pose_deltas
+    B, P, dev = batch.positions.shape[0], batch.positions.shape[2], batch.device
+    if isinstance(hist.get("frame0"), (bool, np.bool_)) and hist["frame0"]:
+        pos = batch.positions[0, :1].float().cpu().numpy(); bp = batch.body_poses[0, :1].float().cpu().numpy()
+    else:
+        pos, bp = np.asarray(hist["positions"], np.float32), np.asarray(hist["body_poses"], np.float32)
+    c = pos.shape[0] - 1; keep = hist.get("context"); k = c if keep is None else min(int(keep), c)
+    assert pos.shape[1] == P and bp.shape[1] == batch.body_poses.shape[2], f"history rows {pos.shape} / bodies {bp.shape} do not match the batch"
+    pos = torch.as_tensor(pos[c - k:], device=dev); bp = torch.as_tensor(bp[c - k:], device=dev)       # [k+1, ...]
+    ridx = (batch.body_type[0] == 1).nonzero(as_tuple=True)[0]
+    pmask = pose_channel_mask(batch, ridx)
+    pm = (lambda v: v * pmask.to(v)) if pmask is not None else (lambda v: v)
+    rows, prows = [], []
+    if k > 0:
+        d = (pos[1:] - pos[:-1])[None].expand(B, -1, -1, -1).float()                                   # [B, k, P, 3]
+        X = batch.prediction_stats.normalize(d)
+        fake = dataclasses.replace(batch, body_poses=bp[None].expand(B, -1, -1, -1, -1).float(), context_len=k + 1)
+        raw = context_pose_deltas(fake, ridx)                                                          # [B, k, Kr, 6] un-normalized
+        XP = batch.pose_delta_stats.normalize(raw.float())
+        rows = [X[:, j].float() for j in range(k)]; prows = [pm(XP[:, j].float()) for j in range(k)]
+    return dict(rows=rows, prows=prows, pos_a=pos[0][None].expand(B, -1, -1).clone(), bp_a=bp[0][None].expand(B, -1, -1, -1).clone(),
+                k=k, anchor_frame=c - k, executed=c, exec_pos=pos)
+
+
+def anchored_batch(batch, pos_a, bp_a):
+    """The batch with every frame = the anchor (the streamer and the materializer read frame 0 only)."""
+    T = batch.positions.shape[1]
+    return dataclasses.replace(batch, positions=pos_a[:, None].expand(-1, T, -1, -1).to(batch.positions.dtype).clone(),
+                               body_poses=bp_a[:, None].expand(-1, T, -1, -1, -1).to(batch.body_poses.dtype).clone())
+
+
+def prepare_prefix(ad, batch, transitions, steps, keep, seed, churn, t_freeze, fix_fps, hist):
+    """State for a history request. transitions = scheduled rows (plan + tail padding); stop_at = rows to commit."""
+    S = ad.S; S.joint_limits = ad.joint_limits
+    pre = history_rows(S, batch, hist); k = pre["k"]
+    B, n_int, P = batch.positions.shape[0], int(transitions), batch.positions.shape[2]
+    stop = int(hist.get("stop_at") or n_int)
+    calls, inj = prefix_schedule(steps, keep, S.NW, n_int, k, stop)
+    g = torch.Generator(device=ad.dev).manual_seed(seed)
+    X = torch.randn(B, n_int, P, 3, device=ad.dev, generator=g)
+    Kr = int((batch.body_type[0] == 1).sum())
+    XP = torch.randn(B, n_int, Kr, 6, device=ad.dev, generator=g)
+    n_max = max(1, max(len(v) for v in inj))
+    levels = torch.zeros(n_int, 1 + n_max, device=ad.dev); levels[k:, 0] = 1.0
+    for j, v in enumerate(inj):
+        if v: levels[j, 1:1 + len(v)] = torch.tensor(v, device=ad.dev)
+    fixed = dict(X=X, steps=steps, keep=keep, fps_seeds=[seed * 1000 + i for i in range(B)] if fix_fps else None, churn=churn,
+                 prefix=pre, calls=calls, stop=stop, levels=levels)
+    deformable = bool((batch.body_type[0] == 0).any())
+    info = dict(model_calls=len(calls), window_rows=S.NW, context_rows=k, anchor_frame=pre["anchor_frame"], executed=pre["executed"], stop_at=stop, scheduled=n_int,
+                sampler=f"stream staircase, {k} executed transitions as clean context (anchor = executed frame {pre['anchor_frame']}), {stop - k} generated, "
+                        f"tail padded ({n_int} scheduled, every call {S.NW} rows)" + (", full churn (eta=1), joint draw optimization" if churn else ", deterministic"))
+    if churn:
+        E = torch.randn(B, n_int, 1 + n_max, Kr, 6, device=ad.dev, generator=g)
+        free = ((levels >= t_freeze - 1e-9) & (levels > 0))[None, :, :, None, None].expand_as(E).clone()
+        st = State(vars=[E.requires_grad_(True)], free=[free], shell=[E.flatten(3).norm(dim=-1)[..., None, None]], fixed=fixed, info=info)
+        if deformable:
+            EX = torch.randn(B, n_int, 1 + n_max, P, 3, device=ad.dev, generator=g)
+            free_x = ((levels >= t_freeze - 1e-9) & (levels > 0))[None, :, :, None, None].expand_as(EX).clone()
+            st.vars.append(EX.requires_grad_(True)); st.free.append(free_x); st.shell.append(EX.flatten(3).norm(dim=-1)[..., None, None])
+            info["particle_churn"] = True
+        return st
+    st = State(vars=[XP.requires_grad_(True)], free=[None], shell=[XP.flatten(2).norm(dim=-1)[..., None, None]], fixed=fixed, info=info)
+    if deformable:
+        st.vars.append(X.requires_grad_(True)); st.free.append(None); st.shell.append(X.flatten(2).norm(dim=-1)[..., None, None])
+    return st
+
+
+def rollout_prefix(ad, batch, state, grad):
+    """Positions [B, stop_at + 1, P, 3] from the anchor (rollout frame 0 = executed frame c - k)."""
+    S, f = ad.S, state.fixed; pre, calls, stop = f["prefix"], f["calls"], f["stop"]
+    C, NW, dev, keep, steps, k = S.C, S.NW, ad.dev, f["keep"], f["steps"], pre["k"]
+    churn = state.vars[0] if f["churn"] else None
+    churn_part = state.vars[1] if (f["churn"] and state.info.get("particle_churn")) else None
+    X = churn_part[:, :, 0] if churn_part is not None else (state.vars[1] if (not f["churn"] and len(state.vars) > 1) else f["X"])
+    XP = churn[:, :, 0] if churn is not None else state.vars[0]
+    B, n_int = X.shape[:2]
+    ab = anchored_batch(batch, pre["pos_a"], pre["bp_a"])
+    ridx = (batch.body_type[0] == 1).nonzero(as_tuple=True)[0]
+    pmask = pose_channel_mask(batch, ridx)
+    pm = (lambda v: v * pmask.to(v)) if pmask is not None else (lambda v: v)
+    rows = list(pre["rows"]) + [X[:, j] for j in range(k, n_int)]
+    prows = list(pre["prows"]) + [pm(XP[:, j]) for j in range(k, n_int)]
+    seeds = None if f["fps_seeds"] is None else tuple(int(v) for v in f["fps_seeds"])
+    m, D = NW - keep, steps * (NW - keep)
+    sched = lambda j, call: 0.0 if j < k else min(D, max(0, D + (j - k) * steps - call * m)) / D
+    lev = [0.0] * k + [1.0] * (n_int - k); committed = k; n_inj = [0] * n_int
+    pos_a, bp_a, a_idx = pre["pos_a"], pre["bp_a"], 0
+    S.rows_seen = []
+    for call, (start, wl) in enumerate(calls):
+        assert start == max(0, committed - keep) and all(abs(a - b) < 1e-9 for a, b in zip(wl, lev[start:start + NW])), "prefix schedule drifted"
+        while a_idx < start:
+            pos_a, bp_a = S._step_anchor(ab, pos_a, bp_a, rows[a_idx], prows[a_idx]); a_idx += 1
+        pos_w = pos_a[:, None].expand(-1, NW + 1, -1, -1); bp_w = bp_a[:, None].expand(-1, NW + 1, -1, -1, -1)
+        tt = torch.clamp(torch.round(torch.tensor(wl, device=dev) * S.T), 1, S.T - 1).long()[None].expand(B, -1)
+        xs, xps = torch.stack(rows[start:start + NW], 1), torch.stack(prows[start:start + NW], 1)
+        S.rows_seen.append(int(xs.shape[1]))
+        args = (ab, xs[:, :C - 1], xs[:, C - 1:], xps[:, :C - 1], xps[:, C - 1:], tt, pos_w, bp_w, start, call, seeds)
+        x0, x0p = (checkpoint(S._call, *args, use_reentrant=False) if grad else S._call(*args))
+        if MEMLOG and call % 10 == 0:
+            print(f"[mem] prefix call {call}/{len(calls)} peak {torch.cuda.max_memory_allocated() / 2**30:.2f} GiB", flush=True)
+        for j in range(start, start + NW):
+            l0, l1 = lev[j], min(lev[j], sched(j, call + 1))
+            if l0 <= 0 or l1 == l0:
+                continue
+            r, jj = l1 / l0, j - start
+            if churn is not None and l1 > 0:
+                n_inj[j] += 1
+                prows[j] = pm(x0p[:, jj] + l1 * (pm(churn[:, j, n_inj[j]]) - x0p[:, jj]))
+                rows[j] = (x0[:, jj] + l1 * (churn_part[:, j, n_inj[j]] - x0[:, jj]) if churn_part is not None else x0[:, jj] + r * (rows[j] - x0[:, jj]))
+            else:
+                rows[j] = x0[:, jj] + r * (rows[j] - x0[:, jj]); prows[j] = pm(x0p[:, jj] + r * (prows[j] - x0p[:, jj]))
+            lev[j] = l1
+        while committed < stop and lev[committed] <= 0:
+            committed += 1
+    assert committed == stop
+    return S._materialize(ab, rows[:stop], prows[:stop])[0]

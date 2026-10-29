@@ -1,0 +1,6 @@
+#!/bin/bash
+cd /data/user_data/mbronars/packages/guided_playback; C=/data/user_data/mbronars/.miniconda3/envs/pwm211/bin/python
+until grep -q "GEN creative_bottle_over_basket" logs/creative_cases_v2.log; do sleep 20; done      # after the basket plan has been posted and returned
+N=creative_carton_over_books
+[ -f runs/pickup/$N/result.json ] || $C bin/client.py http://babel-o9-24:8768/guide '{"domain":"pickup","task":"wall","select":"/data/user_data/mbronars/packages/guided_playback/sweeps/assetsweep_select.json","episodes":"11,11,11,11","transitions":60,"steps":10,"offset":"0.30,0.04,0","optimizer":"adam","lr":0.1,"iterations":40,"shell":true,"box_weight":10,"clearance_mm":40,"seed":0,"wall_height":0.106,"wall_thickness":0.149,"wall_width":0.397,"obstacle_asset":"/data/group_data/katefgroup-ssd/sim_scene_gen/assets/libero/book/asset_0004","obstacle_rpy":"90,0,0","obstacle_layout":"rowstack:3:3","name":"creative_carton_over_books","desc":"milk carton over a ROW of three stacks of three books lying flat (libero book asset_0004 x9: 14.9 deep x 39.7 long x 10.6 cm high) midway, target +30 cm x +4 cm y on the ground; Adam lr 0.1, 40 it, shell, wall weight 10, clearance (buffer) 40 mm, pop 4"}' > logs/$N.req.json 2>&1
+echo "GEN $N"; bash sweeps/obst_case_chain.sh $N > logs/${N}_chain.log 2>&1; echo "DONE $N"

@@ -47,26 +47,40 @@ def build(runs_root, out, title="Guided Playback", subtitle="", max_runs=6):
             sims = {}
             for sname, sdir in r["replays"].items():
                 sims[sname] = (np.load(os.path.join(sdir, "replay.npz")), json.load(open(os.path.join(sdir, "analysis.json"))))
+                for row in sims[sname][1]["rows"]:                                                   # letter task: the page's "to goal" columns show the chamfer (mm)
+                    if "sim_chamfer_mm" in row: row["sim_to_target_mm"] = row["sim_chamfer_mm"]; row["gen_to_target_mm"] = row["gen_chamfer_mm"]
             members = []
+            only = int(np.argmin(rj["best_mm"])) if os.environ.get("GP_PAGE_ONLY_BEST") else None   # planner view: the member with the lowest generated objective
             for m in range(B):
+                if only is not None and m != only:
+                    continue
                 key = f"{dom}__{r['name']}__m{m}".replace("-", "_").replace(".", "_")
                 G_, U = z["predicted"][m], z["unguided"][m]; tgt = z["target"][m]; boxes = z["boxes"]
-                pts = [G_.reshape(-1, 3), tgt[None]] + ([boxes[:, :3] - boxes[:, 3:] / 2, boxes[:, :3] + boxes[:, 3:] / 2] if len(boxes) else [])
+                cov = z["letter_coverage"][m] if "letter_coverage" in z.files else None          # letter task: no centroid goal, a footprint instead
+                pts = [G_.reshape(-1, 3)] + ([] if np.isnan(tgt).any() else [tgt[None]]) + ([z["letter_contour"][m]] if cov is not None else []) + ([boxes[:, :3] - boxes[:, 3:] / 2, boxes[:, :3] + boxes[:, 3:] / 2] if len(boxes) else [])
                 allp = np.concatenate(pts); lo, hi = allp.min(0), allp.max(0); lo[2] = min(lo[2], 0); span = hi - lo
                 stack = [G_.reshape(-1, 3), U.reshape(-1, 3)] + [S[0]["sim"][:, m].reshape(-1, 3) for S in sims.values()]
                 box = np.concatenate(stack); qlo = np.minimum(lo, np.maximum(box.min(0), lo - 0.6)); qhi = np.maximum(hi, np.minimum(box.max(0), hi + 0.6)); qspan = qhi - qlo
-                rec = dict(id=key, member=m, episode=int(z["episodes"][m]), T=int(T), N=int(N), qlo=qlo.round(4).tolist(), qspan=qspan.round(4).tolist(), lo=lo.round(4).tolist(), span=span.round(4).tolist(),
+                rec = dict(id=key, member=m, episode=str(z["episodes"][m]), T=int(T), N=int(N), qlo=qlo.round(4).tolist(), qspan=qspan.round(4).tolist(), lo=lo.round(4).tolist(), span=span.round(4).tolist(),
                            roles=b64(z["roles"][m].astype(np.int8)), gen=b64(q16(G_, qlo, qspan)), ung=b64(q16(U, qlo, qspan)), target=tgt.round(4).tolist(), boxes=boxes.round(4).tolist(),
-                           goal_mm=dict(guided=rj["best_mm"][m], unguided=rj["unguided_mm"][m]), sims={})
+                           goal_mm=dict(guided=rj["best_mm"][m], unguided=rj["unguided_mm"][m]), sims={},
+                           contour=(z["letter_contour"][m].round(4).tolist() if "letter_contour" in z.files else None))
                 obj = z["object_mask"][m]
-                series = dict(gen_goal=(np.linalg.norm(G_[:, obj].mean(1) - tgt, axis=-1) * 1e3).round(1).tolist(), ung_goal=(np.linalg.norm(U[:, obj].mean(1) - tgt, axis=-1) * 1e3).round(1).tolist())
+                if cov is not None:                                                                   # goal series = per-frame RMS chamfer to the letter (mm)
+                    from ..letter import chamfer_rms_np
+                    goal_of = lambda X: np.array([chamfer_rms_np(X[t, obj, :2], cov) for t in range(X.shape[0])]) * 1e3
+                else:
+                    goal_of = lambda X: np.linalg.norm(X[:, obj].mean(1) - tgt, axis=-1) * 1e3
+                series = dict(gen_goal=goal_of(G_).round(1).tolist(), ung_goal=goal_of(U).round(1).tolist())
                 for sname, (S, A) in sims.items():
                     variants = json.loads(str(S["variants"]))
                     layer = {}
                     for v, var in enumerate(variants):
+                        if var != "guided" and os.environ.get("GP_PAGE_GUIDED_SIM_ONLY"):
+                            continue                                              # page size: only the guided replay layer
                         sim = np.clip(S["sim"][v, m], qlo, qhi)
                         layer[var] = b64(q16(sim, qlo, qspan))
-                        so = sim[:, obj].mean(1); series[f"sim_{var}_goal"] = (np.linalg.norm(so - tgt, axis=-1) * 1e3).round(1).tolist()
+                        so = sim[:, obj].mean(1); series[f"sim_{var}_goal"] = goal_of(sim).round(1).tolist()
                         go = (G_ if var == "guided" else U)[:, obj].mean(1); series[f"sim_{var}_vs_gen"] = (np.linalg.norm(so - go, axis=-1) * 1e3).round(1).tolist()
                     rec["sims"][sname] = dict(layers=layer, rows=[row for row in A["rows"] if row["member"] == m], label=A.get("sim", sname))
                 rec["series"] = series
@@ -80,11 +94,38 @@ def build(runs_root, out, title="Guided Playback", subtitle="", max_runs=6):
                             rec["renders"][f"{c['variant']}_{style}"] = dict(src=dst, sim=RJ["sim"], frames=c["frames"], size=c["size"], style=style, variant=c["variant"],
                                                                             arm_track_mm_max=c.get("arm_track_mm_max"), arm_track_deg_max=c.get("arm_track_deg_max"), scale=c.get("scale", 1.0))
                 with open(os.path.join(out, "data", f"case_{key}.js"), "w") as f: f.write(f"window.CASE_{key} = {json.dumps(rec)};")
-                members.append(dict(id=key, label=f"ep{int(z['episodes'][m])} · m{m}"))
+                simrow = next((row for S_, A_ in sims.values() for row in A_["rows"] if row["member"] == m and row["variant"] == "guided"), None)
+                members.append(dict(id=key, label=f"m{m}", gen_goal=round(float(np.linalg.norm(G_[-1, obj].mean(0) - tgt) * 1e3), 1),
+                                    sim_goal=(round(float(simrow["sim_to_target_mm"]), 1) if simrow and simrow.get("sim_to_target_mm") is not None else None)))
             knobs = {k: rj.get(k) for k in ("task", "transitions", "steps", "keep", "churn", "t_freeze", "fix_fps", "iterations", "lr", "lr_final", "optimizer", "shell", "joint_limits_mm", "close_fingers", "hand_start", "offset", "random_offset", "own_goal", "seed", "mode", "model_calls") if rj.get(k) not in (None, False, "")}
-            dentry["runs"].append(dict(name=r["name"], desc=rj.get("desc", ""), created=rj.get("created", ""), step=rj.get("step"), ckpt=os.path.basename(rj.get("ckpt", "")), run_dir=rj.get("ckpt", "").split("/")[-3] if rj.get("ckpt") else "",
+            wall = f"Wall {round(float(rj.get('wall_height', 0)) * 100)} cm" if rj.get("task") == "wall" else "No wall"
+            short = f"shell {'on' if rj.get('shell') else 'off'} · lr {rj.get('lr')} · {rj.get('iterations')} it · {rj.get('transitions')} frames"
+            if os.environ.get("GP_PAGE_LABEL") == "cyl":                         # random-target picks: group = asset, label = target id + offset
+                off = [float(v) for v in str(rj.get("offset", "0,0,0")).split(",")]
+                wall = str((rj.get("episodes") or ["?"])[0]).replace("_asset_", " #")
+                tid = r["name"].split("_")[1]
+                short = f"{tid}: dx {off[0]*100:+.1f} cm, dy {off[1]*100:+.1f} cm, dz +{off[2]*100:.0f} cm"
+            if os.environ.get("GP_PAGE_LABEL") == "target":                      # group by target / wall, label = asset
+                off = [float(v) for v in str(rj.get("offset", "0,0,0")).split(",")]
+                wall = f"Goal +{off[0]*100:.0f} cm x" + (f", +{off[2]*100:.0f} cm z" if off[2] else " (on the table)") + (f" · {round(float(rj.get('wall_height', 0))*100)} cm wall" if rj.get("task") == "wall" else " · no wall")
+                short = str((rj.get("episodes") or [r["name"]])[0]).replace("_asset_", " #")
+            if os.environ.get("GP_PAGE_LABEL") == "asset":                       # asset pages: one run per asset, label = the asset
+                wall = os.environ.get("GP_PAGE_GROUP", wall); short = str((rj.get("episodes") or [r["name"]])[0]).replace("_asset_", " #")
+            if os.environ.get("GP_PAGE_LABEL") == "ckpt":                        # variant pages: group = checkpoint, label = the run's settings
+                wall = "two-domain 120k" if "two120k" in r["name"] else "pickup-only"
+                short = f"{rj.get('transitions')} fr · {rj.get('iterations')} it · lr {rj.get('lr')} · shell {'on' if rj.get('shell') else 'off'} · wall w {rj.get('box_weight')} / {rj.get('clearance_mm'):.0f} mm"
+            if os.environ.get("GP_PAGE_LABEL") == "method":                      # planner comparison: group = asset + target, label = planner + plan time
+                tid = [t for t in r["name"].split("_") if t[:1] == "t" and t[1:].isdigit()]
+                wall = str((rj.get("episodes") or ["?"])[0]).replace("_asset_", " #") + (f" · {tid[0]}" if tid else "")
+                secs = sum(rj.get("iteration_seconds") or [0])
+                short = (f"MPPI argmin · K {rj.get('K')} · commit {rj.get('commit')} · {secs:.0f} s" if rj.get("method") == "mppi_argmin"
+                         else f"guided · {rj.get('iterations')} it · pop {len(rj.get('episodes') or [])} · {secs:.0f} s")
+            if rj.get("method") == "mppi_argmin":                                 # no-guidance planner: its own knobs, not the guidance defaults
+                knobs = {k: rj.get(k) for k in ("method", "K", "commit", "task", "transitions", "steps", "offset", "seed", "mode")}
+            dentry["runs"].append(dict(group=wall, short=short, name=r["name"], desc=rj.get("desc", ""), created=rj.get("created", ""), step=rj.get("step"), ckpt=os.path.basename(rj.get("ckpt", "")), run_dir=rj.get("ckpt", "").split("/")[-3] if rj.get("ckpt") else "",
                                        sampler=rj.get("sampler", ""), knobs=knobs, iteration_seconds=rj.get("iteration_seconds"), peak_gib=rj.get("peak_gib"), members=members,
                                        best_mm=rj["best_mm"], unguided_mm=rj["unguided_mm"], sims={s: A["rows"] for s, (S, A) in sims.items()}))
+        dentry["runs"].sort(key=lambda x: (x["group"] != "No wall", x["group"], x["short"]))
         index.append(dentry)
     html = TEMPLATE.replace("__TITLE__", title).replace("__SUBTITLE__", subtitle).replace("__INDEX__", json.dumps(index))
     with open(os.path.join(out, "index.html"), "w") as f: f.write(html)
@@ -112,12 +153,13 @@ TEMPLATE = r"""<title>__TITLE__</title>
   .dtabs button { font-family:var(--cond); font-size:16px; font-weight:600; color:var(--ink2); background:none; border:0; padding:10px 18px; cursor:pointer; margin-bottom:-2px; border-bottom:2px solid transparent; }
   .dtabs button[aria-selected="true"] { color:var(--ink); border-bottom-color:var(--s1); }
   .layout { display:grid; grid-template-columns: 260px 1fr; gap:18px; margin-top:16px; } @media (max-width: 760px) { .layout { grid-template-columns: 1fr; } }
-  .runs { display:flex; flex-direction:column; gap:6px; max-height:820px; overflow:auto; }
+  .runs { display:flex; flex-direction:column; gap:6px; max-height:820px; overflow:auto; } .rgroup { font-family:var(--cond); font-weight:600; font-size:15px; color:var(--ink); margin:10px 0 2px; }
   .runs button { text-align:left; font-family:var(--mono); font-size:11.5px; color:var(--ink2); background:var(--surface); border:1px solid var(--rule); border-radius:4px; padding:8px 10px; cursor:pointer; line-height:1.4; }
   .runs button[aria-selected="true"] { color:var(--ink); border-color:var(--s1); box-shadow:inset 3px 0 0 var(--s1); } .runs b { color:var(--ink); font-weight:500; display:block; } .runs small { color:var(--muted); display:block; }
   .viewer { border:1px solid var(--rule); border-radius:5px; overflow:hidden; background:var(--surface); }
   .tabs { display:flex; flex-wrap:wrap; border-bottom:1px solid var(--rule); } .tabs button { font-family:var(--mono); font-size:12px; color:var(--ink2); background:none; border:0; border-right:1px solid var(--rule); padding:9px 14px; cursor:pointer; }
   .tabs button[aria-selected="true"] { color:var(--ink); background:var(--rule2); box-shadow:inset 0 -2px 0 var(--s1); }
+  .tabs button.best-both { background:color-mix(in srgb, var(--goal) 28%, transparent); color:var(--ink); } .tabs button.best-gen { box-shadow:inset 0 0 0 2px var(--s1); } .tabs button.best-sim { box-shadow:inset 0 0 0 2px var(--simo); } .tabs button small { color:var(--muted); } .tabkey { font-family:var(--mono); font-size:11px; color:var(--muted); padding:9px 12px; }
   button:focus-visible, input:focus-visible { outline:2px solid var(--s1); outline-offset:1px; }
   .stage { position:relative; background:var(--stage); aspect-ratio:16/10; } .stage canvas { position:absolute; inset:0; width:100%; height:100%; display:block; touch-action:none; cursor:grab; }
   .hud { position:absolute; left:12px; top:10px; font-family:var(--mono); font-size:11.5px; color:var(--ink2); pointer-events:none; max-width:90%; }
@@ -165,17 +207,18 @@ function loadCase(key) { if (CACHE[key]) return Promise.resolve(CACHE[key]);
     s.onerror = () => rej(new Error('case ' + key)); document.body.appendChild(s); }); }
 const root = document.getElementById('viewer'); const canvas = root.querySelector('canvas'); const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true }); renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 const scene = new THREE.Scene(); const camera = new THREE.PerspectiveCamera(42, 1.6, 0.005, 200);
-let gPts = null, uPts = null, sPts = null, floor = null, goalM = null, walls = []; const center = new THREE.Vector3(), panOff = new THREE.Vector3();
+let gPts = null, uPts = null, sPts = null, floor = null, goalM = null, contourM = null, walls = []; const center = new THREE.Vector3(), panOff = new THREE.Vector3();
 let camTheta = -0.95, camPhi = 1.12, camRad = 1.2, home = 1.2; let ep = null, frame = 0, playing = false, lastT = 0, simName = null;
 function mkPoints(n, opacity) { const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(n * 3), 3)); g.setAttribute('color', new THREE.BufferAttribute(new Float32Array(n * 3), 3));
   return new THREE.Points(g, new THREE.PointsMaterial({ size: 0.006, vertexColors: true, sizeAttenuation: true, transparent: true, opacity, depthWrite: opacity > 0.6 })); }
 const dq = (q, a) => ep.qlo[a] + (q + 32767) / 65534 * ep.qspan[a];
-function clear() { for (const o of [gPts, uPts, sPts, floor, goalM, ...walls]) if (o) scene.remove(o); gPts = uPts = sPts = floor = goalM = null; walls = []; }
+function clear() { for (const o of [gPts, uPts, sPts, floor, goalM, contourM, ...walls]) if (o) scene.remove(o); gPts = uPts = sPts = floor = goalM = contourM = null; walls = []; }
 function build(next) { ep = next; frame = 0; clear(); simName = Object.keys(ep.sims)[0] || null;
   gPts = mkPoints(ep.N, 0.9); uPts = mkPoints(ep.N, 0.55); sPts = mkPoints(ep.N, 0.6); scene.add(gPts); scene.add(uPts); scene.add(sPts);
   const mid = [0, 1, 2].map(a => ep.lo[a] + ep.span[a] / 2); center.set(mid[0], mid[1], mid[2]); const fs = Math.max(ep.span[0], ep.span[1]) * 2.2;
   floor = new THREE.Mesh(new THREE.PlaneGeometry(fs, fs), new THREE.MeshBasicMaterial({ color: new THREE.Color(cssv('--muted')), transparent: true, opacity: 0.13, side: THREE.DoubleSide, depthWrite: false })); floor.position.set(center.x, center.y, 0); scene.add(floor);
-  goalM = new THREE.Mesh(new THREE.SphereGeometry(0.012, 16, 12), new THREE.MeshBasicMaterial({ color: new THREE.Color(cssv('--goal')), transparent: true, opacity: 0.85 })); goalM.position.set(ep.target[0], ep.target[1], ep.target[2]); scene.add(goalM);
+  goalM = new THREE.Mesh(new THREE.SphereGeometry(0.012, 16, 12), new THREE.MeshBasicMaterial({ color: new THREE.Color(cssv('--goal')), transparent: true, opacity: 0.85 })); goalM.position.set(ep.target[0], ep.target[1], ep.target[2]); if (!Number.isNaN(ep.target[0])) scene.add(goalM);
+  if (ep.contour) { const cg = new THREE.BufferGeometry(); cg.setAttribute('position', new THREE.Float32BufferAttribute(ep.contour.flat(), 3)); contourM = new THREE.Points(cg, new THREE.PointsMaterial({ color: new THREE.Color(cssv('--goal')), size: 0.006, sizeAttenuation: true })); scene.add(contourM); }
   for (const b of ep.boxes) { const w = new THREE.Mesh(new THREE.BoxGeometry(b[3], b[4], b[5]), new THREE.MeshBasicMaterial({ color: new THREE.Color(cssv('--wall')), transparent: true, opacity: 0.35 })); w.position.set(b[0], b[1], b[2]); scene.add(w); walls.push(w); }
   home = Math.hypot(ep.span[0], ep.span[1], ep.span[2]) * 1.35; camRad = home; panOff.set(0, 0, 0); camTheta = -0.95; camPhi = 1.12;
   root.querySelector('.seek').max = String(ep.T - 1); root.querySelector('.seek').value = '0';
@@ -230,16 +273,22 @@ function renderTable(run) { const sims = Object.keys(run.sims); let h = '<div cl
     for (const s of sims) { const r = run.sims[s].find(x => x.member === i && x.variant === 'guided') || {}; h += '<td class="num strong">' + fmt(r.sim_to_target_mm) + '</td><td class="num">' + fmt(r.sim_vs_gen_final_mm) + '</td><td class="num">' + fmt(r.sim_moved_mm) + '</td><td class="num">' + fmt(r.gen_moved_mm) + '</td><td class="num">' + (r.track_mm_mean !== undefined ? r.track_mm_mean.toFixed(1) + ' / ' + r.track_mm_max.toFixed(1) : '') + '</td>'; }
     h += '</tr>'; });
   h += '</tbody></table></div>'; if (!sims.length) h += '<p class="empty">no simulator replay for this run yet</p>'; tableEl.innerHTML = h; }
-function selectMember(run, mi, push) { cur.m = mi; [...mtabs.children].forEach((b, i) => { b.setAttribute('aria-selected', String(i === mi)); b.tabIndex = i === mi ? 0 : -1; });
+function selectMember(run, mi, push) { cur.m = mi; [...mtabs.querySelectorAll('button')].forEach((b, i) => { b.setAttribute('aria-selected', String(i === mi)); b.tabIndex = i === mi ? 0 : -1; });
   loadCase(run.members[mi].id).then(build).catch(err => { root.querySelector('.meta').textContent = 'could not load ' + err.message; }); if (push !== false) location.hash = cur.d + '/' + run.name + '/' + mi; }
-function selectRun(dom, ri, mi, push) { cur.r = ri; const run = dom.runs[ri]; [...runsEl.children].forEach((b, i) => b.setAttribute('aria-selected', String(i === ri)));
-  const k = run.knobs; rundesc.innerHTML = '<b>' + run.name + '</b>' + (run.desc ? ' — ' + run.desc : '') + '<br>' + run.run_dir + ' · ' + run.ckpt + ' · ' + run.sampler + '<br>' + Object.entries(k).map(([a, b]) => a + '=' + (Array.isArray(b) ? b.join(',') : b)).join(' · ') + (run.iteration_seconds ? ' · ' + run.iteration_seconds.slice(1, -1).reduce((a, b) => a + b, 0) / Math.max(1, run.iteration_seconds.length - 2) + ' s/it, peak ' + Math.max(...run.peak_gib) + ' GiB' : '') + ' · ' + run.created;
-  mtabs.innerHTML = run.members.map((m, i) => '<button role="tab" type="button">' + m.label + '</button>').join('');
-  [...mtabs.children].forEach((b, i) => { b.addEventListener('click', () => selectMember(run, i)); b.addEventListener('keydown', e => { const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0; if (!d) return; e.preventDefault(); const n = (i + d + run.members.length) % run.members.length; mtabs.children[n].focus(); selectMember(run, n); }); });
+function selectRun(dom, ri, mi, push) { cur.r = ri; const run = dom.runs[ri]; [...runsEl.querySelectorAll('button')].forEach((b, i) => b.setAttribute('aria-selected', String(i === ri)));
+  const k = run.knobs; rundesc.innerHTML = '<b>' + run.name + '</b>' + (run.desc ? ' — ' + run.desc : '') + '<br>' + run.run_dir + ' · ' + run.ckpt + ' · ' + run.sampler + '<br>' + Object.entries(k).map(([a, b]) => a + '=' + (Array.isArray(b) ? b.join(',') : b)).join(' · ') + (run.iteration_seconds ? ' · ' + run.iteration_seconds.slice(1, -1).reduce((a, b) => a + b, 0) / Math.max(1, run.iteration_seconds.length - 2) + ' s/it, peak ' + (run.peak_gib ? Math.max(...run.peak_gib) : '–') + ' GiB' : '') + ' · ' + run.created;
+  const argmin = k => { let bi = -1, bv = Infinity; run.members.forEach((m, i) => { if (m[k] != null && m[k] < bv) { bv = m[k]; bi = i; } }); return bi; };
+  const bg = argmin('gen_goal'), bs = argmin('sim_goal');
+  mtabs.innerHTML = run.members.map((m, i) => { const g = i === bg, sm = i === bs; const cls = g && sm ? 'best-both' : g ? 'best-gen' : sm ? 'best-sim' : '';
+    const tag = g && sm ? ' ✓ closest gen + sim' : g ? ' ◆ closest gen' : sm ? ' ● closest sim' : '';
+    return '<button role="tab" type="button" class="' + cls + '">' + m.label + ' <small>gen ' + (m.gen_goal != null ? m.gen_goal.toFixed(0) : '–') + ' / sim ' + (m.sim_goal != null ? m.sim_goal.toFixed(0) : '–') + ' mm</small>' + tag + '</button>'; }).join('')
+    + '<span class="tabkey">distance to goal at the last frame · ◆ closest in the generated rollout · ● closest in Isaac · green = closest in both</span>';
+  [...mtabs.querySelectorAll('button')].forEach((b, i) => { b.addEventListener('click', () => selectMember(run, i)); b.addEventListener('keydown', e => { const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0; if (!d) return; e.preventDefault(); const n = (i + d + run.members.length) % run.members.length; mtabs.querySelectorAll('button')[n].focus(); selectMember(run, n); }); });
   renderTable(run); selectMember(run, Math.min(mi || 0, run.members.length - 1), push); }
 function selectDomain(di, ri, mi, push) { cur.d = INDEX[di].id; [...dtabs.children].forEach((b, i) => b.setAttribute('aria-selected', String(i === di))); const dom = INDEX[di];
-  runsEl.innerHTML = dom.runs.map((r, i) => '<button role="tab" type="button"><b>' + r.name + '</b>' + (r.desc ? r.desc + '<br>' : '') + '<small>' + r.ckpt + ' · ' + r.members.length + ' members · ' + (Object.keys(r.sims).join(', ') || 'no replay') + ' · ' + r.created.slice(0, 16) + '</small></button>').join('');
-  [...runsEl.children].forEach((b, i) => b.addEventListener('click', () => selectRun(dom, i, 0)));
+  let lastG = null; runsEl.innerHTML = dom.runs.map((r, i) => { const head = (r.group && r.group !== lastG) ? '<p class="rgroup">' + r.group + '</p>' : ''; lastG = r.group;
+    return head + '<button role="tab" type="button"><b>' + (r.short || r.name) + '</b></button>'; }).join('');
+  [...runsEl.querySelectorAll('button')].forEach((b, i) => b.addEventListener('click', () => selectRun(dom, i, 0)));
   if (dom.runs.length) selectRun(dom, Math.min(ri || 0, dom.runs.length - 1), mi, push); else { rundesc.textContent = ''; mtabs.innerHTML = ''; tableEl.innerHTML = '<p class="empty">no runs</p>'; } }
 dtabs.innerHTML = INDEX.map((d, i) => '<button role="tab" type="button">' + d.label + ' <small>(' + d.runs.length + ')</small></button>').join('');
 [...dtabs.children].forEach((b, i) => b.addEventListener('click', () => selectDomain(i, 0, 0)));

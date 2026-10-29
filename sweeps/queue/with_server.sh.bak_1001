@@ -1,0 +1,13 @@
+#!/bin/bash
+# Run one queue job against its OWN fresh server (GP_RELOAD=1: current gp/ code), pinned to this GPU's dedicated server cores.
+# usage (inside a queue cmd): bash sweeps/queue/with_server.sh {GPU} {HOST} <command using $URL>
+G=$1; H=$2; shift 2
+Q=/data/group_data/katefgroup/runs_pwm_mbronars/guided_playback_budget/queue; ROOT=/data/group_data/katefgroup/runs_pwm_mbronars/guided_playback_budget
+P=/data/user_data/mbronars/.miniconda3/envs/pwm211/bin/python
+CORES=$(python3 -c "import json; print(json.load(open('$Q/cores_$H.json'))['$G'])"); PORT=$((8900 + G))
+GP_RELOAD=1 taskset -c $CORES $P -u bin/serve.py --adapter clean_push --runs $ROOT/runs --port $PORT \
+  --ckpt /data/user_data/mbronars/packages/pwm_final_clean/runs/push0418_rigid_x0_rope_regpass_mix_cont200k_stream/checkpoints/final.pt > $Q/logs/server_${H}_g${G}_$$.log 2>&1 &
+SP=$!; trap "kill $SP" EXIT
+until curl -s http://$H:$PORT/status > /dev/null; do sleep 5; done
+export URL=http://$H:$PORT/guide
+eval "$@"

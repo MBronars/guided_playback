@@ -1,0 +1,442 @@
+[
+ {
+  "label": "batch000_e1",
+  "f0_obj_centroid_model": [
+   -0.2437462776899338,
+   -0.22756361216306686,
+   0.04952965239353943
+  ],
+  "pool_index": 3,
+  "asset_id": 9050,
+  "asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/libero/alphabet_soup_can/asset_0034",
+  "asset_verified": false,
+  "best_fit_asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/libero/alphabet_soup_can/asset_0034",
+  "chamfer_mm": 2.133332941384227,
+  "dims_mm": [
+   59.0,
+   56.0,
+   73.0
+  ],
+  "rec_lift_mm": 272.9630470275879,
+  "rho": 752.4962768554688,
+  "mu": 0.9772599935531616
+ },
+ {
+  "label": "peanut_butter_jar_asset_0003",
+  "f0_obj_centroid_model": [
+   0.1333373926579952,
+   -0.19422820955514908,
+   0.06412192206189501
+  ],
+  "pool_index": 7,
+  "asset_id": 7070,
+  "asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/peanut_butter_jar/asset_0003",
+  "asset_verified": true,
+  "best_fit_asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/peanut_butter_jar/asset_0003",
+  "chamfer_mm": 2.44049791069115,
+  "dims_mm": [
+   57.0,
+   60.0,
+   93.0
+  ],
+  "rec_lift_mm": 205.5351436138153,
+  "rho": 1402.4371337890625,
+  "mu": 1.0
+ },
+ {
+  "label": "jam_jar_asset_0085",
+  "f0_obj_centroid_model": [
+   -0.210882412083447,
+   -0.23958290927112103,
+   0.06467799912788905
+  ],
+  "pool_index": 97,
+  "asset_id": 6097,
+  "asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/jam_jar/asset_0085",
+  "asset_verified": true,
+  "best_fit_asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/jam_jar/asset_0085",
+  "chamfer_mm": 3.1704464196704443,
+  "dims_mm": [
+   59.0,
+   60.0,
+   105.0
+  ],
+  "rec_lift_mm": 356.92331194877625,
+  "rho": 1456.8819580078125,
+  "mu": 1.0
+ },
+ {
+  "label": "pickle_jar_asset_0025",
+  "f0_obj_centroid_model": [
+   -0.19832107406109573,
+   0.3370224367827177,
+   0.07204900691285729
+  ],
+  "pool_index": 15,
+  "asset_id": 7257,
+  "asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/pickle_jar/asset_0025",
+  "asset_verified": true,
+  "best_fit_asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/pickle_jar/asset_0025",
+  "chamfer_mm": 3.0250796941387827,
+  "dims_mm": [
+   71.0,
+   70.0,
+   123.0
+  ],
+  "rec_lift_mm": 175.49674212932587,
+  "rho": 811.80810546875,
+  "mu": 1.0
+ },
+ {
+  "label": "mayonnaise_jar_asset_0008",
+  "f0_obj_centroid_model": [
+   -0.055784019455313694,
+   0.09284240566194057,
+   0.04666855421091895
+  ],
+  "pool_index": 68,
+  "asset_id": 6430,
+  "asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/mayonnaise_jar/asset_0008",
+  "asset_verified": true,
+  "best_fit_asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/mayonnaise_jar/asset_0008",
+  "chamfer_mm": 2.7876674697641937,
+  "dims_mm": [
+   121.0,
+   117.0,
+   67.0
+  ],
+  "rec_lift_mm": 264.0361189842224,
+  "rho": 892.6774291992188,
+  "mu": 1.0
+ },
+ {
+  "label": "spice_jar_asset_0025",
+  "f0_obj_centroid_model": [
+   -0.04128676564432682,
+   -0.19218821777030826,
+   0.0575889365049079
+  ],
+  "pool_index": 50,
+  "asset_id": 8022,
+  "asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/spice_jar/asset_0025",
+  "asset_verified": true,
+  "best_fit_asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/spice_jar/asset_0025",
+  "chamfer_mm": 2.2305393608548725,
+  "dims_mm": [
+   48.0,
+   48.0,
+   95.0
+  ],
+  "rec_lift_mm": 256.64401054382324,
+  "rho": 680.2288818359375,
+  "mu": 1.0
+ },
+ {
+  "label": "tea_box_asset_0019",
+  "f0_obj_centroid_model": [
+   -0.1966016970574856,
+   -0.2437499240040779,
+   0.07325940752925816
+  ],
+  "pool_index": 4,
+  "asset_id": 8331,
+  "asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/tea_box/asset_0019",
+  "asset_verified": true,
+  "best_fit_asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/tea_box/asset_0019",
+  "chamfer_mm": 3.1491682933620577,
+  "dims_mm": [
+   98.0,
+   97.0,
+   122.0
+  ],
+  "rec_lift_mm": 315.53974747657776,
+  "rho": 198.45138549804688,
+  "mu": 1.0
+ },
+ {
+  "label": "cracker_box_asset_0039",
+  "f0_obj_centroid_model": [
+   -0.15008254423737527,
+   0.022719189524650574,
+   0.08251669860910624
+  ],
+  "pool_index": 9,
+  "asset_id": 5289,
+  "asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/cracker_box/asset_0039",
+  "asset_verified": true,
+  "best_fit_asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/cracker_box/asset_0039",
+  "chamfer_mm": 3.4096028749600524,
+  "dims_mm": [
+   39.0,
+   107.0,
+   150.0
+  ],
+  "rec_lift_mm": 184.97776985168457,
+  "rho": 669.0519409179688,
+  "mu": 1.0
+ },
+ {
+  "label": "cereal_box_asset_0044",
+  "f0_obj_centroid_model": [
+   -0.24544775933027269,
+   0.11919372901320457,
+   0.08579879020398948
+  ],
+  "pool_index": 193,
+  "asset_id": 5137,
+  "asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/cereal_box/asset_0044",
+  "asset_verified": true,
+  "best_fit_asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/cereal_box/asset_0044",
+  "chamfer_mm": 3.2598121408763867,
+  "dims_mm": [
+   59.0,
+   106.0,
+   150.0
+  ],
+  "rec_lift_mm": 209.59195494651794,
+  "rho": 1485.2550048828125,
+  "mu": 1.0
+ },
+ {
+  "label": "pasta_box_asset_0058",
+  "f0_obj_centroid_model": [
+   -0.23798186779022218,
+   -0.11502368189394474,
+   0.05410869791230652
+  ],
+  "pool_index": 133,
+  "asset_id": 7025,
+  "asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/pasta_box/asset_0058",
+  "asset_verified": true,
+  "best_fit_asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/pasta_box/asset_0058",
+  "chamfer_mm": 3.315095557324855,
+  "dims_mm": [
+   128.0,
+   147.0,
+   86.0
+  ],
+  "rec_lift_mm": 224.98798370361328,
+  "rho": 805.722412109375,
+  "mu": 1.0
+ },
+ {
+  "label": "juice_carton_asset_0025",
+  "f0_obj_centroid_model": [
+   -0.16252010203897954,
+   -0.1893889605998993,
+   0.06975386641570366
+  ],
+  "pool_index": 25,
+  "asset_id": 6137,
+  "asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/juice_carton/asset_0025",
+  "asset_verified": true,
+  "best_fit_asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/juice_carton/asset_0025",
+  "chamfer_mm": 3.0736347704084297,
+  "dims_mm": [
+   73.0,
+   70.0,
+   123.0
+  ],
+  "rec_lift_mm": 234.70841348171234,
+  "rho": 986.83642578125,
+  "mu": 1.0
+ },
+ {
+  "label": "milk_carton_asset_0037",
+  "f0_obj_centroid_model": [
+   -0.1784931973554194,
+   0.20962802693247795,
+   0.07303289359551854
+  ],
+  "pool_index": 17,
+  "asset_id": 6574,
+  "asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/milk_carton/asset_0037",
+  "asset_verified": true,
+  "best_fit_asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/milk_carton/asset_0037",
+  "chamfer_mm": 2.7163457765834975,
+  "dims_mm": [
+   56.0,
+   47.0,
+   132.0
+  ],
+  "rec_lift_mm": 258.04561376571655,
+  "rho": 806.3956298828125,
+  "mu": 1.0
+ },
+ {
+  "label": "food_can_asset_0039",
+  "f0_obj_centroid_model": [
+   -0.22484511374495925,
+   -0.16870505549013615,
+   0.05369460037618409
+  ],
+  "pool_index": 186,
+  "asset_id": 5711,
+  "asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/food_can/asset_0039",
+  "asset_verified": true,
+  "best_fit_asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/food_can/asset_0039",
+  "chamfer_mm": 2.4823777808683136,
+  "dims_mm": [
+   70.0,
+   72.0,
+   83.0
+  ],
+  "rec_lift_mm": 230.6276261806488,
+  "rho": 1042.020263671875,
+  "mu": 1.0
+ },
+ {
+  "label": "soda_can_asset_0012",
+  "f0_obj_centroid_model": [
+   -0.05088385362178088,
+   0.09918759018182755,
+   0.06654962915345095
+  ],
+  "pool_index": 26,
+  "asset_id": 7859,
+  "asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/soda_can/asset_0012",
+  "asset_verified": true,
+  "best_fit_asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/soda_can/asset_0012",
+  "chamfer_mm": 2.2961516194170164,
+  "dims_mm": [
+   57.0,
+   56.0,
+   102.0
+  ],
+  "rec_lift_mm": 220.36433219909668,
+  "rho": 1118.919677734375,
+  "mu": 1.0
+ },
+ {
+  "label": "tuna_can_asset_0023",
+  "f0_obj_centroid_model": [
+   0.00785311609506606,
+   0.23209474422037601,
+   0.05345848513243254
+  ],
+  "pool_index": 197,
+  "asset_id": 8519,
+  "asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/tuna_can/asset_0023",
+  "asset_verified": true,
+  "best_fit_asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/tuna_can/asset_0023",
+  "chamfer_mm": 2.398651635342412,
+  "dims_mm": [
+   70.0,
+   72.0,
+   77.0
+  ],
+  "rec_lift_mm": 210.1612091064453,
+  "rho": 532.1596069335938,
+  "mu": 1.0
+ },
+ {
+  "label": "mustard_bottle_asset_0059",
+  "f0_obj_centroid_model": [
+   -0.14692545058205725,
+   0.2750389128923416,
+   0.0781490617286181
+  ],
+  "pool_index": 16,
+  "asset_id": 6796,
+  "asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/mustard_bottle/asset_0059",
+  "asset_verified": true,
+  "best_fit_asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/mustard_bottle/asset_0059",
+  "chamfer_mm": 2.816522490121181,
+  "dims_mm": [
+   56.0,
+   56.0,
+   165.0
+  ],
+  "rec_lift_mm": 200.87945461273193,
+  "rho": 466.1056823730469,
+  "mu": 1.0
+ },
+ {
+  "label": "water_bottle_asset_0087",
+  "f0_obj_centroid_model": [
+   -0.07517010420560838,
+   0.22676744870841503,
+   0.06861975750362034
+  ],
+  "pool_index": 24,
+  "asset_id": 8788,
+  "asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/water_bottle/asset_0087",
+  "asset_verified": true,
+  "best_fit_asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/water_bottle/asset_0087",
+  "chamfer_mm": 2.5812042475284303,
+  "dims_mm": [
+   53.0,
+   52.0,
+   122.0
+  ],
+  "rec_lift_mm": 199.5166838169098,
+  "rho": 1472.8934326171875,
+  "mu": 1.0
+ },
+ {
+  "label": "drinking_glass_asset_0056",
+  "f0_obj_centroid_model": [
+   -0.2113956341519952,
+   0.12314775958657265,
+   0.06657629037217702
+  ],
+  "pool_index": 179,
+  "asset_id": 5563,
+  "asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/drinking_glass/asset_0056",
+  "asset_verified": true,
+  "best_fit_asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/drinking_glass/asset_0056",
+  "chamfer_mm": 3.2161949501410407,
+  "dims_mm": [
+   71.0,
+   75.0,
+   109.0
+  ],
+  "rec_lift_mm": 188.175231218338,
+  "rho": 840.1383666992188,
+  "mu": 1.0
+ },
+ {
+  "label": "lemon_asset_0012",
+  "f0_obj_centroid_model": [
+   0.05007531780283897,
+   -0.0721649993211031,
+   0.05251801838167011
+  ],
+  "pool_index": 102,
+  "asset_id": 6404,
+  "asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/lemon/asset_0012",
+  "asset_verified": true,
+  "best_fit_asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/lemon/asset_0012",
+  "chamfer_mm": 1.8208577559233283,
+  "dims_mm": [
+   62.0,
+   62.0,
+   59.0
+  ],
+  "rec_lift_mm": 152.0795226097107,
+  "rho": 586.6806640625,
+  "mu": 1.0
+ },
+ {
+  "label": "tomato_asset_0012",
+  "f0_obj_centroid_model": [
+   -0.07102773226797582,
+   -0.2390120755881071,
+   0.0540493122593034
+  ],
+  "pool_index": 67,
+  "asset_id": 8478,
+  "asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/tomato/asset_0012",
+  "asset_verified": true,
+  "best_fit_asset": "/data/group_data/katefgroup-ssd/sim_scene_gen/assets/Kitchen_Table/tomato/asset_0012",
+  "chamfer_mm": 1.8115138315612298,
+  "dims_mm": [
+   58.0,
+   62.0,
+   63.0
+  ],
+  "rec_lift_mm": 276.43340826034546,
+  "rho": 539.7163696289062,
+  "mu": 1.0
+ }
+]

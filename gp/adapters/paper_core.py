@@ -21,7 +21,7 @@ import dataclasses, os, sys
 import torch
 from torch.utils.checkpoint import checkpoint
 
-REPO = "/data/user_data/mbronars/packages/pwm_final_paper"
+REPO = os.environ.get("GP_PAPER_REPO", "/data/user_data/mbronars/packages/pwm_final_paper")
 if REPO not in sys.path:
     sys.path.insert(0, REPO)
 from omegaconf import OmegaConf
@@ -113,6 +113,22 @@ def pad_frames(b, transitions):
     return dataclasses.replace(b, **kw), T
 
 
+def _roots(cfg, domain):
+    """cfg.data.roots, with GP_<DOMAIN>_VAL_ROOT (env) replacing that domain's val root and dropping its exclusions
+    (used to point a checkpoint at one specific shard, e.g. a scene from its train set)."""
+    roots = OmegaConf.to_container(cfg.data.roots, resolve=True)
+    alt = os.environ.get(f"GP_{domain.upper()}_VAL_ROOT")
+    if alt:
+        roots[domain]["val"] = alt; roots[domain].pop("exclusions", None)
+        # GP_<DOMAIN>_SHIFT_M "x,y,z": the canonical translation of THAT root. pwm-data-v1/pickup carries its own
+        # (-0.45, 0, -0.11) (table top 0.110 m); the pick_success corpus behind the paper benchmark needs the registered
+        # (-0.45, 0, -0.10) so its table also lands at z = 0 and the benchmark's model-frame centroids match.
+        sh = os.environ.get(f"GP_{domain.upper()}_SHIFT_M")
+        if sh:
+            roots[domain]["shift_m"] = [float(v) for v in sh.split(",")]
+    return roots
+
+
 def episode_batch(cfg, indices, transitions, device, domain="pickup"):
     """Held-out test episodes of `domain` (whole clip from its first frame, padded to N+1 frames) as B=1 batches."""
     cwd = os.getcwd(); os.chdir(REPO)
@@ -123,7 +139,7 @@ def episode_batch(cfg, indices, transitions, device, domain="pickup"):
             future_len=cfg.data.future_len, batch_size=1, num_workers=0,
             emit_sidecar=cfg.data.emit_sidecar, bucket_max_items=cfg.data.bucket_max_items,
             articulated=bool(cfg.model.get("articulated_bodies", False)), domains=[domain],
-            eval_domains=None, domain_weights=None, seed=0, roots=OmegaConf.to_container(cfg.data.roots, resolve=True),
+            eval_domains=None, domain_weights=None, seed=0, roots=_roots(cfg, domain),
             window_motion=None, batch_across_episodes=None, training=False, shuffle=False, no_shard_split=False,
             first_window=True)
         # the loader slices the clip to context+future_len frames; ask it for the whole clip instead
@@ -139,6 +155,40 @@ def episode_batch(cfg, indices, transitions, device, domain="pickup"):
     finally:
         os.chdir(cwd)
     return got
+
+
+def episode_batch_select(cfg, entries, transitions, device, domain="pickup", scan=4000):
+    """Episodes picked by their frame-0 object centroid (model frame, within 1e-4 m), as in the paper pick benchmark's
+    select files (gp/adapters/clean_pickup.py + pwm_final_clean guidance/streaming_guidance.select_and_group): returns
+    B=1 batches in `entries` order, each padded to transitions + 1 frames."""
+    cwd = os.getcwd(); os.chdir(REPO)
+    try:
+        loader = create_dataloader(
+            wds_location=cfg.data.wds_location, format=cfg.data.format, normalization=cfg.normalization,
+            prediction_target=cfg.prediction_target, context_len=cfg.data.context_len,
+            future_len=cfg.data.future_len, batch_size=1, num_workers=0,
+            emit_sidecar=cfg.data.emit_sidecar, bucket_max_items=cfg.data.bucket_max_items,
+            articulated=bool(cfg.model.get("articulated_bodies", False)), domains=[domain],
+            eval_domains=None, domain_weights=None, seed=0, roots=_roots(cfg, domain),
+            window_motion=None, batch_across_episodes=None, training=False, shuffle=False, no_shard_split=False,
+            first_window=True)
+        for d in loader.loaders.values():
+            d.dataset.future_len = 10 ** 6
+        want = [torch.tensor(e["f0_obj_centroid_model"], dtype=torch.float32) for e in entries]
+        found = {}
+        for i, b in enumerate(loader):
+            c = object_centroid(b, b.positions[:, 0])[0].float().cpu()
+            for k, w in enumerate(want):
+                if k not in found and float((c - w).abs().max()) < 1e-4:
+                    found[k], _ = pad_frames(b, transitions); found[k].gt_frames = b.positions.shape[1]
+            if len(found) == len(want) or i >= scan:
+                break
+    finally:
+        os.chdir(cwd)
+    missing = [entries[k].get("label", k) for k in range(len(entries)) if k not in found]
+    if missing:
+        raise ValueError(f"selected episodes not found in the first {scan} episodes (check GP_PICKUP_VAL_ROOT / _SHIFT_M): {missing}")
+    return [found[k] for k in range(len(entries))]
 
 
 def stack_batches(batches):
@@ -279,7 +329,8 @@ class Streamer:
         wb = rollout_window(batch, pos_full, start + C, NW - (C - 1))
         wb = dataclasses.replace(wb, positions=pos_w, body_poses=bp_w, pose_deltas_gt=torch.zeros_like(wb.pose_deltas_gt),
                                  actions=torch.zeros_like(wb.actions))
-        wb = hide_actions(wb, 1.0)
+        if not getattr(self, "given_actions", False):              # action-conditioned mode (2026-10-23): the batch's pose_actions are the plan's hand motion
+            wb = hide_actions(wb, 1.0)
         with torch.autocast("cuda", dtype=torch.bfloat16):
             fut, pose_fut = self.model(wb, xs_fut, tt[:, C - 1:], noisy_context=xs_ctx, context_timesteps=tt[:, :C - 1],
                                        noisy_pose=xps_fut, noisy_ctx_pose=xps_ctx)

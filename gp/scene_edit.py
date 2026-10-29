@@ -97,3 +97,86 @@ def hand_start_mid(batch, target, obj_mask, seed, jitter_mm=30.0, z_mm=105.0, lo
             rows = (batch.particle_body[b] == k) & valid; pos0[b, rows] += delta
         log(f"member {b}: hand start moved by {[round(float(v) * 1e3) for v in delta]} mm")
     return _replace_frame0(batch, pos0, bp0)
+
+
+def hand_start_above(batch, obj_mask, above_mm=300.0, log=print):
+    """Translate the gripper (all actuated bodies together, orientation unchanged) so the hand-body centroid sits straight above the
+    object centroid, above_mm higher than it."""
+    B = batch.positions.shape[0]
+    pos0 = batch.positions[:, 0].clone(); bp0 = batch.body_poses[:, 0].clone()
+    c0 = centroid(batch.positions[:, 0], obj_mask)
+    for b in range(B):
+        act = batch.pose_action_mask[b]; jt = batch.joint_type[b]; valid = batch.get_valid_mask()[b]
+        hand_k = int((act & (jt == 0)).nonzero()[0]); hand_rows = (batch.particle_body[b] == hand_k) & valid
+        cur = pos0[b, hand_rows].mean(0)
+        want = c0[b].clone(); want[2] = c0[b, 2] + above_mm / 1000.0
+        delta = want - cur
+        for k in act.nonzero()[:, 0].tolist():
+            bp0[b, k, :3, 3] += delta
+            rows = (batch.particle_body[b] == k) & valid; pos0[b, rows] += delta
+        log(f"member {b}: hand start moved straight above the object by {[round(float(v) * 1e3) for v in delta]} mm (was {[round(float(v) * 1e3) for v in (cur - c0[b])]} mm off the centroid)")
+    return _replace_frame0(batch, pos0, bp0)
+
+
+def load_ply_vertices(path):
+    """Vertices of a binary little-endian PLY (x,y,z + any scalar props), no trimesh needed."""
+    with open(path, "rb") as f:
+        hdr = b""
+        while not hdr.endswith(b"end_header\n"):
+            hdr += f.readline()
+        h = hdr.decode(); n = int([l for l in h.split("\n") if l.startswith("element vertex")][0].split()[-1])
+        props = [l.split()[1:] for l in h.split("\n") if l.startswith("property ") and "list" not in l]
+        fmt = {"float": "<f4", "uchar": "u1", "double": "<f8", "int": "<i4", "float32": "<f4", "uint8": "u1"}
+        dt = np.dtype([(nm, fmt[t]) for t, nm in props]); arr = np.frombuffer(f.read(n * dt.itemsize), dtype=dt)
+    return np.stack([arr["x"], arr["y"], arr["z"]], 1).astype(np.float64)
+
+
+def replace_object(batch, obj_mask, mesh_path, seed=0, yaw_deg=0.0, log=print):
+    """Swap the (single) object's particles for points sampled on `mesh_path` (metres, centred): same xy centroid, bottom at the
+    original object's lowest particle, same particle count. Updates positions (all frames), the object's body template and its
+    frame-0 body pose (rotation kept, translation = new centroid), so pose-native sampling rebuilds the new object from the template."""
+    V = load_ply_vertices(mesh_path)
+    c, s = math.cos(math.radians(yaw_deg)), math.sin(math.radians(yaw_deg)); V = V @ np.array([[c, -s, 0], [s, c, 0], [0, 0, 1]]).T
+    rng = np.random.RandomState(seed)
+    positions = batch.positions.clone(); body_poses = batch.body_poses.clone(); templates = batch.body_templates.clone()
+    B = positions.shape[0]
+    for b in range(B):
+        rows = obj_mask[b].nonzero()[:, 0]; n = int(rows.numel())
+        k = int(batch.particle_body[b, rows[0]])
+        old = positions[b, 0, rows]; c_old = old.mean(0); z_min_old = float(old[:, 2].min())
+        idx = rng.choice(len(V), n, replace=len(V) < n); P = V[idx].copy()
+        P[:, :2] -= P[:, :2].mean(0); P[:, 2] -= P[:, 2].min()                   # centre xy, bottom at 0
+        P = torch.tensor(P, dtype=positions.dtype, device=positions.device)
+        P[:, 0] += c_old[0]; P[:, 1] += c_old[1]; P[:, 2] += z_min_old
+        c_new = P.mean(0)
+        positions[b, :, rows] = P[None]                                          # every frame: no trace of the old object anywhere
+        nt = int(batch.body_template_mask[b, k].sum()); assert nt == n, f"template rows {nt} != object rows {n}"
+        R0 = body_poses[b, 0, k, :3, :3]
+        templates[b, k, :n] = (R0.T @ (P - c_new).T).T
+        body_poses[b, :, k, :3, 3] = c_new[None]
+        log(f"member {b}: object body {k} -> {mesh_path.split('/')[-2]}/{mesh_path.split('/')[-1]}: {n} pts, extents {((P.max(0).values - P.min(0).values) * 1e3).round().tolist()} mm, centroid {(c_new * 1e3).round().tolist()} mm (was {(c_old * 1e3).round().tolist()})")
+    out = dataclasses.replace(batch, positions=positions, body_poses=body_poses, body_templates=templates)
+    out.gt_frames, out.episodes = batch.gt_frames, batch.episodes
+    return out
+
+
+def set_frame0_points(batch, points, log=print):
+    """Closed loop: make an EXECUTED particle cloud (model frame, same row order as the batch) the new frame 0. Every body (hand,
+    fingers, object) is moved rigidly: its pose is the Kabsch fit of its frame-0 rows onto the executed rows, applied to its
+    frame-0 body pose, and its rows are the fitted rigid copy (so particles and poses stay consistent)."""
+    B = batch.positions.shape[0]; dev = batch.positions.device
+    P = torch.as_tensor(points, dtype=batch.positions.dtype, device=dev)
+    pos0 = batch.positions[:, 0].clone(); bp0 = batch.body_poses[:, 0].clone(); err = 0.0
+    for b in range(B):
+        valid = batch.get_valid_mask()[b]
+        for k in torch.unique(batch.particle_body[b][valid]).tolist():
+            rows = (batch.particle_body[b] == k) & valid
+            X = pos0[b, rows].double(); Y = P[rows].double(); cx, cy = X.mean(0), Y.mean(0)
+            U, _, Vt = torch.linalg.svd((X - cx).T @ (Y - cy)); d = torch.sign(torch.linalg.det(Vt.T @ U.T))
+            R = Vt.T @ torch.diag(torch.tensor([1.0, 1.0, float(d)], dtype=torch.float64, device=dev)) @ U.T; t = cy - R @ cx
+            new = (X @ R.T + t); err = max(err, float((new - Y).norm(dim=-1).max()))
+            pos0[b, rows] = new.to(pos0.dtype)
+            M = torch.eye(4, dtype=torch.float64, device=dev); M[:3, :3] = R; M[:3, 3] = t
+            bp0[b, k] = (M @ bp0[b, k].double()).to(bp0.dtype)
+    log(f"frame 0 set from the executed cloud (rigid fit, max residual {err * 1e3:.2f} mm)")
+    return _replace_frame0(batch, pos0, bp0)

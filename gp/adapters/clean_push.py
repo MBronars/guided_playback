@@ -65,21 +65,36 @@ class CleanPushAdapter(Adapter):
         return batch
 
     def prepare(self, batch, transitions, steps, keep, seed, churn, t_freeze, fix_fps):
-        if not churn:
-            raise SystemExit("clean_push: only the churn sampler is implemented (pass --churn)")
-        sc = lib.Staircase(self.model, self.diffusion, self.cfg, batch, steps, horizon=transitions, seed=seed, amp_dtype=torch.bfloat16)
+        hist = getattr(self, "history", None)
+        if hist is not None:                                        # closed loop: executed frames 0..c as clean rows (gp/adapters/clean_core_prefix.py)
+            from .clean_core_prefix import PrefixStaircase, history_prefix
+            pre = history_prefix(batch, self.object_mask(batch), hist, keep=hist.get("context"))
+            full = bool(hist.get("full_window", True))
+            sc = PrefixStaircase(self.model, self.diffusion, self.cfg, batch, steps, transitions, pre, seed=seed, amp_dtype=torch.bfloat16, full_window=full,
+                                 stop_at=hist.get("stop_at"))
+        else:
+            sc = lib.Staircase(self.model, self.diffusion, self.cfg, batch, steps, horizon=transitions, seed=seed, amp_dtype=torch.bfloat16)
+        sc.reseed = not bool(getattr(self, "free_fps", False))      # default: reseed before every rollout = FPS fixed (the sweep's behaviour)
+        rs = getattr(self, "resample", None)                        # population reseeding at commit points (clean_core_prefix.PrefixStaircase.rollout)
+        sc.resample = dict(every=int(rs["every"]), temp=float(rs.get("temp", 1.0)), target=rs["target"], mask=self.object_mask(batch)) if (rs and hist is not None) else None
         X0, P0, E = sc.draws(torch.Generator(device=self.dev).manual_seed(seed))
         opt_E = sc.opt_mask(t_freeze).expand_as(E).clone()
         D = P0.shape[2] * 6
         shellP = P0.flatten(2).norm(dim=-1)[..., None, None]; shellE = E.flatten(3).norm(dim=-1)[..., None, None]
         info = dict(model_calls=int(sc.n_calls), bank_draws=int(E.shape[0] * E.shape[1]), free_bank=int(opt_E[..., 0, 0].sum()),
-                    sampler="full churn (eta=1) staircase, joint draw optimization", D=D)
+                    sampler="full churn (eta=1) staircase, joint draw optimization" + (f", {sc.c} executed transitions as clean context (anchor = executed frame {sc.prefix['anchor_frame']}), {(sc.stop_at or transitions) - sc.c} generated" + (f", tail padded ({transitions} scheduled, every call {sc.Cm1 + sc.window} rows)" if sc.stop_at else "") + (", full window" if sc.full_window else "") if hist is not None else ""), D=D)
+        if not churn:                                               # deterministic Euler ODE (eta = 0): only the initial draws P0 are optimized (DNO / ReNO)
+            info["sampler"] = info["sampler"].replace("full churn (eta=1) staircase, joint draw optimization", "deterministic Euler staircase, initial-noise optimization")
+            info.update(free_bank=0, bank_draws=0)
+            return State(vars=[P0.requires_grad_(True)], free=[None], shell=[shellP], fixed=dict(X0=X0, sc=sc, levels=[torch.ones_like(shellP)], churn=False), info=info)
         return State(vars=[P0.requires_grad_(True), E.requires_grad_(True)], free=[None, opt_E], shell=[shellP, shellE],
-                     fixed=dict(X0=X0, sc=sc), info=info)
+                     fixed=dict(X0=X0, sc=sc, levels=[torch.ones_like(shellP), sc.t_next.float()[:, :, None, None, None].to(E.device)]), info=info)
 
     def rollout(self, batch, state, grad):
         sc = state.fixed["sc"]
         with torch.set_grad_enabled(grad):
+            if state.fixed.get("churn", True) is False:
+                return sc.rollout(state.fixed["X0"], state.vars[0], None, "euler")
             return sc.rollout(state.fixed["X0"], state.vars[0], state.vars[1], "churn")
 
     def object_mask(self, batch):

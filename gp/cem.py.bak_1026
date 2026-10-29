@@ -1,0 +1,229 @@
+"""Sampling planners over the diffusion noise (the same variables DNO guidance optimizes): CEM and best-of-K.
+
+One Gaussian over every free noise entry of ONE plan (mean and per-entry std, starting at the prior N(0, I)). Per round:
+  K candidates = mean + std * eps (round 1: plain prior draws; later rounds: candidate 0 = the current mean, the next ones
+  the previous round's best elites carried over); every draw (the last two dims of a noise tensor, i.e. one body-pose or
+  particle draw of one row at one level) is projected onto its typical-set radius sqrt(n) (Hegde et al. 2026, arXiv
+  2610.12407, sec. 4.4); candidates are rolled out in chunks of the state's batch size B with no gradients and scored
+  by the objective (final-frame distance, joint scoring); elites = the best max(min_elites, K // elite_div); the Gaussian
+  is refit to the elites (mean, std >= min_std).
+After the last round (final_mean): the refit mean (projected) is rolled out in one extra chunk, its other B-1 slots filled
+with fresh draws from the refit Gaussian, all scored. The returned plan is the best scored candidate of the whole run.
+Best-of-K = rounds 1, final_mean 0 (prior draws only, no refit used).
+
+Entries that are not free (state.free False) keep member 0's sampled value in every candidate.
+Returns a dict shaped like gp.guide.run's, so gp.guide.save and the drivers work unchanged: every member slot holds the
+best plan; best_mm[0] is its score; trace_mm[r] = best so far after round r (every slot); iteration_seconds holds one entry per round
+(+ the final-mean pass); every candidate's score is in terms[0]['candidate_mm']."""
+import time
+import torch
+
+
+class NaNRollout(RuntimeError):
+    """A rollout gave non-finite scores: treated as a worker / GPU fault (gp.pool releases the unit and exits)."""
+
+
+def _mdim(v, B):
+    return 0 if v.dim() < 5 or v.shape[0] == B else 2
+
+
+def _project(x, member_dim):
+    """x: one candidate's noise tensor (member axis removed). Every draw (last two dims) -> norm sqrt(n)."""
+    n = x.shape[-1] * x.shape[-2]
+    nrm = x.flatten(-2).norm(dim=-1)[..., None, None].clamp_min(1e-8)
+    return x * (n ** 0.5) / nrm
+
+
+def run(adapter, batch, state, objective, K, rounds, seed=0, elite_div=8, min_elites=2, carry_frac=0.3, min_std=0.1,
+        project=True, final_mean=True, log=print, update="cem", temperature=0.1):
+    """update="mppi": the mean becomes the softmax-weighted average of ALL K candidates of the round, weights
+    exp(-(cost - best) / std(cost) / temperature) (costs standardised per round, so the temperature is scale-free), and the
+    spread stays at the prior's (1); everything else (projection, carry-over of the best samples, scored refit mean,
+    best-scored execution) is the CEM path's."""
+    dev = state.vars[0].device
+    B = int(batch.positions.shape[0])
+    if K % B: raise ValueError(f"cem_K={K} must be a multiple of the batch size {B}")
+    md = [_mdim(v, B) for v in state.vars]
+    base = [v.detach().select(m, 0).clone() for v, m in zip(state.vars, md)]                      # one member's draws
+    free = [None if f is None else f.select(m, 0).bool() if f.dim() == v.dim() else f.bool() for f, v, m in zip(state.free, state.vars, md)]
+    mu = [torch.zeros_like(b) for b in base]
+    sd = [torch.ones_like(b) for b in base]
+    E = min(K, max(min_elites, K // elite_div)); n_carry = int(round(carry_frac * E))
+    g = torch.Generator(device=dev).manual_seed(int(seed) * 7919 + 17)
+
+    def finish(c):                                                                               # free entries from c, fixed ones from base; projected
+        out = []
+        for x, b, f in zip(c, base, free):
+            x = x if f is None else torch.where(f, x, b)
+            out.append(_project(x, None) if project else x)
+        return out
+
+    def evaluate(cands):
+        """cands: list (len multiple of B) of per-candidate var lists -> scores [n] (m), positions of the best."""
+        scores, best_pos, best_d = [], None, float("inf")
+        with torch.no_grad():
+            for s in range(0, len(cands), B):
+                chunk = cands[s:s + B]
+                for i, (v, m) in enumerate(zip(state.vars, md)):
+                    v.data.copy_(torch.stack([c[i] for c in chunk], dim=m))
+                pos = adapter.rollout(batch, state, grad=False)
+                d, _ = objective(pos); d = d.detach().float()
+                if not torch.isfinite(d).all(): raise NaNRollout(f"{int((~torch.isfinite(d)).sum())} of {d.numel()} candidates non-finite")
+                scores.append(d)
+                k = int(d.argmin())
+                if float(d[k]) < best_d:
+                    best_d, best_pos = float(d[k]), pos[k].detach().clone()
+        return torch.cat(scores), best_pos
+
+    trace, times, best = [], [], dict(d=float("inf"), pos=None, vars=None)
+    unguided = None; elites = None; scores_log = []
+    for r in range(rounds):
+        torch.cuda.synchronize(); t0 = time.time()
+        cands = []
+        for k in range(K):
+            if r > 0 and k == 0:
+                c = [m_.clone() for m_ in mu]
+            elif r > 0 and 1 <= k <= n_carry:
+                c = [e[k - 1].clone() for e in elites]
+            else:
+                c = [m_ + s_ * torch.randn(m_.shape, device=dev, generator=g) for m_, s_ in zip(mu, sd)]
+            cands.append(finish(c))
+        d, pos = evaluate(cands)
+        if unguided is None: unguided = pos
+        order = torch.argsort(d); kb = int(order[0])
+        if float(d[kb]) < best["d"]:
+            best = dict(d=float(d[kb]), pos=pos, vars=[x.clone() for x in cands[kb]])
+        el = [cands[int(i)] for i in order[:E]]
+        elites = [torch.stack([e[i] for e in el]) for i in range(len(base))]
+        if update == "mppi":
+            adv = (d - d.min()) / (d.std() + 1e-9); w = torch.softmax(-adv / temperature, 0)
+            allc = [torch.stack([c[i] for c in cands]) for i in range(len(base))]
+            mu = [(w.view(-1, *[1] * (x.dim() - 1)) * x).sum(0) for x in allc]                        # spread stays at the prior's
+        else:
+            mu = [x.mean(0) for x in elites]
+            sd = [x.std(0, unbiased=False).clamp_min(min_std) for x in elites]
+        torch.cuda.synchronize(); times.append(round(time.time() - t0, 2))
+        trace.append([round(best["d"] * 1e3, 2)] * B); scores_log.append([round(float(v) * 1e3, 2) for v in d.tolist()])
+        log(f"{update} round {r + 1}/{rounds}: {K} candidates, best {float(d[kb]) * 1e3:.1f} mm, elite cut {float(d[order[E - 1]]) * 1e3:.1f} mm, "
+            f"median {float(d.median()) * 1e3:.1f} mm, {times[-1]} s")
+    if final_mean:
+        torch.cuda.synchronize(); t0 = time.time()
+        cands = [finish([m_.clone() for m_ in mu])] + [finish([m_ + s_ * torch.randn(m_.shape, device=dev, generator=g) for m_, s_ in zip(mu, sd)]) for _ in range(B - 1)]
+        d, pos = evaluate(cands)
+        kb = int(d.argmin())
+        if float(d[kb]) < best["d"]:
+            best = dict(d=float(d[kb]), pos=pos, vars=[x.clone() for x in cands[kb]])
+        torch.cuda.synchronize(); times.append(round(time.time() - t0, 2))
+        trace.append([round(best["d"] * 1e3, 2)] * B); scores_log.append([round(float(v) * 1e3, 2) for v in d.tolist()])
+        log(f"cem final mean: {float(d[0]) * 1e3:.1f} mm (refit mean), best of pass {float(d[kb]) * 1e3:.1f} mm, {times[-1]} s")
+    with torch.no_grad():                                                                        # leave the best plan in every member slot
+        for i, (v, m) in enumerate(zip(state.vars, md)):
+            v.data.copy_(torch.stack([best["vars"][i]] * B, dim=m))
+    P = best["pos"][None].expand(B, *best["pos"].shape).clone()
+    U = unguided[None].expand(B, *unguided.shape).clone()
+    bm = [round(best["d"] * 1e3, 2)] + [1e9] * (B - 1)
+    return dict(predicted=P, unguided=U, final_step_scale=[], best_mm=bm, trace_mm=trace, terms=[dict(K=K, rounds=rounds, elites=E, carry=n_carry, candidate_mm=scores_log)],
+                iteration_seconds=times, peak_gib=[round(torch.cuda.max_memory_allocated() / 2**30, 1)], best_vars=[x[None].cpu() for x in best["vars"]], iterates=None)
+
+
+def run_actions(adapter, batch, state, objective, K, rounds, std, clip, seed=0, elite_div=8, min_elites=2, carry_frac=0.3, min_std_frac=0.1,
+                final_mean=True, tie_fingers=True, log=print):
+    """CEM over the hand motion itself, with the model in action-conditioned mode (adapter.S.given_actions): a plan is
+    the actuated bodies' per-transition pose deltas (batch.pose_actions [B, T, Kb, 6] on the pose_action_mask bodies, the
+    model's own action format). std / clip: [Ka, 6] recorded std and p99 |delta| per actuated body and channel (zero std =
+    channel never moves). Gaussian starts at zero motion with the recorded std; samples are clamped to +-clip. The
+    two finger bodies share one value per transition when tie_fingers (one gripper command). The noise is the same for
+    every candidate (member 0's draws copied to every slot), so candidates differ only in their actions.
+    Same rounds / elites / carry-over / final-mean / scoring as run()."""
+    import dataclasses
+    dev = state.vars[0].device
+    B = int(batch.positions.shape[0])
+    if K % B: raise ValueError(f"cem_K={K} must be a multiple of the batch size {B}")
+    md = [_mdim(v, B) for v in state.vars]
+    with torch.no_grad():
+        for v, m in zip(state.vars, md):
+            v.data.copy_(v.data.select(m, 0).unsqueeze(m).expand_as(v))
+    am = batch.pose_action_mask[0].bool(); aidx = am.nonzero(as_tuple=True)[0]
+    N = int(state.fixed["X"].shape[1]) if "X" in state.fixed else int(batch.pose_actions.shape[1]) - 1
+    pre = state.fixed.get("prefix")                                                             # closed loop: rows < k are executed history
+    k0 = int(pre["k"]) if pre is not None else 0; stop = int(state.fixed.get("stop") or N)
+    exec_a = None
+    if pre is not None and k0 > 0:                                                              # executed actions for the context rows (model action format)
+        ridx = pre["ridx"].tolist(); exec_a = torch.zeros(k0, len(aidx), 6, device=state.vars[0].device)
+        for j, b in enumerate(aidx.tolist()):
+            if b in ridx: exec_a[:, j] = pre["raw_exec"][0, :k0, ridx.index(b)]
+    std = torch.as_tensor(std, device=dev, dtype=torch.float32); clip = torch.as_tensor(clip, device=dev, dtype=torch.float32)
+    live = std > 0
+    mu = torch.zeros(N, len(aidx), 6, device=dev); sd = std[None].expand(N, -1, -1).clone()
+    sd0 = sd.clone()
+    E = min(K, max(min_elites, K // elite_div)); n_carry = int(round(carry_frac * E))
+    g = torch.Generator(device=dev).manual_seed(int(seed) * 7919 + 29)
+    fing = [i for i in range(len(aidx)) if int(live[i].sum()) == 1]                              # one-channel bodies = fingers
+
+    def finish(a):
+        a = torch.where(live[None], a, torch.zeros_like(a))
+        if k0 or stop < N:                                                                      # only rows [k0, stop) are searched
+            a = a.clone(); a[stop:] = 0
+            if exec_a is not None: a[:k0] = exec_a
+        if tie_fingers and len(fing) == 2:
+            a[:, fing[1]] = a[:, fing[0]]
+        out = torch.maximum(torch.minimum(a, clip[None]), -clip[None])
+        if exec_a is not None: out[:k0] = exec_a                                                # history rows exact, unclipped
+        return out
+
+    def evaluate(cands):
+        scores, best_pos, best_d = [], None, float("inf")
+        adapter.S.given_actions = True
+        try:
+            with torch.no_grad():
+                for s in range(0, len(cands), B):
+                    pa = batch.pose_actions.clone()
+                    if pa.shape[1] < N:                                                       # recorded clip shorter than the plan: pad the action stream
+                        pa = torch.cat([pa, torch.zeros(pa.shape[0], N - pa.shape[1], *pa.shape[2:], device=pa.device, dtype=pa.dtype)], 1)
+                    pa[:, :N, aidx] = torch.stack(cands[s:s + B]).to(pa.dtype)
+                    b2 = dataclasses.replace(batch, pose_actions=pa)
+                    if getattr(batch, 'gt_frames', None) is not None: b2.gt_frames = batch.gt_frames
+                    pos = adapter.rollout(b2, state, grad=False)
+                    d, _ = objective(pos); d = d.detach().float()
+                    if not torch.isfinite(d).all(): raise NaNRollout(f"{int((~torch.isfinite(d)).sum())} of {d.numel()} candidates non-finite")
+                    scores.append(d)
+                    k = int(d.argmin())
+                    if float(d[k]) < best_d:
+                        best_d, best_pos = float(d[k]), pos[k].detach().clone()
+        finally:
+            adapter.S.given_actions = False
+        return torch.cat(scores), best_pos
+
+    trace, times, scores_log, best, unguided, elites = [], [], [], dict(d=float("inf")), None, None
+    for r in range(rounds):
+        torch.cuda.synchronize(); t0 = time.time()
+        cands = []
+        for k in range(K):
+            if r > 0 and k == 0: c = mu.clone()
+            elif r > 0 and 1 <= k <= n_carry: c = elites[k - 1].clone()
+            else: c = mu + sd * torch.randn(mu.shape, device=dev, generator=g)
+            cands.append(finish(c))
+        d, pos = evaluate(cands)
+        if unguided is None: unguided = pos
+        order = torch.argsort(d); kb = int(order[0])
+        if float(d[kb]) < best["d"]: best = dict(d=float(d[kb]), pos=pos, a=cands[kb].clone())
+        elites = torch.stack([cands[int(i)] for i in order[:E]])
+        mu = elites.mean(0); sd = torch.maximum(elites.std(0, unbiased=False), min_std_frac * sd0)
+        torch.cuda.synchronize(); times.append(round(time.time() - t0, 2))
+        trace.append([round(best["d"] * 1e3, 2)] * B); scores_log.append([round(float(v) * 1e3, 2) for v in d.tolist()])
+        log(f"cem-actions round {r + 1}/{rounds}: {K} candidates, best {float(d[kb]) * 1e3:.1f} mm, elite cut {float(d[order[E - 1]]) * 1e3:.1f} mm, "
+            f"median {float(d.median()) * 1e3:.1f} mm, {times[-1]} s")
+    if final_mean:
+        torch.cuda.synchronize(); t0 = time.time()
+        cands = [finish(mu.clone())] + [finish(mu + sd * torch.randn(mu.shape, device=dev, generator=g)) for _ in range(B - 1)]
+        d, pos = evaluate(cands); kb = int(d.argmin())
+        if float(d[kb]) < best["d"]: best = dict(d=float(d[kb]), pos=pos, a=cands[kb].clone())
+        torch.cuda.synchronize(); times.append(round(time.time() - t0, 2))
+        trace.append([round(best["d"] * 1e3, 2)] * B); scores_log.append([round(float(v) * 1e3, 2) for v in d.tolist()])
+        log(f"cem-actions final mean: {float(d[0]) * 1e3:.1f} mm (refit mean), best of pass {float(d[kb]) * 1e3:.1f} mm, {times[-1]} s")
+    P = best["pos"][None].expand(B, *best["pos"].shape).clone()
+    U = unguided[None].expand(B, *unguided.shape).clone()
+    bm = [round(best["d"] * 1e3, 2)] + [1e9] * (B - 1)
+    return dict(predicted=P, unguided=U, final_step_scale=[], best_mm=bm, trace_mm=trace,
+                terms=[dict(K=K, rounds=rounds, elites=E, carry=n_carry, candidate_mm=scores_log, space="actions", best_actions=best["a"].cpu().tolist())],
+                iteration_seconds=times, peak_gib=[round(torch.cuda.max_memory_allocated() / 2**30, 1)], best_vars=[], iterates=None)

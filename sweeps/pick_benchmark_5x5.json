@@ -1,0 +1,355 @@
+{
+ "description": "Pick-to-location benchmark: 5 assets x 5 targets. Target = object centroid at frame 0 + (dx, dy, +0.15 m); (dx, dy) uniform over a 0.15 m-radius disc, drawn with numpy.random.default_rng(0): r = 0.15*sqrt(U), angle = U*2pi, five draws in order. Same 5 offsets for every asset.",
+ "frame": "model/data frame of robert_pickup_data_pick_success (metres); = Isaac pool frame (pickup_replay_isaac pool_pick_val, shift 0)",
+ "dataset": {
+  "root": "/data/group_data/katefgroup/VLA/3DPCWM/robert_pickup_data_pick_success",
+  "split": "val",
+  "shards": [
+   "gpu0/00044.tar",
+   "gpu0/00045.tar",
+   "gpu0/00046.tar",
+   "gpu0/00047.tar",
+   "gpu0/00048.tar"
+  ],
+  "note": "episode = the val episode whose frame-0 object centroid matches f0_obj_centroid (max abs diff < 1e-4 m); see pwm_final_clean guidance/streaming_guidance.py select_and_group"
+ },
+ "sampler": {
+  "checkpoint": "/data/user_data/mbronars/packages/pwm_final/runs/pickup_uncond_x0_regpass_cont200k/checkpoints/final.pt",
+  "transitions": 60,
+  "steps_per_frame": 10,
+  "window": 16,
+  "population": 4,
+  "noise_seed": 0,
+  "noise_rule": "torch.Generator(device='cuda').manual_seed(0) -> inference.streaming_noise(model, batch, 60, g); member m = batch row m",
+  "guidance": {
+   "optimizer": "adam",
+   "lr": 0.1,
+   "iterations": 10,
+   "shell_reprojection": true
+  }
+ },
+ "offsets": [
+  {
+   "id": 0,
+   "offset_m": [
+    -0.015,
+    0.119,
+    0.15
+   ]
+  },
+  {
+   "id": 1,
+   "offset_m": [
+    0.03,
+    0.003,
+    0.15
+   ]
+  },
+  {
+   "id": 2,
+   "offset_m": [
+    0.115,
+    -0.07,
+    0.15
+   ]
+  },
+  {
+   "id": 3,
+   "offset_m": [
+    -0.015,
+    -0.116,
+    0.15
+   ]
+  },
+  {
+   "id": 4,
+   "offset_m": [
+    0.102,
+    -0.044,
+    0.15
+   ]
+  }
+ ],
+ "assets": [
+  {
+   "asset": "milk_carton_asset_0037",
+   "select_index_in": "sweeps/assetsweep_select.json[11]",
+   "f0_obj_centroid": [
+    -0.178493,
+    0.209628,
+    0.073033
+   ],
+   "targets": [
+    {
+     "id": 0,
+     "target_m": [
+      -0.193493,
+      0.328628,
+      0.223033
+     ],
+     "run": "runs/pickup/cyl_t0_milk_carton_it10"
+    },
+    {
+     "id": 1,
+     "target_m": [
+      -0.148493,
+      0.212628,
+      0.223033
+     ],
+     "run": "runs/pickup/cyl_t1_milk_carton_it10"
+    },
+    {
+     "id": 2,
+     "target_m": [
+      -0.063493,
+      0.139628,
+      0.223033
+     ],
+     "run": "runs/pickup/cyl_t2_milk_carton_it10"
+    },
+    {
+     "id": 3,
+     "target_m": [
+      -0.193493,
+      0.093628,
+      0.223033
+     ],
+     "run": "runs/pickup/cyl_t3_milk_carton_it10"
+    },
+    {
+     "id": 4,
+     "target_m": [
+      -0.076493,
+      0.165628,
+      0.223033
+     ],
+     "run": "runs/pickup/cyl_t4_milk_carton_it10"
+    }
+   ]
+  },
+  {
+   "asset": "peanut_butter_jar_asset_0003",
+   "select_index_in": "sweeps/assetsweep_select.json[1]",
+   "f0_obj_centroid": [
+    0.133337,
+    -0.194228,
+    0.064122
+   ],
+   "targets": [
+    {
+     "id": 0,
+     "target_m": [
+      0.118337,
+      -0.075228,
+      0.214122
+     ],
+     "run": "runs/pickup/cyl_t0_peanut_butter_jar_it10"
+    },
+    {
+     "id": 1,
+     "target_m": [
+      0.163337,
+      -0.191228,
+      0.214122
+     ],
+     "run": "runs/pickup/cyl_t1_peanut_butter_jar_it10"
+    },
+    {
+     "id": 2,
+     "target_m": [
+      0.248337,
+      -0.264228,
+      0.214122
+     ],
+     "run": "runs/pickup/cyl_t2_peanut_butter_jar_it10"
+    },
+    {
+     "id": 3,
+     "target_m": [
+      0.118337,
+      -0.310228,
+      0.214122
+     ],
+     "run": "runs/pickup/cyl_t3_peanut_butter_jar_it10"
+    },
+    {
+     "id": 4,
+     "target_m": [
+      0.235337,
+      -0.238228,
+      0.214122
+     ],
+     "run": "runs/pickup/cyl_t4_peanut_butter_jar_it10"
+    }
+   ]
+  },
+  {
+   "asset": "soda_can_asset_0012",
+   "select_index_in": "sweeps/assetsweep_select.json[13]",
+   "f0_obj_centroid": [
+    -0.050884,
+    0.099188,
+    0.06655
+   ],
+   "targets": [
+    {
+     "id": 0,
+     "target_m": [
+      -0.065884,
+      0.218188,
+      0.21655
+     ],
+     "run": "runs/pickup/cyl_t0_soda_can_it10"
+    },
+    {
+     "id": 1,
+     "target_m": [
+      -0.020884,
+      0.102188,
+      0.21655
+     ],
+     "run": "runs/pickup/cyl_t1_soda_can_it10"
+    },
+    {
+     "id": 2,
+     "target_m": [
+      0.064116,
+      0.029188,
+      0.21655
+     ],
+     "run": "runs/pickup/cyl_t2_soda_can_it10"
+    },
+    {
+     "id": 3,
+     "target_m": [
+      -0.065884,
+      -0.016812,
+      0.21655
+     ],
+     "run": "runs/pickup/cyl_t3_soda_can_it10"
+    },
+    {
+     "id": 4,
+     "target_m": [
+      0.051116,
+      0.055188,
+      0.21655
+     ],
+     "run": "runs/pickup/cyl_t4_soda_can_it10"
+    }
+   ]
+  },
+  {
+   "asset": "pasta_box_asset_0058",
+   "select_index_in": "sweeps/assetsweep_select.json[9]",
+   "f0_obj_centroid": [
+    -0.237982,
+    -0.115024,
+    0.054109
+   ],
+   "targets": [
+    {
+     "id": 0,
+     "target_m": [
+      -0.252982,
+      0.003976,
+      0.204109
+     ],
+     "run": "runs/pickup/cyl_t0_pasta_box_it10"
+    },
+    {
+     "id": 1,
+     "target_m": [
+      -0.207982,
+      -0.112024,
+      0.204109
+     ],
+     "run": "runs/pickup/cyl_t1_pasta_box_it10"
+    },
+    {
+     "id": 2,
+     "target_m": [
+      -0.122982,
+      -0.185024,
+      0.204109
+     ],
+     "run": "runs/pickup/cyl_t2_pasta_box_it10"
+    },
+    {
+     "id": 3,
+     "target_m": [
+      -0.252982,
+      -0.231024,
+      0.204109
+     ],
+     "run": "runs/pickup/cyl_t3_pasta_box_it10"
+    },
+    {
+     "id": 4,
+     "target_m": [
+      -0.135982,
+      -0.159024,
+      0.204109
+     ],
+     "run": "runs/pickup/cyl_t4_pasta_box_it10"
+    }
+   ]
+  },
+  {
+   "asset": "water_bottle_asset_0087",
+   "select_index_in": "sweeps/assetsweep_select.json[16]",
+   "f0_obj_centroid": [
+    -0.07517,
+    0.226767,
+    0.06862
+   ],
+   "targets": [
+    {
+     "id": 0,
+     "target_m": [
+      -0.09017,
+      0.345767,
+      0.21862
+     ],
+     "run": "runs/pickup/cyl_t0_water_bottle_it10"
+    },
+    {
+     "id": 1,
+     "target_m": [
+      -0.04517,
+      0.229767,
+      0.21862
+     ],
+     "run": "runs/pickup/cyl_t1_water_bottle_it10"
+    },
+    {
+     "id": 2,
+     "target_m": [
+      0.03983,
+      0.156767,
+      0.21862
+     ],
+     "run": "runs/pickup/cyl_t2_water_bottle_it10"
+    },
+    {
+     "id": 3,
+     "target_m": [
+      -0.09017,
+      0.110767,
+      0.21862
+     ],
+     "run": "runs/pickup/cyl_t3_water_bottle_it10"
+    },
+    {
+     "id": 4,
+     "target_m": [
+      0.02683,
+      0.182767,
+      0.21862
+     ],
+     "run": "runs/pickup/cyl_t4_water_bottle_it10"
+    }
+   ]
+  }
+ ]
+}

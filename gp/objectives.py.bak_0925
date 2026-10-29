@@ -1,0 +1,71 @@
+"""Guidance objectives on a rollout pos [B, T, P, 3] (metres): per-member scalars. All terms are differentiable."""
+import torch
+
+
+def centroid(pos, mask):
+    w = mask.to(pos.dtype)[..., None]
+    return (pos * w).sum(-2) / w.sum(-2).clamp(min=1)
+
+
+class Objective:
+    """objective = ||centroid_obj(last frame) - target|| + box_weight * (mean + worst clearance shortfall to every box)
+    + floor_weight * mean depth below z = 0, over all valid particles and generated frames. Boxes: (centre, half) metres."""
+    def __init__(self, target, obj_mask, valid, boxes=(), clearance_m=0.005, box_weight=5.0, floor_weight=0.0, upright_weight=0.0, upright_frames=5,
+                 still_weight=0.0, still_frames=24):
+        self.target, self.obj_mask, self.valid = target, obj_mask, valid
+        self.boxes, self.clearance, self.box_weight, self.floor_weight = list(boxes), clearance_m, box_weight, floor_weight
+        self.upright_weight, self.upright_frames = upright_weight, int(upright_frames)
+        self.still_weight, self.still_frames = still_weight, int(still_frames)
+
+    def still(self, pos):
+        """Pre-grasp stillness (metres): mean over frames 1..still_frames-1 of the object-centroid displacement from frame 0."""
+        c = centroid(pos[:, :self.still_frames], self.obj_mask[:, None])          # mask [B, 1, P] against pos [B, K, P, 3]
+        return (c[:, 1:] - c[:, :1]).norm(dim=-1).mean(1)
+
+    def tilt(self, pos):
+        """Tilt (rad) of the object's frame-0 vertical axis, averaged over the last `upright_frames` frames: Kabsch rotation of the
+        object particles from frame 0 to frame t (differentiable SVD), angle between R e_z and e_z."""
+        B = pos.shape[0]; out = []
+        for b in range(B):
+            m = self.obj_mask[b]; P0 = pos[b, 0, m]; P0c = P0 - P0.mean(0)
+            angs = []
+            for t in range(pos.shape[1] - self.upright_frames, pos.shape[1]):
+                Pt = pos[b, t, m]; Ptc = Pt - Pt.mean(0)
+                H = P0c.T @ Ptc; U, S, Vh = torch.linalg.svd(H)
+                d = torch.sign(torch.det(Vh.T @ U.T)); D = torch.diag(torch.stack([torch.ones_like(d), torch.ones_like(d), d]))
+                R = Vh.T @ D @ U.T                                              # maps frame-0 body directions to frame t
+                angs.append(torch.arccos(R[2, 2].clamp(-1 + 1e-6, 1 - 1e-6)))
+            out.append(torch.stack(angs).mean())
+        return torch.stack(out)
+
+    def terms(self, pos):
+        B = pos.shape[0]
+        goal = (centroid(pos[:, -1], self.obj_mask) - self.target).norm(dim=-1)
+        P = pos[:, 1:]; sel = self.valid[:, None].expand(P.shape[:3])
+        box = pos.new_zeros(B); floor = pos.new_zeros(B)
+        for c, h in self.boxes:
+            q = (P - c).abs() - h; sd = q.clamp(min=0).norm(dim=-1) + q.amax(-1).clamp(max=0)
+            short = (self.clearance - sd).clamp(min=0) * sel
+            box = box + short.sum((1, 2)) / sel.sum((1, 2)) + short.amax((1, 2))
+        if self.floor_weight > 0:
+            floor = ((-P[..., 2]).clamp(min=0) * sel).sum((1, 2)) / sel.sum((1, 2))
+        return goal, box, floor
+
+    def __call__(self, pos):
+        goal, box, floor = self.terms(pos)
+        total = goal + self.box_weight * box + self.floor_weight * floor; d = dict(goal=goal, box=box, floor=floor)
+        if self.upright_weight > 0:
+            up = self.tilt(pos); total = total + self.upright_weight * up; d["upright"] = up           # radians (logged x1e3 = mrad)
+        if self.still_weight > 0:
+            st = self.still(pos); total = total + self.still_weight * st; d["still"] = st
+        return total, d
+
+
+def wall_between(c0, offset, height=0.10, thickness=0.02, width=0.30, at=0.5):
+    """A box at fraction `at` of the way from the object's start c0 to c0 + offset (0.5 = midway, 1 = under the target), across the push direction; (centre, half)."""
+    along = offset.clone(); along[2] = 0
+    size = torch.tensor([thickness, width, height], device=c0.device)
+    if abs(float(along[1])) > abs(float(along[0])):
+        size = size[[1, 0, 2]]
+    centre = torch.stack([c0[0] + along[0] * at, c0[1] + along[1] * at, torch.tensor(height / 2, device=c0.device)])
+    return centre, size / 2

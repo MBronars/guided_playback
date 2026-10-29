@@ -1,0 +1,124 @@
+{
+ "base": {
+  "domain": "mould",
+  "task": "letter",
+  "letter_seed": 42,
+  "episodes": "0,0,0",
+  "transitions": 150,
+  "steps": 6,
+  "churn": true,
+  "fix_fps": true,
+  "optimizer": "unitgrad",
+  "shell": true,
+  "t_freeze": 0.8,
+  "lr": 0.1,
+  "letter_frames": "15",
+  "seed": 0,
+  "save_iterates": true,
+  "iterations": 48,
+  "runs": "/data/group_data/katefgroup/runs_pwm_mbronars/guided_playback_letters/runs"
+ },
+ "arms": [
+  {
+   "name": "letters2_R_last15_it48_lr0.1",
+   "letter": "R"
+  },
+  {
+   "name": "letters2_C_last15_it24_lr0.1",
+   "letter": "C",
+   "iterations": 24
+  },
+  {
+   "name": "letters2_L_last15_it24_lr0.1",
+   "letter": "L",
+   "iterations": 24
+  },
+  {
+   "name": "letters2_I_last15_it24_lr0.1",
+   "letter": "I",
+   "iterations": 24
+  },
+  {
+   "name": "letters2_C_last15_it48_ph1",
+   "letter": "C",
+   "phantom_weight": 1.0
+  },
+  {
+   "name": "letters2_L_last15_it48_ph1",
+   "letter": "L",
+   "phantom_weight": 1.0
+  },
+  {
+   "name": "letters2_R_last15_it48_ph1",
+   "letter": "R",
+   "phantom_weight": 1.0
+  },
+  {
+   "name": "letters2_C_all_it48_ph1",
+   "letter": "C",
+   "letter_frames": "all",
+   "phantom_weight": 1.0
+  },
+  {
+   "name": "letters2_I_last15_it48_ph1",
+   "letter": "I",
+   "phantom_weight": 1.0
+  },
+  {
+   "name": "letters2_C_last15_it48_ph3",
+   "letter": "C",
+   "phantom_weight": 3.0
+  },
+  {
+   "name": "letters2_R_last15_it48_lr0.2to0.02",
+   "letter": "R",
+   "lr": 0.2,
+   "lr_final": 0.02
+  },
+  {
+   "name": "letters2_R_last15_it24_lr0.2",
+   "letter": "R",
+   "iterations": 24,
+   "lr": 0.2
+  },
+  {
+   "name": "letters2_R_last15_it24_seed1",
+   "letter": "R",
+   "iterations": 24,
+   "seed": 1
+  },
+  {
+   "name": "letters2_R_last15_it24_seed2",
+   "letter": "R",
+   "iterations": 24,
+   "seed": 2
+  },
+  {
+   "name": "letters2_R_last1_it48_lr0.1",
+   "letter": "R",
+   "letter_frames": "1"
+  },
+  {
+   "name": "letters2_C_last15_it48_lr0.1",
+   "letter": "C"
+  },
+  {
+   "name": "letters2_L_last15_it48_lr0.1",
+   "letter": "L"
+  },
+  {
+   "name": "letters2_I_last15_it48_lr0.1",
+   "letter": "I"
+  },
+  {
+   "name": "letters2_R_last15_it96_lr0.1",
+   "letter": "R",
+   "iterations": 96
+  },
+  {
+   "name": "letters2_R_last15_it48_S10",
+   "letter": "R",
+   "steps": 10
+  }
+ ]
+}

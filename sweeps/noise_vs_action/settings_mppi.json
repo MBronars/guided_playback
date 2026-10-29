@@ -1,0 +1,119 @@
+[
+ {
+  "tag": "mppi_noise_K4_R1",
+  "shape": "B4_nograd",
+  "B": 4,
+  "knobs": {
+   "planner": "mppi",
+   "cem_K": 4,
+   "cem_rounds": 1,
+   "mppi_temperature": 0.1,
+   "iterations": 0,
+   "lr": 0.1
+  }
+ },
+ {
+  "tag": "mppi_noise_K8_R1",
+  "shape": "B4_nograd",
+  "B": 4,
+  "knobs": {
+   "planner": "mppi",
+   "cem_K": 8,
+   "cem_rounds": 1,
+   "mppi_temperature": 0.1,
+   "iterations": 0,
+   "lr": 0.1
+  }
+ },
+ {
+  "tag": "mppi_noise_K16_R1",
+  "shape": "B4_nograd",
+  "B": 4,
+  "knobs": {
+   "planner": "mppi",
+   "cem_K": 16,
+   "cem_rounds": 1,
+   "mppi_temperature": 0.1,
+   "iterations": 0,
+   "lr": 0.1
+  }
+ },
+ {
+  "tag": "mppi_noise_K32_R1",
+  "shape": "B4_nograd",
+  "B": 4,
+  "knobs": {
+   "planner": "mppi",
+   "cem_K": 32,
+   "cem_rounds": 1,
+   "mppi_temperature": 0.1,
+   "iterations": 0,
+   "lr": 0.1
+  }
+ },
+ {
+  "tag": "mppi_noise_K32_R2",
+  "shape": "B4_nograd",
+  "B": 4,
+  "knobs": {
+   "planner": "mppi",
+   "cem_K": 32,
+   "cem_rounds": 2,
+   "mppi_temperature": 0.1,
+   "iterations": 0,
+   "lr": 0.1
+  }
+ },
+ {
+  "tag": "mppi_noise_K32_R3",
+  "shape": "B4_nograd",
+  "B": 4,
+  "knobs": {
+   "planner": "mppi",
+   "cem_K": 32,
+   "cem_rounds": 3,
+   "mppi_temperature": 0.1,
+   "iterations": 0,
+   "lr": 0.1
+  }
+ },
+ {
+  "tag": "mppi_noise_K48_R3",
+  "shape": "B4_nograd",
+  "B": 4,
+  "knobs": {
+   "planner": "mppi",
+   "cem_K": 48,
+   "cem_rounds": 3,
+   "mppi_temperature": 0.1,
+   "iterations": 0,
+   "lr": 0.1
+  }
+ },
+ {
+  "tag": "mppi_noise_K64_R3",
+  "shape": "B4_nograd",
+  "B": 4,
+  "knobs": {
+   "planner": "mppi",
+   "cem_K": 64,
+   "cem_rounds": 3,
+   "mppi_temperature": 0.1,
+   "iterations": 0,
+   "lr": 0.1
+  }
+ },
+ {
+  "tag": "mppi_noise_K96_R3",
+  "shape": "B4_nograd",
+  "B": 4,
+  "knobs": {
+   "planner": "mppi",
+   "cem_K": 96,
+   "cem_rounds": 3,
+   "mppi_temperature": 0.1,
+   "iterations": 0,
+   "lr": 0.1
+  }
+ }
+]

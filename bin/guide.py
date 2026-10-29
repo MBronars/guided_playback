@@ -11,11 +11,12 @@ import numpy as np, torch
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, os.path.dirname(HERE))
 
 ap = argparse.ArgumentParser()
-ap.add_argument("--adapter", default="paper", choices=("paper", "clean_push")); ap.add_argument("--ckpt", required=True); ap.add_argument("--domain", default=None)
-ap.add_argument("--task", default="push", choices=("push", "lift", "wall", "move"), help="push/move: goal on the object's start plane; lift: 3-D offset; wall: push goal + wall box between start and goal")
+ap.add_argument("--adapter", default="paper", choices=("paper", "clean_push", "clean_pickup")); ap.add_argument("--ckpt", required=True); ap.add_argument("--domain", default=None)
+ap.add_argument("--task", default="push", choices=("push", "lift", "wall", "move", "place", "letter"), help="push/move: goal on the object's start plane; lift: 3-D offset; wall: push goal + wall box between start and goal")
 ap.add_argument("--episodes", default="0,1,2,3", help="loader indices; repeats = population (the batch IS the population)")
 ap.add_argument("--transitions", type=int, default=60); ap.add_argument("--steps", type=int, default=10); ap.add_argument("--keep", type=int, default=3)
 ap.add_argument("--offset", default="0.15,0,0"); ap.add_argument("--random_offset", default=None, help="RMIN,RMAX metres: per-member random goal on the plane, seeded")
+ap.add_argument("--scenario", default=None, help="paper PushBoundary scenario npz (PointWorld/scenarios/hard/seed_42/ep_NNN.npz); frame 0 and the target come from it, one path for the whole population")
 ap.add_argument("--own_goal", default=None, help="rl_push tags json: goal = the episode's recorded goal_pos (+ loader shift)"); ap.add_argument("--goal_dist_m", type=float, default=None)
 ap.add_argument("--iterations", type=int, default=10); ap.add_argument("--lr", type=float, default=0.2); ap.add_argument("--lr_final", type=float, default=None)
 ap.add_argument("--optimizer", default="adam", choices=("adam", "unitgrad")); ap.add_argument("--shell", action="store_true", help="re-project every draw onto its Gaussian shell after each update")
@@ -26,12 +27,16 @@ ap.add_argument("--hand_start", choices=("mid", "natural"), default=None); ap.ad
 ap.add_argument("--hand_bearing_deg", type=float, default=60.0); ap.add_argument("--hand_bearing_jitter_deg", type=float, default=15.0); ap.add_argument("--hand_dist_mm", type=float, default=250.0)
 ap.add_argument("--hand_dist_jitter_mm", type=float, default=30.0); ap.add_argument("--hand_dz_mm", type=float, default=85.0); ap.add_argument("--hand_tilt_deg", type=float, default=0.0)
 ap.add_argument("--wall_height", type=float, default=0.10); ap.add_argument("--wall_thickness", type=float, default=0.02); ap.add_argument("--wall_width", type=float, default=0.30)
-ap.add_argument("--clearance_mm", type=float, default=5.0); ap.add_argument("--box_weight", type=float, default=5.0); ap.add_argument("--floor_weight", type=float, default=0.0)
+ap.add_argument("--clearance_mm", type=float, default=5.0); ap.add_argument("--box_weight", type=float, default=5.0); ap.add_argument("--floor_weight", type=float, default=0.0); ap.add_argument("--table_z", type=float, default=0.0115, help="place: table top z (model frame) the object is set down on")
+ap.add_argument("--letter", default=None); ap.add_argument("--letter_seed", type=int, default=42); ap.add_argument("--letter_frames", default="all", help="all | k (last k frames)"); ap.add_argument("--coverage_weight", type=float, default=1.0); ap.add_argument("--letter_fields", default=None); ap.add_argument("--phantom_weight", type=float, default=0.0, help="letter: penalty on dough motion while the paddle is farther than --contact_mm"); ap.add_argument("--contact_mm", type=float, default=20.0); ap.add_argument("--save_iterates", action="store_true", help="write iterates.npz: every iteration's rollout of every member")
 ap.add_argument("--eager", action="store_true"); ap.add_argument("--name", required=True); ap.add_argument("--runs", default=os.path.join(os.path.dirname(HERE), "runs"))
 ap.add_argument("--desc", default="", help="one line shown on the page")
+ap.add_argument("--select", default=None, help="clean_pickup: episode select json (default: the adapter's select_path)")
 ap.add_argument("--sampler", default="stream", choices=("stream", "chunked"), help="chunked: 3 clean context rows + 16 future rows denoised together per window (first context = recorded)")
 A = ap.parse_args()
 torch.backends.cuda.matmul.allow_tf32 = True
 from gp.session import load_adapter, guided_run
 t0 = time.time(); ad = load_adapter(A); print(f"loaded in {time.time() - t0:.0f} s", flush=True)
+if A.select:
+    ad.select_path = os.path.abspath(A.select)
 guided_run(ad, A)
