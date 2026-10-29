@@ -1,0 +1,147 @@
+<title>Carton Over a Wall</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --bg:#f4f5f3; --panel:#ffffff; --ink:#1c2320; --muted:#5e6964; --rule:#d8ddd9; --rule2:#e6eae7;
+  --s1:#3a5b8c; --fingerc:#6f8fbf; --s2:#c8561f; --u1:#b9c2cc; --u2:#e0b39a; --simg:#2f8a5f; --simo:#1f7a6b; --goal:#1fa06e; --wall:#8a3d3d;
+  --sans:"Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif; --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ color-scheme:dark;
+  --bg:#141816; --panel:#1c211f; --ink:#e4e9e6; --muted:#9aa6a0; --rule:#2e3633; --rule2:#262d2a;
+  --s1:#7ea3d8; --fingerc:#a9c1e6; --s2:#f08a55; --u1:#5a6570; --u2:#8c6a56; --simg:#5fcf98; --simo:#4cc0aa; --goal:#4bd39a; --wall:#c96b6b; } }
+:root[data-theme="dark"]{ color-scheme:dark;
+  --bg:#141816; --panel:#1c211f; --ink:#e4e9e6; --muted:#9aa6a0; --rule:#2e3633; --rule2:#262d2a;
+  --s1:#7ea3d8; --fingerc:#a9c1e6; --s2:#f08a55; --u1:#5a6570; --u2:#8c6a56; --simg:#5fcf98; --simo:#4cc0aa; --goal:#4bd39a; --wall:#c96b6b; }
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.45}
+.wrap{max-width:1500px;margin:0 auto;padding-inline:18px;padding-block:22px 40px;display:grid;gap:16px}
+h1{font-size:26px;margin:0;line-height:1.15;text-wrap:balance}
+.lede{color:var(--muted);max-width:90ch;margin:4px 0 0}
+.pair{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+@media (max-width:1100px){.pair{grid-template-columns:1fr 1fr}}
+@media (max-width:760px){.pair{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:12px;display:grid;gap:8px}
+.card h2{margin:0;font-size:17px;display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.card h2 small{font-family:var(--mono);font-size:12px;color:var(--muted);font-weight:400}
+.stage{position:relative;aspect-ratio:16/11;max-width:100%;border-radius:6px;overflow:hidden;background:var(--bg)}
+canvas{width:100%;height:100%;display:block;cursor:grab;touch-action:none}
+.hud{position:absolute;left:8px;bottom:8px;font-family:var(--mono);font-size:12px;background:color-mix(in srgb,var(--panel) 80%,transparent);padding:3px 7px;border-radius:4px;color:var(--ink)}
+.facts{font-family:var(--mono);font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.opts{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--muted);align-items:center}
+.opts label{display:flex;gap:5px;align-items:center}
+select{font:inherit;font-size:13px;color:var(--ink);background:var(--panel);border:1px solid var(--rule);border-radius:4px;padding:2px 4px}
+.transport{display:flex;gap:10px;align-items:center;background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:10px 12px}
+.transport input[type=range]{flex:1}
+.play{font:inherit;width:36px;height:30px;border-radius:5px;border:1px solid var(--rule);background:var(--bg);color:var(--ink);cursor:pointer}
+.fnum{font-family:var(--mono);font-size:12.5px;color:var(--muted);min-width:9ch;text-align:right}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--s1);outline-offset:2px}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12.5px;color:var(--muted)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:middle}
+.note{font-size:13px;color:var(--muted);max-width:100ch}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Carton carried 30 cm sideways: no wall, a 10 cm wall, a 12 cm wall</h1>
+    <p class="lede">Pickup-only checkpoint, milk carton #0037, target = start + 30 cm in x on the ground. Left: guided with no obstacle (Adam lr 0.1, 10 iterations, shell on). Middle: guided over a 10 cm-high, 30 cm-wide wall box midway (Adam lr 0.1, 30 iterations, no shell, wall weight 10, 10 mm margin). Right: guided over a 12 cm-high, 20 cm-wide wall (Adam lr 0.1, 40 iterations, shell on, wall weight 10, 10 mm margin). The Isaac replay drives the hand along the generated plan; the Isaac scene has no wall, so the wall box is drawn from the objective. One shared frame slider and camera; drag to orbit, shift-drag to pan, wheel to zoom, space to play, arrows to step.</p>
+  </header>
+
+  <div class="transport">
+    <button class="play" id="play" type="button" aria-label="Play or pause">&#9654;</button>
+    <input id="seek" type="range" min="0" max="60" value="0" step="1" aria-label="Frame">
+    <span class="fnum" id="fnum">frame 0 / 60</span>
+    <button class="play" id="reset" type="button" style="width:auto;padding:0 10px">reset view</button>
+  </div>
+
+  <div class="legend"><span><i style="background:var(--s1)"></i>generated hand</span><span><i style="background:var(--s2)"></i>generated carton</span><span><i style="background:var(--simg)"></i>Isaac hand</span><span><i style="background:var(--simo)"></i>Isaac carton</span><span><i style="background:var(--u2)"></i>unguided carton</span><span><i style="background:var(--goal)"></i>target</span><span><i style="background:var(--wall)"></i>wall box (objective only)</span></div>
+
+  <div class="pair">
+    <section class="card" id="L">
+      <h2><span>No wall</span><small id="L-title"></small></h2>
+      <div class="stage"><canvas></canvas><div class="hud"></div></div>
+      <div class="facts" id="L-facts"></div>
+      <div class="opts"><label>member <select class="pick" id="L-pick"></select></label><label><input type="checkbox" class="t-gen" checked> generated</label><label><input type="checkbox" class="t-sim" checked> Isaac replay</label><label><input type="checkbox" class="t-ung"> unguided</label><label><input type="checkbox" class="t-floor" checked> table</label></div>
+    </section>
+    <section class="card" id="R">
+      <h2><span>10 cm wall midway</span><small id="R-title"></small></h2>
+      <div class="stage"><canvas></canvas><div class="hud"></div></div>
+      <div class="facts" id="R-facts"></div>
+      <div class="opts"><label>member <select class="pick" id="R-pick"></select></label><label><input type="checkbox" class="t-gen" checked> generated</label><label><input type="checkbox" class="t-sim" checked> Isaac replay</label><label><input type="checkbox" class="t-ung"> unguided</label><label><input type="checkbox" class="t-floor" checked> table</label></div>
+    </section>
+    <section class="card" id="W">
+      <h2><span>12 cm &times; 20 cm wall midway</span><small id="W-title"></small></h2>
+      <div class="stage"><canvas></canvas><div class="hud"></div></div>
+      <div class="facts" id="W-facts"></div>
+      <div class="opts"><label>member <select class="pick" id="W-pick"></select></label><label><input type="checkbox" class="t-gen" checked> generated</label><label><input type="checkbox" class="t-sim" checked> Isaac replay</label><label><input type="checkbox" class="t-ung"> unguided</label><label><input type="checkbox" class="t-floor" checked> table</label></div>
+    </section>
+  </div>
+
+  <p class="note">Per-member numbers under each panel: generated distance of the carton centroid to the target at the last frame, the same in the Isaac replay, Isaac peak lift, carton height at the end relative to its start (negative = tipped over), and for the wall run the minimum distance of any carton point to the wall box over the Isaac replay (negative = passed through). Default members: left m0 (Isaac 40 mm), middle m3 (Isaac 5 mm, cleared the 10 cm wall by 25 mm), right m3 (Isaac 6 mm, cleared the 12 cm wall by 39 mm). Runs: runs/pickup/ground30_nowall_milk_carton_asset_0037, runs/pickup/wallgroundB_pickonly_it30_lr0.1_noshell_bw10_clr10, runs/pickup/wall12w20ground_pickonly_it40_lr0.1_shell_bw10_clr10.</p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const FACTS = {"pickup__ground30_nowall_milk_carton_asset_0037__m0": {"tag": "no wall", "gen": 8, "isaac": 40, "lift": 94, "end": 6}, "pickup__ground30_nowall_milk_carton_asset_0037__m1": {"tag": "no wall", "gen": 13, "isaac": 301, "lift": 0, "end": 0}, "pickup__ground30_nowall_milk_carton_asset_0037__m2": {"tag": "no wall", "gen": 24, "isaac": 57, "lift": 107, "end": 4}, "pickup__ground30_nowall_milk_carton_asset_0037__m3": {"tag": "no wall", "gen": 11, "isaac": 303, "lift": 3, "end": -40}, "pickup__wallgroundB_pickonly_it30_lr0_1_noshell_bw10_clr10__m0": {"tag": "wall", "gen": 9, "isaac": 16, "lift": 203, "end": -2, "clr": 35}, "pickup__wallgroundB_pickonly_it30_lr0_1_noshell_bw10_clr10__m1": {"tag": "wall", "gen": 206, "isaac": 288, "lift": 3, "end": 2, "clr": 90}, "pickup__wallgroundB_pickonly_it30_lr0_1_noshell_bw10_clr10__m2": {"tag": "wall", "gen": 201, "isaac": 236, "lift": 167, "end": -40, "clr": -4}, "pickup__wallgroundB_pickonly_it30_lr0_1_noshell_bw10_clr10__m3": {"tag": "wall", "gen": 38, "isaac": 5, "lift": 225, "end": 5, "clr": 25}, "pickup__wall12w20ground_pickonly_it40_lr0_1_shell_bw10_clr10__m0": {"tag": "wall 12x20", "gen": 100, "isaac": 342, "lift": 4, "end": -40, "clr": 110}, "pickup__wall12w20ground_pickonly_it40_lr0_1_shell_bw10_clr10__m1": {"tag": "wall 12x20", "gen": 218, "isaac": 239, "lift": 198, "end": 5, "clr": 33}, "pickup__wall12w20ground_pickonly_it40_lr0_1_shell_bw10_clr10__m2": {"tag": "wall 12x20", "gen": 204, "isaac": 215, "lift": 127, "end": 1, "clr": 21}, "pickup__wall12w20ground_pickonly_it40_lr0_1_shell_bw10_clr10__m3": {"tag": "wall 12x20", "gen": 8, "isaac": 6, "lift": 250, "end": 5, "clr": 39}};
+const RUNS = { L: 'pickup__ground30_nowall_milk_carton_asset_0037__m', R: 'pickup__wallgroundB_pickonly_it30_lr0_1_noshell_bw10_clr10__m', W: 'pickup__wall12w20ground_pickonly_it40_lr0_1_shell_bw10_clr10__m' };
+const DEFAULT = { L: 0, R: 3, W: 3 };
+const cssv = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const unb64 = s => { const b = atob(s); const u = new Uint8Array(b.length); for (let i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return u; };
+const I16 = s => new Int16Array(unb64(s).buffer); const CACHE = {};
+function loadCase(key) { if (CACHE[key]) return Promise.resolve(CACHE[key]);
+  return new Promise((res, rej) => { const s = document.createElement('script'); s.src = 'data/case_' + key + '.js';
+    s.onload = () => { const raw = window['CASE_' + key]; const c = { ...raw, gQ: I16(raw.gen), uQ: I16(raw.ung), roleA: new Int8Array(unb64(raw.roles).buffer), simQ: {} };
+      for (const [sn, sd] of Object.entries(raw.sims)) { c.simQ[sn] = {}; for (const [v, b] of Object.entries(sd.layers)) c.simQ[sn][v] = I16(b); } CACHE[key] = c; res(c); };
+    s.onerror = () => rej(new Error('case ' + key)); document.body.appendChild(s); }); }
+// shared camera and frame
+let camTheta = -0.95, camPhi = 1.12, camRad = 1.0, home = 1.0, frame = 0, playing = false, lastT = 0; const panOff = new THREE.Vector3(); let T = 61;
+function mkPoints(n, opacity) { const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(n * 3), 3)); g.setAttribute('color', new THREE.BufferAttribute(new Float32Array(n * 3), 3));
+  return new THREE.Points(g, new THREE.PointsMaterial({ size: 0.006, vertexColors: true, sizeAttenuation: true, transparent: true, opacity, depthWrite: opacity > 0.6 })); }
+class Panel {
+  constructor(id) { this.id = id; this.root = document.getElementById(id); this.canvas = this.root.querySelector('canvas'); this.hud = this.root.querySelector('.hud');
+    this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, antialias: true, alpha: true }); this.renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    this.scene = new THREE.Scene(); this.camera = new THREE.PerspectiveCamera(42, 1.45, 0.005, 200); this.center = new THREE.Vector3(); this.objs = []; this.ep = null;
+    const sel = document.getElementById(id + '-pick'); for (let m = 0; m < 4; m++) { const f = FACTS[RUNS[id] + m]; const o = document.createElement('option'); o.value = m; o.textContent = 'm' + m + ' · gen ' + f.gen + ' / Isaac ' + f.isaac + ' mm'; sel.appendChild(o); }
+    sel.value = DEFAULT[id]; sel.addEventListener('input', () => this.show(+sel.value));
+    for (const c of ['.t-gen', '.t-sim', '.t-ung', '.t-floor']) this.root.querySelector(c).addEventListener('input', () => this.update());
+    this.show(DEFAULT[id]); }
+  show(m) { const key = RUNS[this.id] + m; loadCase(key).then(ep => this.build(ep, key)).catch(e => { this.hud.textContent = 'could not load ' + e.message; }); }
+  build(ep, key) { for (const o of this.objs) this.scene.remove(o); this.objs = []; this.ep = ep; T = ep.T; document.getElementById('seek').max = String(ep.T - 1);
+    this.g = mkPoints(ep.N, 0.9); this.u = mkPoints(ep.N, 0.5); this.s = mkPoints(ep.N, 0.65); this.objs.push(this.g, this.u, this.s);
+    const mid = [0, 1, 2].map(a => ep.lo[a] + ep.span[a] / 2); this.center.set(mid[0], mid[1], mid[2]); const fs = Math.max(ep.span[0], ep.span[1]) * 2.2;
+    this.floor = new THREE.Mesh(new THREE.PlaneGeometry(fs, fs), new THREE.MeshBasicMaterial({ color: new THREE.Color(cssv('--muted')), transparent: true, opacity: 0.13, side: THREE.DoubleSide, depthWrite: false })); this.floor.position.set(this.center.x, this.center.y, 0); this.objs.push(this.floor);
+    const goal = new THREE.Mesh(new THREE.SphereGeometry(0.012, 16, 12), new THREE.MeshBasicMaterial({ color: new THREE.Color(cssv('--goal')), transparent: true, opacity: 0.85 })); goal.position.set(ep.target[0], ep.target[1], ep.target[2]); this.objs.push(goal);
+    for (const b of ep.boxes) { const w = new THREE.Mesh(new THREE.BoxGeometry(b[3], b[4], b[5]), new THREE.MeshBasicMaterial({ color: new THREE.Color(cssv('--wall')), transparent: true, opacity: 0.4 })); w.position.set(b[0], b[1], b[2]); this.objs.push(w);
+      const e = new THREE.LineSegments(new THREE.EdgesGeometry(w.geometry), new THREE.LineBasicMaterial({ color: new THREE.Color(cssv('--wall')) })); e.position.copy(w.position); this.objs.push(e); }
+    for (const o of this.objs) this.scene.add(o);
+    if (this.id === 'L') { home = Math.hypot(ep.span[0], ep.span[1], ep.span[2]) * 1.35; camRad = home; }
+    const f = FACTS[key]; document.getElementById(this.id + '-title').textContent = key.split('__')[1] + ' · m' + ep.member;
+    document.getElementById(this.id + '-facts').textContent = 'generated ' + f.gen + ' mm · Isaac ' + f.isaac + ' mm · Isaac peak lift ' + f.lift + ' mm · end height ' + (f.end >= 0 ? '+' : '') + f.end + ' mm' + (f.clr !== undefined ? ' · min clearance to wall (Isaac) ' + f.clr + ' mm' : '');
+    this.update(); }
+  fill(P, Q, off, cols) { const ep = this.ep, pp = P.geometry.attributes.position.array, pc = P.geometry.attributes.color.array; const dq = (q, a) => ep.qlo[a] + (q + 32767) / 65534 * ep.qspan[a];
+    for (let i = 0; i < ep.N; i++) { pp[i*3] = dq(Q[off+i*3], 0); pp[i*3+1] = dq(Q[off+i*3+1], 1); pp[i*3+2] = dq(Q[off+i*3+2], 2); const r = ep.roleA[i]; const c = cols[r < 0 ? 2 : r]; pc[i*3] = c.r; pc[i*3+1] = c.g; pc[i*3+2] = c.b; }
+    P.geometry.attributes.position.needsUpdate = true; P.geometry.attributes.color.needsUpdate = true; }
+  update() { const ep = this.ep; if (!ep) return; const fr = Math.min(frame, ep.T - 1), off = fr * ep.N * 3; const C = n => new THREE.Color(cssv(n));
+    this.fill(this.g, ep.gQ, off, [C('--s1'), C('--fingerc'), C('--s2')]); this.fill(this.u, ep.uQ, off, [C('--u1'), C('--u1'), C('--u2')]);
+    const sn = Object.keys(ep.simQ)[0]; const showSim = this.root.querySelector('.t-sim').checked && sn && ep.simQ[sn].guided; if (showSim) this.fill(this.s, ep.simQ[sn].guided, off, [C('--simg'), C('--simg'), C('--simo')]);
+    this.g.visible = this.root.querySelector('.t-gen').checked; this.u.visible = this.root.querySelector('.t-ung').checked; this.s.visible = !!showSim; this.floor.visible = this.root.querySelector('.t-floor').checked;
+    const sz = 12; this.g.material.size = sz * 0.0004; this.u.material.size = sz * 0.0004; this.s.material.size = sz * 0.00045;
+    const s = ep.series; let h = 'carton to target: generated ' + s.gen_goal[fr].toFixed(0) + ' mm'; if (showSim && s.sim_guided_goal) h += ' · Isaac ' + s.sim_guided_goal[fr].toFixed(0) + ' mm'; this.hud.textContent = h; }
+  render() { const w = this.canvas.clientWidth, h = this.canvas.clientHeight, r = this.renderer.getPixelRatio(); if (!w || !h || !this.ep) return;
+    if (this.canvas.width !== Math.round(w * r) || this.canvas.height !== Math.round(h * r)) { this.renderer.setSize(w, h, false); this.camera.aspect = w / h; this.camera.updateProjectionMatrix(); }
+    const p = Math.max(0.08, Math.min(Math.PI - 0.08, camPhi)); const c = this.center;
+    this.camera.position.set(c.x + panOff.x + camRad * Math.sin(p) * Math.cos(camTheta), c.y + panOff.y + camRad * Math.sin(p) * Math.sin(camTheta), c.z + panOff.z + camRad * Math.cos(p)); this.camera.up.set(0, 0, 1);
+    this.camera.lookAt(c.x + panOff.x, c.y + panOff.y, c.z + panOff.z); this.renderer.render(this.scene, this.camera); }
+}
+const panels = [new Panel('L'), new Panel('R'), new Panel('W')];
+function updateAll() { for (const p of panels) p.update(); document.getElementById('fnum').textContent = 'frame ' + frame + ' / ' + (T - 1); document.getElementById('seek').value = String(frame); }
+function loop(t) { if (playing && t - lastT > 110) { lastT = t; frame = (frame + 1) % T; updateAll(); } for (const p of panels) p.render(); requestAnimationFrame(loop); } requestAnimationFrame(loop);
+for (const p of panels) { let drag = null; const cv = p.canvas;
+  cv.addEventListener('pointerdown', e => { drag = { x: e.clientX, y: e.clientY, shift: e.shiftKey }; cv.setPointerCapture(e.pointerId); cv.style.cursor = 'grabbing'; });
+  cv.addEventListener('pointermove', e => { if (!drag) return; const dx = e.clientX - drag.x, dy = e.clientY - drag.y; drag.x = e.clientX; drag.y = e.clientY; if (drag.shift) { const s = camRad * 0.0016; panOff.x += -dx * s * Math.sin(camTheta); panOff.y += dx * s * Math.cos(camTheta); panOff.z += dy * s; } else { camTheta -= dx * 0.008; camPhi -= dy * 0.008; } });
+  cv.addEventListener('pointerup', () => { drag = null; cv.style.cursor = 'grab'; });
+  cv.addEventListener('wheel', e => { e.preventDefault(); camRad = Math.max(home * 0.15, Math.min(home * 4, camRad * (1 + Math.sign(e.deltaY) * 0.09))); }, { passive: false }); }
+const playBtn = document.getElementById('play'); playBtn.addEventListener('click', () => { playing = !playing; playBtn.innerHTML = playing ? '&#10073;&#10073;' : '&#9654;'; });
+document.getElementById('seek').addEventListener('input', e => { playing = false; playBtn.innerHTML = '&#9654;'; frame = +e.currentTarget.value; updateAll(); });
+document.getElementById('reset').addEventListener('click', () => { camRad = home; panOff.set(0, 0, 0); camTheta = -0.95; camPhi = 1.12; });
+addEventListener('keydown', e => { if (['INPUT', 'SELECT', 'BUTTON'].includes(e.target.tagName)) return; if (e.key === ' ') { e.preventDefault(); playBtn.click(); } if (e.key === 'ArrowLeft') { frame = (frame - 1 + T) % T; updateAll(); } if (e.key === 'ArrowRight') { frame = (frame + 1) % T; updateAll(); } });
+</script>

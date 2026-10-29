@@ -1,0 +1,169 @@
+<title>Closed-Loop Guided Planning</title>
+<style>
+  :root { --bg:#f5f4f0; --panel:#fffefb; --ink:#1d1f22; --ink2:#4a4d52; --muted:#767a80; --rule:#dcd9d1; --accent:#2f6f8f;
+          --open:#c0572b; --openp:#e9a57f; --closed:#1f7a5a; --closedp:#7cc4a4; --ctx0:#6b4fa3; --pwo:#9a7417; --pwc:#d9a521; --gnso:#56607a; --gnsc:#4a8fd6; --goal:#b3261e; --grid:#e8e5dd; --good:#1f7a5a; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#16181a; --panel:#1d2023; --ink:#e7e5df; --ink2:#b9b7b1; --muted:#8c8a85; --rule:#33363a; --accent:#7fb3cf; --grid:#2a2d30; --good:#5cc39a; color-scheme: dark; } }
+  :root[data-theme="dark"] { --bg:#16181a; --panel:#1d2023; --ink:#e7e5df; --ink2:#b9b7b1; --muted:#8c8a85; --rule:#33363a; --accent:#7fb3cf; --grid:#2a2d30; --good:#5cc39a; color-scheme: dark; }
+  body { background:var(--bg); color:var(--ink); font-family:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif; padding-block:22px; padding-inline:18px; max-width:1200px; margin:0 auto; line-height:1.45; }
+  h1 { font-size:1.45rem; margin:0 0 4px; text-wrap:balance; } .sub { color:var(--ink2); margin:0 0 14px; max-width:84ch; font-size:.92rem; }
+  .dtabs { display:flex; flex-wrap:wrap; gap:0; margin:0 0 14px; border-bottom:1px solid var(--rule); }
+  .dtabs button { font:inherit; font-size:.97rem; padding:8px 16px; border:0; border-bottom:3px solid transparent; background:none; color:var(--ink2); cursor:pointer; }
+  .dtabs button[aria-selected="true"] { color:var(--ink); border-bottom-color:var(--accent); font-weight:600; }
+  .desc { font-size:.9rem; color:var(--ink2); margin:0 0 12px; max-width:90ch; } .status { font-size:.85rem; color:var(--muted); margin:-6px 0 10px; }
+  .scroller { overflow-x:auto; } table { border-collapse:collapse; font-size:.86rem; font-variant-numeric:tabular-nums; margin:0 0 14px; min-width:620px; }
+  th, td { text-align:right; padding:4px 11px 4px 0; border-bottom:1px solid var(--rule); } th:first-child, td:first-child { text-align:left; } th { color:var(--muted); font-weight:600; }
+  tbody tr { cursor:pointer; } tbody tr:hover td { background:color-mix(in srgb, var(--accent) 7%, transparent); } tr.sel td { background:color-mix(in srgb, var(--accent) 13%, transparent); }
+  td.best { color:var(--good); font-weight:600; } td.pending { color:var(--muted); font-style:italic; } tfoot td, tfoot th { border-bottom:0; font-weight:600; }
+  .mtabs { display:flex; flex-wrap:wrap; gap:6px; align-items:center; padding:10px 12px; border-bottom:1px solid var(--rule); font-size:.85rem; color:var(--muted); }
+  .mtabs button { font:inherit; font-size:.9rem; padding:4px 13px; border:1px solid var(--rule); border-radius:5px; background:var(--bg); color:var(--ink2); cursor:pointer; }
+  .mtabs button[aria-selected="true"] { border-color:var(--accent); color:var(--ink); font-weight:600; background:color-mix(in srgb, var(--accent) 10%, var(--bg)); }
+  .viewer { background:var(--panel); border:1px solid var(--rule); border-radius:6px; }
+  #stage { position:relative; width:100%; aspect-ratio:16/9; max-height:66vh; } #stage canvas { display:block; width:100%; height:100%; border-radius:6px 6px 0 0; }
+  .hud { position:absolute; left:10px; top:8px; font-family:"IBM Plex Mono",Menlo,monospace; font-size:12px; color:var(--ink2); background:color-mix(in srgb, var(--panel) 84%, transparent); padding:4px 7px; border-radius:4px; pointer-events:none; max-width:calc(100% - 20px); }
+  .ctrl { display:flex; flex-wrap:wrap; gap:8px 15px; align-items:center; padding:10px 12px; border-top:1px solid var(--rule); font-size:.85rem; color:var(--ink2); }
+  .ctrl label { display:flex; gap:5px; align-items:center; } .btn { font:inherit; padding:3px 12px; border:1px solid var(--rule); background:var(--bg); color:var(--ink); border-radius:4px; cursor:pointer; }
+  .seek { flex:1 1 220px; min-width:0; } .sw { display:inline-block; width:11px; height:11px; border-radius:2px; vertical-align:-1px; }
+  .meta { padding:0 12px 12px; font-size:.85rem; color:var(--ink2); font-variant-numeric:tabular-nums; }
+  .note { font-size:.8rem; color:var(--muted); margin-top:14px; word-break:break-word; }
+  button:focus-visible, input:focus-visible, tr:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+</style>
+<h1>Closed-Loop Guided Planning</h1>
+<p class="sub">Open loop vs closed loop, executed in each domain's simulator. Every closed-loop replan: at most 3 executed transitions as clean context, every model call reads the full trained window (tail padded), plan at least one window long, reward on the task's final frame; the matched open loop uses the same sampler with no replanning. Green marks, within each method, whichever of open or closed loop ended closer to the target (ties uncoloured); the bottom rows give each variant's mean and its number of wins. Click a table row to load it into the 3D viewer (drag to orbit, scroll to zoom, right-drag to pan).</p>
+<div class="dtabs" role="tablist" aria-label="domain" id="dtabs"></div>
+<p class="desc" id="desc"></p><p class="status" id="status"></p>
+<div class="scroller"><table id="tbl" aria-label="results"></table></div>
+<div class="viewer">
+  <div class="mtabs" role="tablist" aria-label="method" id="mtabs"></div>
+  <div id="stage"><div class="hud" id="hud"></div></div>
+  <div class="ctrl">
+    <button class="btn" id="play" type="button" aria-label="Play or pause">&#9654;</button>
+    <input class="seek" id="seek" type="range" min="0" max="60" value="0" step="1" aria-label="Frame">
+    <label><input type="checkbox" id="t-open" checked> <span class="sw" style="background:var(--open)"></span> open loop</label>
+    <label><input type="checkbox" id="t-closed" checked> <span class="sw" style="background:var(--closed)"></span> closed loop</label>
+    <label id="lab-ctx0"><input type="checkbox" id="t-ctx0"> <span class="sw" style="background:var(--ctx0)"></span> closed loop, context 0</label>
+    <label id="lab-oplan"><input type="checkbox" id="t-oplan"> <span class="sw" style="background:var(--openp)"></span> open-loop plan</label>
+    <label id="lab-cplan"><input type="checkbox" id="t-cplan"> <span class="sw" style="background:var(--closedp)"></span> closed-loop active plan</label>
+    <button class="btn" id="reset" type="button">reset view</button>
+  </div>
+  <div class="meta" id="meta"></div>
+</div>
+<p class="note">Pick a method with the tabs above the viewer; orange = open loop, green = closed loop (actuator in a darker shade); red sphere = target. Runs under /data/user_data/mbronars/packages/guided_playback/runs: block pushing pushing/olpad_hard42_ep*, clpad_hard42_ep*_k10, clctx0_hard42_ep*_k10; pile manipulation mould/olmould_*, clmould_*; random-object pushing rl_push/rlpgoal5_* (ours) and rl_push_baselines/dir5_* (PointWorld, GNS; spec sweeps/rlpush_cl_mid5_dir1_goalonly.json). Page data: bin/build_all_cl_page.py packs the three domain pages' data.</p>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script src="data/index.js"></script>
+<script>
+const ALL = window.ALL || {}; const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const fmt = v => v == null ? '' : Number(v).toFixed(1);
+const DESC = {
+  push: 'Block pushing (SAPIEN, set-pose rod). Five hard-set scenarios, seed 42 (the paper\'s pushing video episodes). push0418 cont200k_stream final.pt, 3 members, S 6, 6 iterations, lr 0.1, t_freeze 0.5. 60 frames; closed loop replans every 10 actions. Baselines on the same scenarios: GNS (best of 256 free rollouts; closed loop re-conditions on the last 6 executed frames) and PointWorld (MPPI in its model, K 128, replans every 5 steps; here with every plan scored at task frame 60, about twice the planning time of the paper configuration). Every plan of every method is scored at task frame 60. Columns: final block-to-target distance after SAPIEN execution.',
+  rlpush: 'Random-object pushing (Isaac floating Franka hand). Five random rl_push test objects (footprint 11 cm or less, distinct categories). At frame 0 the gripper is placed 200 mm behind the object along the push line (hand 85 mm above the object centre) and the target is 200 mm in front of it, random push direction (sweeps/rlpush_cl_mid5_dir1_goalonly.json). rl_push checkpoint step 180k; objective = object-centroid distance to the target at frame 40 only (no other terms), for ours and both baselines; 40 frames; closed loop replans every 10 actions. PointWorld: MPPI argmin, K 88; GNS: receding best-of-32. Columns: final object-centroid-to-target distance after Isaac execution.',
+  pick: 'Picking (Isaac floating Franka hand): the pick benchmark, 5 objects x 5 targets, target = start + 15 cm up + up to 15 cm sideways, 60 frames, scored at frame 60 (docs/BASELINE_PICK_BENCHMARK.md). Ours = the guided benchmark runs (open loop only; pickup checkpoint cont200k final, 4 members, 10 Adam iterations). PointWorld three-domain (step 105,000): open loop and closed loop (commit 10 frames, 6 rounds; filled in as it finishes). PointWorld two-domain (step 42,500): open loop. Both PointWorld: MPPI argmin, K 88, every plan scored only at frame 60. Viewer shows every 3rd point and every 2nd frame.',
+  pile: 'Pile manipulation (Genesis MPM dough, paddle). Cloud-centroid scenarios 0 to 4, seed 42. Mould ctxgen UNet step 60k, paper42 settings (3 members, S 6, 6 iterations, lr 0.1, t_freeze 0.8, full churn). 150 frames; closed loop replans every 25 frames. Columns: final dough-centroid-to-target distance and distance closed.' };
+const COLS = {
+  push: [['start_mm', 'start to target'], ['open_planned_mm', 'ours open, planned'], ['open_mm', 'ours open', 1, 'ours'], ['closed_mm', 'ours closed (ctx 3)', 1, 'ours'], ['ctx0_mm', 'ours closed (ctx 0)', 1, 'ours'], ['pw_open_mm', 'PointWorld open', 1, 'pw'], ['pw_closed_mm', 'PointWorld closed', 1, 'pw'], ['gns_open_mm', 'GNS open', 1, 'gns'], ['gns_closed_mm', 'GNS closed', 1, 'gns']],
+  rlpush: [['start_mm', 'start to target'], ['open_planned_mm', 'ours open, planned'], ['open_mm', 'ours open', 1, 'ours'], ['closed_mm', 'ours closed', 1, 'ours'], ['pw_open_mm', 'PointWorld open', 1, 'pw'], ['pw_closed_mm', 'PointWorld closed', 1, 'pw'], ['gns_open_mm', 'GNS open', 1, 'gns'], ['gns_closed_mm', 'GNS closed', 1, 'gns']],
+  pick: [['start_mm', 'start to target'], ['open_planned_mm', 'ours, planned'], ['open_mm', 'ours (open loop)', 1], ['pw_open_mm', 'PointWorld open', 1, 'pw'], ['pw_closed_mm', 'PointWorld closed', 1, 'pw'], ['pw2_open_mm', 'PointWorld two-domain open', 1]],
+  pile: [['start_mm', 'start to target'], ['open_planned_mm', 'open, planned'], ['open_mm', 'ours open', 1, 'ours'], ['closed_mm', 'ours closed', 1, 'ours'], ['open_closed_mm', 'ours open, distance closed', 1, 'oursc', 'max'], ['closed_closed_mm', 'ours closed, distance closed', 1, 'oursc', 'max']] };
+let dom = null, C = null, fi = 0, playing = false, layers = {}, extras = [], method = 'ours';
+const METHODS = [['ours', 'Ours', ''], ['pw', 'PointWorld', 'pw_'], ['pw2', 'PointWorld two-domain', 'pw2_'], ['gns', 'GNS', 'gns_']];
+const LAYER_OF = { open: 'open_exec', closed: 'closed_exec', ctx0: 'ctx0_exec', oplan: 'open_plan' };
+const stage = document.getElementById('stage');
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true }); renderer.setPixelRatio(Math.min(2, window.devicePixelRatio)); stage.appendChild(renderer.domElement);
+const scene = new THREE.Scene(); const camera = new THREE.PerspectiveCamera(40, 16 / 9, 0.001, 30); camera.up.set(0, 0, 1);
+const controls = new THREE.OrbitControls(camera, renderer.domElement); controls.enableDamping = true;
+function resize() { const w = stage.clientWidth, h = stage.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); }
+new ResizeObserver(resize).observe(stage);
+function dec(b64, lo, span) { const u = Uint8Array.from(atob(b64), c => c.charCodeAt(0)); const a = new Int16Array(u.buffer); const f = new Float32Array(a.length);
+  for (let i = 0; i < a.length; i++) { const d = i % 3; f[i] = lo[d] + (a[i] + 32767) / 65534 * span[d]; } return f; }
+function cloud(hex) { const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(C.N * 3), 3));
+  const col = new Float32Array(C.N * 3); const base = new THREE.Color(hex), act = base.clone().multiplyScalar(0.5), fin = base.clone().multiplyScalar(0.72);
+  for (let i = 0; i < C.N; i++) { const r = C.roles[i]; const c = r === 2 ? base : r === 1 ? fin : act; col[3 * i] = c.r; col[3 * i + 1] = c.g; col[3 * i + 2] = c.b; }
+  g.setAttribute('color', new THREE.BufferAttribute(col, 3));
+  const size = Math.max(C.span[0], C.span[1]) * 0.018; const p = new THREE.Points(g, new THREE.PointsMaterial({ size: Math.min(0.006, Math.max(0.0028, size)), vertexColors: true })); scene.add(p); return p; }
+function setFrame(p, data, i) { const n = C.N * 3; if (!data || i < 0 || (i + 1) * n > data.length) { p.visible = false; return false; }
+  p.geometry.attributes.position.array.set(data.subarray(i * n, (i + 1) * n)); p.geometry.attributes.position.needsUpdate = true; return true; }
+function valid(i) { return C.validMask ? C.validMask : null; }
+function load(key) { if (window.CASES && window.CASES[key]) return show(window.CASES[key]);
+  const s = document.createElement('script'); s.src = 'data/case_' + key + '.js'; s.onload = () => show(window.CASES[key]); document.head.appendChild(s); }
+function show(rec) {
+  for (const o of Object.values(layers)) scene.remove(o); for (const o of extras) scene.remove(o); layers = {}; extras = [];
+  // decode once per case into a cache; never overwrite the loaded record (re-opening a case must decode the same strings)
+  if (!rec._cache) rec._cache = { roles: new Int8Array(Uint8Array.from(atob(rec.roles), c => c.charCodeAt(0)).buffer),
+    D: Object.fromEntries(Object.entries(rec.layers).map(([k, v]) => [k, v ? dec(v, rec.lo, rec.span) : null])),
+    pl: rec.plans.map(p => Object.assign({}, p, { D: dec(p.P, rec.lo, rec.span) })) };
+  C = Object.assign({}, rec, { roles: rec._cache.roles, D: rec._cache.D, pl: rec._cache.pl });
+  const col = { open_exec: '--open', closed_exec: '--closed', ctx0_exec: '--ctx0', open_plan: '--openp', pw_open_exec: '--open', pw_closed_exec: '--closed', pw2_open_exec: '--open', gns_open_exec: '--open', gns_closed_exec: '--closed' };
+  for (const k of Object.keys(col)) if (k in rec.layers) layers[k] = cloud(css(col[k])); layers.cplan = cloud(css('--closedp'));
+  C.methods = METHODS.filter(([id, , pre]) => (pre + 'open_exec') in rec.layers || (pre + 'closed_exec') in rec.layers);
+  if (!C.methods.some(m => m[0] === method)) method = 'ours';
+  methodTabs();
+  const goal = new THREE.Mesh(new THREE.SphereGeometry(Math.max(0.005, Math.max(rec.span[0], rec.span[1]) * 0.018), 20, 14), new THREE.MeshBasicMaterial({ color: css('--goal') }));
+  goal.position.set(...rec.target); scene.add(goal); extras.push(goal);
+  const cx = rec.lo[0] + rec.span[0] / 2, cy = rec.lo[1] + rec.span[1] / 2, ext = Math.max(rec.span[0], rec.span[1]) + 0.08;
+  const grid = new THREE.GridHelper(ext, Math.max(4, Math.round(ext / 0.02)), new THREE.Color(css('--rule')), new THREE.Color(css('--grid'))); grid.rotation.x = Math.PI / 2; grid.position.set(cx, cy, rec.table_z - 0.0005); scene.add(grid); extras.push(grid);
+  C.center = new THREE.Vector3(cx, cy, rec.table_z + Math.min(0.05, rec.span[2] * 0.3)); C.dist = ext * 1.3; resetView();
+  document.getElementById('seek').max = rec.frames.length - 1; fi = 0; draw();
+  const row = ALL[rec.dom].rows.find(r => r.key === rec.dom + '_' + rec.id) || {};
+  document.getElementById('meta').textContent = `${rec.label}: start ${fmt(row.start_mm)} mm from the target. Open loop planned ${fmt(row.open_planned_mm)} mm, executed ${row.open_mm == null ? 'pending' : fmt(row.open_mm) + ' mm'}. Closed loop executed ${row.closed_mm == null ? 'pending' : fmt(row.closed_mm) + ' mm'}` +
+    (row.ctx0_mm != null ? `; closed loop ctx 0 ${fmt(row.ctx0_mm)} mm` : '') + `. Closed-loop plans: ` + rec.plans.map(p => `from frame ${p.commit_from} planned ${fmt(p.imagined_mm)} mm`).join('; ') + '.';
+}
+function methodTabs() {
+  const bar = document.getElementById('mtabs'); bar.innerHTML = '<span>method</span>';
+  for (const [id, label] of C.methods) { const b = document.createElement('button'); b.type = 'button'; b.role = 'tab'; b.textContent = label; b.setAttribute('aria-selected', id === method ? 'true' : 'false');
+    b.addEventListener('click', () => { method = id; methodTabs(); draw(); }); bar.appendChild(b); }
+  const ours = method === 'ours';
+  document.getElementById('lab-ctx0').hidden = !(ours && 'ctx0_exec' in C.layers);
+  document.getElementById('lab-oplan').hidden = !(ours && 'open_plan' in C.layers); document.getElementById('lab-cplan').hidden = !ours;
+}
+function resetView() { if (!C) return; controls.target.copy(C.center); camera.position.set(C.center.x + C.dist * 0.55, C.center.y - C.dist * 0.85, C.center.z + C.dist * 0.62); controls.update(); }
+function draw() {
+  if (!C) return; const f = C.frames[fi];
+  const pre = METHODS.find(m => m[0] === method)[2]; const on = t => document.getElementById('t-' + t).checked && !document.getElementById('t-' + t).closest('label').hidden;
+  const want = {}; for (const [t, k] of Object.entries(LAYER_OF)) if (method === 'ours' || t === 'open' || t === 'closed') want[pre + k] = on(t);
+  for (const k of Object.keys(layers)) if (k !== 'cplan') { const ok = setFrame(layers[k], C.D[k], fi); layers[k].visible = ok && !!want[k]; }
+  const act = C.pl.filter(p => p.commit_from <= f).pop() || C.pl[0]; let j = act ? act.frames.indexOf(f) : -1;
+  if (act && j < 0) { j = act.frames.findIndex(x => x > f) - 1; }
+  const ok = act && j >= 0 && setFrame(layers.cplan, act.D, j); layers.cplan.visible = !!ok && method === 'ours' && on('cplan');
+  document.getElementById('seek').value = fi;
+  const s = C.series || {}; const g = k => s[k] && s[k][fi] != null ? fmt(s[k][fi]) + ' mm' : '–';
+  const mname = METHODS.find(m => m[0] === method)[1];
+  document.getElementById('hud').textContent = `${mname} · frame ${f} · to target: open ${g(pre + 'open_exec')}, closed ${g(pre + 'closed_exec')}` + (method === 'ours' && s.ctx0_exec ? `, closed ctx 0 ${g('ctx0_exec')}` : '') + (method === 'ours' && act ? ` · active plan from frame ${act.commit_from}` : '');
+}
+function table() {
+  const D = ALL[dom], cols = COLS[dom].filter(c => !c[3] || c[3] === 'ours' || c[3] === 'oursc' || D.rows.some(r => r[c[0]] != null));   // hide baseline columns with no data yet
+  let h = '<thead><tr><th scope="col">case</th>' + cols.map(c => `<th scope="col">${c[1]}</th>`).join('') + '</tr></thead><tbody>';
+  const sums = {}, cnt = {};
+  // green = the better variant WITHIN each method (group), per row; ties are not coloured
+  const winners = vals => { const out = new Set(); const groups = {};
+    cols.forEach(c => { if (c[3] && vals[c[0]] != null) (groups[c[3]] = groups[c[3]] || []).push([c[0], vals[c[0]], c[4] === 'max']); });
+    for (const g of Object.values(groups)) { if (g.length < 2) continue; const best = g[0][2] ? Math.max(...g.map(x => x[1])) : Math.min(...g.map(x => x[1]));
+      const hit = g.filter(x => Math.abs(x[1] - best) < 0.05); if (hit.length === 1) out.add(hit[0][0]); }
+    return out; };
+  D.rows.forEach(r => { const win = winners(r);
+    h += `<tr tabindex="0" data-key="${r.key}"><td>${r.label}</td>` + cols.map(c => { const v = r[c[0]]; if (v != null) { sums[c[0]] = (sums[c[0]] || 0) + v; cnt[c[0]] = (cnt[c[0]] || 0) + 1; }
+      return v == null ? `<td class="pending">${c[2] ? 'pending' : ''}</td>` : `<td class="${win.has(c[0]) ? 'best' : ''}">${fmt(v)}</td>`; }).join('') + '</tr>'; });
+  const means = {}; cols.forEach(c => { if (cnt[c[0]] === D.rows.length) means[c[0]] = sums[c[0]] / cnt[c[0]]; }); const mwin = winners(means);
+  h += '</tbody><tfoot><tr><th scope="row">mean</th>' + cols.map(c => `<td class="${mwin.has(c[0]) ? 'best' : ''}">${cnt[c[0]] ? fmt(sums[c[0]] / cnt[c[0]]) + (cnt[c[0]] < D.rows.length ? ' (' + cnt[c[0]] + ')' : '') : ''}</td>`).join('') + '</tr>';
+  // per-method tally: how many cases each variant wins within its method
+  const tally = {}; D.rows.forEach(r => { for (const k of winners(r)) tally[k] = (tally[k] || 0) + 1; });
+  h += '<tr><th scope="row">wins within method</th>' + cols.map(c => `<td>${c[3] && c[3] !== 'oursc' ? (tally[c[0]] || 0) + ' / ' + D.rows.length : ''}</td>`).join('') + '</tr></tfoot>';
+  const t = document.getElementById('tbl'); t.innerHTML = h;
+  for (const tr of t.querySelectorAll('tbody tr')) { const go = () => { for (const x of t.querySelectorAll('tr.sel')) x.classList.remove('sel'); tr.classList.add('sel'); load(tr.dataset.key); };
+    tr.addEventListener('click', go); tr.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } }); }
+  const first = t.querySelector('tbody tr'); if (first) { first.classList.add('sel'); load(first.dataset.key); }
+}
+function pick(d) { dom = d; for (const b of document.getElementById('dtabs').children) b.setAttribute('aria-selected', b.dataset.d === d ? 'true' : 'false');
+  document.getElementById('desc').textContent = DESC[d] || ''; const st = ALL[d].status;
+  document.getElementById('status').textContent = st ? `${ALL[d].rows.length} cases, all runs finished` : `${ALL[d].rows.length} cases`;
+  table(); }
+const tabs = document.getElementById('dtabs');
+for (const d of ['push', 'rlpush', 'pick', 'pile']) if (ALL[d]) { const b = document.createElement('button'); b.type = 'button'; b.role = 'tab'; b.dataset.d = d; b.textContent = ALL[d].label; b.addEventListener('click', () => pick(d)); tabs.appendChild(b); }
+document.getElementById('seek').addEventListener('input', e => { fi = +e.target.value; draw(); });
+for (const t of ['open', 'closed', 'ctx0', 'oplan', 'cplan']) document.getElementById('t-' + t).addEventListener('change', draw);
+document.getElementById('reset').addEventListener('click', resetView);
+const pb = document.getElementById('play'); pb.addEventListener('click', () => { playing = !playing; pb.innerHTML = playing ? '&#10074;&#10074;' : '&#9654;'; });
+const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches; let last = 0;
+function loop(t) { requestAnimationFrame(loop); if (playing && C && t - last > (reduce ? 250 : 90)) { last = t; fi = (fi + 1) % C.frames.length; draw(); } controls.update(); renderer.render(scene, camera); }
+requestAnimationFrame(loop); resize();
+const h = (location.hash || '').slice(1); pick(ALL[h] ? h : 'push');
+</script>

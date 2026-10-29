@@ -1,0 +1,232 @@
+<title>Push Guidance Sweep</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{color-scheme:light;
+ --bg:#f6f5f2;--surface:#fcfcfb;--ink:#141412;--ink-2:#54534e;--ink-3:#8a8880;--rule:#dedcd5;--grid:#ecebe6;
+ --s1:#2a78d6;--s2:#eb6834;--s3:#1baf7a;--s1-soft:#d6e5f7;--ramp0:#eef4fb;--ramp1:#1d4f8f;--ref:#b5b3ab}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){color-scheme:dark;
+ --bg:#151514;--surface:#1a1a19;--ink:#f2f1ec;--ink-2:#c3c2b7;--ink-3:#8b8a82;--rule:#33332f;--grid:#262624;
+ --s1:#3987e5;--s2:#d95926;--s3:#199e70;--s1-soft:#1f3a5c;--ramp0:#1e2530;--ramp1:#7fb3f0;--ref:#5b5a54}}
+:root[data-theme="dark"]{color-scheme:dark;
+ --bg:#151514;--surface:#1a1a19;--ink:#f2f1ec;--ink-2:#c3c2b7;--ink-3:#8b8a82;--rule:#33332f;--grid:#262624;
+ --s1:#3987e5;--s2:#d95926;--s3:#199e70;--s1-soft:#1f3a5c;--ramp0:#1e2530;--ramp1:#7fb3f0;--ref:#5b5a54}
+body{background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:15px;line-height:1.5;margin:0}
+.wrap{max-width:960px;margin:0 auto;padding-block:32px 64px;padding-inline:20px}
+h1{font-family:"IBM Plex Sans Condensed","IBM Plex Sans",sans-serif;font-weight:600;font-size:2rem;line-height:1.1;margin:0 0 6px;text-wrap:balance}
+h2{font-family:"IBM Plex Sans Condensed","IBM Plex Sans",sans-serif;font-weight:600;font-size:1.25rem;margin:40px 0 4px;text-wrap:balance}
+.sub{color:var(--ink-2);margin:0 0 18px;max-width:64ch}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.fact{color:var(--ink-2);max-width:66ch;margin:0 0 12px}
+.card{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:14px 16px}
+.findings{display:grid;gap:10px;margin:18px 0 8px}
+.finding{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:baseline}
+.finding .n{font-family:"IBM Plex Mono",monospace;color:var(--s1);font-weight:500;font-variant-numeric:tabular-nums;min-width:4.2em}
+.finding p{margin:0;max-width:70ch}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:.82rem;color:var(--ink-2);margin:6px 0 0}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:12px;height:12px;border-radius:3px;display:inline-block}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+svg{display:block;max-width:100%;height:auto}
+svg text{font-family:"IBM Plex Sans",system-ui,sans-serif;fill:var(--ink-2);font-size:12px}
+svg .mono{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums}
+svg .axis{stroke:var(--rule);stroke-width:1}
+svg .grid{stroke:var(--grid);stroke-width:1}
+.tip{position:fixed;pointer-events:none;background:var(--ink);color:var(--bg);font-size:.8rem;padding:6px 9px;border-radius:4px;opacity:0;transition:opacity .08s;font-family:"IBM Plex Mono",monospace;white-space:pre;z-index:9}
+.multi{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.multi .card{padding:8px 10px}
+.multi .lab{font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:var(--ink-3)}
+table{border-collapse:collapse;font-size:.85rem;font-variant-numeric:tabular-nums;width:100%}
+th,td{padding:5px 8px;text-align:right;border-bottom:1px solid var(--grid)}
+th:first-child,td:first-child{text-align:left}
+th{font-weight:500;color:var(--ink-3);font-size:.75rem;letter-spacing:.04em;text-transform:uppercase}
+.scroll{overflow-x:auto}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin:8px 0 12px}
+.stat .v{font-family:"IBM Plex Sans Condensed",sans-serif;font-weight:600;font-size:1.7rem;line-height:1.1}
+.stat .k{font-size:.78rem;color:var(--ink-3)}
+@media (prefers-reduced-motion: reduce){.tip{transition:none}}
+</style>
+<div class="wrap">
+<div class="eyebrow">push0418 · random/seed_42 · corrected scenes · 2026-09-24</div>
+<h1>Push Guidance Sweep</h1>
+<p class="sub">Noise-optimisation guidance for block pushing, scored by the simulated cube-centroid distance to target after SAPIEN replay of the best imagined plan. Population 3, 60 transitions, full churn, t_freeze 0.8 unless stated.</p>
+
+<div class="findings">
+ <div class="finding"><span class="n">1</span><p><b>The scene builder was re-posing clouds but not <code>body_templates</code>.</b> Every predicted frame rebuilt the cube at the template episode's yaw (66.85°), so the block snapped a median 25° on frame 1 with the rod 44 mm away. Fixed; the snap is now 0.0°.</p></div>
+ <div class="finding"><span class="n">2</span><p><b>t_freeze is the one lever that moved the simulated result.</b> Optimising bank draws down to noise level 0.5 instead of 0.8 (540 of 1200 draws instead of 207): 51.7 vs 58.1 mm on all 50 scenarios, paired +6.4 mm, wins 29–20. t_freeze 0.3 and 0.65 land between, at 56.5 and 61.4 on the 15.</p></div>
+ <div class="finding"><span class="n">3</span><p><b>Step size, iterations and schedule barely move the simulated result.</b> lr 0.05 → 0.3 at S=6 spans 59.5–64.9 mm on the 15; 6 vs 12 iterations 58.1 vs 57.7 on 50; decay vs constant 57.8 vs 58.1. Imagination improves monotonically with step size; the sim gap grows with it.</p></div>
+ <div class="finding"><span class="n">4</span><p><b>The optimizer is not descending.</b> Consecutive iterates swing ~20 mm in imagination and the best plan sits at iteration 0–2 in 20 of 50 cases. Best-of-N sampling, not gradient descent.</p></div>
+ <div class="finding"><span class="n">5</span><p><b>S=10, shell-off and Adam are all worse.</b> S=10: 66.7–82.3 mm. Shell-off: 66.0–68.6. Adam with shell: 77.5.</p></div>
+ <div class="finding"><span class="n">6</span><p><b>Generation is not reproducible at a fixed seed.</b> Three identical unguided requests differed by 1.6–79 mm per point; two runs of identical guided settings differed by 19.6 mm paired std (max 57) on 15 scenarios. Arm differences under ~10 mm on 15 scenarios are inside this noise. Cause not yet diagnosed.</p></div>
+ <div class="finding"><span class="n">7</span><p><b>Guidance works.</b> Unguided ends ~85 mm from target; the best arm ends 51.7 mm. The sim/imagination gap (30–36 mm) is what caps it.</p></div>
+</div>
+
+<h2>Arms on the 15 shared scenarios</h2>
+<p class="fact">All 22 post-fix arms, sorted by simulated distance. Bar = sim mean, dot = imagined mean, tick = unguided mean. Same 15 scenarios for every row, spanning target angles −159°…176° and start distances 58–123 mm. The two "S6 lr0.1 6it tf0.5" rows are the same settings run twice.</p>
+<div class="card"><div id="armplot"></div>
+<div class="legend"><span><i class="sw" style="background:var(--s1)"></i>simulated</span><span><i class="dot" style="background:var(--s2)"></i>imagined</span><span><i class="sw" style="background:var(--s3);width:3px"></i>unguided</span></div></div>
+
+<h2>Per-scenario outcomes</h2>
+<p class="fact">Simulated distance to target, mm. Rows are scenarios, columns are arms; the first column is the start distance. The spread down a column is the scenario effect; the spread along a row is the arm effect.</p>
+<div class="card scroll"><div id="heat"></div></div>
+
+<h2>What the optimizer does per iteration</h2>
+<p class="fact">Imagined distance to target for each of the 3 population members across the 6 guidance iterations (S=6, lr 0.1). Column 0 is the unguided rollout; the dashed line is the start distance; the heavier line is the member that was picked.</p>
+<div class="multi" id="traces"></div>
+<div class="stats" style="margin-top:12px">
+ <div class="card stat"><div class="v mono" id="st_beat"></div><div class="k">of 50 scenarios where a guided iterate beat the unguided rollout</div></div>
+ <div class="card stat"><div class="v">20 / 50</div><div class="k">best plan found at iteration 0, 1 or 2</div></div>
+ <div class="card stat"><div class="v">20.2 mm</div><div class="k">mean |change| in imagined outcome per iteration</div></div>
+</div>
+<div class="card"><div class="eyebrow" style="margin-bottom:6px">Iteration holding the best plan (S=6, lr 0.1, 50 scenarios)</div><div id="besthist"></div></div>
+
+<h2>Imagined vs simulated, all 50 scenarios</h2>
+<p class="fact">Each point is one scenario's picked plan. On the diagonal the simulator reproduced what the model imagined. Three full-50 arms overlaid.</p>
+<div class="card"><div id="scatter"></div><div class="legend" id="scatterleg"></div></div>
+
+<h2>The frame-1 snap, before and after the fix</h2>
+<p class="fact">Cube yaw change between frame 0 and frame 1 of the generation, degrees (mod 90), 30 scenarios, member 0. Recorded ground truth: 0.00° in every clip.</p>
+<div class="card"><div id="yaw"></div>
+<div class="legend"><span><i class="dot" style="background:var(--s2)"></i>before (stale template)</span><span><i class="dot" style="background:var(--s1)"></i>after (template rebuilt)</span></div></div>
+
+<h2>Repeatability at fixed settings</h2>
+<p class="fact">Left: the same guided settings (S=6, lr 0.1, 6 it, t_freeze 0.5, seed 0) run twice; simulated distance per scenario, one point each. Right: three identical unguided requests for scenario 18, objective per population member.</p>
+<div class="multi" style="grid-template-columns:2fr 1fr"><div class="card"><div id="repeat"></div></div><div class="card"><div id="repeatgen"></div></div></div>
+
+<h2>Table</h2>
+<div class="card scroll"><table id="tbl"></table></div>
+<p class="fact" style="margin-top:18px;font-size:.85rem">Sources: <code>/data/user_data/mbronars/packages/guided_playback/runs/_paper_eval/*_summary.json</code>, <code>bin/sweep_table.py</code>, <code>bin/push_report.py</code>. Model: <code>push0418_rigid_x0_rope_regpass_mix_cont200k_stream/checkpoints/final.pt</code>, step 200k.</p>
+</div>
+<div class="tip" id="tip"></div>
+<script>
+const D = {"scenarios": [6, 27, 5, 32, 17, 2, 26, 18, 24, 42, 3, 43, 34, 33, 49], "arms": [{"tag": "sw15_S10_lr0.1_it12", "label": "S10 lr0.1 12it", "S": 10, "it": 12, "lr": 0.1, "lr_final": null, "shell": true, "tf": 0.8, "sim": [90.0, 60.0, 95.9, 56.5, 91.5, 67.7, 22.5, 95.7, 95.9, 54.0, 59.4, 58.5, 139.6, 42.2, 101.9], "imagined": [40.8, 16.5, 68.0, 56.9, 69.7, 28.4, 29.5, 18.5, 96.7, 15.4, 77.0, 39.5, 24.1, 25.0, 63.7], "unguided": [85.2, 16.5, 121.5, 126.1, 135.7, 48.3, 48.3, 36.6, 96.7, 15.4, 101.8, 127.7, 111.2, 52.5, 102.7], "target": [70.9, 70.8, 99.0, 71.3, 98.9, 123.1, 109.3, 98.2, 69.6, 77.6, 58.3, 59.1, 93.3, 101.7, 86.1], "gap": [53.6, 55.2, 42.7, 2.5, 39.9, 39.3, 16.1, 85.5, 30.7, 50.4, 24.4, 39.1, 117.7, 22.4, 38.5], "sec": 60.19333333333334, "sim_mean": 75.42, "img_mean": 44.64666666666666, "ung_mean": 81.74666666666667, "gap_mean": 43.86666666666666, "within50": 2, "neg": 5}, {"tag": "sw15_S10_lr0.1_it6", "label": "S10 lr0.1 6it", "S": 10, "it": 6, "lr": 0.1, "lr_final": null, "shell": true, "tf": 0.8, "sim": [87.0, 60.0, 116.1, 71.3, 96.1, 69.7, 88.8, 68.0, 95.9, 54.0, 59.1, 65.4, 139.6, 61.5, 102.1], "imagined": [40.8, 16.5, 73.4, 71.3, 82.4, 30.5, 48.3, 9.9, 96.7, 15.4, 76.4, 39.7, 24.4, 36.6, 66.0], "unguided": [85.2, 16.5, 121.5, 126.1, 135.7, 48.3, 48.3, 82.9, 96.7, 15.4, 101.8, 127.7, 111.2, 52.5, 102.7], "target": [70.9, 70.8, 99.0, 71.3, 98.9, 123.1, 109.3, 98.2, 69.6, 77.6, 58.3, 59.1, 93.3, 101.7, 86.1], "gap": [49.2, 55.2, 43.2, 1.0, 35.7, 39.2, 46.4, 77.5, 30.7, 50.4, 24.7, 38.2, 117.8, 25.9, 36.8], "sec": 31.046666666666663, "sim_mean": 82.30666666666666, "img_mean": 48.553333333333335, "ung_mean": 84.83333333333333, "gap_mean": 44.79333333333332, "within50": 0, "neg": 7}, {"tag": "sw15_S10_lr0.2_it6", "label": "S10 lr0.2 6it", "S": 10, "it": 6, "lr": 0.2, "lr_final": null, "shell": true, "tf": 0.8, "sim": [86.5, 60.0, 36.8, 104.1, 56.9, 78.2, 88.8, 59.5, 95.9, 41.0, 89.9, 65.0, 41.7, 73.1, 95.8], "imagined": [41.0, 16.5, 31.4, 97.6, 70.9, 48.3, 48.3, 36.6, 96.7, 5.5, 87.6, 40.4, 21.1, 52.5, 62.8], "unguided": [85.2, 16.5, 121.5, 148.6, 123.3, 48.3, 48.3, 36.6, 96.7, 15.4, 118.1, 127.7, 85.1, 52.5, 102.7], "target": [70.9, 70.8, 99.0, 71.3, 98.9, 123.1, 109.3, 98.2, 69.6, 77.6, 58.3, 59.1, 93.3, 101.7, 86.1], "gap": [48.5, 55.2, 41.2, 16.1, 29.5, 30.4, 46.4, 44.5, 30.7, 36.7, 37.9, 35.4, 29.5, 23.9, 37.0], "sec": 30.793333333333337, "sim_mean": 71.54666666666667, "img_mean": 50.48, "ung_mean": 81.76666666666667, "gap_mean": 36.19333333333332, "within50": 3, "neg": 6}, {"tag": "sw15_S10_lr0.2to0.02_it10", "label": "S10 lr0.2→0.02 10it", "S": 10, "it": 10, "lr": 0.2, "lr_final": 0.02, "shell": true, "tf": 0.8, "sim": [88.7, 46.7, 86.7, 114.5, 88.8, 50.7, 19.4, 53.4, 95.9, 34.0, 90.0, 58.4, 36.8, 39.4, 96.4], "imagined": [35.6, 12.6, 52.4, 78.3, 68.7, 36.0, 25.4, 11.1, 96.7, 2.0, 87.3, 38.7, 7.5, 40.5, 48.9], "unguided": [85.2, 96.3, 121.5, 148.9, 135.7, 48.3, 48.3, 82.9, 96.7, 15.4, 118.1, 127.7, 85.1, 97.9, 102.7], "target": [70.9, 70.8, 99.0, 71.3, 98.9, 123.1, 109.3, 98.2, 69.6, 77.6, 58.3, 59.1, 93.3, 101.7, 86.1], "gap": [56.6, 55.7, 36.7, 49.5, 39.8, 79.4, 18.0, 43.4, 30.7, 32.2, 37.7, 39.8, 41.4, 58.4, 47.6], "sec": 49.01333333333334, "sim_mean": 66.65333333333334, "img_mean": 42.779999999999994, "ung_mean": 94.04666666666667, "gap_mean": 44.46, "within50": 5, "neg": 5}, {"tag": "sw15_adam0.1_it6_noshell", "label": "S6 lr0.1 6it no-shell adam", "S": 6, "it": 6, "lr": 0.1, "lr_final": null, "shell": false, "tf": 0.8, "sim": [42.9, 90.5, 170.9, 29.3, 59.7, 66.3, 51.6, 11.9, 41.2, 77.7, 95.7, 32.4, 89.4, 45.3, 84.9], "imagined": [36.5, 88.6, 103.8, 24.3, 53.0, 64.3, 67.5, 23.2, 18.4, 41.0, 77.8, 61.2, 73.8, 43.2, 75.2], "unguided": [89.0, 90.0, 103.8, 38.5, 55.3, 182.5, 67.5, 24.8, 19.4, 99.7, 80.4, 72.6, 73.8, 55.2, 240.1], "target": [70.9, 70.8, 99.0, 71.3, 98.9, 123.1, 109.3, 98.2, 69.6, 77.6, 58.3, 59.1, 93.3, 101.7, 86.1], "gap": [28.8, 27.7, 70.6, 10.8, 23.9, 8.0, 48.8, 24.9, 56.9, 49.8, 25.7, 39.5, 29.6, 4.9, 9.7], "sec": 19.866666666666664, "sim_mean": 65.98, "img_mean": 56.78666666666666, "ung_mean": 86.17333333333333, "gap_mean": 30.639999999999997, "within50": 6, "neg": 4}, {"tag": "sw15_adam0.1_it6", "label": "S6 lr0.1 6it adam", "S": 6, "it": 6, "lr": 0.1, "lr_final": null, "shell": true, "tf": 0.8, "sim": [54.2, 91.0, 170.9, 32.4, 51.2, 64.9, 51.6, 67.0, 40.9, 77.6, 95.7, 45.7, 89.4, 60.2, 170.5], "imagined": [55.4, 88.8, 103.8, 21.6, 54.5, 64.1, 67.5, 20.5, 19.4, 44.0, 74.9, 54.4, 73.8, 43.1, 94.8], "unguided": [89.0, 90.0, 103.8, 38.5, 55.3, 182.5, 67.5, 41.1, 19.4, 99.7, 80.4, 72.6, 73.8, 55.2, 240.1], "target": [70.9, 70.8, 99.0, 71.3, 98.9, 123.1, 109.3, 98.2, 69.6, 77.6, 58.3, 59.1, 93.3, 101.7, 86.1], "gap": [1.6, 28.1, 70.6, 15.0, 4.2, 8.2, 48.8, 64.1, 57.1, 41.0, 20.8, 26.9, 29.6, 24.4, 94.9], "sec": 19.77333333333333, "sim_mean": 77.54666666666668, "img_mean": 58.70666666666666, "ung_mean": 87.25999999999999, "gap_mean": 35.68666666666666, "within50": 3, "neg": 4}, {"tag": "sw15_lr0.05_it12", "label": "S6 lr0.05 12it", "S": 6, "it": 12, "lr": 0.05, "lr_final": null, "shell": true, "tf": 0.8, "sim": [52.0, 90.5, 170.9, 32.2, 51.6, 118.5, 69.4, 13.3, 41.3, 77.7, 81.0, 38.9, 89.0, 59.1, 89.8], "imagined": [25.5, 88.4, 103.8, 20.5, 54.5, 46.5, 60.0, 24.8, 14.0, 44.0, 75.0, 37.9, 68.9, 42.4, 96.4], "unguided": [67.8, 90.0, 103.8, 38.5, 55.3, 182.5, 123.3, 24.8, 19.4, 99.7, 110.1, 89.5, 73.8, 55.2, 240.1], "target": [70.9, 70.8, 99.0, 71.3, 98.9, 123.1, 109.3, 98.2, 69.6, 77.6, 58.3, 59.1, 93.3, 101.7, 86.1], "gap": [39.4, 27.7, 70.6, 16.2, 3.5, 86.4, 14.9, 27.6, 44.2, 63.6, 14.2, 8.7, 28.9, 24.5, 7.0], "sec": 39.1, "sim_mean": 71.68, "img_mean": 53.50666666666666, "ung_mean": 91.58666666666666, "gap_mean": 31.82666666666666, "within50": 4, "neg": 5}, {"tag": "sw15_lr0.05_it6_noshell", "label": "S6 lr0.05 6it no-shell", "S": 6, "it": 6, "lr": 0.05, "lr_final": null, "shell": false, "tf": 0.8, "sim": [65.5, 91.0, 170.9, 33.1, 60.2, 63.6, 51.6, 13.3, 40.9, 77.7, 97.0, 31.9, 89.4, 62.9, 79.8], "imagined": [35.4, 88.8, 103.8, 20.3, 54.6, 60.8, 67.5, 24.8, 19.4, 39.6, 80.4, 62.3, 73.8, 43.8, 71.3], "unguided": [67.8, 90.0, 103.8, 38.5, 55.3, 182.5, 67.5, 24.8, 19.4, 99.7, 80.4, 72.6, 73.8, 55.2, 240.1], "target": [70.9, 70.8, 99.0, 71.3, 98.9, 123.1, 109.3, 98.2, 69.6, 77.6, 58.3, 59.1, 93.3, 101.7, 86.1], "gap": [36.9, 28.0, 70.6, 18.1, 23.7, 9.8, 48.8, 27.6, 57.1, 54.6, 16.7, 38.2, 29.6, 27.0, 8.5], "sec": 20.346666666666668, "sim_mean": 68.58666666666666, "img_mean": 56.43999999999998, "ung_mean": 84.75999999999999, "gap_mean": 33.013333333333335, "within50": 4, "neg": 4}, {"tag": "sw15_lr0.05_it6", "label": "S6 lr0.05 6it", "S": 6, "it": 6, "lr": 0.05, "lr_final": null, "shell": true, "tf": 0.8, "sim": [66.1, 90.6, 170.9, 31.6, 60.5, 34.4, 51.6, 13.3, 41.1, 41.4, 97.0, 47.7, 89.4, 58.2, 80.4], "imagined": [42.0, 88.6, 103.8, 25.9, 54.1, 61.3, 67.5, 24.8, 19.0, 48.3, 80.4, 64.2, 73.8, 41.9, 71.4], "unguided": [67.8, 90.0, 103.8, 38.5, 55.3, 182.5, 67.5, 24.8, 19.4, 109.2, 80.4, 72.6, 73.8, 55.2, 240.1], "target": [70.9, 70.8, 99.0, 71.3, 98.9, 123.1, 109.3, 98.2, 69.6, 77.6, 58.3, 59.1, 93.3, 101.7, 86.1], "gap": [40.1, 27.9, 70.6, 15.2, 24.9, 41.7, 48.8, 27.6, 58.1, 15.3, 16.7, 17.3, 29.6, 24.1, 9.2], "sec": 19.786666666666665, "sim_mean": 64.94666666666667, "img_mean": 57.79999999999999, "ung_mean": 85.39333333333333, "gap_mean": 31.140000000000004, "within50": 6, "neg": 3}, {"tag": "sw15_lr0.05_it6_tf0.5", "label": "S6 lr0.05 6it tf0.5", "S": 6, "it": 6, "lr": 0.05, "lr_final": null, "shell": true, "tf": 0.5, "sim": [70.6, 71.9, 108.1, 26.6, 60.3, 66.3, 36.8, 71.2, 40.9, 20.5, 17.7, 29.9, 81.9, 79.0, 56.2], "imagined": [15.2, 53.6, 95.6, 30.4, 55.3, 63.0, 6.5, 16.1, 19.4, 29.3, 22.1, 31.3, 40.0, 27.5, 24.9], "unguided": [67.8, 172.1, 170.8, 38.5, 55.3, 182.5, 67.5, 116.3, 19.4, 81.1, 128.6, 100.6, 119.3, 55.2, 141.3], "target": [70.9, 70.8, 99.0, 71.3, 98.9, 123.1, 109.3, 98.2, 69.6, 77.6, 58.3, 59.1, 93.3, 101.7, 86.1], "gap": [59.9, 30.5, 58.7, 10.3, 21.6, 8.6, 42.6, 68.4, 57.1, 9.1, 5.6, 8.9, 71.5, 77.0, 33.6], "sec": 20.733333333333338, "sim_mean": 55.86, "img_mean": 35.34666666666667, "ung_mean": 101.08666666666664, "gap_mean": 37.56000000000001, "within50": 6, "neg": 2}, {"tag": "sw15_lr0.1_it6_noshell", "label": "S6 lr0.1 6it no-shell", "S": 6, "it": 6, "lr": 0.1, "lr_final": null, "shell": false, "tf": 0.8, "sim": [79.7, 51.4, 176.6, 31.7, 61.6, 60.4, 91.9, 11.5, 40.9, 77.9, 59.3, 8.6, 88.9, 83.2, 90.9], "imagined": [32.9, 84.2, 103.6, 21.9, 54.0, 38.9, 56.7, 22.0, 19.4, 41.9, 26.1, 21.8, 72.8, 49.6, 69.8], "unguided": [89.0, 172.1, 103.8, 38.5, 55.3, 182.5, 67.5, 24.8, 19.4, 99.7, 110.1, 100.6, 73.8, 55.2, 240.1], "target": [70.9, 70.8, 99.0, 71.3, 98.9, 123.1, 109.3, 98.2, 69.6, 77.6, 58.3, 59.1, 93.3, 101.7, 86.1], "gap": [48.1, 35.5, 74.1, 13.8, 24.0, 47.3, 52.6, 23.9, 57.1, 67.6, 37.6, 21.0, 29.3, 37.7, 22.1], "sec": 20.52, "sim_mean": 67.63333333333333, "img_mean": 47.70666666666666, "ung_mean": 95.49333333333333, "gap_mean": 39.44666666666667, "within50": 4, "neg": 5}, {"tag": "sw15_lr0.1_it6_tf0.3", "label": "S6 lr0.1 6it tf0.3", "S": 6, "it": 6, "lr": 0.1, "lr_final": null, "shell": true, "tf": 0.3, "sim": [84.3, 74.0, 170.9, 27.3, 31.7, 43.1, 24.3, 13.3, 41.4, 44.1, 68.1, 4.1, 70.2, 92.5, 58.3], "imagined": [23.6, 55.3, 103.8, 27.3, 35.1, 43.1, 23.2, 24.8, 5.0, 9.7, 36.0, 5.2, 8.3, 5.1, 50.9], "unguided": [67.8, 172.1, 103.8, 38.5, 55.3, 182.5, 67.5, 24.8, 171.3, 99.7, 110.1, 89.5, 73.8, 55.2, 240.1], "target": [70.9, 70.8, 99.0, 71.3, 98.9, 123.1, 109.3, 98.2, 69.6, 77.6, 58.3, 59.1, 93.3, 101.7, 86.1], "gap": [64.9, 29.1, 70.6, 18.8, 5.4, 1.1, 4.3, 27.6, 36.5, 34.8, 35.3, 2.4, 64.3, 88.6, 11.9], "sec": 21.133333333333336, "sim_mean": 56.50666666666667, "img_mean": 30.426666666666666, "ung_mean": 103.46666666666665, "gap_mean": 33.03999999999999, "within50": 8, "neg": 4}, {"tag": "sw15_lr0.1_it6_tf0.5", "label": "S6 lr0.1 6it tf0.5", "S": 6, "it": 6, "lr": 0.1, "lr_final": null, "shell": true, "tf": 0.5, "sim": [65.4, 73.2, 82.8, 41.5, 25.4, 45.9, 21.6, 13.3, 40.9, 20.2, 58.3, 72.0, 71.2, 60.5, 53.4], "imagined": [67.8, 54.6, 83.2, 36.9, 29.3, 53.8, 22.2, 24.8, 19.4, 29.3, 58.3, 9.8, 3.7, 12.0, 31.7], "unguided": [67.8, 172.1, 103.8, 38.5, 55.3, 182.5, 67.5, 24.8, 19.4, 81.1, 128.6, 100.6, 73.8, 55.2, 151.4], "target": [70.9, 70.8, 99.0, 71.3, 98.9, 123.1, 109.3, 98.2, 69.6, 77.6, 58.3, 59.1, 93.3, 101.7, 86.1], "gap": [3.2, 29.2, 2.2, 64.5, 15.0, 19.2, 39.6, 27.6, 57.1, 9.5, 1.0, 66.8, 71.1, 54.9, 38.7], "sec": 20.44, "sim_mean": 49.70666666666667, "img_mean": 35.78666666666667, "ung_mean": 88.16000000000001, "gap_mean": 33.306666666666665, "within50": 7, "neg": 2}, {"tag": "sw15_lr0.1_it6_tf0.65", "label": "S6 lr0.1 6it tf0.65", "S": 6, "it": 6, "lr": 0.1, "lr_final": null, "shell": true, "tf": 0.65, "sim": [60.9, 70.9, 170.9, 35.8, 60.3, 48.0, 38.5, 13.3, 41.8, 21.1, 65.8, 26.9, 104.3, 58.8, 103.4], "imagined": [33.6, 53.1, 103.8, 34.3, 55.3, 51.9, 6.3, 24.8, 17.8, 28.7, 67.8, 51.1, 50.5, 42.9, 59.0], "unguided": [67.8, 172.1, 103.8, 38.5, 55.3, 182.5, 67.5, 24.8, 19.4, 81.1, 128.6, 89.5, 73.8, 55.2, 240.1], "target": [70.9, 70.8, 99.0, 71.3, 98.9, 123.1, 109.3, 98.2, 69.6, 77.6, 58.3, 59.1, 93.3, 101.7, 86.1], "gap": [41.6, 31.4, 70.6, 1.8, 21.6, 10.4, 44.1, 27.6, 54.5, 7.9, 2.7, 24.7, 68.3, 23.9, 56.6], "sec": 20.833333333333332, "sim_mean": 61.37999999999999, "img_mean": 45.39333333333333, "ung_mean": 93.33333333333333, "gap_mean": 32.51333333333333, "within50": 7, "neg": 5}, {"tag": "sw15_lr0.2_it6", "label": "S6 lr0.2 6it", "S": 6, "it": 6, "lr": 0.2, "lr_final": null, "shell": true, "tf": 0.8, "sim": [59.1, 81.7, 111.2, 33.7, 62.5, 120.4, 86.6, 13.4, 41.3, 35.7, 41.2, 8.8, 61.8, 46.0, 90.3], "imagined": [28.6, 75.8, 8.3, 26.8, 54.7, 40.3, 56.4, 20.6, 18.5, 41.2, 30.0, 18.5, 56.8, 46.0, 69.1], "unguided": [67.8, 172.1, 170.8, 38.5, 55.3, 182.5, 77.2, 24.8, 19.4, 99.7, 128.6, 100.6, 176.2, 55.2, 240.1], "target": [70.9, 70.8, 99.0, 71.3, 98.9, 123.1, 109.3, 98.2, 69.6, 77.6, 58.3, 59.1, 93.3, 101.7, 86.1], "gap": [43.5, 8.1, 112.5, 8.9, 17.7, 88.6, 61.8, 24.4, 55.7, 16.4, 37.2, 22.3, 6.0, 8.2, 22.0], "sec": 19.293333333333333, "sim_mean": 59.58, "img_mean": 39.440000000000005, "ung_mean": 107.25333333333333, "gap_mean": 35.55333333333333, "within50": 7, "neg": 3}, {"tag": "sw15_lr0.2_it6_tf0.5", "label": "S6 lr0.2 6it tf0.5", "S": 6, "it": 6, "lr": 0.2, "lr_final": null, "shell": true, "tf": 0.5, "sim": [62.5, 75.9, 128.8, 41.2, 22.4, 73.4, 47.6, 13.3, 40.9, 43.3, 18.6, 12.7, 46.3, 59.9, 62.7], "imagined": [59.6, 56.2, 100.4, 17.3, 27.4, 34.3, 34.5, 24.8, 19.4, 46.5, 5.1, 15.3, 38.3, 25.9, 59.2], "unguided": [67.8, 172.1, 170.8, 38.5, 55.3, 182.5, 67.5, 24.8, 19.4, 99.7, 80.4, 100.6, 176.2, 150.1, 151.4], "target": [70.9, 70.8, 99.0, 71.3, 98.9, 123.1, 109.3, 98.2, 69.6, 77.6, 58.3, 59.1, 93.3, 101.7, 86.1], "gap": [5.9, 46.4, 28.9, 29.6, 11.9, 43.1, 27.6, 27.6, 57.1, 16.6, 13.9, 27.5, 10.5, 35.2, 13.1], "sec": 20.833333333333336, "sim_mean": 49.96666666666667, "img_mean": 37.61333333333334, "ung_mean": 103.80666666666666, "gap_mean": 26.326666666666668, "within50": 9, "neg": 2}, {"tag": "sw15_lr0.2to0.02_it12", "label": "S6 lr0.2→0.02 12it", "S": 6, "it": 12, "lr": 0.2, "lr_final": 0.02, "shell": true, "tf": 0.8, "sim": [61.2, 65.2, 98.8, 35.2, 64.7, 113.0, 87.1, 11.2, 41.8, 17.8, 21.9, 25.7, 99.1, 44.5, 95.7], "imagined": [29.4, 35.4, 56.3, 21.2, 55.2, 35.6, 56.8, 21.0, 11.8, 18.6, 13.2, 40.9, 41.1, 42.5, 57.5], "unguided": [67.8, 172.1, 170.8, 38.5, 55.3, 182.5, 77.2, 24.8, 19.4, 99.7, 110.1, 100.6, 73.8, 55.2, 141.3], "target": [70.9, 70.8, 99.0, 71.3, 98.9, 123.1, 109.3, 98.2, 69.6, 77.6, 58.3, 59.1, 93.3, 101.7, 86.1], "gap": [38.0, 31.6, 42.9, 21.7, 24.2, 91.9, 56.7, 23.3, 53.1, 35.5, 8.8, 22.3, 92.1, 2.3, 63.3], "sec": 40.27333333333333, "sim_mean": 58.86, "img_mean": 35.766666666666666, "ung_mean": 92.60666666666665, "gap_mean": 40.51333333333333, "within50": 7, "neg": 2}, {"tag": "sw15_lr0.3_it6", "label": "S6 lr0.3 6it", "S": 6, "it": 6, "lr": 0.3, "lr_final": null, "shell": true, "tf": 0.8, "sim": [60.7, 72.1, 133.8, 33.9, 60.3, 44.2, 90.0, 15.9, 40.9, 22.9, 68.9, 48.9, 48.8, 54.3, 97.1], "imagined": [25.3, 57.7, 101.5, 28.2, 55.3, 50.2, 50.0, 19.9, 19.4, 30.1, 38.4, 54.6, 47.2, 40.8, 60.6], "unguided": [67.8, 172.1, 103.8, 38.5, 55.3, 182.5, 67.5, 24.8, 19.4, 81.1, 110.1, 89.5, 73.8, 55.2, 151.4], "target": [70.9, 70.8, 99.0, 71.3, 98.9, 123.1, 109.3, 98.2, 69.6, 77.6, 58.3, 59.1, 93.3, 101.7, 86.1], "gap": [46.1, 42.7, 35.7, 6.6, 21.6, 12.2, 56.9, 23.0, 57.1, 9.3, 31.0, 11.1, 93.6, 22.1, 36.9], "sec": 20.733333333333334, "sim_mean": 59.51333333333332, "img_mean": 45.28, "ung_mean": 86.18666666666668, "gap_mean": 33.726666666666674, "within50": 7, "neg": 4}, {"tag": "pushrand42_flat_fix", "label": "S6 lr0.1 6it (50-run)", "S": 6, "it": 6, "lr": 0.1, "lr_final": null, "shell": true, "tf": 0.8, "sim": [65.9, 89.9, 170.9, 31.1, 64.1, 61.2, 51.6, 13.3, 41.7, 43.7, 92.6, 28.4, 29.6, 65.7, 90.1], "imagined": [36.0, 88.2, 103.8, 20.1, 54.4, 58.4, 67.5, 24.8, 16.3, 50.1, 77.0, 49.9, 48.1, 48.5, 70.7], "unguided": [67.8, 90.0, 103.8, 38.5, 55.3, 182.5, 67.5, 24.8, 19.4, 109.2, 80.4, 89.5, 73.8, 55.2, 240.1], "target": [70.9, 70.8, 99.0, 71.3, 98.9, 123.1, 109.3, 98.2, 69.6, 77.6, 58.3, 59.1, 93.3, 101.7, 86.1], "gap": [33.0, 27.0, 70.6, 15.8, 26.9, 10.5, 48.8, 27.6, 55.3, 19.0, 23.0, 22.0, 18.7, 23.4, 19.9], "sec": 19.08, "sim_mean": 62.65333333333334, "img_mean": 54.25333333333334, "ung_mean": 86.52, "gap_mean": 29.43333333333333, "within50": 6, "neg": 4}, {"tag": "pushrand42_flat12_fix", "label": "S6 lr0.1 12it (50-run)", "S": 6, "it": 12, "lr": 0.1, "lr_final": null, "shell": true, "tf": 0.8, "sim": [55.1, 76.7, 170.9, 31.9, 62.6, 57.3, 73.4, 13.3, 41.8, 31.2, 15.7, 40.6, 56.5, 135.9, 91.9], "imagined": [26.4, 81.1, 103.8, 19.5, 54.3, 55.1, 67.2, 24.8, 4.2, 36.6, 14.8, 53.6, 58.7, 44.7, 62.0], "unguided": [67.8, 172.1, 103.8, 38.5, 55.3, 182.5, 123.3, 24.8, 19.4, 81.1, 110.1, 100.6, 176.2, 150.1, 240.1], "target": [70.9, 70.8, 99.0, 71.3, 98.9, 123.1, 109.3, 98.2, 69.6, 77.6, 58.3, 59.1, 93.3, 101.7, 86.1], "gap": [40.4, 5.3, 70.6, 16.8, 25.6, 9.0, 7.9, 27.6, 45.6, 13.2, 17.8, 27.9, 2.7, 103.5, 30.1], "sec": 38.846666666666664, "sim_mean": 63.653333333333336, "img_mean": 47.12000000000001, "ung_mean": 109.71333333333332, "gap_mean": 29.6, "within50": 6, "neg": 4}, {"tag": "pushrand42_decay_fix", "label": "S8 lr0.2→0.02 10it (50-run)", "S": 8, "it": 10, "lr": 0.2, "lr_final": 0.02, "shell": true, "tf": 0.8, "sim": [70.1, 53.0, 106.0, 85.8, 87.9, 46.5, 38.7, 33.8, 42.9, 22.5, 72.0, 38.1, 22.8, 25.1, 101.7], "imagined": [20.8, 47.5, 77.0, 39.8, 65.7, 57.9, 19.8, 34.2, 37.9, 29.1, 59.0, 7.7, 14.2, 30.1, 43.8], "unguided": [84.5, 110.6, 77.0, 83.0, 132.9, 57.9, 62.9, 48.1, 37.9, 68.2, 59.0, 7.9, 117.8, 147.6, 43.8], "target": [70.9, 70.8, 99.0, 71.3, 98.9, 123.1, 109.3, 98.2, 69.6, 77.6, 58.3, 59.1, 93.3, 101.7, 86.1], "gap": [60.3, 24.2, 30.1, 46.1, 34.6, 42.6, 57.0, 39.3, 8.8, 10.5, 35.1, 45.4, 30.3, 26.5, 57.9], "sec": 42.19333333333332, "sim_mean": 56.46, "img_mean": 38.96666666666666, "ung_mean": 75.94, "gap_mean": 36.580000000000005, "within50": 8, "neg": 4}, {"tag": "pushrand42_tf0.5_fix", "label": "S6 lr0.1 6it tf0.5 (50-run)", "S": 6, "it": 6, "lr": 0.1, "lr_final": null, "shell": true, "tf": 0.5, "sim": [49.1, 73.5, 71.7, 37.2, 50.5, 63.4, 21.9, 70.3, 50.8, 20.3, 60.9, 48.4, 65.4, 77.3, 46.6], "imagined": [38.3, 53.5, 71.6, 38.5, 22.2, 58.3, 22.0, 17.1, 9.9, 29.3, 39.4, 45.8, 28.1, 46.7, 24.8], "unguided": [67.8, 172.1, 103.8, 38.5, 55.3, 182.5, 67.5, 116.3, 19.4, 81.1, 110.1, 100.6, 73.8, 150.1, 141.3], "target": [70.9, 70.8, 99.0, 71.3, 98.9, 123.1, 109.3, 98.2, 69.6, 77.6, 58.3, 59.1, 93.3, 101.7, 86.1], "gap": [65.9, 31.9, 1.3, 19.0, 35.0, 10.7, 40.3, 74.6, 45.9, 9.4, 23.5, 7.0, 90.7, 32.3, 54.4], "sec": 20.113333333333333, "sim_mean": 53.82, "img_mean": 36.36666666666667, "ung_mean": 98.67999999999999, "gap_mean": 36.126666666666665, "within50": 6, "neg": 2}], "full50": [{"label": "S6 lr0.1 6it tf0.5", "pts": [[0, 73.3, 44.5, 40.3], [1, 67.0, 19.7, 22.4], [2, 123.1, 58.3, 63.4], [3, 58.3, 39.4, 60.9], [4, 61.8, 11.1, 37.0], [5, 99.0, 71.6, 71.7], [6, 70.9, 38.3, 49.1], [7, 66.4, 45.9, 52.3], [8, 64.8, 30.9, 40.4], [9, 68.2, 6.7, 81.1], [10, 97.5, 66.6, 112.0], [11, 99.1, 8.2, 77.2], [12, 70.6, 13.4, 64.1], [13, 114.1, 0.4, 33.0], [14, 70.3, 13.4, 33.8], [15, 92.3, 8.8, 28.1], [16, 102.6, 19.9, 14.3], [17, 98.9, 22.2, 50.5], [18, 98.2, 17.1, 70.3], [19, 80.3, 67.9, 90.1], [20, 82.2, 32.1, 50.9], [21, 117.3, 26.2, 50.3], [22, 66.0, 25.0, 45.4], [23, 122.4, 33.6, 88.2], [24, 69.6, 9.9, 50.8], [25, 110.2, 58.0, 71.2], [26, 109.3, 22.0, 21.9], [27, 70.8, 53.5, 73.5], [28, 69.2, 9.1, 33.8], [29, 109.3, 6.1, 49.0], [30, 83.7, 3.8, 45.6], [31, 55.5, 48.7, 60.8], [32, 71.3, 38.5, 37.2], [33, 101.7, 46.7, 77.3], [34, 93.3, 28.1, 65.4], [35, 88.4, 46.3, 47.4], [36, 67.9, 19.8, 43.1], [37, 64.4, 21.1, 30.7], [38, 82.4, 26.9, 44.2], [39, 66.8, 15.2, 104.2], [40, 94.7, 27.8, 28.8], [41, 85.0, 54.2, 49.7], [42, 77.6, 29.3, 20.3], [43, 59.1, 45.8, 48.4], [44, 61.0, 3.5, 3.4], [45, 76.5, 38.2, 25.4], [46, 70.0, 53.2, 71.2], [47, 90.1, 29.5, 74.0], [48, 105.7, 30.7, 32.5], [49, 86.1, 24.8, 46.6]], "sim_mean": 51.66400000000001, "img_mean": 30.238000000000003, "ung_mean": 88.75399999999999, "sec": 20.19}, {"label": "S6 lr0.1 6it", "pts": [[0, 73.3, 46.3, 38.3], [1, 67.0, 50.5, 55.5], [2, 123.1, 58.4, 61.2], [3, 58.3, 77.0, 92.6], [4, 61.8, 5.5, 11.6], [5, 99.0, 103.8, 170.9], [6, 70.9, 36.0, 65.9], [7, 66.4, 24.4, 28.2], [8, 64.8, 32.3, 71.8], [9, 68.2, 45.4, 24.2], [10, 97.5, 66.6, 112.0], [11, 99.1, 9.0, 75.0], [12, 70.6, 4.8, 36.6], [13, 114.1, 4.9, 51.9], [14, 70.3, 15.9, 48.8], [15, 92.3, 73.1, 86.1], [16, 102.6, 17.1, 23.5], [17, 98.9, 54.4, 64.1], [18, 98.2, 24.8, 13.3], [19, 80.3, 116.3, 119.4], [20, 82.2, 40.3, 61.3], [21, 117.3, 104.5, 86.1], [22, 66.0, 18.8, 28.9], [23, 122.4, 65.0, 80.3], [24, 69.6, 16.3, 41.7], [25, 110.2, 106.2, 102.2], [26, 109.3, 67.5, 51.6], [27, 70.8, 88.2, 89.9], [28, 69.2, 37.1, 36.7], [29, 109.3, 51.6, 54.6], [30, 83.7, 11.3, 42.3], [31, 55.5, 78.1, 65.6], [32, 71.3, 20.1, 31.1], [33, 101.7, 48.5, 65.7], [34, 93.3, 48.1, 29.6], [35, 88.4, 40.2, 29.4], [36, 67.9, 32.8, 31.4], [37, 64.4, 78.8, 80.2], [38, 82.4, 52.7, 57.5], [39, 66.8, 12.6, 30.9], [40, 94.7, 26.1, 32.6], [41, 85.0, 62.6, 57.9], [42, 77.6, 50.1, 43.7], [43, 59.1, 49.9, 28.4], [44, 61.0, 47.1, 36.1], [45, 76.5, 31.1, 24.8], [46, 70.0, 50.7, 115.8], [47, 90.1, 30.6, 74.5], [48, 105.7, 47.9, 53.6], [49, 86.1, 70.7, 90.1]], "sim_mean": 58.10799999999999, "img_mean": 47.04, "ung_mean": 80.802, "sec": 19.261999999999997}, {"label": "S6 lr0.1 12it", "pts": [[0, 73.3, 46.0, 38.3], [1, 67.0, 50.5, 55.5], [2, 123.1, 55.1, 57.3], [3, 58.3, 14.8, 15.7], [4, 61.8, 11.1, 37.0], [5, 99.0, 103.8, 170.9], [6, 70.9, 26.4, 55.1], [7, 66.4, 34.8, 21.6], [8, 64.8, 16.5, 24.9], [9, 68.2, 49.6, 55.6], [10, 97.5, 66.6, 112.0], [11, 99.1, 7.2, 74.3], [12, 70.6, 7.6, 37.8], [13, 114.1, 11.9, 55.7], [14, 70.3, 14.3, 43.7], [15, 92.3, 71.0, 91.2], [16, 102.6, 13.5, 8.2], [17, 98.9, 54.3, 62.6], [18, 98.2, 24.8, 13.3], [19, 80.3, 109.6, 113.6], [20, 82.2, 39.1, 60.0], [21, 117.3, 104.3, 86.1], [22, 66.0, 15.3, 25.3], [23, 122.4, 49.1, 82.3], [24, 69.6, 4.2, 41.8], [25, 110.2, 79.7, 81.5], [26, 109.3, 67.2, 73.4], [27, 70.8, 81.1, 76.7], [28, 69.2, 45.5, 48.7], [29, 109.3, 47.4, 52.0], [30, 83.7, 10.7, 42.8], [31, 55.5, 44.2, 31.7], [32, 71.3, 19.5, 31.9], [33, 101.7, 44.7, 135.9], [34, 93.3, 58.7, 56.5], [35, 88.4, 39.9, 29.3], [36, 67.9, 43.5, 43.8], [37, 64.4, 43.5, 84.6], [38, 82.4, 52.1, 61.8], [39, 66.8, 9.6, 40.8], [40, 94.7, 26.2, 36.9], [41, 85.0, 71.4, 67.7], [42, 77.6, 36.6, 31.2], [43, 59.1, 53.6, 40.6], [44, 61.0, 46.0, 35.7], [45, 76.5, 33.0, 25.4], [46, 70.0, 51.1, 94.8], [47, 90.1, 30.4, 74.2], [48, 105.7, 47.9, 53.6], [49, 86.1, 62.0, 91.9]], "sim_mean": 57.663999999999994, "img_mean": 42.938, "ung_mean": 89.588, "sec": 38.7}], "traces": [{"scenario": 0, "start": 150.0, "members": [[47.2, 49.2, 46.3, 48.0, 97.9, 88.5, 139.3], [59.2, 58.0, 67.9, 55.5, 61.1, 54.6, 58.8], [100.2, 154.0, 155.6, 156.8, 94.2, 89.4, 92.2]]}, {"scenario": 1, "start": 150.0, "members": [[148.7, 119.0, 118.0, 111.7, 107.9, 108.3, 110.7], [183.0, 154.9, 127.5, 81.9, 136.4, 145.7, 147.2], [50.5, 101.6, 82.4, 81.0, 72.0, 77.3, 63.7]]}, {"scenario": 3, "start": 150.0, "members": [[128.6, 109.5, 123.4, 106.2, 120.3, 107.1, 116.5], [110.1, 101.6, 98.2, 98.6, 92.0, 86.2, 77.7], [80.4, 77.0, 79.1, 81.7, 82.1, 83.3, 83.8]]}, {"scenario": 5, "start": 150.0, "members": [[103.8, 148.4, 123.3, 192.7, 123.6, 190.6, 152.8], [170.8, 158.6, 154.5, 157.9, 154.2, 152.5, 149.1], [126.6, 124.9, 122.6, 117.7, 117.0, 167.8, 117.5]]}, {"scenario": 9, "start": 150.0, "members": [[67.1, 52.2, 58.1, 69.8, 59.2, 70.0, 63.8], [70.0, 62.0, 62.6, 61.8, 59.2, 45.4, 69.2], [109.8, 101.0, 85.4, 109.1, 54.4, 105.8, 84.7]]}, {"scenario": 18, "start": 150.0, "members": [[24.8, 57.1, 60.2, 31.0, 51.1, 62.5, 42.1], [116.3, 73.8, 151.8, 153.8, 151.7, 152.8, 151.0], [41.1, 148.2, 148.1, 147.6, 147.4, 146.2, 146.0]]}, {"scenario": 27, "start": 150.0, "members": [[173.3, 160.2, 163.6, 144.9, 143.9, 113.5, 114.8], [90.0, 90.5, 88.6, 89.5, 88.3, 89.8, 88.2], [172.1, 165.9, 160.7, 154.4, 150.6, 152.5, 149.0]]}, {"scenario": 34, "start": 150.0, "members": [[73.8, 125.0, 73.0, 120.7, 122.9, 48.1, 121.8], [176.2, 137.1, 181.5, 138.5, 130.0, 180.3, 119.2], [119.3, 121.8, 123.0, 122.1, 124.2, 122.9, 126.2]]}], "best_it_hist": [7, 6, 7, 4, 3, 10, 13], "beat_unguided": 43, "yaw": {"pre": [31.78, 3.21, 19.45, 11.46, 0.53, 25.8, 6.22, 34.25, 43.69, 19.68, 4.92, 12.91, 35.3, 18.35, 29.87, 42.68, 31.08, 27.64, 22.01, 19.39, 8.22, 38.26, 28.95, 7.26, 41.21, 11.89, 24.55, 38.63, 34.94, 26.99], "post": [0.0, 0.01, 0.01, 0.0, 0.01, 0.0, 0.01, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.01, 0.01, 0.01, 0.01, 0.01, 0.0, 0.01, 0.0]}, "repeat": {"scenarios": [6, 27, 5, 32, 17, 2, 26, 18, 24, 42, 3, 43, 34, 33, 49], "a": [65.4, 73.2, 82.8, 41.5, 25.4, 45.9, 21.6, 13.3, 40.9, 20.2, 58.3, 72.0, 71.2, 60.5, 53.4], "b": [49.1, 73.5, 71.7, 37.2, 50.5, 63.4, 21.9, 70.3, 50.8, 20.3, 60.9, 48.4, 65.4, 77.3, 46.6], "gen": [[24.92, 97.27, 39.96], [25.62, 175.45, 56.14], [27.27, 174.57, 46.02]]}};;
+const NS='http://www.w3.org/2000/svg';
+const el=(t,a={},p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e};
+const tip=document.getElementById('tip');
+const showTip=(e,txt)=>{tip.textContent=txt;tip.style.opacity=1;tip.style.left=(e.clientX+12)+'px';tip.style.top=(e.clientY+12)+'px'};
+const hideTip=()=>tip.style.opacity=0;
+const f1=v=>v.toFixed(1);
+const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+
+// ---- arm dot plot
+(function(){
+ const arms=[...D.arms].sort((a,b)=>a.sim_mean-b.sim_mean);
+ const W=920,rowH=30,L=220,R=40,T=26,H=T+arms.length*rowH+30;
+ const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,width:W});
+ const x=v=>L+(v/100)*(W-L-R);
+ for(let v=0;v<=100;v+=20){el('line',{x1:x(v),x2:x(v),y1:T-6,y2:H-28,class:'grid'},svg);const t=el('text',{x:x(v),y:H-10,'text-anchor':'middle',class:'mono'},svg);t.textContent=v+(v===100?' mm':'')}
+ arms.forEach((a,i)=>{const y=T+i*rowH+rowH/2;
+  const lab=el('text',{x:L-10,y:y+4,'text-anchor':'end'},svg);lab.textContent=a.label;
+  const g=el('g',{},svg);
+  el('rect',{x:x(0),y:y-7,width:x(a.sim_mean)-x(0),height:14,rx:4,fill:'var(--s1)'},g);
+  el('line',{x1:x(a.ung_mean),x2:x(a.ung_mean),y1:y-11,y2:y+11,stroke:'var(--s3)',"stroke-width":3},g);
+  el('circle',{cx:x(a.img_mean),cy:y,r:5.5,fill:'var(--s2)',stroke:'var(--surface)',"stroke-width":2},g);
+  const v=el('text',{x:x(a.sim_mean)+7,y:y+4,class:'mono',fill:'var(--ink)'},g);v.textContent=f1(a.sim_mean);
+  const hit=el('rect',{x:0,y:y-rowH/2,width:W,height:rowH,fill:'transparent'},g);
+  hit.addEventListener('mousemove',e=>showTip(e,`${a.label}\nsim ${f1(a.sim_mean)}  imagined ${f1(a.img_mean)}  unguided ${f1(a.ung_mean)}\ngap ${f1(a.gap_mean)}  ≤50mm ${a.within50}/15  negative ${a.neg}/15\n${f1(a.sec)} s / scenario`));
+  hit.addEventListener('mouseleave',hideTip)});
+ document.getElementById('armplot').appendChild(svg);
+})();
+
+// ---- heatmap
+(function(){
+ const arms=[...D.arms].sort((a,b)=>a.sim_mean-b.sim_mean), S=D.scenarios;
+ const cw=64,ch=26,L=90,T=70,W=L+(arms.length+1)*cw+10,H=T+S.length*ch+10;
+ const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,width:W});
+ const mix=(t)=>{const a=hex(css('--ramp0')),b=hex(css('--ramp1'));return `rgb(${a.map((v,i)=>Math.round(v+(b[i]-v)*t)).join(',')})`};
+ function hex(h){h=h.replace('#','');return [0,2,4].map(i=>parseInt(h.substr(i,2),16))}
+ const cols=[{label:'start',get:(a,i)=>arms[0].target[i],ref:true},...arms.map(a=>({label:a.label,get:(x,i)=>a.sim[i]}))];
+ cols.forEach((c,j)=>{const t=el('text',{x:L+j*cw+cw/2,y:T-8,'text-anchor':'end',transform:`rotate(-40 ${L+j*cw+cw/2} ${T-8})`,'font-size':'11'},svg);t.textContent=c.label});
+ S.forEach((s,i)=>{const t=el('text',{x:L-8,y:T+i*ch+ch/2+4,'text-anchor':'end',class:'mono'},svg);t.textContent='sc '+String(s).padStart(2,'0');
+  cols.forEach((c,j)=>{const v=c.get(null,i);const tt=Math.min(1,Math.max(0,v/150));
+   const r=el('rect',{x:L+j*cw+1,y:T+i*ch+1,width:cw-2,height:ch-2,rx:3,fill:c.ref?'var(--grid)':mix(tt)},svg);
+   const txt=el('text',{x:L+j*cw+cw/2,y:T+i*ch+ch/2+4,'text-anchor':'middle',class:'mono','font-size':'11',fill:(!c.ref&&tt>0.55)?'var(--bg)':'var(--ink)'},svg);txt.textContent=Math.round(v);
+   r.addEventListener('mousemove',e=>showTip(e,`scenario ${s}  ${c.label}\n${f1(v)} mm`));r.addEventListener('mouseleave',hideTip)})});
+ document.getElementById('heat').appendChild(svg);
+})();
+
+// ---- traces
+(function(){
+ const box=document.getElementById('traces');
+ D.traces.forEach(tr=>{const card=document.createElement('div');card.className='card';
+  const lab=document.createElement('div');lab.className='lab';lab.textContent=`scenario ${tr.scenario} · start ${tr.start} mm`;card.appendChild(lab);
+  const W=220,H=130,L=30,R=8,T=8,B=20;const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,width:W});
+  const n=tr.members[0].length;const x=i=>L+i*(W-L-R)/(n-1);const y=v=>T+(1-Math.min(v,200)/200)*(H-T-B);
+  [0,100,200].forEach(v=>{el('line',{x1:L,x2:W-R,y1:y(v),y2:y(v),class:'grid'},svg);const t=el('text',{x:L-4,y:y(v)+4,'text-anchor':'end',class:'mono','font-size':'10'},svg);t.textContent=v});
+  el('line',{x1:L,x2:W-R,y1:y(tr.start),y2:y(tr.start),stroke:'var(--ref)','stroke-dasharray':'3 3'},svg);
+  const best=tr.members.map(m=>Math.min(...m));const pick=best.indexOf(Math.min(...best));
+  tr.members.forEach((m,k)=>{el('polyline',{points:m.map((v,i)=>`${x(i)},${y(v)}`).join(' '),fill:'none',stroke:'var(--s1)','stroke-width':k===pick?2.5:1.2,opacity:k===pick?1:.45,'stroke-linejoin':'round'},svg)});
+  for(let i=0;i<n;i++){const t=el('text',{x:x(i),y:H-6,'text-anchor':'middle',class:'mono','font-size':'10'},svg);t.textContent=i}
+  const hit=el('rect',{x:0,y:0,width:W,height:H,fill:'transparent'},svg);
+  hit.addEventListener('mousemove',e=>{const r=svg.getBoundingClientRect();const i=Math.max(0,Math.min(n-1,Math.round((e.clientX-r.left)/r.width*W-L)/((W-L-R)/(n-1))));showTip(e,`iteration ${i}\n`+tr.members.map((m,k)=>`m${k}${k===pick?'*':' '} ${f1(m[i])}`).join('\n'))});
+  hit.addEventListener('mouseleave',hideTip);card.appendChild(svg);box.appendChild(card)});
+ document.getElementById('st_beat').textContent=D.beat_unguided+' / 50';
+})();
+
+// ---- best-iteration histogram
+(function(){
+ const h=D.best_it_hist,W=920,H=120,L=40,R=20,T=10,B=28,bw=(W-L-R)/h.length;const mx=Math.max(...h);
+ const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,width:W});
+ h.forEach((v,i)=>{const bh=(v/mx)*(H-T-B);el('rect',{x:L+i*bw+bw*0.2,y:H-B-bh,width:bw*0.6,height:bh,rx:4,fill:'var(--s1)'},svg);
+  const t=el('text',{x:L+i*bw+bw/2,y:H-B-bh-5,'text-anchor':'middle',class:'mono'},svg);t.textContent=v;
+  const l=el('text',{x:L+i*bw+bw/2,y:H-8,'text-anchor':'middle',class:'mono'},svg);l.textContent=i===0?'0 (unguided)':i});
+ el('line',{x1:L,x2:W-R,y1:H-B,y2:H-B,class:'axis'},svg);
+ document.getElementById('besthist').appendChild(svg);
+})();
+
+// ---- scatter
+(function(){
+ const W=920,H=460,L=60,R=20,T=16,B=44,M=200;const cols=['var(--s1)','var(--s2)','var(--s3)'];
+ const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,width:W});
+ const x=v=>L+(v/M)*(W-L-R),y=v=>T+(1-v/M)*(H-T-B);
+ for(let v=0;v<=M;v+=50){el('line',{x1:x(v),x2:x(v),y1:T,y2:H-B,class:'grid'},svg);el('line',{x1:L,x2:W-R,y1:y(v),y2:y(v),class:'grid'},svg);
+  let t=el('text',{x:x(v),y:H-B+18,'text-anchor':'middle',class:'mono'},svg);t.textContent=v;t=el('text',{x:L-8,y:y(v)+4,'text-anchor':'end',class:'mono'},svg);t.textContent=v}
+ el('line',{x1:x(0),y1:y(0),x2:x(M),y2:y(M),stroke:'var(--ref)','stroke-dasharray':'4 4'},svg);
+ let t=el('text',{x:(L+W-R)/2,y:H-6,'text-anchor':'middle'},svg);t.textContent='imagined distance to target, mm';
+ t=el('text',{x:14,y:(T+H-B)/2,'text-anchor':'middle',transform:`rotate(-90 14 ${(T+H-B)/2})`},svg);t.textContent='simulated distance, mm';
+ D.full50.forEach((a,k)=>{a.pts.forEach(p=>{const c=el('circle',{cx:x(Math.min(p[2],M)),cy:y(Math.min(p[3],M)),r:5,fill:cols[k],stroke:'var(--surface)','stroke-width':2,opacity:.9},svg);
+  const hit=el('circle',{cx:x(Math.min(p[2],M)),cy:y(Math.min(p[3],M)),r:11,fill:'transparent'},svg);
+  hit.addEventListener('mousemove',e=>showTip(e,`${a.label}  scenario ${p[0]}\nstart ${f1(p[1])}  imagined ${f1(p[2])}  sim ${f1(p[3])}`));hit.addEventListener('mouseleave',hideTip)})});
+ document.getElementById('scatter').appendChild(svg);
+ const leg=document.getElementById('scatterleg');D.full50.forEach((a,k)=>{const s=document.createElement('span');s.innerHTML=`<i class="dot" style="background:${cols[k]}"></i>${a.label} · sim ${f1(a.sim_mean)} · imagined ${f1(a.img_mean)} · ${f1(a.sec)} s`;leg.appendChild(s)});
+})();
+
+// ---- yaw strip
+(function(){
+ const W=920,H=110,L=60,R=20,rows=[['before',D.yaw.pre,'var(--s2)',30],['after',D.yaw.post,'var(--s1)',70]];
+ const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,width:W});const x=v=>L+(v/45)*(W-L-R);
+ for(let v=0;v<=45;v+=15){el('line',{x1:x(v),x2:x(v),y1:12,y2:88,class:'grid'},svg);const t=el('text',{x:x(v),y:104,'text-anchor':'middle',class:'mono'},svg);t.textContent=v+'°'}
+ rows.forEach(([lab,vals,col,y])=>{const t=el('text',{x:L-10,y:y+4,'text-anchor':'end'},svg);t.textContent=lab;
+  const med=[...vals].sort((a,b)=>a-b)[Math.floor(vals.length/2)];
+  vals.forEach((v,i)=>{const c=el('circle',{cx:x(v),cy:y+((i%3)-1)*5,r:4.5,fill:col,stroke:'var(--surface)','stroke-width':1.5,opacity:.85},svg);
+   c.addEventListener('mousemove',e=>showTip(e,`scenario ${i}  ${lab}\n${f1(v)}°`));c.addEventListener('mouseleave',hideTip)});
+  el('line',{x1:x(med),x2:x(med),y1:y-14,y2:y+14,stroke:col,'stroke-width':2},svg);
+  const m=el('text',{x:x(med)+6,y:y-8,class:'mono','font-size':'11'},svg);m.textContent='median '+f1(med)+'°'});
+ document.getElementById('yaw').appendChild(svg);
+})();
+
+// ---- table
+(function(){
+ const arms=[...D.arms].sort((a,b)=>a.sim_mean-b.sim_mean);const T=document.getElementById('tbl');
+ T.innerHTML='<tr><th>arm</th><th>S</th><th>it</th><th>lr</th><th>shell</th><th>sim mean</th><th>imagined</th><th>unguided</th><th>gap</th><th>≤50 mm</th><th>negative</th><th>s/scn</th></tr>'+
+  arms.map(a=>`<tr><td>${a.label}</td><td>${a.S}</td><td>${a.it}</td><td>${a.lr}${a.lr_final==null?'':'→'+a.lr_final}</td><td>${a.shell?'on':'off'}</td><td><b>${f1(a.sim_mean)}</b></td><td>${f1(a.img_mean)}</td><td>${f1(a.ung_mean)}</td><td>${f1(a.gap_mean)}</td><td>${a.within50}/15</td><td>${a.neg}/15</td><td>${f1(a.sec)}</td></tr>`).join('');
+})();
+
+// ---- repeatability
+(function(){
+ const S=D.repeat.scenarios,A=D.repeat.a,B=D.repeat.b,W=600,H=330,L=44,R=12,T=12,Bm=36,M=180;
+ const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,width:W});const x=v=>L+(v/M)*(W-L-R),y=v=>T+(1-v/M)*(H-T-Bm);
+ for(let v=0;v<=M;v+=60){el('line',{x1:x(v),x2:x(v),y1:T,y2:H-Bm,class:'grid'},svg);el('line',{x1:L,x2:W-R,y1:y(v),y2:y(v),class:'grid'},svg);
+  let t=el('text',{x:x(v),y:H-Bm+16,'text-anchor':'middle',class:'mono'},svg);t.textContent=v;t=el('text',{x:L-6,y:y(v)+4,'text-anchor':'end',class:'mono'},svg);t.textContent=v}
+ el('line',{x1:x(0),y1:y(0),x2:x(M),y2:y(M),stroke:'var(--ref)','stroke-dasharray':'4 4'},svg);
+ let t=el('text',{x:(L+W-R)/2,y:H-4,'text-anchor':'middle'},svg);t.textContent='run 1, sim mm';t=el('text',{x:12,y:(T+H-Bm)/2,'text-anchor':'middle',transform:`rotate(-90 12 ${(T+H-Bm)/2})`},svg);t.textContent='run 2, sim mm';
+ S.forEach((s,i)=>{el('circle',{cx:x(Math.min(A[i],M)),cy:y(Math.min(B[i],M)),r:5.5,fill:'var(--s1)',stroke:'var(--surface)','stroke-width':2},svg);
+  const hit=el('circle',{cx:x(Math.min(A[i],M)),cy:y(Math.min(B[i],M)),r:11,fill:'transparent'},svg);hit.addEventListener('mousemove',e=>showTip(e,`scenario ${s}\nrun 1 ${f1(A[i])}  run 2 ${f1(B[i])}`));hit.addEventListener('mouseleave',hideTip)});
+ document.getElementById('repeat').appendChild(svg);
+ const G=D.repeat.gen,W2=300,H2=330,L2=40,rowH=90;const svg2=el('svg',{viewBox:`0 0 ${W2} ${H2}`,width:W2});const x2=v=>L2+(v/200)*(W2-L2-12);
+ for(let v=0;v<=200;v+=100){el('line',{x1:x2(v),x2:x2(v),y1:10,y2:H2-30,class:'grid'},svg2);const t=el('text',{x:x2(v),y:H2-12,'text-anchor':'middle',class:'mono'},svg2);t.textContent=v}
+ [0,1,2].forEach(m=>{const yy=30+m*rowH;const t=el('text',{x:L2-6,y:yy+4,'text-anchor':'end'},svg2);t.textContent='m'+m;
+  G.forEach((run,k)=>{el('circle',{cx:x2(run[m]),cy:yy+(k-1)*14,r:5,fill:['var(--s1)','var(--s2)','var(--s3)'][k],stroke:'var(--surface)','stroke-width':2},svg2);
+   const v=el('text',{x:x2(run[m])+9,y:yy+(k-1)*14+4,class:'mono','font-size':'11'},svg2);v.textContent=f1(run[m])})});
+ document.getElementById('repeatgen').appendChild(svg2);
+})();
+</script>

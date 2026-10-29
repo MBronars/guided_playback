@@ -1,0 +1,108 @@
+<title>Paper Render Pass</title>
+<style>
+  :root { --bg:#f6f4ef; --ink:#1f1d1a; --muted:#6b655c; --line:#d9d3c8; --accent:#b34a2e; --card:#fffdf9; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#1c1a17; --ink:#ece7de; --muted:#a39c90; --line:#3a352e; --accent:#e07a5a; --card:#242119; color-scheme: dark; } }
+  :root[data-theme="dark"] { --bg:#1c1a17; --ink:#ece7de; --muted:#a39c90; --line:#3a352e; --accent:#e07a5a; --card:#242119; color-scheme: dark; }
+  body { background:var(--bg); color:var(--ink); font-family: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif; padding-block: 28px; padding-inline: 20px; max-width: 1180px; margin: 0 auto; line-height:1.45; }
+  h1 { font-size: 1.5rem; margin: 0 0 4px; letter-spacing: -0.01em; text-wrap: balance; }
+  .sub { color: var(--muted); margin: 0 0 22px; max-width: 75ch; }
+  h2 { font-size: 1.05rem; margin: 30px 0 8px; }
+  h3 { font-size: .95rem; margin: 18px 0 6px; }
+  .case { border-top: 1px solid var(--line); padding-top: 14px; }
+  .meta { display:flex; flex-wrap:wrap; gap: 8px 22px; color: var(--muted); font-size: .92rem; margin: 0 0 12px; font-variant-numeric: tabular-nums; }
+  .meta b { color: var(--ink); font-weight: 600; }
+  table { border-collapse: collapse; font-size: .9rem; font-variant-numeric: tabular-nums; margin: 0 0 14px; }
+  th, td { text-align: left; padding: 4px 14px 4px 0; border-bottom: 1px solid var(--line); }
+  th { color: var(--muted); font-weight: 600; }
+  figure { margin:0 0 14px; background: var(--card); border:1px solid var(--line); padding: 8px; }
+  figcaption { color: var(--muted); font-size: .85rem; margin-top: 6px; }
+  img, video { width:100%; max-width:100%; display:block; height:auto; }
+  code { font-family: "IBM Plex Mono", Menlo, monospace; font-size: .85em; }
+  .paths { font-size: .82rem; color: var(--muted); word-break: break-all; }
+</style>
+<h1>Paper Render Pass</h1>
+<p class="sub">Re-rendering the paper's planning examples on the table scene of the <code>guided_playback</code> renderer (pyrender, 640x480, no arm). Each strip: left = the world model's generated rollout, right = the simulator replay of the committed plan. Same camera for every method on an episode. Green ball = target. Magenta = simulated cube-centroid trace, frame 0 to the last frame.</p>
+
+
+<section class="case">
+  <h2>Block pushing, guided ours, newer checkpoint (push0418 cont200k_stream), population 13, hard set seed 42</h2>
+  <p class="sub">The run behind the corrected number: 3.90 ± 2.32 cm final distance, 53.8% of the distance closed, 44.7 s per plan on an L40S. Six of its 50 episodes: the two best, two near the median and the two worst by simulated distance. Each shows the member the planner picked by its imagined objective, replayed in SAPIEN with the cube spawned at the scenario's orientation.</p>
+  <h3>Episode 11 (best): start 72.4 mm, imagined 37.3 mm, SAPIEN 3.2 mm</h3>
+  <figure><img src="pop13_ep11_keyframes.png" alt="Episode 11 SAPIEN replay, frame 0 and frame 60"><figcaption>SAPIEN replay keyframes: frame 0 | frame 60 with the cube-centroid trace and the target ring.</figcaption></figure>
+  <figure><video src="pop13_ep11.mp4" controls muted loop playsinline preload="metadata"></video><figcaption>Generated plan (left) and SAPIEN replay (right) of the planner's picked member.</figcaption></figure>
+  <h3>Episode 33 (best): start 86.7 mm, imagined 1.6 mm, SAPIEN 6.6 mm</h3>
+  <figure><img src="pop13_ep33_keyframes.png" alt="Episode 33 SAPIEN replay, frame 0 and frame 60"><figcaption>SAPIEN replay keyframes: frame 0 | frame 60 with the cube-centroid trace and the target ring.</figcaption></figure>
+  <figure><video src="pop13_ep33.mp4" controls muted loop playsinline preload="metadata"></video><figcaption>Generated plan (left) and SAPIEN replay (right) of the planner's picked member.</figcaption></figure>
+  <h3>Episode 29 (median): start 55.3 mm, imagined 10.9 mm, SAPIEN 33.1 mm</h3>
+  <figure><img src="pop13_ep29_keyframes.png" alt="Episode 29 SAPIEN replay, frame 0 and frame 60"><figcaption>SAPIEN replay keyframes: frame 0 | frame 60 with the cube-centroid trace and the target ring.</figcaption></figure>
+  <figure><video src="pop13_ep29.mp4" controls muted loop playsinline preload="metadata"></video><figcaption>Generated plan (left) and SAPIEN replay (right) of the planner's picked member.</figcaption></figure>
+  <h3>Episode 9 (median): start 103.6 mm, imagined 11.2 mm, SAPIEN 33.5 mm</h3>
+  <figure><img src="pop13_ep9_keyframes.png" alt="Episode 9 SAPIEN replay, frame 0 and frame 60"><figcaption>SAPIEN replay keyframes: frame 0 | frame 60 with the cube-centroid trace and the target ring.</figcaption></figure>
+  <figure><video src="pop13_ep9.mp4" controls muted loop playsinline preload="metadata"></video><figcaption>Generated plan (left) and SAPIEN replay (right) of the planner's picked member.</figcaption></figure>
+  <h3>Episode 22 (worst): start 125.7 mm, imagined 62.6 mm, SAPIEN 96.0 mm</h3>
+  <figure><img src="pop13_ep22_keyframes.png" alt="Episode 22 SAPIEN replay, frame 0 and frame 60"><figcaption>SAPIEN replay keyframes: frame 0 | frame 60 with the cube-centroid trace and the target ring.</figcaption></figure>
+  <figure><video src="pop13_ep22.mp4" controls muted loop playsinline preload="metadata"></video><figcaption>Generated plan (left) and SAPIEN replay (right) of the planner's picked member.</figcaption></figure>
+  <h3>Episode 44 (worst): start 75.6 mm, imagined 32.9 mm, SAPIEN 92.2 mm</h3>
+  <figure><img src="pop13_ep44_keyframes.png" alt="Episode 44 SAPIEN replay, frame 0 and frame 60"><figcaption>SAPIEN replay keyframes: frame 0 | frame 60 with the cube-centroid trace and the target ring.</figcaption></figure>
+  <figure><video src="pop13_ep44.mp4" controls muted loop playsinline preload="metadata"></video><figcaption>Generated plan (left) and SAPIEN replay (right) of the planner's picked member.</figcaption></figure>
+  <p class="paths">runs: /data/user_data/mbronars/packages/guided_playback/runs/pushing/pushhard42_lr0.2_tf0.5_fixedfps_pop13_l40s_epNNN (render_sapien_yawfix/, render_sapien_yawfix_keyframes/, replay_sapien_yawfix/)<br>summary: /data/user_data/mbronars/packages/guided_playback/runs/_paper_eval/pushhard42_lr0.2_tf0.5_fixedfps_pop13_l40s_yawfix_summary.json</p>
+</section>
+
+<section class="case">
+  <h2>Placing, same run, Isaac with the object's convex decomposition (51 CoACD pieces, recorded density 359 kg/m3, friction 1.0)</h2>
+  <p class="sub">Same plans as below; only the simulator's object collision shape changed, from one convex hull of the particles to the asset's own convex decomposition posed at frame 0 (bowl asset_0037, pose fitted to the frame-0 particles at 1.28 mm rms). This path is taken only by runs with task = place; the pick benchmark replay is unchanged.</p>
+  <table>
+    <tr><th>member</th><th>guided, generated</th><th>guided, Isaac (decomposition)</th><th>guided, Isaac (single hull, below)</th><th>unguided, generated</th><th>unguided, Isaac (decomposition)</th></tr>
+    <tr><td>m0</td><td>6.7 mm</td><td>15.8 mm</td><td>92.1 mm</td><td>134.0 mm</td><td>147.7 mm</td></tr>
+    <tr><td>m1 (planner's pick)</td><td>5.3 mm</td><td>29.3 mm</td><td>92.0 mm</td><td>76.1 mm</td><td>50.4 mm</td></tr>
+    <tr><td>m2</td><td>7.7 mm</td><td>22.3 mm</td><td>92.4 mm</td><td>81.8 mm</td><td>103.9 mm</td></tr>
+    <tr><td>m3</td><td>10.5 mm</td><td>15.6 mm</td><td>90.3 mm</td><td>74.2 mm</td><td>101.7 mm</td></tr>
+  </table>
+  <p class="meta"><span>object moved in Isaac, guided members <b>156 to 185 mm</b> (generated 155 to 170)</span><span>sim vs generated final object position <b>13 to 32 mm</b></span><span>Isaac peak lift 0 to 1.6 mm (object stays in the hand until set down)</span></p>
+  <figure><img src="place1coacd_m1_keyframes.png" alt="Place with decomposition, member 1, Isaac frame 0 and frame 60"><figcaption>Member 1, Isaac replay keyframes: frame 0 | frame 60 with the object-centroid trace and the target ring.</figcaption></figure>
+  <figure><video src="place1coacd_m1_guided.mp4" controls muted loop playsinline preload="metadata"></video><figcaption>Member 1, guided: generated (left) and Isaac replay (right).</figcaption></figure>
+  <figure><video src="place1coacd_m1_unguided.mp4" controls muted loop playsinline preload="metadata"></video><figcaption>Member 1, unguided draw: generated (left) and Isaac replay (right).</figcaption></figure>
+  <p class="paths">replay: /data/user_data/mbronars/packages/guided_playback/runs/pickup/place1_val00_t0/replay_isaac (decomposition), replay_isaac_convexhull (the earlier single-hull replay), render_isaac/, render_isaac_keyframes/<br>asset index: /data/user_data/mbronars/packages/guided_playback/sweeps/place_val_index.json (bin/build_place_index.py); hulls: gp/replay/place_assets.py; branch: gp/replay/isaac_float.py (task == place only)</p>
+</section>
+
+<section class="case">
+  <h2>Placing, single convex hull (first attempt): held object set down at a random table location, place-success val episode 0, target t0</h2>
+  <p class="sub">Replicates the pick benchmark protocol with a held start: the episode's frame 0 has the object in the closed gripper 107 mm above the table. Target = object centroid + (dx, dy) with the pick-benchmark offset t0 (-15, +119 mm), z chosen so the object's lowest point sits on the table (table z = 0.0115 m, the median resting height in this split). Planner defaults from the pick benchmark: population 4, Adam lr 0.1, 10 iterations, 60 transitions, S = 10, shell on, seed 0. Isaac replay with the table at 0.0115 m.</p>
+  <table>
+    <tr><th>member</th><th>unguided, generated</th><th>guided, generated (best)</th><th>guided, Isaac</th><th>object moved in Isaac</th><th>Isaac object z at frame 0</th></tr>
+    <tr><td>m0</td><td>134.0 mm</td><td>6.7 mm</td><td>92.1 mm</td><td>20.5 mm</td><td>48 mm (on the table)</td></tr>
+    <tr><td>m1</td><td>76.1 mm</td><td>5.3 mm</td><td>92.0 mm</td><td>20.6 mm</td><td>48 mm (on the table)</td></tr>
+    <tr><td>m2</td><td>81.8 mm</td><td>7.7 mm</td><td>92.4 mm</td><td>20.3 mm</td><td>48 mm (on the table)</td></tr>
+    <tr><td>m3</td><td>74.2 mm</td><td>10.5 mm</td><td>90.3 mm</td><td>21.2 mm</td><td>48 mm (on the table)</td></tr>
+  </table>
+  <p class="meta"><span>warm iteration <b>11.5 to 13.1 s</b> (first iteration 662 s = compile)</span><span>fitted finger opening at frame 0 <b>10 mm total</b></span><span>object footprint <b>108 x 128 mm</b></span><span>object is one convex hull in Isaac</span><span>generated object z: 162 mm at frame 0, 46 mm at frame 60</span></p>
+  <p class="sub">In Isaac the object is already resting on the table at frame 0 (centroid z 48 mm, lowest point 12 mm) and stays within 21 mm of where it landed; the hand follows the plan to within 3 mm.</p>
+  <figure><img src="place1_m1_keyframes.png" alt="Place, member 1, Isaac frame 0 and frame 60"><figcaption>Member 1, Isaac replay keyframes: frame 0 | frame 60 with the object-centroid trace and the target ring.</figcaption></figure>
+  <figure><video src="place1_m1_guided.mp4" controls muted loop playsinline preload="metadata"></video><figcaption>Member 1, guided: generated (left) and Isaac replay (right).</figcaption></figure>
+  <figure><video src="place1_m1_unguided.mp4" controls muted loop playsinline preload="metadata"></video><figcaption>Member 1, unguided draw: generated (left) and Isaac replay (right).</figcaption></figure>
+  <p class="paths">run: /data/user_data/mbronars/packages/guided_playback/runs/pickup/place1_val00_t0 (rollout.npz, result.json, replay_isaac/, render_isaac/ m0-m3 guided+unguided, render_isaac_keyframes/)<br>episode list: /data/user_data/mbronars/packages/guided_playback/sweeps/place_val_candidates.json (24 place-success val episodes with frame-0 and last-frame facts)<br>code: gp/session.py task "place" + table_z; gp/adapters/clean_pickup.py GP_PICKUP_ROOTS; pickup_replay_isaac/scripts/replay_isaac.py --table_z; gp/render/frames.py table height for place runs<br>log: logs/place1_val00_t0.log, logs/place1_val00_t0_replay.log</p>
+</section>
+
+<section class="case">
+  <h2>Block pushing, hard set seed 42, episode 11: Ours vs GNS vs PointWorld</h2>
+  <table>
+    <tr><th>method</th><th>generated cube to target</th><th>SAPIEN replay cube to target</th><th>left panel</th></tr>
+    <tr><td>Ours (guided diffusion, pop3 gw2 run)</td><td>15.7 mm</td><td>9.6 mm</td><td>generated particle cloud</td></tr>
+    <tr><td>GNS (best of 256 rollouts)</td><td>59.5 mm</td><td>49.9 mm</td><td>generated particle cloud</td></tr>
+    <tr><td>PointWorld (MPPI in WM, K=128)</td><td>72.2 mm</td><td>72.4 mm</td><td>template cube and rod posed by the imagined centroid tracks (PointWorld saved no imagined cloud)</td></tr>
+  </table>
+
+  <h3>Ours</h3>
+  <figure><img src="push_ours_ep11_keyframes.png" alt="Ours, simulated replay frame 0 and frame 60"><figcaption>Simulated replay keyframes: frame 0 | frame 60 with the centroid trace.</figcaption></figure>
+  <figure><video src="push_ours_ep11.mp4" controls muted loop playsinline preload="metadata"></video><figcaption>Generated (left) and SAPIEN replay (right), 61 frames at 10 fps.</figcaption></figure>
+
+  <h3>GNS</h3>
+  <figure><img src="push_gns_ep11_keyframes.png" alt="GNS, simulated replay frame 0 and frame 60"><figcaption>Simulated replay keyframes.</figcaption></figure>
+  <figure><video src="push_gns_ep11.mp4" controls muted loop playsinline preload="metadata"></video><figcaption>Generated (left) and SAPIEN replay (right).</figcaption></figure>
+
+  <h3>PointWorld</h3>
+  <figure><img src="push_pointworld_ep11_keyframes.png" alt="PointWorld, simulated replay frame 0 and frame 60"><figcaption>Simulated replay keyframes.</figcaption></figure>
+  <figure><video src="push_pointworld_ep11.mp4" controls muted loop playsinline preload="metadata"></video><figcaption>Template-posed imagined track (left) and SAPIEN replay (right).</figcaption></figure>
+
+  <p class="paths">run folders: /data/user_data/mbronars/packages/guided_playback/runs/pushing/paper_may_{ours,gns,pointworld}_hard42_ep11 (render_sapien/ gif + png, render_sapien_keyframes/)<br>source episodes: /data/user_data/mbronars/packages/pwm_final_paper/results/block_pushing/{ours_paper_video_source_pop3_gw2_lookaheads/runs/seed42_ep11, gns/runs/ep011, pointworld/runs/ep_011}<br>adapter: /data/user_data/mbronars/packages/guided_playback/bin/paper_case_to_run.py; renderer option <code>--camera_from</code> added to bin/render.py</p>
+</section>

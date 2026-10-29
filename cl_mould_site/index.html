@@ -1,0 +1,114 @@
+<title>Closed vs Open Loop Pile Manipulation</title>
+<style>
+  :root { --bg:#f5f4f0; --panel:#fffefb; --ink:#1d1f22; --ink2:#4a4d52; --muted:#767a80; --rule:#dcd9d1; --accent:#2f6f8f;
+          --open:#c0572b; --openp:#e9a57f; --closed:#1f7a5a; --closedp:#7cc4a4; --pad:#3b5fa8; --goal:#b3261e; --grid:#e8e5dd; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#16181a; --panel:#1d2023; --ink:#e7e5df; --ink2:#b9b7b1; --muted:#8c8a85; --rule:#33363a; --accent:#7fb3cf; --grid:#2a2d30; color-scheme: dark; } }
+  :root[data-theme="dark"] { --bg:#16181a; --panel:#1d2023; --ink:#e7e5df; --ink2:#b9b7b1; --muted:#8c8a85; --rule:#33363a; --accent:#7fb3cf; --grid:#2a2d30; color-scheme: dark; }
+  body { background:var(--bg); color:var(--ink); font-family:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif; padding-block:24px; padding-inline:18px; max-width:1180px; margin:0 auto; line-height:1.45; }
+  h1 { font-size:1.45rem; margin:0 0 4px; text-wrap:balance; } .sub { color:var(--ink2); margin:0 0 16px; max-width:82ch; font-size:.93rem; }
+  code { font-family:"IBM Plex Mono",Menlo,monospace; font-size:.85em; }
+  .scroller { overflow-x:auto; } table { border-collapse:collapse; font-size:.88rem; font-variant-numeric:tabular-nums; margin:0 0 18px; min-width:640px; }
+  th, td { text-align:right; padding:5px 12px 5px 0; border-bottom:1px solid var(--rule); } th:first-child, td:first-child { text-align:left; } th { color:var(--muted); font-weight:600; }
+  td.better { color:var(--closed); font-weight:600; }
+  .tabs { display:flex; flex-wrap:wrap; gap:6px; margin:0 0 10px; } .tabs button { font:inherit; font-size:.88rem; padding:5px 11px; border:1px solid var(--rule); background:var(--panel); color:var(--ink); border-radius:5px; cursor:pointer; }
+  .tabs button[aria-selected="true"] { border-color:var(--accent); color:var(--accent); font-weight:600; } button:focus-visible, input:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+  .viewer { background:var(--panel); border:1px solid var(--rule); border-radius:6px; }
+  #stage { position:relative; width:100%; aspect-ratio:16/9; max-height:68vh; } #stage canvas { display:block; width:100%; height:100%; border-radius:6px 6px 0 0; }
+  .hud { position:absolute; left:10px; top:8px; font-family:"IBM Plex Mono",Menlo,monospace; font-size:12px; color:var(--ink2); background:color-mix(in srgb, var(--panel) 82%, transparent); padding:4px 7px; border-radius:4px; pointer-events:none; max-width:calc(100% - 20px); }
+  .ctrl { display:flex; flex-wrap:wrap; gap:8px 16px; align-items:center; padding:10px 12px; border-top:1px solid var(--rule); font-size:.86rem; color:var(--ink2); }
+  .ctrl label { display:flex; gap:5px; align-items:center; } .play { font:inherit; padding:3px 12px; border:1px solid var(--rule); background:var(--bg); color:var(--ink); border-radius:4px; cursor:pointer; }
+  .seek { flex:1 1 220px; min-width:0; } .sw { display:inline-block; width:11px; height:11px; border-radius:2px; vertical-align:-1px; }
+  .meta { padding:0 12px 12px; font-size:.86rem; color:var(--ink2); font-variant-numeric:tabular-nums; }
+  .note { font-size:.82rem; color:var(--muted); margin-top:14px; word-break:break-word; }
+</style>
+<h1>Closed vs Open Loop Pile Manipulation</h1>
+<p class="sub">Cloud-centroid scenarios 0 to 4 of the paper's seed-42 set: move the dough centroid to a target 7.5 to 15 cm away in 150 frames. Same checkpoint (<code>pwm_v1_mould_ctxgen_100m_uncond_unet_bidir/step_60000.pt</code>), same sampler (stream staircase, 19-row windows on every model call, tail padded, full churn on pose and particle rows), same guidance (3 members, S 6, unitgrad lr 0.1, 6 iterations, shell, t_freeze 0.8, fixed FPS, seed 0). <b>Open loop</b>: one 150-frame plan, all executed. <b>Closed loop</b>: plan, execute 25 frames in Genesis (re-simulated from the start), feed back the last 3 executed transitions as clean context rows, replan the remaining frames (at least 16), reward always on task frame 150. The closed loop's first plan equals the open-loop plan. Distances are dough centroid to target in the plane after Genesis MPM replay.</p>
+<div class="scroller"><table id="summary" aria-label="dough centroid to target per scenario"></table></div>
+<div class="tabs" role="tablist" aria-label="scenarios" id="tabs"></div>
+<div class="viewer">
+  <div id="stage"><div class="hud" id="hud"></div></div>
+  <div class="ctrl">
+    <button class="play" id="play" type="button" aria-label="Play or pause">&#9654;</button>
+    <input class="seek" id="seek" type="range" min="0" max="75" value="0" step="1" aria-label="Frame">
+    <label><input type="checkbox" id="l-open" checked> <span class="sw" style="background:var(--open)"></span> open loop, executed</label>
+    <label><input type="checkbox" id="l-closed" checked> <span class="sw" style="background:var(--closed)"></span> closed loop, executed</label>
+    <label><input type="checkbox" id="l-oplan"> <span class="sw" style="background:var(--openp)"></span> open-loop plan (model)</label>
+    <label><input type="checkbox" id="l-cplan"> <span class="sw" style="background:var(--closedp)"></span> closed-loop active plan (model)</label>
+    <label><span class="sw" style="background:var(--pad)"></span> paddle (darker shade of each layer)</label>
+    <button class="play" id="reset" type="button">reset view</button>
+  </div>
+  <div class="meta" id="meta"></div>
+</div>
+<p class="note">Drag to orbit, scroll to zoom, right-drag to pan. Every 2nd frame, every 2nd dough particle (512 of 1024) and every 2nd paddle point are drawn. Red sphere = target (dough centroid, in-plane). Runs: /data/user_data/mbronars/packages/guided_playback/runs/mould/olmould_s42_ep00* and clmould_s42_ep00*_k25 (per-replan plans in *_r0 .. *_r5, Genesis executions in exec_r*). Driver: bin/closed_loop_mould.py; sampler: gp/adapters/paper_prefix.py; page data: bin/build_mould_cl_data.py.</p>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script src="data/index.js"></script>
+<script>
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const IDX = window.INDEX || [];
+function fmt(v) { return v == null ? '' : Number(v).toFixed(1); }
+(function table() {
+  let h = '<thead><tr><th scope="col">scenario</th><th scope="col">start to target</th><th scope="col">open, planned</th><th scope="col">open, executed</th><th scope="col">closed, executed</th><th scope="col">closed by open / closed</th><th scope="col">guidance s open / closed</th><th scope="col">Genesis s open / closed</th></tr></thead><tbody>';
+  const P = v => v == null ? '<span style="color:var(--muted)">pending</span>' : fmt(v) + ' mm', S = v => v == null ? 'pending' : v.toFixed(0);
+  const both = IDX.filter(r => !r.pending && r.open_final_mm != null && r.closed_final_mm != null);
+  for (const r of IDX) {
+    if (r.pending) { h += `<tr><td>${r.scenario}</td><td colspan="7" style="text-align:left;color:var(--muted)">pending: open and closed loop not finished</td></tr>`; continue; }
+    const b = r.open_final_mm != null && r.closed_final_mm != null ? r.closed_final_mm < r.open_final_mm : null;
+    h += `<tr><td>${r.scenario}</td><td>${fmt(r.target_mm)} mm</td><td>${fmt(r.open_planned_mm)} mm</td><td class="${b === false ? 'better' : ''}">${P(r.open_final_mm)}</td><td class="${b ? 'better' : ''}">${P(r.closed_final_mm)}</td><td>${r.open_closed_mm == null ? 'pending' : fmt(r.open_closed_mm)} / ${r.closed_closed_mm == null ? 'pending' : fmt(r.closed_closed_mm)} mm</td><td>${S(r.open_guide_s)} / ${S(r.closed_guide_s)}</td><td>${S(r.open_replay_s)} / ${S(r.closed_replay_s)}</td></tr>`; }
+  if (both.length) { const mean = k => both.reduce((a, r) => a + r[k], 0) / both.length;
+    h += `<tr><th scope="row">mean of ${both.length} with both</th><td></td><td></td><td>${fmt(mean('open_final_mm'))} mm</td><td>${fmt(mean('closed_final_mm'))} mm</td><td>${fmt(mean('open_closed_mm'))} / ${fmt(mean('closed_closed_mm'))} mm</td><td></td><td></td></tr>`; }
+  document.getElementById('summary').innerHTML = h + '</tbody>';
+})();
+const stage = document.getElementById('stage');
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true }); renderer.setPixelRatio(Math.min(2, window.devicePixelRatio)); stage.appendChild(renderer.domElement);
+const scene = new THREE.Scene(); const camera = new THREE.PerspectiveCamera(40, 16 / 9, 0.001, 20); camera.up.set(0, 0, 1);
+const controls = new THREE.OrbitControls(camera, renderer.domElement); controls.enableDamping = true;
+function resize() { const w = stage.clientWidth, h = stage.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); }
+new ResizeObserver(resize).observe(stage);
+let C = null, fi = 0, playing = false, layers = {}, extras = [];
+function dec(b64, lo, span) { const u = Uint8Array.from(atob(b64), c => c.charCodeAt(0)); const a = new Int16Array(u.buffer); const f = new Float32Array(a.length);
+  for (let i = 0; i < a.length; i++) { const d = i % 3; f[i] = lo[d] + (a[i] + 32767) / 65534 * span[d]; } return f; }
+function cloud(cd, cp) { const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(C.N * 3), 3));
+  const col = new Float32Array(C.N * 3); const a = new THREE.Color(cd), b = new THREE.Color(cp);
+  for (let i = 0; i < C.N; i++) { const c = C.isd[i] ? a : b; col[3 * i] = c.r; col[3 * i + 1] = c.g; col[3 * i + 2] = c.b; }
+  g.setAttribute('color', new THREE.BufferAttribute(col, 3)); const p = new THREE.Points(g, new THREE.PointsMaterial({ size: 0.0035, vertexColors: true })); scene.add(p); return p; }
+function put(pts, data, i) { const n = C.N * 3; pts.geometry.attributes.position.array.set(data.subarray(i * n, (i + 1) * n)); pts.geometry.attributes.position.needsUpdate = true; }
+function shade(hex, k) { const c = new THREE.Color(hex); c.multiplyScalar(k); return '#' + c.getHexString(); }
+function load(id) { if (window.CASES && window.CASES[id]) return show(window.CASES[id]); const s = document.createElement('script'); s.src = 'data/case_' + id + '.js'; s.onload = () => show(window.CASES[id]); document.head.appendChild(s); }
+function show(rec) {
+  for (const o of Object.values(layers)) scene.remove(o); for (const o of extras) scene.remove(o); layers = {}; extras = [];
+  C = rec; C.isd = Uint8Array.from(atob(rec.isd), c => c.charCodeAt(0));
+  C.oe = rec.open_exec ? dec(rec.open_exec, rec.lo, rec.span) : null; C.ce = rec.closed_exec ? dec(rec.closed_exec, rec.lo, rec.span) : null; C.op = dec(rec.open_plan, rec.lo, rec.span);
+  C.pl = rec.plans.map(p => Object.assign({}, p, { D: dec(p.P, rec.lo, rec.span) }));
+  layers.open = cloud(css('--open'), shade(css('--pad'), 0.8)); layers.closed = cloud(css('--closed'), shade(css('--pad'), 0.55));
+  layers.oplan = cloud(css('--openp'), shade(css('--pad'), 1.2)); layers.cplan = cloud(css('--closedp'), shade(css('--pad'), 1.0));
+  const goal = new THREE.Mesh(new THREE.SphereGeometry(0.004, 20, 14), new THREE.MeshBasicMaterial({ color: css('--goal') })); goal.position.set(rec.target[0], rec.target[1], rec.table_z + 0.004); scene.add(goal); extras.push(goal);
+  const cx = rec.lo[0] + rec.span[0] / 2, cy = rec.lo[1] + rec.span[1] / 2, ext = Math.max(rec.span[0], rec.span[1]) + 0.06;
+  const grid = new THREE.GridHelper(ext, Math.round(ext / 0.01), new THREE.Color(css('--rule')), new THREE.Color(css('--grid'))); grid.rotation.x = Math.PI / 2; grid.position.set(cx, cy, rec.table_z - 0.0005); scene.add(grid); extras.push(grid);
+  C.center = new THREE.Vector3(cx, cy, rec.table_z + 0.015); C.dist = ext * 1.2; resetView(); document.getElementById('seek').max = rec.frames.length - 1; fi = 0; draw();
+  document.getElementById('meta').textContent = `${rec.scenario}: dough centroid starts ${fmt(rec.target_mm)} mm from the target. Open loop: planned ${fmt(rec.open_planned_mm)} mm, executed ${rec.open_final_mm == null ? 'pending' : fmt(rec.open_final_mm) + ' mm'}. Closed loop: executed ${rec.closed_final_mm == null ? 'pending' : fmt(rec.closed_final_mm) + ' mm'} after ${rec.plans.length} replans (` +
+    rec.plans.map(p => `frames ${p.commit_from}-${p.commit_to}: planned ${fmt(p.imagined_mm)}, dough ${fmt(p.before)} to ${fmt(p.after)} mm`).join('; ') + ').';
+}
+function resetView() { if (!C) return; controls.target.copy(C.center); camera.position.set(C.center.x + C.dist * 0.5, C.center.y - C.dist * 0.85, C.center.z + C.dist * 0.7); controls.update(); }
+function draw() {
+  if (!C) return; const f = C.frames[fi];
+  if (C.oe) { put(layers.open, C.oe, fi); layers.open.visible = document.getElementById('l-open').checked; } else layers.open.visible = false;
+  if (C.ce) { put(layers.closed, C.ce, fi); layers.closed.visible = document.getElementById('l-closed').checked; } else layers.closed.visible = false;
+  put(layers.oplan, C.op, fi); layers.oplan.visible = document.getElementById('l-oplan').checked;
+  const act = C.pl.filter(p => p.commit_from <= f).pop() || C.pl[0]; const pi = act.frames.indexOf(f);
+  if (pi >= 0) { put(layers.cplan, act.D, pi); layers.cplan.visible = document.getElementById('l-cplan').checked; } else layers.cplan.visible = false;
+  document.getElementById('seek').value = fi; const s = C.series;
+  document.getElementById('hud').textContent = `frame ${f} / 150 · dough centroid to target: open ${s.open_exec ? fmt(s.open_exec[f]) + ' mm' : 'pending'}, closed ${s.closed_exec ? fmt(s.closed_exec[f]) + ' mm' : 'pending'}, open plan ${fmt(s.open_plan[f])} mm · active closed-loop plan: replan from frame ${act.commit_from}`;
+}
+document.getElementById('seek').addEventListener('input', e => { fi = +e.target.value; draw(); });
+for (const id of ['l-open', 'l-closed', 'l-oplan', 'l-cplan']) document.getElementById(id).addEventListener('change', draw);
+document.getElementById('reset').addEventListener('click', resetView);
+const playBtn = document.getElementById('play'); playBtn.addEventListener('click', () => { playing = !playing; playBtn.innerHTML = playing ? '&#10074;&#10074;' : '&#9654;'; });
+const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches; let last = 0;
+function loop(t) { requestAnimationFrame(loop); if (playing && C && t - last > (reduce ? 250 : 90)) { last = t; fi = (fi + 1) % C.frames.length; draw(); } controls.update(); renderer.render(scene, camera); }
+requestAnimationFrame(loop); resize();
+const tabs = document.getElementById('tabs');
+IDX.filter(r => !r.pending).forEach((r, i) => { const b = document.createElement('button'); b.type = 'button'; b.role = 'tab'; b.textContent = r.scenario.replace('seed 42 ', ''); b.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+  b.addEventListener('click', () => { for (const x of tabs.children) x.setAttribute('aria-selected', 'false'); b.setAttribute('aria-selected', 'true'); load(r.id); }); tabs.appendChild(b); });
+const firstDone = IDX.find(r => !r.pending); if (firstDone) load(firstDone.id);
+</script>

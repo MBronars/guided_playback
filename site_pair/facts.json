@@ -1,0 +1,94 @@
+{
+ "pickup__ground30_nowall_milk_carton_asset_0037__m0": {
+  "tag": "no wall",
+  "gen": 8,
+  "isaac": 40,
+  "lift": 94,
+  "end": 6
+ },
+ "pickup__ground30_nowall_milk_carton_asset_0037__m1": {
+  "tag": "no wall",
+  "gen": 13,
+  "isaac": 301,
+  "lift": 0,
+  "end": 0
+ },
+ "pickup__ground30_nowall_milk_carton_asset_0037__m2": {
+  "tag": "no wall",
+  "gen": 24,
+  "isaac": 57,
+  "lift": 107,
+  "end": 4
+ },
+ "pickup__ground30_nowall_milk_carton_asset_0037__m3": {
+  "tag": "no wall",
+  "gen": 11,
+  "isaac": 303,
+  "lift": 3,
+  "end": -40
+ },
+ "pickup__wallgroundB_pickonly_it30_lr0_1_noshell_bw10_clr10__m0": {
+  "tag": "wall",
+  "gen": 9,
+  "isaac": 16,
+  "lift": 203,
+  "end": -2,
+  "clr": 35
+ },
+ "pickup__wallgroundB_pickonly_it30_lr0_1_noshell_bw10_clr10__m1": {
+  "tag": "wall",
+  "gen": 206,
+  "isaac": 288,
+  "lift": 3,
+  "end": 2,
+  "clr": 90
+ },
+ "pickup__wallgroundB_pickonly_it30_lr0_1_noshell_bw10_clr10__m2": {
+  "tag": "wall",
+  "gen": 201,
+  "isaac": 236,
+  "lift": 167,
+  "end": -40,
+  "clr": -4
+ },
+ "pickup__wallgroundB_pickonly_it30_lr0_1_noshell_bw10_clr10__m3": {
+  "tag": "wall",
+  "gen": 38,
+  "isaac": 5,
+  "lift": 225,
+  "end": 5,
+  "clr": 25
+ },
+ "pickup__wall12w20ground_pickonly_it40_lr0_1_shell_bw10_clr10__m0": {
+  "tag": "wall 12x20",
+  "gen": 100,
+  "isaac": 342,
+  "lift": 4,
+  "end": -40,
+  "clr": 110
+ },
+ "pickup__wall12w20ground_pickonly_it40_lr0_1_shell_bw10_clr10__m1": {
+  "tag": "wall 12x20",
+  "gen": 218,
+  "isaac": 239,
+  "lift": 198,
+  "end": 5,
+  "clr": 33
+ },
+ "pickup__wall12w20ground_pickonly_it40_lr0_1_shell_bw10_clr10__m2": {
+  "tag": "wall 12x20",
+  "gen": 204,
+  "isaac": 215,
+  "lift": 127,
+  "end": 1,
+  "clr": 21
+ },
+ "pickup__wall12w20ground_pickonly_it40_lr0_1_shell_bw10_clr10__m3": {
+  "tag": "wall 12x20",
+  "gen": 8,
+  "isaac": 6,
+  "lift": 250,
+  "end": 5,
+  "clr": 39
+ }
+}

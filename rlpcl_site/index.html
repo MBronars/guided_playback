@@ -1,0 +1,123 @@
+<title>Closed vs Open Loop Object Pushing</title>
+<style>
+  :root { --bg:#f5f4f0; --panel:#fffefb; --ink:#1d1f22; --ink2:#4a4d52; --muted:#767a80; --rule:#dcd9d1; --accent:#2f6f8f;
+          --open:#c0572b; --openp:#e9a57f; --closed:#1f7a5a; --closedp:#7cc4a4; --goal:#b3261e; --grid:#e8e5dd; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#16181a; --panel:#1d2023; --ink:#e7e5df; --ink2:#b9b7b1; --muted:#8c8a85; --rule:#33363a; --accent:#7fb3cf; --grid:#2a2d30; color-scheme: dark; } }
+  :root[data-theme="dark"] { --bg:#16181a; --panel:#1d2023; --ink:#e7e5df; --ink2:#b9b7b1; --muted:#8c8a85; --rule:#33363a; --accent:#7fb3cf; --grid:#2a2d30; color-scheme: dark; }
+  body { background:var(--bg); color:var(--ink); font-family:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif; padding-block:24px; padding-inline:18px; max-width:1180px; margin:0 auto; line-height:1.45; }
+  h1 { font-size:1.45rem; margin:0 0 4px; text-wrap:balance; } h2 { font-size:1rem; margin:18px 0 6px; } .sub { color:var(--ink2); margin:0 0 14px; max-width:82ch; font-size:.93rem; }
+  code { font-family:"IBM Plex Mono",Menlo,monospace; font-size:.85em; }
+  .scroller { overflow-x:auto; } table { border-collapse:collapse; font-size:.86rem; font-variant-numeric:tabular-nums; margin:0 0 16px; min-width:620px; }
+  th, td { text-align:right; padding:4px 11px 4px 0; border-bottom:1px solid var(--rule); } th:first-child, td:first-child { text-align:left; } th { color:var(--muted); font-weight:600; }
+  td.better { color:var(--closed); font-weight:600; } td.worse { color:var(--open); }
+  .tabs { display:flex; flex-wrap:wrap; gap:5px; margin:0 0 8px; } .tabs button { font:inherit; font-size:.82rem; padding:4px 9px; border:1px solid var(--rule); background:var(--panel); color:var(--ink); border-radius:5px; cursor:pointer; }
+  .tabs button[aria-selected="true"] { border-color:var(--accent); color:var(--accent); font-weight:600; } button:focus-visible, input:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+  .viewer { background:var(--panel); border:1px solid var(--rule); border-radius:6px; }
+  #stage { position:relative; width:100%; aspect-ratio:16/9; max-height:68vh; } #stage canvas { display:block; width:100%; height:100%; border-radius:6px 6px 0 0; }
+  .hud { position:absolute; left:10px; top:8px; font-family:"IBM Plex Mono",Menlo,monospace; font-size:12px; color:var(--ink2); background:color-mix(in srgb, var(--panel) 82%, transparent); padding:4px 7px; border-radius:4px; pointer-events:none; max-width:calc(100% - 20px); }
+  .ctrl { display:flex; flex-wrap:wrap; gap:8px 16px; align-items:center; padding:10px 12px; border-top:1px solid var(--rule); font-size:.86rem; color:var(--ink2); }
+  .ctrl label { display:flex; gap:5px; align-items:center; } .btn { font:inherit; padding:3px 12px; border:1px solid var(--rule); background:var(--bg); color:var(--ink); border-radius:4px; cursor:pointer; }
+  .seek { flex:1 1 220px; min-width:0; } .sw { display:inline-block; width:11px; height:11px; border-radius:2px; vertical-align:-1px; }
+  .meta { padding:0 12px 12px; font-size:.86rem; color:var(--ink2); font-variant-numeric:tabular-nums; }
+  .note { font-size:.82rem; color:var(--muted); margin-top:14px; word-break:break-word; }
+</style>
+<h1>Closed vs Open Loop Object Pushing</h1>
+<p class="sub">Random-object pushing (rl_push): 5 test objects drawn with <code>default_rng(0)</code>, one goal each (goal t0 of the 5 x 5 draw: uniform over a 5 to 15 cm annulus around the object's frame-0 centroid, <code>default_rng(0)</code>; spec <code>sweeps/rlpush_cl_5.json</code>, reduced from 25 problems at the user's request). Checkpoint <code>pwm_v1_rl_push_ctxgen_100m_uncond_unet_bidir/step_180000.pt</code>, the one used by this package's latest rl_push runs. Guidance as those runs: 4 members, 40 transitions, S 10, Adam lr 0.2 to 0.02, 10 iterations, full churn, upright weight 1, contact weight 2, seed 0. Every model call reads the full 19-row window (tail padded). <b>Open loop</b>: the first plan, all 40 hand frames executed. <b>Closed loop</b>: execute 10 frames in Isaac, feed back the last 3 executed transitions as clean context, replan the rest (at least 16 generated), reward on task frame 40. Scored in Isaac (floating Franka hand, the object's CoACD hulls): object centroid to goal at frame 40.</p>
+<p class="sub" id="status"></p>
+<h2>Isaac execution check (single-problem trial, L053_t0, before the sweep)</h2>
+<p class="sub">Each round's Isaac execution ran: replays of the committed prefix at 18:36:53 (10 frames, 16.5 s), 18:39:05 (20 frames, 18.8 s), 18:40:04 (30 frames, 17.0 s), 18:41:30 (40 frames, 16.6 s). Log lines with replay 0.0 s are resumed driver runs that reused an execution already on disk. The object-to-goal distance stayed 123.5, 123.5, 123.5, 123.4 mm because the object did not move: it moved 0.2 mm over 40 frames and the hand never came closer than 114.7 mm (xy) to the object centroid; the model's own plans also predicted 121 to 139 mm. Every shorter Isaac prefix is identical (0.000 mm) to the same frames of the longer replay, and the 3 context rows each plan received matched the executed frames to 0.04 to 0.05 mm.</p>
+<h2>Per object</h2>
+<div class="scroller"><table id="perobj" aria-label="per-object summary"></table></div>
+<h2>Per problem</h2>
+<div class="scroller"><table id="summary" aria-label="per-problem results"></table></div>
+<div class="tabs" role="tablist" aria-label="problems" id="tabs"></div>
+<div class="viewer">
+  <div id="stage"><div class="hud" id="hud"></div></div>
+  <div class="ctrl">
+    <button class="btn" id="play" type="button" aria-label="Play or pause">&#9654;</button>
+    <input class="seek" id="seek" type="range" min="0" max="40" value="0" step="1" aria-label="Frame">
+    <label><input type="checkbox" id="l-open" checked> <span class="sw" style="background:var(--open)"></span> open loop, executed</label>
+    <label><input type="checkbox" id="l-closed" checked> <span class="sw" style="background:var(--closed)"></span> closed loop, executed</label>
+    <label><input type="checkbox" id="l-oplan"> <span class="sw" style="background:var(--openp)"></span> open-loop plan (model)</label>
+    <label><input type="checkbox" id="l-cplan"> <span class="sw" style="background:var(--closedp)"></span> closed-loop active plan (model)</label>
+    <span>object = full colour, hand and fingers = darker shade</span>
+    <button class="btn" id="reset" type="button">reset view</button>
+  </div>
+  <div class="meta" id="meta"></div>
+</div>
+<p class="note">Drag to orbit, scroll to zoom, right-drag to pan. Red sphere = goal (object centroid). Spec: /data/user_data/mbronars/packages/guided_playback/sweeps/rlpush_cl_5x5.json. Runs: /data/user_data/mbronars/packages/guided_playback/runs/rl_push/rlpcl5_* (round-0 plans <code>rlpcl25_&lt;problem&gt;_r0</code>, later plans <code>rlpcl5_&lt;problem&gt;_r1..r3</code>, 5-env Isaac executions <code>rlpcl5_exec_c10..c40</code> and <code>rlpcl5_openloop_exec</code>, driver log <code>rlpcl5_state/driver_log.jsonl</code>). The stopped 25-problem run stays on disk under rlpcl25_*. Driver: bin/closed_loop_rlpush.py; page data: bin/build_rlpcl_data.py.</p>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script src="data/index.js"></script>
+<script>
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const IDX = window.INDEX || []; const fmt = v => v == null ? '' : Number(v).toFixed(1);
+const med = a => { const s = [...a].sort((x, y) => x - y); const n = s.length; return n ? (n % 2 ? s[(n - 1) / 2] : (s[n / 2 - 1] + s[n / 2]) / 2) : null; };
+(function tables() {
+  const S = window.STATUS || {}; const done = IDX.filter(r => r.has_data).length;
+  document.getElementById('status').innerHTML = `<b>Status ${S.updated || ''}</b>: ${S.plans || 0} of 20 plans done (5 problems x 4 rounds, all problems in lockstep; round-0 plans reused from the 25-problem run), ${done} of 5 problems have a first plan, Isaac execution through frame ${S.executed_frames || 0} of 40 (closed loop), open loop ${S.open_loop_done ? 'executed' : 'pending'}. Pending cells are marked pending; this page is republished as rounds finish.`;
+  const pend = v => v == null ? '<span style="color:var(--muted)">pending</span>' : fmt(v);
+  let h = '<thead><tr><th scope="col">problem</th><th scope="col">object</th><th scope="col">start to goal</th><th scope="col">open, planned</th><th scope="col">open, executed</th><th scope="col">closed, executed</th><th scope="col">object moved, open / closed</th><th scope="col">guidance s, open / closed</th></tr></thead><tbody>';
+  for (const r of IDX) { const b = r.closed_mm < r.open_mm;
+    const cl = r.closed_mm == null ? pend(null) : (r.closed_final ? fmt(r.closed_mm) : fmt(r.closed_mm) + ' <span style="color:var(--muted)">(frame ' + r.executed_frames + ', pending)</span>');
+    h += `<tr><td>${r.id}</td><td>${r.asset.split('/').slice(1).join(' ')}</td><td>${pend(r.start_mm)}</td><td>${pend(r.open_imagined_mm)}</td><td class="${b && r.closed_final ? 'worse' : ''}">${pend(r.open_mm)}</td><td class="${b && r.closed_final ? 'better' : ''}">${cl}</td><td>${pend(r.open_moved_mm)} / ${pend(r.closed_moved_mm)}</td><td>${pend(r.open_guide_s)} / ${pend(r.closed_guide_s)}</td></tr>`; }
+  document.getElementById('summary').innerHTML = h + '</tbody>';
+  const groups = {}; for (const r of IDX) (groups[r.asset] = groups[r.asset] || []).push(r); groups['all 5'] = IDX;
+  let g = '<thead><tr><th scope="col">object</th><th scope="col">n, open / closed</th><th scope="col">median, open</th><th scope="col">median, closed</th><th scope="col">&le; 30 mm, open / closed</th><th scope="col">&le; 50 mm, open / closed</th></tr></thead><tbody>';
+  for (const [k, rs] of Object.entries(groups)) { const o = rs.map(r => r.open_mm).filter(v => v != null), c = rs.filter(r => r.closed_final).map(r => r.closed_mm); const cnt = (a, t) => a.filter(v => v <= t).length;
+    const cell = (a, f) => a.length ? f(a) : '<span style="color:var(--muted)">pending</span>';
+    g += `<tr><td>${k === 'all 5' ? '<b>all 5</b>' : k.split('/').slice(1).join(' ')}</td><td>${o.length} / ${c.length} of ${rs.length}</td><td>${cell(o, a => fmt(med(a)) + ' mm')}</td><td>${cell(c, a => fmt(med(a)) + ' mm')}</td><td>${cell(o, a => cnt(a, 30))} / ${cell(c, a => cnt(a, 30))}</td><td>${cell(o, a => cnt(a, 50))} / ${cell(c, a => cnt(a, 50))}</td></tr>`; }
+  document.getElementById('perobj').innerHTML = g + '</tbody>';
+})();
+const stage = document.getElementById('stage');
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true }); renderer.setPixelRatio(Math.min(2, window.devicePixelRatio)); stage.appendChild(renderer.domElement);
+const scene = new THREE.Scene(); const camera = new THREE.PerspectiveCamera(40, 16 / 9, 0.001, 20); camera.up.set(0, 0, 1);
+const controls = new THREE.OrbitControls(camera, renderer.domElement); controls.enableDamping = true;
+function resize() { const w = stage.clientWidth, h = stage.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); }
+new ResizeObserver(resize).observe(stage);
+let C = null, frame = 0, playing = false, layers = {}, extras = [];
+function dec(b64, lo, span) { const u = Uint8Array.from(atob(b64), c => c.charCodeAt(0)); const a = new Int16Array(u.buffer); const f = new Float32Array(a.length);
+  for (let i = 0; i < a.length; i++) { const d = i % 3; f[i] = lo[d] + (a[i] + 32767) / 65534 * span[d]; } return f; }
+function shade(hex, k) { const c = new THREE.Color(hex); c.multiplyScalar(k); return c; }
+function cloud(hex) { const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(C.N * 3), 3));
+  const col = new Float32Array(C.N * 3); const obj = new THREE.Color(hex), hand = shade(hex, 0.5), fing = shade(hex, 0.7);
+  for (let i = 0; i < C.N; i++) { const r = C.roles[i]; const c = r === 2 ? obj : (r === 1 ? fing : hand); col[3 * i] = c.r; col[3 * i + 1] = c.g; col[3 * i + 2] = c.b; }
+  g.setAttribute('color', new THREE.BufferAttribute(col, 3)); const p = new THREE.Points(g, new THREE.PointsMaterial({ size: 0.004, vertexColors: true })); scene.add(p); return p; }
+function setFrame(pts, data, f) { const n = C.N * 3; if (!data || f < 0 || (f + 1) * n > data.length) { pts.visible = false; return false; } pts.geometry.attributes.position.array.set(data.subarray(f * n, (f + 1) * n)); pts.geometry.attributes.position.needsUpdate = true; return true; }
+function load(id) { if (window.CASES && window.CASES[id]) return show(window.CASES[id]); const s = document.createElement('script'); s.src = 'data/case_' + id + '.js'; s.onload = () => show(window.CASES[id]); document.head.appendChild(s); }
+function show(rec) {
+  for (const o of Object.values(layers)) scene.remove(o); for (const o of extras) scene.remove(o); layers = {}; extras = [];
+  C = rec; C.roles = new Int8Array(Uint8Array.from(atob(rec.roles), c => c.charCodeAt(0)).buffer);
+  C.oe = rec.open_exec ? dec(rec.open_exec, rec.lo, rec.span) : null; C.ce = rec.closed_exec ? dec(rec.closed_exec, rec.lo, rec.span) : null; C.op = dec(rec.open_plan, rec.lo, rec.span);
+  C.pl = rec.plans.map(p => Object.assign({}, p, { D: dec(p.P, rec.lo, rec.span) }));
+  layers.open = cloud(css('--open')); layers.closed = cloud(css('--closed')); layers.oplan = cloud(css('--openp')); layers.cplan = cloud(css('--closedp'));
+  const goal = new THREE.Mesh(new THREE.SphereGeometry(0.008, 20, 14), new THREE.MeshBasicMaterial({ color: css('--goal') })); goal.position.set(...rec.target); scene.add(goal); extras.push(goal);
+  const cx = rec.lo[0] + rec.span[0] / 2, cy = rec.lo[1] + rec.span[1] / 2, ext = Math.max(rec.span[0], rec.span[1]) + 0.1;
+  const grid = new THREE.GridHelper(ext, Math.round(ext / 0.05), new THREE.Color(css('--rule')), new THREE.Color(css('--grid'))); grid.rotation.x = Math.PI / 2; grid.position.set(cx, cy, rec.table_z - 0.001); scene.add(grid); extras.push(grid);
+  C.center = new THREE.Vector3(cx, cy, rec.table_z + 0.05); C.dist = ext * 1.3; resetView(); document.getElementById('seek').max = rec.T - 1; frame = 0; draw();
+  document.getElementById('meta').textContent = `${rec.id}, ${rec.asset}: object starts ${fmt(rec.start_mm)} mm from the goal. Open loop: planned ${fmt(rec.open_imagined_mm)} mm, executed ${rec.open_mm == null ? 'pending' : fmt(rec.open_mm) + ' mm'}. Closed loop: ${rec.closed_mm == null ? 'execution pending' : (rec.closed_final ? 'executed ' : 'executed through frame ' + rec.executed_frames + ': ') + fmt(rec.closed_mm) + ' mm'},  ${rec.plans.length} plans (` + rec.plans.map(p => `from frame ${p.commit_from}: planned ${fmt(p.imagined_mm)} mm`).join('; ') + ').';
+}
+function resetView() { if (!C) return; controls.target.copy(C.center); camera.position.set(C.center.x + C.dist * 0.55, C.center.y - C.dist * 0.85, C.center.z + C.dist * 0.6); controls.update(); }
+function draw() {
+  if (!C) return; const f = frame;
+  layers.open.visible = setFrame(layers.open, C.oe, f) && document.getElementById('l-open').checked;
+  layers.closed.visible = setFrame(layers.closed, C.ce, f) && document.getElementById('l-closed').checked;
+  layers.oplan.visible = setFrame(layers.oplan, C.op, f) && document.getElementById('l-oplan').checked;
+  const act = C.pl.filter(p => p.commit_from <= f).pop() || C.pl[0]; const pf = f - act.start;
+  layers.cplan.visible = setFrame(layers.cplan, act.D, pf) && document.getElementById('l-cplan').checked;
+  document.getElementById('seek').value = f; const s = C.series;
+  const sv = (a, i) => a && i < a.length ? fmt(a[i]) + ' mm' : 'pending';
+  document.getElementById('hud').textContent = `frame ${f} / ${C.T - 1} · object to goal: open ${sv(s.open_exec, f)}, closed ${sv(s.closed_exec, f)}, open plan ${sv(s.open_plan, f)} · active closed-loop plan from frame ${act.commit_from}`;
+}
+document.getElementById('seek').addEventListener('input', e => { frame = +e.target.value; draw(); });
+for (const id of ['l-open', 'l-closed', 'l-oplan', 'l-cplan']) document.getElementById(id).addEventListener('change', draw);
+document.getElementById('reset').addEventListener('click', resetView);
+const playBtn = document.getElementById('play'); playBtn.addEventListener('click', () => { playing = !playing; playBtn.innerHTML = playing ? '&#10074;&#10074;' : '&#9654;'; });
+const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches; let last = 0;
+function loop(t) { requestAnimationFrame(loop); if (playing && C && t - last > (reduce ? 250 : 110)) { last = t; frame = (frame + 1) % C.T; draw(); } controls.update(); renderer.render(scene, camera); }
+requestAnimationFrame(loop); resize();
+const tabs = document.getElementById('tabs');
+IDX.filter(r => r.has_data).forEach((r, i) => { const b = document.createElement('button'); b.type = 'button'; b.role = 'tab'; b.textContent = r.id; b.title = r.asset; b.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+  b.addEventListener('click', () => { for (const x of tabs.children) x.setAttribute('aria-selected', 'false'); b.setAttribute('aria-selected', 'true'); load(r.id); }); tabs.appendChild(b); });
+{ const f = IDX.find(r => r.has_data); if (f) load(f.id); }
+</script>

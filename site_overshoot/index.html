@@ -1,0 +1,107 @@
+<title>Water Bottle Pick</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --bg:#f5f6f4; --panel:#ffffff; --ink:#1d2421; --muted:#5d6863; --rule:#d9ddd9;
+  --sim:#1f7a6b; --gen:#b8642a; --tgt:#3c4a45;
+  --sans:"Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ color-scheme:dark;
+    --bg:#141816; --panel:#1c211f; --ink:#e4e9e6; --muted:#9aa6a0; --rule:#2e3633;
+    --sim:#4cc0aa; --gen:#e0925a; --tgt:#b9c5bf; }
+}
+:root[data-theme="dark"]{ color-scheme:dark;
+  --bg:#141816; --panel:#1c211f; --ink:#e4e9e6; --muted:#9aa6a0; --rule:#2e3633;
+  --sim:#4cc0aa; --gen:#e0925a; --tgt:#b9c5bf; }
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5}
+.wrap{max-width:1320px;margin:0 auto;padding-inline:20px;padding-block:28px 48px;display:grid;gap:26px}
+h1{font-size:30px;line-height:1.15;margin:0;text-wrap:balance;font-weight:700}
+.lede{color:var(--muted);max-width:75ch;margin:6px 0 0}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.stat{background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:12px 14px}
+.stat b{display:block;font-family:var(--mono);font-size:22px;font-variant-numeric:tabular-nums}
+.stat span{font-size:13px;color:var(--muted)}
+.videos{display:grid;grid-template-columns:1fr;gap:18px}
+figure{margin:0;display:grid;gap:6px}
+video{width:100%;max-width:100%;border-radius:6px;background:#000;display:block}
+figcaption{font-size:14px;color:var(--muted)}
+.lab{display:flex;justify-content:space-between;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.lab span{width:50%;text-align:center}
+.chart{background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:14px 16px;display:grid;gap:8px}
+.chart h2{font-size:17px;margin:0}
+.legend{display:flex;flex-wrap:wrap;gap:16px;font-size:13px;color:var(--muted)}
+.legend i{display:inline-block;width:18px;height:3px;vertical-align:middle;margin-right:6px;border-radius:2px}
+.svgbox{overflow-x:auto}
+svg text{font-family:var(--mono);font-size:11px;fill:var(--muted)}
+.meta{font-size:13px;color:var(--muted);font-family:var(--mono);word-break:break-all}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Water bottle, target t0: the pick with the least lift overshoot</h1>
+    <p class="lede">Pickup-only checkpoint, guided planner (Adam on the initial noise, shell on, lr 0.1, 10 iterations, population 4; the member with the lowest generated distance, m0). Target = start + (−1.5, +11.9, +15.0) cm. Of the 20 benchmark picks that end within 50 mm of the target in Isaac, this one rises the least above the target height.</p>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><b>22 mm</b><span>Isaac: object centroid to target, frame 60</span></div>
+    <div class="stat"><b>+83 mm</b><span>Isaac: highest point above target height (frame 53)</span></div>
+    <div class="stat"><b>32 mm</b><span>Generated plan: distance to target, frame 60</span></div>
+    <div class="stat"><b>+90 mm</b><span>Generated plan: highest point above target height</span></div>
+    <div class="stat"><b>126.2 s</b><span>Planning time (warm, generation only)</span></div>
+  </div>
+
+  <figure>
+    <div class="lab"><span>Isaac replay, frame 0</span><span>Isaac replay, frame 60</span></div>
+    <img src="keyframes.png" alt="Isaac replay at frame 0 and frame 60; the pink line traces the bottle's centroid from its start on the table, up past the target height, and down to its end next to the green target ring" style="width:100%;border-radius:6px;display:block">
+    <figcaption>Pink line: the bottle's centroid over all 61 frames of the Isaac replay (dots = start and end). Green ring: the target. The line is drawn over the render, so it stays visible behind the bottle and gripper.</figcaption>
+  </figure>
+
+  <div class="videos">
+    <figure>
+      <div class="lab"><span>Generated plan</span><span>Isaac replay</span></div>
+      <video src="isaac_arm_rot180.mp4" controls autoplay muted loop playsinline preload="auto"></video>
+      <figcaption>On the Franka arm. 61 frames at 20 fps = 3.05 s. The small green sphere marks the target. The arm is posed by IK on the replayed hand and tracks it to 2.2 mm / 1.1&deg;.</figcaption>
+    </figure>
+    <figure>
+      <div class="lab"><span>Generated plan</span><span>Isaac replay</span></div>
+      <video src="isaac_rot180.mp4" controls autoplay muted loop playsinline preload="auto"></video>
+      <figcaption>Gripper only, same run and camera.</figcaption>
+    </figure>
+  </div>
+
+  <p class="lede">View: the whole scene (plan, Isaac replay, target) is rotated 180&deg; about the vertical axis through the bottle's start, so the robot stands on the other side of the bottle. This is a rigid rotation, so every distance and height is unchanged. The unrotated renders are <a href="isaac_arm.mp4">isaac_arm.mp4</a> and <a href="isaac.mp4">isaac.mp4</a>.</p>
+
+  <section class="chart" aria-label="Object height relative to the target">
+    <h2>Object centroid height relative to the target height</h2>
+    <div class="legend"><span><i style="background:var(--sim)"></i>Isaac replay</span><span><i style="background:var(--gen)"></i>generated plan</span><span><i style="background:var(--tgt)"></i>target height (0 mm)</span></div>
+    <div class="svgbox"><svg id="h" viewBox="0 0 900 300" width="100%" role="img" aria-label="Height above target per frame; Isaac peaks at +83 mm at frame 53 and ends at −3 mm"></svg></div>
+  </section>
+
+  <p class="meta">Run: /data/user_data/mbronars/packages/guided_playback/runs/pickup/cyl_t0_water_bottle_it10 · renders in render_isaac/ and render_isaac_arm/ (m0_guided.gif)</p>
+</div>
+
+<script>
+(function(){
+  const sim=[-150,-150,-150,-150,-150,-150,-150,-150,-150,-150,-150,-150,-150,-150,-150,-148,-148,-148,-148,-148,-149,-149,-149,-148,-148,-148,-148,-147,-147,-145,-142,-135,-126,-114,-105,-91,-78,-64,-48,-32,-17,-4,4,12,21,34,46,56,65,71,75,78,82,83,82,76,68,54,39,21,-3];
+  const gen=[-150,-150,-150,-150,-150,-150,-150,-150,-150,-150,-150,-150,-150,-150,-150,-150,-149,-148,-146,-145,-145,-145,-145,-145,-145,-145,-145,-145,-145,-143,-140,-137,-132,-123,-114,-102,-92,-78,-65,-49,-32,-18,-9,-1,9,22,36,48,59,68,75,81,86,90,89,85,80,68,52,33,7];
+  const W=900,H=300,L=52,R=16,T=14,B=34, ymin=-160, ymax=100;
+  const x=f=>L+(W-L-R)*f/60, y=v=>T+(H-T-B)*(ymax-v)/(ymax-ymin);
+  const ns='http://www.w3.org/2000/svg', svg=document.getElementById('h');
+  const el=(n,a)=>{const e=document.createElementNS(ns,n);for(const k in a)e.setAttribute(k,a[k]);svg.appendChild(e);return e;};
+  const cs=getComputedStyle(document.documentElement), c=n=>cs.getPropertyValue(n).trim();
+  for(let v=-150; v<=100; v+=50){ el('line',{x1:L,x2:W-R,y1:y(v),y2:y(v),stroke:c('--rule'),'stroke-width':1});
+    const t=el('text',{x:L-8,y:y(v)+4,'text-anchor':'end'}); t.textContent=(v>0?'+':'')+v; }
+  for(let f=0; f<=60; f+=10){ const t=el('text',{x:x(f),y:H-12,'text-anchor':'middle'}); t.textContent=f; }
+  const tx=el('text',{x:W-R,y:H-12,'text-anchor':'end'}); tx.textContent='';
+  const xl=el('text',{x:(L+W-R)/2,y:H-0.5,'text-anchor':'middle'}); xl.textContent='frame (20 fps)';
+  el('line',{x1:L,x2:W-R,y1:y(0),y2:y(0),stroke:c('--tgt'),'stroke-width':1.5,'stroke-dasharray':'5 4'});
+  const path=(a,col)=>el('path',{d:a.map((v,i)=>(i?'L':'M')+x(i).toFixed(1)+' '+y(v).toFixed(1)).join(' '),fill:'none',stroke:col,'stroke-width':2.2,'stroke-linejoin':'round'});
+  path(gen,c('--gen')); path(sim,c('--sim'));
+  el('circle',{cx:x(53),cy:y(83),r:4,fill:c('--sim')});
+  const pk=el('text',{x:x(53)-8,y:y(83)-8,'text-anchor':'end'}); pk.textContent='Isaac +83 mm, frame 53'; pk.setAttribute('fill',c('--sim'));
+  el('circle',{cx:x(60),cy:y(-3),r:4,fill:c('--sim')});
+})();
+</script>
