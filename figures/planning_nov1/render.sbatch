@@ -16,5 +16,5 @@ F=figures/planning_nov1
 M="Ours=Ours (LNO),ActGPWM=Action CEM\n(GPWM),ActPW=Action CEM\n(PointWorld)"
 $PY bin/render_push_pile.py --task push --eps ${PUSH_EPS:-14,44} --size 2400x1800 --sources $F/sources.json --out $F/push
 $PY bin/make_push_pdf.py --layout wide --src $F/push --methods "$M" --out $F/pdf/push_planning
-$PY bin/render_push_pile.py --task pile --eps ${PILE_EPS:-40,37} --toward_paddle --pull_back --move_cue --clamp_table --no_overlay --arrow_w 12 --ring_on_top --paddle_on_table --size 2400x1800 --sources $F/sources.json --out $F/pile
+$PY bin/render_push_pile.py --task pile --eps ${PILE_EPS:-33,25} --toward_paddle --pull_back --move_cue --clamp_table --no_overlay --arrow_w 12 --ring_on_top --paddle_on_table --size 2400x1800 --sources $F/sources.json --out $F/pile
 $PY bin/make_pile_pdf.py --src $F/pile --methods "$M" --out $F/pdf/pile_planning

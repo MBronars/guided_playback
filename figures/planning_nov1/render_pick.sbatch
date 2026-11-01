@@ -19,4 +19,4 @@ $PY bin/render_pick_views.py --cases "$CASES" --views=-60:18 --frames start,end 
 $PY bin/render_pick_views.py --cases "$CASES" --views=-60:18 --frames start,end --size 2400x1800 --shared_cam --out $F/pick
 $PY bin/make_pick_pdf.py --src $F/pick --config $F/pick_config.json --out $F/pdf/pick_planning
 $PY bin/render_pick_views.py --pw_cloud --cases "$(cat $F/pick_pw_cases.txt)" --views=-60:18 --cloud_frames 0,15,30,45,60 --size 2400x1800 --shared_cam --cam_from $F/pick/cases.json --out $F/pick_pw
-$PY bin/make_pick_pw_pdf.py --src $F/pick_pw --rollouts "$(cat $F/pick_rollouts.txt)" --out $F/pdf/pick_pointworld_prediction
+$PY bin/make_pick_pw_pdf.py --src $F/pick_pw --caption gap --rollouts "$(cat $F/pick_rollouts.txt)" --out $F/pdf/pick_pointworld_prediction

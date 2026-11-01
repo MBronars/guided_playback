@@ -8,39 +8,39 @@
  "start_col": "Ours (LNO)",
  "rows": [
   [
-   "Water bottle",
-   "water_bottle",
-   190.21306931972504,
+   "Peanut butter jar",
+   "peanut_butter_jar",
+   192.05732643604279,
    {
     "Ours (LNO)": [
-     "lno_water_bottle_t3",
-     2
+     "lno_peanut_butter_jar_t0",
+     10
     ],
     "Action CEM\n(GPWM)": [
-     "acgpwm_water_bottle_t3",
-     3
+     "acgpwm_peanut_butter_jar_t0",
+     0
     ],
     "Action CEM\n(PointWorld)": [
-     "acpw_water_bottle_t3",
+     "acpw_peanut_butter_jar_t0",
      0
     ]
    }
   ],
   [
-   "Pasta box",
-   "pasta_box",
-   152.99998223781586,
+   "Soda can",
+   "soda_can",
+   186.654731631279,
    {
     "Ours (LNO)": [
-     "lno_pasta_box_t1",
-     6
-    ],
-    "Action CEM\n(GPWM)": [
-     "acgpwm_pasta_box_t1",
+     "lno_soda_can_t4",
      2
     ],
+    "Action CEM\n(GPWM)": [
+     "acgpwm_soda_can_t4",
+     5
+    ],
     "Action CEM\n(PointWorld)": [
-     "acpw_pasta_box_t1",
+     "acpw_soda_can_t4",
      0
     ]
    }
