@@ -41,21 +41,33 @@ def rollout_chunked(S, batch, X, XP, *, steps, ctx_rows, grad=False, fps_seeds=N
     pmask = pose_channel_mask(batch, ridx)
     pm = (lambda v: v * pmask.to(v)) if pmask is not None else (lambda v: v)
     rows, prows = list(X.unbind(1)), [pm(v) for v in XP.unbind(1)]
-    for j in range(C - 1):                                                            # recorded context, clean
-        prows[j] = pm(ctx_rows[:, j].to(XP.dtype)); rows[j] = torch.zeros_like(rows[j])
+    gen0 = bool(getattr(S, "act_cmd", False))                                         # act_cmd: frame 0 only; the first window generates all its rows
+    if not gen0:
+        for j in range(C - 1):                                                        # recorded context, clean
+            prows[j] = pm(ctx_rows[:, j].to(XP.dtype)); rows[j] = torch.zeros_like(rows[j])
     seeds = None if fps_seeds is None else tuple(int(v) for v in fps_seeds)
-    done = [j < C - 1 for j in range(N)]
+    done = [j < C - 1 and not gen0 for j in range(N)]
+    cl = float(getattr(S, "ctx_level", 0.0) or 0.0)                                   # kept rows' honest level (0 = clean)
     pos_a, bp_a, a_idx, k = batch.positions[:, 0], batch.body_poses[:, 0], 0, 0
     for start in window_starts(N, NW, C):
         while a_idx < start:
             pos_a, bp_a = S._step_anchor(batch, pos_a, bp_a, rows[a_idx], prows[a_idx]); a_idx += 1
         pos_w = pos_a[:, None].expand(-1, NW + 1, -1, -1); bp_w = bp_a[:, None].expand(-1, NW + 1, -1, -1, -1)
         todo = [j for j in range(start, start + NW) if not done[j]]
+        kept = [j - start for j in range(start, start + NW) if done[j]]
+        if cl > 0 and kept:                                                           # one draw per window, shared by every member (candidates differ only in actions)
+            gk = torch.Generator(device=dev).manual_seed(7919 * (start + 1))
+            ek = torch.randn(1, len(kept), *rows[0].shape[1:], device=dev, generator=gk)
+            ekp = torch.randn(1, len(kept), *prows[0].shape[1:], device=dev, generator=gk)
         for i in range(steps):
             l0, l1 = 1.0 - i / steps, 1.0 - (i + 1) / steps
-            lv = torch.tensor([l0 if j in todo else 0.0 for j in range(start, start + NW)], device=dev)
+            lv = torch.tensor([l0 if j in todo else cl for j in range(start, start + NW)], device=dev)
             tt = torch.clamp(torch.round(lv * S.T), 1, S.T - 1).long()[None].expand(B, -1)
             xs, xps = torch.stack(rows[start:start + NW], 1), torch.stack(prows[start:start + NW], 1)
+            if cl > 0 and kept:                                                       # x_t = x0 + t (eps - x0) on the kept rows
+                xs, xps = xs.clone(), xps.clone()
+                xs[:, kept] = xs[:, kept] + cl * (ek.to(xs.dtype) - xs[:, kept])
+                xps[:, kept] = pm(xps[:, kept] + cl * (ekp.to(xps.dtype) - xps[:, kept]))
             args = (batch, xs[:, :C - 1], xs[:, C - 1:], xps[:, :C - 1], xps[:, C - 1:], tt, pos_w, bp_w, start, k, seeds)
             x0, x0p = checkpoint(S._call, *args, use_reentrant=False) if grad else S._call(*args)
             k += 1

@@ -1,0 +1,1 @@
+[{"tag": "cem_act_K64_R3", "shape": "B4_nograd", "B": 4, "knobs": {"planner": "cem_actions", "cem_K": 64, "cem_rounds": 3, "iterations": 0, "lr": 0.1, "act_cmd": true}}]

@@ -331,6 +331,8 @@ class Streamer:
                                  actions=torch.zeros_like(wb.actions))
         if not getattr(self, "given_actions", False):              # action-conditioned mode (2026-10-23): the batch's pose_actions are the plan's hand motion
             wb = hide_actions(wb, 1.0)
+        elif getattr(self, "cmd", None) is not None:
+            wb = self._cmd_window(wb, self.cmd, start)
         with torch.autocast("cuda", dtype=torch.bfloat16):
             fut, pose_fut = self.model(wb, xs_fut, tt[:, C - 1:], noisy_context=xs_ctx, context_timesteps=tt[:, :C - 1],
                                        noisy_pose=xps_fut, noisy_ctx_pose=xps_ctx)
@@ -340,6 +342,27 @@ class Streamer:
         else:
             part = torch.cat([self.model._last_ctx_part_pred, fut], 1)
         return part.float(), torch.cat([self.model._last_ctx_pose_pred, pose_fut], 1).float()
+
+    cmd = None                    # [B, N, Ka, 6] transition-k commands of the actuated bodies (cem.run_actions with act_cmd)
+
+    def _cmd_window(self, wb, cmd, start):
+        """act_cmd (2026-10-31): window rows are transitions start .. start + NW - 1 and EVERY row's action slot carries
+        its own command. The future slots get cmd[start + C - 1 ...]; the C - 1 context slots are the deltas of the
+        window's context poses (pose_action_rows = all), so frames 1 .. C-1 of the actuated bodies are the anchor moved by
+        cmd[start .. start + C - 2] (the streamer otherwise repeats the anchor there: zero context motion). Without it,
+        batch.pose_actions[j] drives transition j + C - 1 (the batch's C - 1 anchor convention)."""
+        from utils.pose_ops import so3_exp
+        C, N = self.C, cmd.shape[1]
+        aidx = wb.pose_action_mask[0].bool().nonzero(as_tuple=True)[0]
+        seg = lambda a, b: torch.cat([cmd[:, min(a, N):min(b, N)], cmd.new_zeros(cmd.shape[0], max(0, b - max(a, N)), *cmd.shape[2:])], 1)
+        pa = wb.pose_actions.clone(); F = pa.shape[1]
+        pa[:, :, aidx] = seg(start + C - 1, start + C - 1 + F).to(pa.dtype)
+        bp = wb.body_poses.clone()
+        for k in range(C - 1):
+            a = seg(start + k, start + k + 1)[:, 0].to(bp.dtype)                     # [B, Ka, 6] world [dt, rotvec]
+            bp[:, k + 1, aidx, :3, :3] = so3_exp(a[..., 3:].reshape(-1, 3)).reshape(*a.shape[:2], 3, 3) @ bp[:, k, aidx, :3, :3]
+            bp[:, k + 1, aidx, :3, 3] = bp[:, k, aidx, :3, 3] + a[..., :3]
+        return dataclasses.replace(wb, pose_actions=pa, body_poses=bp)
 
     def churn_levels(self, steps, keep, N):
         """[N, n_max] level at which row j is re-formed by its i-th injection (0 = no such injection; the final

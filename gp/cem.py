@@ -187,6 +187,7 @@ def run_actions(adapter, batch, state, objective, K, rounds, std, clip, seed=0, 
                     if pa.shape[1] < N:                                                       # recorded clip shorter than the plan: pad the action stream
                         pa = torch.cat([pa, torch.zeros(pa.shape[0], N - pa.shape[1], *pa.shape[2:], device=pa.device, dtype=pa.dtype)], 1)
                     pa[:, :N, aidx] = torch.stack(cands[s:s + B]).to(pa.dtype)
+                    adapter.S.cmd = pa[:, :N, aidx] if getattr(adapter.S, "act_cmd", False) else None   # transition-k commands (paper_core._cmd_window)
                     b2 = dataclasses.replace(batch, pose_actions=pa)
                     if getattr(batch, 'gt_frames', None) is not None: b2.gt_frames = batch.gt_frames
                     pos = adapter.rollout(b2, state, grad=False)
@@ -198,7 +199,7 @@ def run_actions(adapter, batch, state, objective, K, rounds, std, clip, seed=0, 
                     if float(d[k]) < best_d:
                         best_d, best_pos = float(d[k]), pos[k].detach().clone()
         finally:
-            adapter.S.given_actions = False
+            adapter.S.given_actions = False; adapter.S.cmd = None
         d_all = torch.cat(scores)
         if not torch.isfinite(d_all).any(): raise NaNRollout(f"all {d_all.numel()} candidates non-finite")
         return d_all, best_pos

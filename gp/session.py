@@ -139,6 +139,8 @@ def guided_run(ad, A):
     ad.free_fps = bool(A.get("free_fps", False) if isinstance(A, dict) else getattr(A, "free_fps", False))   # clean_push only: skip the per-rollout reseed
     ad.stop_at = _g(A, "stop_at", None)
     ad.resample = dict(every=int(_g(A, "resample_every")), temp=float(_g(A, "resample_temp", 1.0) or 1.0), target=target) if _g(A, "resample_every", None) else None   # clean_push: reseed the population at commit points
+    ad.S.act_cmd = bool(_g(A, "act_cmd", False))                         # action mode: command k drives transition k on all 19 rows of every window (paper_core._cmd_window)
+    ad.S.ctx_level = float(_g(A, "ctx_level", 0.0) or 0.0)               # chunked: a window's kept rows re-noised to this level and labelled with it (0 = fed clean)
     ad.pose_only = bool(_g(A, "pose_only", False))                       # paper adapter: optimize only pose noise (particle draws fixed, as in rigid scenes)
     ad.freeze_modes = int(_g(A, "freeze_modes", 0) or 0)                 # paper adapter: 1 = keep the dough-noise mean, 2 = mean + linear modes, at their sampled values
     hcp = _g(A, "history_clouds", None); ad.history_clouds = np.load(hcp)["clouds"] if hcp else None   # clean_pickup closed loop: executed frames 0..c                                   # clean_pickup: commit frames 0..stop_at of a longer (padded) schedule
