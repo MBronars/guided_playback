@@ -9,19 +9,23 @@ from matplotlib import font_manager as fm
 from PIL import Image
 HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.dirname(HERE)
 ap = argparse.ArgumentParser(); ap.add_argument("--src", default=os.path.join(ROOT, "figures", "pick_pw_scene_v2")); ap.add_argument("--frames", default="0,15,30,45,60")
-ap.add_argument("--out", default=os.path.join(ROOT, "figures", "paper_pdf", "pick_pointworld_prediction")); ap.add_argument("--dt", type=float, default=0.05); A = ap.parse_args()
+ap.add_argument("--out", default=os.path.join(ROOT, "figures", "paper_pdf", "pick_pointworld_prediction")); ap.add_argument("--dt", type=float, default=0.05)
+ap.add_argument("--caption", default="size", choices=("size", "gap"), help="gap: the predicted gripper's distance to the predicted object, per frame")
+ap.add_argument("--rollouts", default=None, help="alias=run_dir,...: where each case's rollout.npz lives (default runs/pickup/pw_benchmark for every case)"); A = ap.parse_args()
 for p in glob.glob(os.path.expanduser("~/.local/share/fonts/Times*.TTF")): fm.fontManager.addfont(p)
 plt.rcParams.update({"font.family": "serif", "font.serif": ["Times New Roman"], "font.size": 7.5, "pdf.fonttype": 42})
 INK = "#1c2321"; MUTED = "#5d6864"; NAME = {"milk_carton": "Milk\ncarton", "soda_can": "Soda\ncan"}
+ROLL = dict(kv.split("=", 1) for kv in A.rollouts.split(",")) if A.rollouts else {}
 FR = [int(v) for v in A.frames.split(",")]
 cases = json.load(open(os.path.join(A.src, "cases.json")))
 if "frames" not in cases[0]:                                                      # in-scene renders (render_pick_views.py --pw_cloud): sizes from the prediction itself
-    z = np.load(os.path.join(ROOT, "runs", "pickup", "pw_benchmark", "rollout.npz"), allow_pickle=True)
     def rms(Y): return float(np.sqrt(((Y - Y.mean(0)) ** 2).sum(1).mean()))
     for r in cases:
-        o = z["predicted"][r["member"]][:, z["roles"][r["member"]] == 2]; r["obj_scale"] = [rms(o[f]) / rms(o[0]) for f in range(len(o))]
+        z = np.load(os.path.join(ROLL.get(r["run"], os.path.join(ROOT, "runs", "pickup", "pw_benchmark")), "rollout.npz"), allow_pickle=True)
+        Y = z["predicted"][r["member"]]; ro = z["roles"][r["member"]]; o = Y[:, ro == 2]; r["obj_scale"] = [rms(o[f]) / rms(o[0]) for f in range(len(o))]
+        g = Y[:, ro != 2]; r["gap_cm"] = [float(np.sqrt(((g[f][:, None] - o[f][None]) ** 2).sum(-1)).min()) * 100 for f in range(len(o))]   # nearest gripper point to the object
         r["images"] = [f"{r['object']}__{r['run']}__pwcloud__m{r['member']}__az-60_el18_f{f:02d}.png" for f in FR]
-    cases = sorted(cases, key=lambda r: ["milk_carton", "soda_can"].index(r["object"]))
+    if not ROLL: cases = sorted(cases, key=lambda r: ["milk_carton", "soda_can"].index(r["object"]))
 W_IN = 7.0; lab_w = 0.62; gap = 0.05; head_h = 0.22; cap_h = 0.20; n = len(FR)
 img_w = (W_IN - lab_w - gap * (n + 1)) / n; img_h = img_w * 0.75; H_IN = head_h + len(cases) * (img_h + cap_h) + 0.28
 fig = plt.figure(figsize=(W_IN, H_IN))
@@ -31,11 +35,11 @@ for ci, f in enumerate(FR):
     fig.text((x + img_w / 2) / W_IN, 1 - 0.11 / H_IN, "Observed, t = 0 s" if f == 0 else f"Predicted, t = {f * A.dt:.2f} s", ha="center", va="center", fontsize=8.5, fontweight="bold", color=INK)
 for ri, r in enumerate(cases):
     y0 = head_h + ri * (img_h + cap_h)
-    fig.text((lab_w - 0.06) / W_IN, 1 - (y0 + img_h / 2) / H_IN, NAME[r["object"]], ha="right", va="center", ma="right", linespacing=1.1, fontsize=8.5, fontweight="bold", color=INK)
+    fig.text((lab_w - 0.06) / W_IN, 1 - (y0 + img_h / 2) / H_IN, NAME.get(r["object"], r["object"].replace("_", "\n").capitalize()), ha="right", va="center", ma="right", linespacing=1.1, fontsize=8.5, fontweight="bold", color=INK)
     for ci, (f, fn) in enumerate(zip(FR, r["images"])):
         x = lab_w + gap + ci * (img_w + gap)
         ax = box(x, y0, img_w, img_h); ax.imshow(np.asarray(Image.open(os.path.join(A.src, fn)).convert("RGB")), interpolation="none"); ax.set_axis_off()
-        cap = "observed" if f == 0 else f"size {r['obj_scale'][f]:.2f}×"
+        cap = ("observed" if f == 0 else f"size {r['obj_scale'][f]:.2f}×") if A.caption == "size" else f"gripper {r['gap_cm'][f]:.1f} cm from object"
         fig.text((x + img_w / 2) / W_IN, 1 - (y0 + img_h + 0.035) / H_IN, cap, ha="center", va="top", fontsize=7, color=MUTED)
 os.makedirs(os.path.dirname(A.out), exist_ok=True)
 from matplotlib import patches

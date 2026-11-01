@@ -1,0 +1,49 @@
+{
+ "cols": [
+  "Initial configuration",
+  "Ours (LNO)",
+  "Action CEM\n(GPWM)",
+  "Action CEM\n(PointWorld)"
+ ],
+ "start_col": "Ours (LNO)",
+ "rows": [
+  [
+   "Water bottle",
+   "water_bottle",
+   190.21306931972504,
+   {
+    "Ours (LNO)": [
+     "lno_water_bottle_t3",
+     2
+    ],
+    "Action CEM\n(GPWM)": [
+     "acgpwm_water_bottle_t3",
+     3
+    ],
+    "Action CEM\n(PointWorld)": [
+     "acpw_water_bottle_t3",
+     0
+    ]
+   }
+  ],
+  [
+   "Pasta box",
+   "pasta_box",
+   152.99998223781586,
+   {
+    "Ours (LNO)": [
+     "lno_pasta_box_t1",
+     6
+    ],
+    "Action CEM\n(GPWM)": [
+     "acgpwm_pasta_box_t1",
+     2
+    ],
+    "Action CEM\n(PointWorld)": [
+     "acpw_pasta_box_t1",
+     0
+    ]
+   }
+  ]
+ ]
+}

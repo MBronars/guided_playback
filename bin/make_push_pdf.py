@@ -13,18 +13,22 @@ HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.dirname(HERE)
 ap = argparse.ArgumentParser(); ap.add_argument("--src", default=os.path.join(ROOT, "figures", "push_v4"))
 ap.add_argument("--layout", default="column", choices=("column", "wide")); ap.add_argument("--out", default=None)
 ap.add_argument("--pad", type=float, default=0.05, help="crop padding, fraction of the image width")
+ap.add_argument("--methods", default="Ours=Ours,PointWorld=PointWorld,GNS=GNS", help="key=label,... (render keys; \\n in a label breaks the line)")
 A = ap.parse_args(); out = A.out or os.path.join(ROOT, "figures", "paper_pdf", "push_ours_vs_stall" + ("" if A.layout == "column" else "_wide"))
 for p in glob.glob(os.path.expanduser("~/.local/share/fonts/Times*.TTF")): fm.fontManager.addfont(p)   # Microsoft core-fonts Times New Roman
 plt.rcParams.update({"font.family": "serif", "font.serif": ["Times New Roman"], "mathtext.fontset": "custom", "mathtext.rm": "Times New Roman",
                      "mathtext.it": "Times New Roman:italic", "mathtext.bf": "Times New Roman:bold", "font.size": 7.5, "pdf.fonttype": 42})
 cases = {(r["ep"], r["method"]): r for r in json.load(open(os.path.join(A.src, "push_cases.json"))) if "method" in r}
-EPS = sorted({e for e, _ in cases}); METHODS = ["Ours", "PointWorld", "GNS"]
+EPS = sorted({e for e, _ in cases}); LABEL = dict(kv.split("=", 1) for kv in A.methods.split(",")); METHODS = list(LABEL)
+LABEL = {k: v.replace("\\n", "\n") for k, v in LABEL.items()}
+STARTS = {r["ep"]: r["start_cm"] for r in json.load(open(os.path.join(A.src, "push_cases.json"))) if "start_cm" in r}
 INK = "#1c2321"; MUTED = "#5d6864"; MAG = "#d6288a"; GREEN = "#14a06e"; BLUE = "#3e68b4"; ROD = "#9dbcf0"; BLOCK = "#f7c98c"
 
 
 INIT = "Initial configuration"
 PUSH_RUN = "/data/user_data/mbronars/packages/pwm_final_paper/results/block_pushing/ours_paper_video_source_pop3_gw2_lookaheads/runs/seed42_ep{ep:02d}/replay_set_pose/sim_trajectory.npz"
 def start_cm(e):                                                # block-to-target distance at t = 0 (same scene for every method)
+    if e in STARTS: return STARTS[e]
     z = np.load(PUSH_RUN.format(ep=e)); return float(np.linalg.norm(z["block_pos"][0, :2] - z["target_xy"])) * 100
 def load(e, m):
     fn = f"push_ep{e:02d}_start.png" if m == INIT else f"push_ep{e:02d}_{m.lower()}_end.png"
@@ -56,14 +60,15 @@ if A.layout == "column":
     ROWS, COLS = [INIT] + METHODS, EPS; W_IN = 3.4; lab_w = 0.84; gap = 0.04; head_h = 0.22
 else:
     ROWS, COLS = EPS, [INIT] + METHODS; W_IN = 7.0; lab_w = 0.70; gap = 0.05; head_h = 0.22
+if any("\n" in LABEL.get(c, "") for c in COLS if isinstance(c, str)): head_h = 0.36            # two-line column headers
 nC = len(COLS); img_w = (W_IN - lab_w - gap * (nC + 1)) / nC; img_h = img_w * 0.75; cap_h = 0.27; leg_h = 0.42 if A.layout == "column" else 0.26
 H_IN = head_h + len(ROWS) * (img_h + cap_h) + leg_h
 fig = plt.figure(figsize=(W_IN, H_IN))
 def box(x, y, w, h): return fig.add_axes([x / W_IN, 1 - (y + h) / H_IN, w / W_IN, h / H_IN])
-def name(v): return f"Episode {EPS.index(v) + 1}" if isinstance(v, (int, np.integer)) else ("Initial\nconfiguration" if v == INIT and A.layout == "column" else v)
+def name(v): return f"Episode {EPS.index(v) + 1}" if isinstance(v, (int, np.integer)) else ("Initial\nconfiguration" if v == INIT and A.layout == "column" else LABEL.get(v, v))
 for ci, c in enumerate(COLS):
     x = lab_w + gap + ci * (img_w + gap)
-    fig.text((x + img_w / 2) / W_IN, 1 - 0.11 / H_IN, name(c), ha="center", va="center", fontsize=9, fontweight="bold", color=INK)
+    fig.text((x + img_w / 2) / W_IN, 1 - head_h / 2 / H_IN, name(c), ha="center", va="center", fontsize=9, fontweight="bold", color=INK, linespacing=1.05)
 for ri, rr in enumerate(ROWS):
     y0 = head_h + ri * (img_h + cap_h)
     fig.text((lab_w - 0.06) / W_IN, 1 - (y0 + img_h / 2) / H_IN, name(rr), ha="right", va="center", ma="right", linespacing=1.1, fontsize=8.5, fontweight="bold", color=INK)

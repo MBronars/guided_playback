@@ -10,16 +10,18 @@ from PIL import Image
 HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.dirname(HERE)
 ap = argparse.ArgumentParser(); ap.add_argument("--src", default=os.path.join(ROOT, "figures", "push_pile_v12"))
 ap.add_argument("--out", default=os.path.join(ROOT, "figures", "paper_pdf", "pile_prediction_vs_outcome")); ap.add_argument("--crop_top", type=float, default=0.06)
+ap.add_argument("--methods", default="Ours=Ours,PointWorld=PointWorld,GNS=GNS", help="key=label,... (render keys; \\n in a label breaks the line)")
 A = ap.parse_args()
 from matplotlib import font_manager as _fm
 for _p in __import__("glob").glob(os.path.expanduser("~/.local/share/fonts/Times*.TTF")): _fm.fontManager.addfont(_p)   # Microsoft core-fonts Times New Roman (times32.exe from corefonts)
 _serif = ["Times New Roman"]
 plt.rcParams.update({"font.family": "serif", "font.serif": _serif, "mathtext.fontset": "custom", "mathtext.rm": "Times New Roman", "mathtext.it": "Times New Roman:italic", "mathtext.bf": "Times New Roman:bold", "font.size": 7.5, "pdf.fonttype": 42})
 cases = {(r["ep"], r["method"]): r for r in json.load(open(os.path.join(A.src, "pile_cases.json"))) if "method" in r}
-EPS = sorted({e for e, _ in cases}); METHODS = ["Ours", "PointWorld", "GNS"]
+EPS = sorted({e for e, _ in cases}); LABEL = dict(kv.split("=", 1) for kv in A.methods.split(",")); METHODS = list(LABEL)
+LABEL = {k: v.replace("\\n", "\n") for k, v in LABEL.items()}
 COLS = [(e, k) for e in EPS for k in ("pred", "sim")]
 W_IN = 7.0; lab_w = 0.80; gap = 0.04; img_w = (W_IN - lab_w - gap * 5) / 4; img_h = img_w * 0.75 * (1 - A.crop_top); cap_h = 0.16; head_h = 0.42
-H_IN = head_h + 3 * (img_h + cap_h) + 0.30
+H_IN = head_h + len(METHODS) * (img_h + cap_h) + 0.30
 fig = plt.figure(figsize=(W_IN, H_IN)); INK = "#1c2321"; MUTED = "#5d6864"; MAG = "#d6288a"; GREEN = "#14a06e"
 def box(x, y, w, h): return fig.add_axes([x / W_IN, 1 - (y + h) / H_IN, w / W_IN, h / H_IN])
 for ci, (e, k) in enumerate(COLS):
@@ -30,7 +32,7 @@ for ci, (e, k) in enumerate(COLS):
     fig.text((x + img_w / 2) / W_IN, 1 - 0.34 / H_IN, "Model prediction" if k == "pred" else "Simulated outcome", ha="center", va="center", fontsize=8, color=INK, style="italic" if k == "pred" else "normal")
 for ri, m in enumerate(METHODS):
     y0 = head_h + ri * (img_h + cap_h)
-    fig.text((lab_w - 0.06) / W_IN, 1 - (y0 + img_h / 2) / H_IN, m, ha="right", va="center", fontsize=8.5, fontweight="bold", color=INK)
+    fig.text((lab_w - 0.06) / W_IN, 1 - (y0 + img_h / 2) / H_IN, LABEL[m], ha="right", va="center", ma="right", linespacing=1.1, fontsize=8.5, fontweight="bold", color=INK)
     for ci, (e, k) in enumerate(COLS):
         x = lab_w + gap + ci * (img_w + gap); r = cases[(e, m)]
         im = Image.open(os.path.join(A.src, f"pile_ep{e:03d}_{m.lower()}_{k}.png")).convert("RGB"); w, h = im.size

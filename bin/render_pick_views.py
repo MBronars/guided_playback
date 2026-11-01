@@ -18,7 +18,9 @@ R.VAR = "guided"                                                                
 recs = []
 for spec in A.cases.split(","):
     run, m, asset = spec.split(":"); m = int(m)
-    rd = os.path.join(ROOT, "runs", "pickup", run); z = np.load(os.path.join(rd, "rollout.npz")); S = np.load(os.path.join(rd, "replay_isaac", "replay.npz"))
+    rd = os.path.join(ROOT, "runs", "pickup", run)
+    if "@" in run: run, rd = run.split("@", 1)                                  # ALIAS@/path/to/run_dir (e.g. a planning pool's replay batch); files are named by ALIAS
+    z = np.load(os.path.join(rd, "rollout.npz")); S = np.load(os.path.join(rd, "replay_isaac", "replay.npz"))
     rj = json.load(open(os.path.join(rd, "result.json"))); an = json.load(open(os.path.join(rd, "replay_isaac", "analysis.json")))
     if m < 0: m = int(np.argmin(rj["best_mm"]))
     row = next(r for r in an["rows"] if r["member"] == m and r["variant"] == "guided")

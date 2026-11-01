@@ -25,6 +25,7 @@ PILE = {"Ours": RES + "/moulding/ours/runs/paper42_ep{ep:03d}/replay_genesis/gen
 PILE_NEW = {"Ours": "/data/user_data/mbronars/packages/guided_playback/runs/mould/paper42_ep{ep:03d}/replay_genesis_bigbounds/genesis_m*_guided/replay.pkl",
             "PointWorld": "/data/group_data/katefgroup/datasets/mbronars/cloud_centroid_pw_seed42_T150_K40_final_l40s/seed_42/ep_{ep:03d}/replay_bigbounds/replay.pkl",
             "GNS": RES + "/moulding/gns/runs/ep{ep:03d}/replay_genesis/replay.pkl"}      # --pile_sources new (GNS never reaches the +-10 cm wall)
+PILE_SCEN = RES + "/moulding/scenarios/seed_42/ep_{ep:03d}.npz"                 # --sources may point this at another scenario folder
 NO_VIDEO_TEXT = False                                                             # --no_video_text: split videos without header / caption text
 SPLIT = False                                                                     # --split: videos as separate prediction / simulation mp4s
 BLOCK = [214, 122, 58, 255]; ROD = [62, 104, 180, 255]; DOUGH_SIM = [222, 176, 124, 255]; DOUGH_PRED = [132, 146, 170, 255]; PADDLE = [62, 104, 180, 255]
@@ -121,7 +122,7 @@ def label(im, text, sub=None):
 def push(eps, out, W, H):
     yfov = np.pi / 5.5; recs = []
     for ep in eps:
-        tr = {m: np.load(p.format(ep=ep) + "/replay_set_pose/sim_trajectory.npz") for m, p in PUSH.items()}
+        tr = {m: np.load(sorted(glob.glob(p.format(ep=ep) + "/replay_set_pose/sim_trajectory.npz"))[0]) for m, p in PUSH.items()}   # glob: --sources patterns
         z0 = tr["Ours"]; tgt = z0["target_xy"]; b0 = z0["block_pos"][0]; top = float(b0[2]) - 0.025
         pts = np.concatenate([np.concatenate([t["block_pos"][:, :2], t["gripper_xy"]]) for t in tr.values()] + [tgt[None]])
         lo, hi = pts.min(0) - 0.055, pts.max(0) + 0.055; focus = np.array([(lo[0] + hi[0]) / 2, (lo[1] + hi[1]) / 2, top])   # 5.5 cm margin: the 9 cm rod leans outward in perspective
@@ -169,7 +170,7 @@ def push(eps, out, W, H):
             im = frame(t, len(t["block_pos"]) - 1, m, f"final distance {float(t['sim_final_dist']) * 100:.1f} cm · block moved {moved:.0f} mm", True)
             p = f"push_ep{ep:02d}_{m.lower()}_end.png"; im.save(os.path.join(out, p)); files[m] = p
             recs.append(dict(task="push", ep=ep, method=m, sim_final_cm=round(float(t["sim_final_dist"]) * 100, 2), block_moved_mm=round(moved), rod_path_mm=round(float(np.linalg.norm(np.diff(t["gripper_xy"], axis=0), axis=1).sum()) * 1e3)))
-        recs.append(dict(task="push", ep=ep, files=files)); print("push ep", ep, "done", flush=True)
+        recs.append(dict(task="push", ep=ep, files=files, start_cm=round(float(np.linalg.norm(z0["block_pos"][0, :2] - tgt)) * 100, 2))); print("push ep", ep, "done", flush=True)
     return recs
 
 
@@ -178,7 +179,7 @@ def pile(eps, out, W, H):
     yfov = np.pi / 6.0; recs = []
     sph = trimesh.creation.icosphere(subdivisions=1, radius=0.0014)
     for ep in eps:
-        off = np.load(RES + f"/moulding/scenarios/seed_42/ep_{ep:03d}.npz")["target_offset_xy"]
+        off = np.load(PILE_SCEN.format(ep=ep))["target_offset_xy"]
         D = {m: pickle.load(open(glob.glob(p.format(ep=ep))[0], "rb")) for m, p in PILE.items()}
         S0 = D["Ours"]["sim_object_particles"][0]; c0 = S0.mean(0); tgt = c0[:2] + off; top = float(S0[:, 2].min()) - 0.0025
         # frame the dough (start + every method's predicted and simulated end, robust to a few stray predicted points) and the target; a paddle far away may leave the frame
@@ -327,8 +328,12 @@ if __name__ == "__main__":
     ap.add_argument("--pile_sources", default="paper", choices=("paper", "new"), help="new: the new-model +-70 cm replays and the K40 frame-150 PointWorld run")
     ap.add_argument("--split", action="store_true", help="videos: separate prediction and simulation mp4s")
     ap.add_argument("--no_video_text", action="store_true", help="with --split: no header or caption text on the videos")
+    ap.add_argument("--sources", default=None, help="json {push|pile: {method: path pattern ({ep} formatted, then globbed)}, pile_scen: pattern}; "
+                    "the 'Ours' entry frames the scene. Replaces the built-in Ours / PointWorld / GNS sources")
     A = ap.parse_args(); VIDEO = A.video.split(",") if A.video else None; VIDEO_OUT = A.video_out or A.out; NO_START_DOT = A.no_start_dot; ARROW_LIFT = A.arrow_lift; ARROW_W = A.arrow_w; RING_ON_TOP = A.ring_on_top; PADDLE_ON_TABLE = A.paddle_on_table; TOWARD_PADDLE = A.toward_paddle; MOVE_CUE = A.move_cue; SHOW_SUNK = A.show_sunk; CLAMP_TABLE = A.clamp_table; NO_OVERLAY = A.no_overlay; PULL_BACK = A.pull_back; SPLIT = A.split; NO_VIDEO_TEXT = A.no_video_text
     if A.pile_sources == "new": PILE = PILE_NEW
+    if A.sources:                                                                # e.g. the Nov 2026 planning runs (LNO / action CEM in GPWM / action CEM in PointWorld)
+        _S = json.load(open(A.sources)); PUSH = _S.get("push", PUSH); PILE = _S.get("pile", PILE); PILE_SCEN = _S.get("pile_scen", PILE_SCEN)
     W, H = (int(v) for v in A.size.split("x")); os.makedirs(A.out, exist_ok=True)
     eps = [int(v) for v in (A.eps or ("5,14,37" if A.task == "push" else "36,47")).split(",")]
     recs = push(eps, A.out, W, H) if A.task == "push" else pile(eps, A.out, W, H)

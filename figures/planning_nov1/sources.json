@@ -1,0 +1,6 @@
+{"push": {"Ours":    "/data/group_data/katefgroup/runs_pwm_mbronars/noise_vs_action/pool_push_gpwm/plans/a_dno_pool32_I5_P40__ep{ep:03d}/replay_sapien/plans/m*_guided",
+          "ActGPWM": "/data/group_data/katefgroup/runs_pwm_mbronars/noise_vs_action/pool_push_gpwm/plans/c_cem_act_K192_R3__ep{ep:03d}/replay_sapien/plans/m*_guided",
+          "ActPW":   "/data/group_data/katefgroup/runs_pwm_mbronars/noise_vs_action/pool_pw_push0418/plans/*_pwpush0418_cem_K64_R48__ep{ep:03d}/replay_sapien/plans/m*_guided"},
+ "pile": {"Ours":    "/data/group_data/katefgroup/runs_pwm_mbronars/noise_vs_action/pool_pile_gpwm_200k/plans/a_dno_pool32_I5_P4__ep{ep:03d}/replay_genesis_bigbounds/genesis_m*_guided/replay.pkl",
+          "ActGPWM": "/data/group_data/katefgroup/runs_pwm_mbronars/noise_vs_action/pool_pile_gpwm_200k/plans/c_cem_act_K48_R3__ep{ep:03d}/replay_genesis_bigbounds/genesis_m*_guided/replay.pkl",
+          "ActPW":   "/data/group_data/katefgroup/runs_pwm_mbronars/noise_vs_action/pool_pw_pile/plans/pwp_cem_K64_R18__ep{ep:03d}/replay_genesis_bigbounds/genesis_m*_guided/replay.pkl"}}
