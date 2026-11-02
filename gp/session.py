@@ -123,6 +123,10 @@ def guided_run(ad, A):
         if float(_g(A, "phantom_weight", 0.0) or 0.0) > 0:          # phantom-motion penalty on a non-letter task (gp/objectives.WithPhantom)
             from .objectives import WithPhantom
             obj = WithPhantom(obj, mask, batch.get_valid_mask(), float(_g(A, "phantom_weight")), float(_g(A, "contact_mm", 20.0) or 20.0))
+        if _g(A, "footprint_goal", None):                              # whole-pile goal: only particles ending inside the moved footprint count as moved
+            from .objectives import FootprintGoal
+            obj = FootprintGoal(obj, mask, target, float(_g(A, "footprint_goal")), soft_mm=float(_g(A, "footprint_soft_mm", 3.0) or 3.0))
+            print(f"footprint goal: moved-footprint disc x{float(_g(A, 'footprint_goal')):g}", flush=True)
     ad.freeze_frames = int(_g(A, "freeze_frames", 0) or 0)                  # clean_pickup: pose-noise rows of frames < freeze_frames are not optimized
     ad.sampler_mode = getattr(A, 'sampler', None) or (A.get('sampler') if isinstance(A, dict) else None) or 'stream'
     h = _g(A, "history", None)

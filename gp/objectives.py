@@ -130,6 +130,34 @@ class GoalFrame:
         return self.inner(pos[:, :self.frame + 1])
 
 
+class FootprintGoal:
+    """Whole-pile goal (user, 1 Nov 2026): the target region is the pile's starting footprint moved onto the target (a disc of
+    the frame-0 footprint radius, `quantile` of the particles' xy distance from the frame-0 centroid, times `scale`). A particle
+    counts at its final position only if it ends inside that disc; otherwise it counts as if it had not moved (its frame-0
+    position). Goal = xy distance from this mixed centroid to the target, so it reaches 0 only when the whole pile is inside.
+    Inside is a sigmoid of width soft_mm (gradients for LNO). Replaces the base objective's goal term; other terms are kept."""
+    def __init__(self, base, obj_mask, target, scale=1.0, quantile=0.95, soft_mm=3.0):
+        self.base, self.obj_mask, self.target = base, obj_mask, target
+        self.scale, self.q, self.soft = float(scale), float(quantile), float(soft_mm) / 1e3
+
+    def __getattr__(self, k):
+        return getattr(self.base, k)
+
+    def goal(self, pos):
+        out = []
+        for b in range(pos.shape[0]):
+            m = self.obj_mask[b]; P0, PT = pos[b, 0, m, :2], pos[b, -1, m, :2]; T = self.target[b, :2]
+            R = torch.quantile((P0 - P0.mean(0)).norm(dim=-1).detach(), self.q) * self.scale
+            w = torch.sigmoid((R - (PT - T).norm(dim=-1)) / self.soft)[:, None]
+            out.append(((w * PT + (1 - w) * P0).mean(0) - T).norm())
+        return torch.stack(out)
+
+    def __call__(self, pos):
+        total, d = self.base(pos)
+        g = self.goal(pos); d = dict(d); d["centroid_goal"] = d["goal"]; d["goal"] = g
+        return total - d["centroid_goal"] + g, d
+
+
 class WithPhantom:
     """Any objective + phantom_weight * phantom motion (gp/letter.py LetterObjective.phantom, same definition): per frame the
     object-centroid displacement, gated by how far the nearest actuator point is from the nearest object point beyond contact_mm

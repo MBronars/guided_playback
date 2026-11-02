@@ -8,11 +8,12 @@ SC = "/data/user_data/mbronars/packages/pwm_efficient/scenarios/cloud_centroid/s
 AS = "/data/group_data/katefgroup/runs_pwm_mbronars/noise_vs_action_dev/pile/action_stats_mould.json"
 root, settings = sys.argv[1], json.load(open(sys.argv[2]))
 CK = sys.argv[sys.argv.index("--ckpt") + 1] if "--ckpt" in sys.argv else CK                 # 27 Oct: rerun on final.pt (200k)
-lo, hi = map(int, (sys.argv[sys.argv.index("--eps") + 1] if "--eps" in sys.argv else "0-49").split("-"))
+_E = sys.argv[sys.argv.index("--eps") + 1] if "--eps" in sys.argv else "0-49"
+EPS = [int(e) for e in _E.split(",")] if "," in _E else list(range(int(_E.split("-")[0]), int(_E.split("-")[1]) + 1))   # "0-49" or "0,3,25"
 units = []
 for s in settings:
     B = int(s.get("B", 4))
-    for ep in range(lo, hi + 1):
+    for ep in EPS:
         d = np.load(f"{SC}/ep_{ep:03d}.npz"); bi = int(d["batch_idx"]); dx, dy = map(float, d["target_offset_xy"])
         req = dict(ckpt=CK, domain="mould", task="move", episodes=",".join([str(bi)] * B), transitions=150, steps=6, offset=f"{dx},{dy},0",
                    seed=0, churn=True, t_freeze=0.0, fix_fps=True, action_stats=AS, desc=f"pile gpwm {s['tag']} ep{ep:03d}")
