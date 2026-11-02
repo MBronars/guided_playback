@@ -127,6 +127,10 @@ def guided_run(ad, A):
             from .objectives import FootprintGoal
             obj = FootprintGoal(obj, mask, target, float(_g(A, "footprint_goal")), soft_mm=float(_g(A, "footprint_soft_mm", 3.0) or 3.0))
             print(f"footprint goal: moved-footprint disc x{float(_g(A, 'footprint_goal')):g}", flush=True)
+        if _g(A, "outside_goal", None):                               # dense whole-pile goal: mean distance of particles outside the moved footprint
+            from .objectives import OutsideGoal
+            obj = OutsideGoal(obj, mask, target, float(_g(A, "outside_goal")))
+            print(f"outside goal: moved-footprint disc x{float(_g(A, 'outside_goal')):g}", flush=True)
     ad.freeze_frames = int(_g(A, "freeze_frames", 0) or 0)                  # clean_pickup: pose-noise rows of frames < freeze_frames are not optimized
     ad.sampler_mode = getattr(A, 'sampler', None) or (A.get('sampler') if isinstance(A, dict) else None) or 'stream'
     h = _g(A, "history", None)
